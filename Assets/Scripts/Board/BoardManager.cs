@@ -17,6 +17,26 @@ public class BoardManager : MonoBehaviour {
         coast
     }
 
+    public enum Feature
+    {
+        none,
+        portal,
+        orc,
+        keep,
+        tower,
+        den,
+        dungeon,
+        draconum,
+        ruins,
+        mine,
+        glade,
+        village,
+        monastery,
+        spawning,
+        tomb,
+        city
+    }
+
     [SerializeField]
     private GameObject m_hexGroup;
 
@@ -31,8 +51,8 @@ public class BoardManager : MonoBehaviour {
     void PlaceHexGroup(int groupNumber, HexCoordinates groupCoordinates)
     {
         GameObject group = Instantiate(m_hexGroup);
-        group.GetComponent<HexGroup>().Init(groupNumber);
         group.GetComponent<Hex>().SetCoordinates(groupCoordinates);
+        group.GetComponent<HexGroup>().Init(groupNumber);
     }
 
     /// <summary>

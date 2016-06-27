@@ -3,7 +3,9 @@ using System.Collections;
 
 public class Movecost : MonoBehaviour {
 
+    [SerializeField]
     private int m_dayCost;
+    [SerializeField]
     private int m_nightCost;
 
     // Set the movement cost for day and night given a terrain type
