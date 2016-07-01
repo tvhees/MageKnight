@@ -3,49 +3,48 @@ using System.Collections;
 
 public class Movecost : MonoBehaviour {
 
-    [SerializeField]
     private int m_dayCost;
-    [SerializeField]
     private int m_nightCost;
 
     // Set the movement cost for day and night given a terrain type
     // Impassable terrain is set to int.MaxValue
-    public void SetCost(BoardManager.Terrain type)
+    public void SetCost(Components.Terrain type)
     {
         switch (type)
         {
-            case BoardManager.Terrain.plains:
+            case Components.Terrain.plains:
                 m_dayCost = m_nightCost = 2;
                 break;
-            case BoardManager.Terrain.forest:
+            case Components.Terrain.forest:
                 m_dayCost = 3;
                 m_nightCost = 5;
                 break;
-            case BoardManager.Terrain.hill:
+            case Components.Terrain.hill:
                 m_dayCost = m_nightCost = 3;
                 break;
-            case BoardManager.Terrain.wasteland:
+            case Components.Terrain.wasteland:
                 m_dayCost = m_nightCost = 4;
                 break;
-            case BoardManager.Terrain.desert:
+            case Components.Terrain.desert:
                 m_dayCost = 5;
                 m_nightCost = 3;
                 break;
-            case BoardManager.Terrain.swamp:
+            case Components.Terrain.swamp:
                 m_dayCost = m_nightCost = 5;
                 break;
-            case BoardManager.Terrain.lake:
+            case Components.Terrain.lake:
                 m_dayCost = m_nightCost = int.MaxValue;
                 break;
-            case BoardManager.Terrain.mountain:
+            case Components.Terrain.mountain:
                 m_dayCost = m_nightCost = int.MaxValue;
                 break;
         }
     }
 
     // Get the current movement cost given the time of day
-    public int GetCost(bool dayTime)
+    public int GetCost()
     {
+        bool dayTime = GameManager.IsDayTime();
         if (dayTime)
         {
             return m_dayCost;

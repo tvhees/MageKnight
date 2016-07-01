@@ -3,7 +3,6 @@ using System.Collections;
 
 public class Hex : MonoBehaviour {
 
-    [SerializeField]
     private HexCoordinates m_hexCoordinates;
 
     /// <summary>

@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cards>
+  <card>
+    <number><![CDATA[1]]></number>
+    <string name="name"><![CDATA[march]]></string>
+    <string name="type"><![CDATA[basic]]></string>
+    <string name="colour"><![CDATA[green]]></string>
+    <effect type="weak">
+      <string><![CDATA[movement]]></string>
+      <int><![CDATA[2]]></int>
+    </effect>
+    <effect type="strong">
+      <string><![CDATA[movement]]></string>
+      <int>4</int>
+    </effect>
+  </card>
+  <card>
+    <number><![CDATA[2]]></number>
+    <string name="name"><![CDATA[rage]]></string>
+    <string name="type"><![CDATA[basic]]></string>
+    <string name="colour"><![CDATA[red]]></string>
+    <effect type="weak">
+      <string>attack</string>
+      <int><![CDATA[2]]></int>
+    </effect>
+    <effect type="strong">
+      <string>attack</string>
+      <int>4</int>
+    </effect>
+  </card>
+  <card>
+    <number>3</number>
+    <string name="name"><![CDATA[promise]]></string>
+    <string name="type"><![CDATA[basic]]></string>
+    <string name="colour"><![CDATA[white]]></string>
+    <effect type="weak">
+      <string>influence</string>
+      <int><![CDATA[2]]></int>
+    </effect>
+    <effect type="strong">
+      <string>influence</string>
+      <int>4</int>
+    </effect>
+  </card>
+  <card>
+    <number>4</number>
+    <string name="name"><![CDATA[tranquility]]></string>
+    <string name="type"><![CDATA[basic]]></string>
+    <string name="colour"><![CDATA[green]]></string>
+    <effect type="weak">
+      <string>tranquility</string>
+      <int>1</int>
+    </effect>
+    <effect type="strong">
+      <string>tranquility</string>
+      <int>2</int>
+    </effect>
+  </card>
+  <card>
+    <number>5</number>
+    <string name="name"><![CDATA[swiftness]]></string>
+    <string name="type"><![CDATA[basic]]></string>
+    <string name="colour"><![CDATA[white]]></string>
+    <effect type="weak">
+      <string>movement</string>
+      <int>2</int>
+    </effect>
+    <effect type="strong">
+      <string>ranged</string>
+      <int>3</int>
+    </effect>
+  </card>
+</cards>

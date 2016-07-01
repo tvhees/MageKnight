@@ -62,6 +62,35 @@ public static class ExtensionMethods {
             param.Add(i);
     }
 
+    public static T GetLast<T>(this List<T> param)
+    {
+        T lastItem;
+        try
+        {
+            lastItem = param[param.Count - 1];
+            return lastItem;
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogWarning("Error getting last item: " + e);
+            return default(T);
+        }
+    }
+
+    public static void RemoveLast<T>(this List<T> param)
+    {
+        int i;
+        try
+        {
+            i = param.Count - 1;
+            param.RemoveAt(i);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogWarning("Error removing last item: " + e);
+        }
+    }
+
     /// <summary>
     /// Instantiates a new GameObject as a child of the calling transform.
     /// </summary>
