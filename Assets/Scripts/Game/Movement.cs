@@ -25,9 +25,6 @@ public class Movement : MonoBehaviour {
 
     public bool ChangeCost(bool removeHex, Movecost hex)
     {
-        // Need to know if it's day or night
-        bool timeOfDay = GameManager.IsDayTime();
-
         // If we're adding new hexes to movement path they go at the end of the list
         if (!removeHex)
         {

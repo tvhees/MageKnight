@@ -38,6 +38,6 @@ public class EffectButton : MonoBehaviour {
 
     public void OnMouseUpAsButton()
     {
-        CardEffects.ProcessEffect(GetComponentInParent<CardObject>().GetID(), weakEffect);
+        StartCoroutine(GameManager.m_cardManager.ProcessEffect(GetComponentInParent<CardObject>().GetID(), weakEffect));
     }
 }

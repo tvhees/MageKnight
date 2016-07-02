@@ -154,12 +154,9 @@ public class GameManager : Singleton<GameManager> {
     public void NewBoard()
     {
         if (m_boardManager != null)
-        {
             m_boardManager.RemoveBoard();
-            m_cardManager.ShuffleDecks();
-        }
         else
-            m_cardManager.Init();
+            m_cardManager.LoadCards();
 
         m_boardManager = Instantiate(m_boardPrefab).GetComponent<BoardManager>();
 

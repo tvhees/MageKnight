@@ -10,13 +10,13 @@ public class CardObject : MonoBehaviour {
 
     private EffectButton[] effectButtons;
 
-    public void Init(Location startLoc, Vector3 homePos, Camera camera)
+    public void Init(PlayerManager.Location startLoc, Vector3 homePos, Camera camera)
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteRenderer.sprite = faceSprite;
-        location = startLoc;
+        m_spriteRenderer = GetComponent<SpriteRenderer>();
+        m_spriteRenderer.sprite = m_faceSprite;
+        SetLocation(startLoc);
         m_Camera = camera;
-        m_targetPos = m_homePos = homePos;
+        m_targetPos = m_homePos = transform.parent.position + homePos;
 
         // Get references to effect colliders and initialise them
         effectButtons = GetComponentsInChildren<EffectButton>();
@@ -41,20 +41,35 @@ public class CardObject : MonoBehaviour {
         return cardID;
     }
 
-    private SpriteRenderer spriteRenderer;
-    private Sprite faceSprite;
-    private Sprite backSprite;
+    private SpriteRenderer m_spriteRenderer;
+    private Sprite m_faceSprite;
+    private Sprite m_backSprite;
 
     public void SetSprites(Sprite fSprite, Sprite bSprite)
     {
-        faceSprite = fSprite;
-        backSprite = bSprite;
+        m_faceSprite = fSprite;
+        m_backSprite = bSprite;
+    }
+
+    public void ChooseSprite()
+    {
+        switch (location)
+        {
+            case PlayerManager.Location.deck:
+                m_spriteRenderer.sprite = m_backSprite;
+                break;
+            case PlayerManager.Location.hand:
+            case PlayerManager.Location.play:
+            case PlayerManager.Location.discard:
+                m_spriteRenderer.sprite = m_faceSprite;
+                break;
+        }
     }
 
     // Listener method for any events that want to highlight this card.
     public void Highlight()
     {
-        if(location == Location.hand)
+        if(location == PlayerManager.Location.hand)
             Debug.Log("Highlighting Card " + cardID);
     }
 
@@ -66,14 +81,24 @@ public class CardObject : MonoBehaviour {
 
     void OnMouseOver()
     {
-        if(!m_focused)
-            SetTargetPos(m_homePos + GetZoomVector());
+        if (location == PlayerManager.Location.hand)
+        {
+            if (!m_focused)
+            {
+                SetTargetPos(m_homePos + GetZoomVector());
+            }
+        }
     }
 
     void OnMouseExit()
     {
-        if(!m_focused)
-            SetTargetPos(m_homePos);
+        if (location == PlayerManager.Location.hand)
+        {
+            if (!m_focused)
+            {
+                SetTargetPos(m_homePos);
+            }
+        }
     }
 
     /// <summary>
@@ -81,10 +106,16 @@ public class CardObject : MonoBehaviour {
     /// </summary>
     void OnMouseUpAsButton()
     {
+        GameManager.m_cardManager.MoveThisCard(this);
+
         if (!m_focused)
+        {
             ZoomAndFocus();
+        }
         else
+        {
             SendToHome();
+        }
             
     }
 
@@ -94,41 +125,43 @@ public class CardObject : MonoBehaviour {
 
     // Vectors for card position 
     private Vector3 m_homePos;
-    private Vector3 m_clickPos = new Vector3(0f, 2f, -7f);
     private Vector3 m_targetPos;
 
-    // Variables for zooming towards camera on hover
+    // Variables for zooming towards camera on hover and click
     private Camera m_Camera;
+    private Vector3 m_clickDepth = new Vector3(0f, 0f, 3f);
     private float m_zoomDistance = 2f;
-    private float m_zoomSpeed = 100f;
-
-    // Variables for hand positioning
-    private float shiftDistance = 0.7f;
 
     /// <summary>
     /// Returns a vector of length zoomDistance in the direction of the camera showing this card
     /// </summary>
     /// <returns></returns>
-    Vector3 GetZoomVector()
+    private Vector3 GetZoomVector()
     {
         Vector3 directionToCamera = m_zoomDistance * Vector3.Normalize(m_Camera.transform.position - m_homePos);
         return directionToCamera;
     }
 
-    void SetTargetPos(Vector3 newPos)
+    public void SetTargetPos(Vector3 newPos)
     {
+        GameManager.m_cardManager.MoveThisCard(this);
         m_targetPos = newPos;
     }
 
-    /// <summary>
-    /// Move a card within the player's hand to keep the hand neat and visible as cards are added or removed.
-    /// </summary>
-    public void ShiftInHand(Vector3 pos, float shiftDistance)
+    public Vector3 GetTargetPos()
     {
-        if (location == Location.hand)
-        {
-            m_targetPos = m_homePos = Vector3.MoveTowards(m_homePos, pos, shiftDistance);
-        }
+        return m_targetPos;
+    }
+
+    public void SetHomePos(Vector3 newHomePos)
+    {
+        m_homePos = newHomePos;
+        SetTargetPos(m_homePos);
+    }
+
+    public Vector3 GetHomePos()
+    {
+        return m_homePos;
     }
 
     /// <summary>
@@ -137,7 +170,7 @@ public class CardObject : MonoBehaviour {
     void ZoomAndFocus()
     {
         m_focused = true;
-        SetTargetPos(m_clickPos); // Move to center of screen
+        SetTargetPos(m_Camera.transform.position + m_clickDepth); // Move to center of screen
 
         effectButtons[0].Enable();
         effectButtons[1].Enable();
@@ -155,31 +188,18 @@ public class CardObject : MonoBehaviour {
         effectButtons[1].Disable();
     }
 
-    void Update()
-    {
-        transform.position = Vector3.MoveTowards(transform.position, m_targetPos, m_zoomSpeed * Time.deltaTime);
-    }
-
     // ****************
     // CARD LOCATION
     // ****************
+    private PlayerManager.Location location;
 
-    public enum Location
-    {
-        deck,
-        hand,
-        discard
-    }
-
-    [SerializeField]
-    private Location location;
-
-    public void SetLocation(Location newLocation)
+    public void SetLocation(PlayerManager.Location newLocation)
     {
         location = newLocation;
+        ChooseSprite();
     }
 
-    public Location GetLocation()
+    public PlayerManager.Location GetLocation()
     {
         return location;
     }

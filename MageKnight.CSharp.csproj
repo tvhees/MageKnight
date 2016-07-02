@@ -68,16 +68,14 @@
     <Compile Include="Assets\Scripts\Board\HexManager.cs" />
     <Compile Include="Assets\Scripts\Board\Movecost.cs" />
     <Compile Include="Assets\Scripts\Cards\CardObject.cs" />
-    <Compile Include="Assets\Scripts\Cards\Effects\CardEffects.cs" />
     <Compile Include="Assets\Scripts\Cards\Effects\EffectButton.cs" />
-    <Compile Include="Assets\Scripts\Cards\HandManager.cs" />
     <Compile Include="Assets\Scripts\Game\Combat.cs" />
     <Compile Include="Assets\Scripts\Game\Movement.cs" />
     <Compile Include="Assets\Scripts\Managers\BoardManager.cs" />
     <Compile Include="Assets\Scripts\Managers\CardManager.cs" />
     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
-    <Compile Include="Assets\Scripts\Managers\PlayerManager.cs" />
     <Compile Include="Assets\Scripts\Managers\UIManager.cs" />
+    <Compile Include="Assets\Scripts\Players\PlayerManager.cs" />
     <Compile Include="Assets\Scripts\Utilities\ExtensionMethods.cs" />
     <Compile Include="Assets\Scripts\Utilities\Singleton.cs" />
   </ItemGroup>
