@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 9f0b212bfb3d0314085475a59de05e5c
+timeCreated: 1467626609
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - m_boardPrefab: {fileID: 163572, guid: f4dcf3dc946befb499ba20411e80d7c4, type: 2}
+  - m_cardHolderPrefab: {fileID: 161804, guid: 2453d7426fb7c6346b074b867b969851, type: 2}
+  - m_cameraPrefab: {fileID: 133136, guid: c5e49327f3094004d8c583bf261a4e24, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

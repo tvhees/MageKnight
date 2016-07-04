@@ -63,24 +63,33 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\Board\Hex.cs" />
-    <Compile Include="Assets\Scripts\Board\HexGroup.cs" />
-    <Compile Include="Assets\Scripts\Board\HexManager.cs" />
-    <Compile Include="Assets\Scripts\Board\Movecost.cs" />
-    <Compile Include="Assets\Scripts\Cards\CardObject.cs" />
-    <Compile Include="Assets\Scripts\Cards\Effects\EffectButton.cs" />
-    <Compile Include="Assets\Scripts\Game\Combat.cs" />
-    <Compile Include="Assets\Scripts\Game\Movement.cs" />
-    <Compile Include="Assets\Scripts\Managers\BoardManager.cs" />
-    <Compile Include="Assets\Scripts\Managers\CardManager.cs" />
-    <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
-    <Compile Include="Assets\Scripts\Managers\UIManager.cs" />
-    <Compile Include="Assets\Scripts\Players\PlayerManager.cs" />
-    <Compile Include="Assets\Scripts\Utilities\ExtensionMethods.cs" />
-    <Compile Include="Assets\Scripts\Utilities\Singleton.cs" />
+    <Compile Include="Assets\Scripts\Board\Manager.cs" />
+    <Compile Include="Assets\Scripts\Board\State.cs" />
+    <Compile Include="Assets\Scripts\Cards\EffectButton.cs" />
+    <Compile Include="Assets\Scripts\Cards\EffectMethods.cs" />
+    <Compile Include="Assets\Scripts\Cards\Factory.cs" />
+    <Compile Include="Assets\Scripts\Cards\Loader.cs" />
+    <Compile Include="Assets\Scripts\Cards\Manager.cs" />
+    <Compile Include="Assets\Scripts\Cards\Object.cs" />
+    <Compile Include="Assets\Scripts\Extension\ExtensionMethods.cs" />
+    <Compile Include="Assets\Scripts\Extension\Singleton.cs" />
+    <Compile Include="Assets\Scripts\Game\Manager.cs" />
+    <Compile Include="Assets\Scripts\Game\ObjectMover.cs" />
+    <Compile Include="Assets\Scripts\Game\UIManager.cs" />
+    <Compile Include="Assets\Scripts\General\MovingObject.cs" />
+    <Compile Include="Assets\Scripts\HexGrid\Factory.cs" />
+    <Compile Include="Assets\Scripts\HexGrid\Group.cs" />
+    <Compile Include="Assets\Scripts\HexGrid\Hex.cs" />
+    <Compile Include="Assets\Scripts\HexGrid\Loader.cs" />
+    <Compile Include="Assets\Scripts\HexGrid\Manager.cs" />
+    <Compile Include="Assets\Scripts\Players\Player.cs" />
+    <Compile Include="Assets\Scripts\Rules\Combat.cs" />
+    <Compile Include="Assets\Scripts\Rules\Components.cs" />
+    <Compile Include="Assets\Scripts\Rules\Movement.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\CardInfo.xml" />
+    <None Include="Assets\Resources\MageKnightData.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

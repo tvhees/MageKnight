@@ -19,20 +19,6 @@
     </effect>
   </card>
   <card>
-    <number>2</number>
-    <string name="name"><![CDATA[rage2]]></string>
-    <string name="type"><![CDATA[basic]]></string>
-    <string name="colour"><![CDATA[red]]></string>
-    <effect type="weak">
-      <string>Attack</string>
-      <int><![CDATA[2]]></int>
-    </effect>
-    <effect type="strong">
-      <string>Attack</string>
-      <int>4</int>
-    </effect>
-  </card>
-  <card>
     <number>3</number>
     <string name="name"><![CDATA[determination]]></string>
     <string name="type"><![CDATA[basic]]></string>
@@ -61,20 +47,6 @@
     </effect>
   </card>
   <card>
-    <number>5</number>
-    <string name="name"><![CDATA[swiftness2]]></string>
-    <string name="type"><![CDATA[basic]]></string>
-    <string name="colour"><![CDATA[white]]></string>
-    <effect type="weak">
-      <string>Movement</string>
-      <int>2</int>
-    </effect>
-    <effect type="strong">
-      <string>Ranged</string>
-      <int>3</int>
-    </effect>
-  </card>
-  <card>
     <number>6</number>
     <string name="name"><![CDATA[march]]></string>
     <string name="type"><![CDATA[basic]]></string>
@@ -89,36 +61,8 @@
     </effect>
   </card>
   <card>
-    <number>7</number>
-    <string name="name"><![CDATA[march2]]></string>
-    <string name="type"><![CDATA[basic]]></string>
-    <string name="colour"><![CDATA[green]]></string>
-    <effect type="weak">
-      <string>Movement</string>
-      <int><![CDATA[2]]></int>
-    </effect>
-    <effect type="strong">
-      <string>Movement</string>
-      <int>4</int>
-    </effect>
-  </card>
-  <card>
     <number>8</number>
     <string name="name"><![CDATA[stamina]]></string>
-    <string name="type"><![CDATA[basic]]></string>
-    <string name="colour"><![CDATA[blue]]></string>
-    <effect type="weak">
-      <string>Movement</string>
-      <int><![CDATA[2]]></int>
-    </effect>
-    <effect type="strong">
-      <string>Movement</string>
-      <int>4</int>
-    </effect>
-  </card>
-  <card>
-    <number>9</number>
-    <string name="name"><![CDATA[stamina2]]></string>
     <string name="type"><![CDATA[basic]]></string>
     <string name="colour"><![CDATA[blue]]></string>
     <effect type="weak">
