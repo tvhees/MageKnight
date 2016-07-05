@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<cards>
+  <card>
+    <number>0</number>
+    <string name="name"><![CDATA[cardback]]></string>
+  </card>
+  <card>
+    <number>1</number>
+    <string name="name"><![CDATA[rage]]></string>
+    <string name="type"><![CDATA[basic]]></string>
+    <string name="colour"><![CDATA[red]]></string>
+    <effect type="weak">
+      <string>Attack</string>
+      <int><![CDATA[2]]></int>
+    </effect>
+    <effect type="strong">
+      <string>Attack</string>
+      <int>4</int>
+    </effect>
+  </card>
+  <card>
+    <number>3</number>
+    <string name="name"><![CDATA[determination]]></string>
+    <string name="type"><![CDATA[basic]]></string>
+    <string name="colour"><![CDATA[blue]]></string>
+    <effect type="weak">
+      <string>Attack</string>
+      <int><![CDATA[2]]></int>
+    </effect>
+    <effect type="strong">
+      <string>Block</string>
+      <int>5</int>
+    </effect>
+  </card>
+  <card>
+    <number>4</number>
+    <string name="name"><![CDATA[swiftness]]></string>
+    <string name="type"><![CDATA[basic]]></string>
+    <string name="colour"><![CDATA[white]]></string>
+    <effect type="weak">
+      <string>Movement</string>
+      <int>2</int>
+    </effect>
+    <effect type="strong">
+      <string>Ranged</string>
+      <int>3</int>
+    </effect>
+  </card>
+  <card>
+    <number>6</number>
+    <string name="name"><![CDATA[march]]></string>
+    <string name="type"><![CDATA[basic]]></string>
+    <string name="colour"><![CDATA[green]]></string>
+    <effect type="weak">
+      <string>Movement</string>
+      <int><![CDATA[2]]></int>
+    </effect>
+    <effect type="strong">
+      <string>Movement</string>
+      <int>4</int>
+    </effect>
+  </card>
+  <card>
+    <number>8</number>
+    <string name="name"><![CDATA[stamina]]></string>
+    <string name="type"><![CDATA[basic]]></string>
+    <string name="colour"><![CDATA[blue]]></string>
+    <effect type="weak">
+      <string>Movement</string>
+      <int><![CDATA[2]]></int>
+    </effect>
+    <effect type="strong">
+      <string>Movement</string>
+      <int>4</int>
+    </effect>
+  </card>
+  <card>
+    <number>10</number>
+    <string name="name"><![CDATA[tranquility]]></string>
+    <string name="type"><![CDATA[basic]]></string>
+    <string name="colour"><![CDATA[green]]></string>
+    <effect type="weak">
+      <string>Tranquility</string>
+      <int>1</int>
+    </effect>
+    <effect type="strong">
+      <string>Tranquility</string>
+      <int>2</int>
+    </effect>
+  </card>
+  <card>
+    <number>11</number>
+    <string name="name"><![CDATA[promise]]></string>
+    <string name="type"><![CDATA[basic]]></string>
+    <string name="colour"><![CDATA[white]]></string>
+    <effect type="weak">
+      <string>Influence</string>
+      <int><![CDATA[2]]></int>
+    </effect>
+    <effect type="strong">
+      <string>Influence</string>
+      <int>4</int>
+    </effect>
+  </card>
+  <card>
+    <number>12</number>
+    <string name="name"><![CDATA[threaten]]></string>
+    <string name="type"><![CDATA[basic]]></string>
+    <string name="colour"><![CDATA[red]]></string>
+    <effect type="weak">
+      <string>Influence</string>
+      <int><![CDATA[2]]></int>
+    </effect>
+    <effect type="strong">
+      <string>Threaten</string>
+      <int>5</int>
+    </effect>
+  </card>
+  <card>
+    <number>13</number>
+    <string name="name"><![CDATA[crystallize]]></string>
+    <string name="type"><![CDATA[basic]]></string>
+    <string name="colour"><![CDATA[blue]]></string>
+    <effect type="weak">
+      <string>Crystallize</string>
+      <int>1</int>
+    </effect>
+    <effect type="strong">
+      <string>Crystallize</string>
+      <int>0</int>
+    </effect>
+  </card>
+  <card>
+    <number>14</number>
+    <string name="name"><![CDATA[manadraw]]></string>
+    <string name="type"><![CDATA[basic]]></string>
+    <string name="colour"><![CDATA[white]]></string>
+    <effect type="weak">
+      <string>ManaDraw</string>
+      <int>1</int>
+    </effect>
+    <effect type="strong">
+      <string>ManaDraw</string>
+      <int>2</int>
+    </effect>
+  </card>
+  <card>
+    <number>15</number>
+    <string name="name"><![CDATA[concentration]]></string>
+    <string name="type"><![CDATA[basic]]></string>
+    <string name="colour"><![CDATA[green]]></string>
+    <effect type="weak">
+      <string>Concentration</string>
+      <int>1</int>
+    </effect>
+    <effect type="strong">
+      <string>Concentration</string>
+      <int>2</int>
+    </effect>
+  </card>
+  <card>
+    <number>16</number>
+    <string name="name"><![CDATA[improvisation]]></string>
+    <string name="type"><![CDATA[basic]]></string>
+    <string name="colour"><![CDATA[red]]></string>
+    <effect type="weak">
+      <string>Improvisation</string>
+      <int>3</int>
+    </effect>
+    <effect type="strong">
+      <string>Improvisation</string>
+      <int>5</int>
+    </effect>
+  </card>
+</cards>
