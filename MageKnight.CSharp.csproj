@@ -94,9 +94,15 @@
     <Compile Include="Assets\Scripts\HexGrid\Loader.cs" />
     <Compile Include="Assets\Scripts\HexGrid\Manager.cs" />
     <Compile Include="Assets\Scripts\Players\Player.cs" />
-    <Compile Include="Assets\Scripts\Rules\Combat.cs" />
-    <Compile Include="Assets\Scripts\Rules\Components.cs" />
-    <Compile Include="Assets\Scripts\Rules\Movement.cs" />
+    <Compile Include="Assets\Scripts\Rules\Features\City.cs" />
+    <Compile Include="Assets\Scripts\Rules\Features\Dungeon.cs" />
+    <Compile Include="Assets\Scripts\Rules\Features\Garrison.cs" />
+    <Compile Include="Assets\Scripts\Rules\Features\Spawner.cs" />
+    <Compile Include="Assets\Scripts\Rules\Features\Spoils.cs" />
+    <Compile Include="Assets\Scripts\Rules\Features\Tower.cs" />
+    <Compile Include="Assets\Scripts\Rules\Systems\Combat.cs" />
+    <Compile Include="Assets\Scripts\Rules\Systems\Components.cs" />
+    <Compile Include="Assets\Scripts\Rules\Systems\Movement.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\CardInfo.xml" />

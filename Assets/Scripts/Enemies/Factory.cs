@@ -58,7 +58,7 @@ namespace BoardGame
 
                 for (int i = 0; i < enemyNames.Length; i++)
                 {
-                    for (int j = 0; j < enemyNumbers.Length; j++)
+                    for (int j = 0; j < enemyNumbers[i]; j++)
                     {
                         Object newEnemy = stackHolder.transform.InstantiateChild(m_enemyPrefabs[(int)type]).GetComponent<Object>();
                         GiveEnemyIdentity(newEnemy, enemyNames[i]);
