@@ -18,6 +18,11 @@ namespace BoardGame
             void Awake()
             {
                 SetState(State.start);
+                if (Enemy.Manager.Instance != null)
+                {
+                    Enemy.Manager.Instance.Init();
+                }
+
                 if (Board.Manager.Instance != null)
                 {
                     Board.Manager.Instance.CreateBoard();
@@ -128,6 +133,13 @@ namespace BoardGame
             public List<Players.Player> GetAllPlayers()
             {
                 return m_players;
+            }
+
+            public void NextPlayer()
+            {
+                currentPlayer = (int)Mathf.Repeat(currentPlayer + 1, numberOfPlayers);
+
+                Debug.Log(currentPlayer);
             }
         }
     }

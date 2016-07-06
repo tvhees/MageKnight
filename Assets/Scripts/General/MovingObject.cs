@@ -5,10 +5,17 @@ namespace BoardGame
 {
     public class MovingObject : MonoBehaviour
     {
+        [SerializeField]
+        private float m_speed;
 
         // Vectors for card position 
         private Vector3 m_homePos;
         private Vector3 m_targetPos;
+
+        public float GetSpeed()
+        {
+            return m_speed;
+        }
 
         public void SetTargetPos(Vector3 newPos)
         {

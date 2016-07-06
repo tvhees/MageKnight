@@ -17,13 +17,7 @@ namespace BoardGame
             private int m_totalCost;
             private int m_totalPaid;
             private List<HexGrid.Manager> m_hexPath = new List<HexGrid.Manager>(); // List for reference to hextile component
-            private List<GameObject> m_pathArrows = new List<GameObject>(); // List for UI arrows showing path
             private List<int> m_pathCosts = new List<int>(); // Keep track of running total movecost for payment UI
-            private List<GameObject> m_pathNumbers = new List<GameObject>(); // List for UI numbers showing move cost
-
-            // UI prefabs
-            public GameObject m_arrowPrefab;
-            public GameObject m_numberPrefab;
 
             public bool ChangeCost(bool removeHex, HexGrid.Manager hex)
             {
@@ -46,19 +40,6 @@ namespace BoardGame
                 }
             }
 
-            void DrawMovePath(Vector3 start, Vector3 end)
-            {
-                Vector3 midPoint = (end + start) * 0.5f; // Place arrows and numbers at midpoint between tiles
-                Quaternion rotation = Quaternion.LookRotation(Vector3.Cross((end - start), Vector3.up)); // arrow prefab is already rotated 90 degrees so we need to make it 'look' at the orthogonal direction
-                GameObject arrow = Instantiate(m_arrowPrefab, midPoint, rotation) as GameObject;
-                m_pathArrows.Add(arrow);
-
-                // Show total movement cost on number above array
-                GameObject number = Instantiate(m_numberPrefab, midPoint, Quaternion.Euler(60f, 30f, 0f)) as GameObject;
-                number.GetComponent<TextMesh>().text = m_totalCost.ToString();
-                m_pathNumbers.Add(number);
-            }
-
             bool AddNewNode(HexGrid.Manager hex)
             {
                 // Store positions of previous and current movement nodes
@@ -77,7 +58,7 @@ namespace BoardGame
                     m_totalCost += hex.GetTerrain().GetCost();
                     m_pathCosts.Add(m_totalCost);
 
-                    DrawMovePath(posA, posB);
+                    Board.UIManager.Instance.DrawPath(posA, posB, m_totalCost.ToString());
                     ColourPath();
 
                     return true;
@@ -95,15 +76,7 @@ namespace BoardGame
                 m_totalCost -= lastHex.GetTerrain().GetCost();
                 m_pathCosts.RemoveLast();
 
-                // Destroy associated arrow
-                GameObject arrow = m_pathArrows.GetLast();
-                Destroy(arrow);
-                m_pathArrows.RemoveLast();
-
-                // Destroy associated number
-                GameObject number = m_pathNumbers.GetLast();
-                Destroy(number);
-                m_pathNumbers.RemoveLast();
+                Board.UIManager.Instance.DeleteLast();
             }
 
             public void AddMovement(int value)
@@ -120,12 +93,12 @@ namespace BoardGame
                 {
                     if (m_pathCosts[i] <= m_totalPaid)
                     {
-                        m_pathNumbers[i].GetComponent<TextMesh>().color = Color.red;
+                        Board.UIManager.Instance.ColourNode(i, Color.red);
                         nodesPaid++;
                     }
                     else
                     {
-                        m_pathNumbers[i].GetComponent<TextMesh>().color = Color.white;
+                        Board.UIManager.Instance.ColourNode(i, Color.white);
                     }
                 }
 

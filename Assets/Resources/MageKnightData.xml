@@ -536,4 +536,443 @@
       </hex>
     </group>
   </HexGroups>
+  <Enemies>
+    <orc>
+      <name>Prowlers</name>
+      <attack>
+        <strength>4</strength>
+      </attack>
+      <defense>
+        <strength>3</strength>
+      </defense>
+      <reward>
+        <fame>2</fame>
+        <reputation>1</reputation>
+      </reward>
+    </orc>
+    <orc>
+      <name>Diggers</name>
+      <attack>
+        <strength>3</strength>
+      </attack>
+      <defense>
+        <strength>3</strength>
+        <fortified />
+      </defense>
+      <reward>
+        <fame>2</fame>
+        <reputation>1</reputation>
+      </reward>
+    </orc>
+    <orc>
+      <name>Cursed Hags</name>
+      <attack>
+        <strength>4</strength>
+        <poison />
+      </attack>
+      <defense>
+        <strength>5</strength>
+      </defense>
+      <reward>
+        <fame>3</fame>
+        <reputation>1</reputation>
+      </reward>
+    </orc>
+    <orc>
+      <name>Wolf Riders</name>
+      <attack>
+        <strength>3</strength>
+        <swiftness />
+      </attack>
+      <defense>
+        <strength>4</strength>
+      </defense>
+      <reward>
+        <fame>3</fame>
+        <reputation>1</reputation>
+      </reward>
+    </orc>
+    <orc>
+      <name>Ironclads</name>
+      <attack>
+        <strength>4</strength>
+        <brutal />
+      </attack>
+      <defense>
+        <strength>3</strength>
+        <physical />
+      </defense>
+      <reward>
+        <fame>4</fame>
+        <reputation>1</reputation>
+      </reward>
+    </orc>
+    <orc>
+      <name>Orc Summoners</name>
+      <attack>
+        <strength>0</strength>
+        <summoner />
+      </attack>
+      <defense>
+        <strength>4</strength>
+      </defense>
+      <reward>
+        <fame>4</fame>
+        <reputation>1</reputation>
+      </reward>
+    </orc>
+    <keep>
+      <name>Crossbowmen</name>
+      <attack>
+        <strength>4</strength>
+        <swiftness />
+      </attack>
+      <defense>
+        <strength>4</strength>
+      </defense>
+      <reward>
+        <fame>3</fame>
+        <reputation>0</reputation>
+      </reward>
+    </keep>
+    <keep>
+      <name>Guardsmen</name>
+      <attack>
+        <strength>3</strength>
+      </attack>
+      <defense>
+        <strength>7</strength>
+        <fortified />
+      </defense>
+      <reward>
+        <fame>3</fame>
+        <reputation>0</reputation>
+      </reward>
+    </keep>
+    <keep>
+      <name>Swordsmen</name>
+      <attack>
+        <strength>6</strength>
+      </attack>
+      <defense>
+        <strength>5</strength>
+      </defense>
+      <reward>
+        <fame>4</fame>
+        <reputation>0</reputation>
+      </reward>
+    </keep>
+    <keep>
+      <name>Golems</name>
+      <attack>
+        <strength>2</strength>
+      </attack>
+      <defense>
+        <strength>5</strength>
+        <physical />
+      </defense>
+      <reward>
+        <fame>4</fame>
+        <reputation>0</reputation>
+      </reward>
+    </keep>
+    <tower>
+      <name>Monks</name>
+      <attack>
+        <strength>5</strength>
+        <poison />
+      </attack>
+      <defense>
+        <strength>5</strength>
+      </defense>
+      <reward>
+        <fame>4</fame>
+        <reputation>0</reputation>
+      </reward>
+    </tower>
+    <tower>
+      <name>Ice Mages</name>
+      <attack>
+        <strength>5</strength>
+        <cold />
+      </attack>
+      <defense>
+        <strength>6</strength>
+        <cold />
+      </defense>
+      <reward>
+        <fame>5</fame>
+        <reputation>0</reputation>
+      </reward>
+    </tower>
+    <tower>
+      <name>Fire Mages</name>
+      <attack>
+        <strength>6</strength>
+        <fire />
+      </attack>
+      <defense>
+        <strength>5</strength>
+        <fire />
+      </defense>
+      <reward>
+        <fame>5</fame>
+        <reputation>0</reputation>
+      </reward>
+    </tower>
+    <tower>
+      <name>Illusionists</name>
+      <attack>
+        <strength>0</strength>
+        <summoner />
+      </attack>
+      <defense>
+        <strength>3</strength>
+        <physical />
+      </defense>
+      <reward>
+        <fame>4</fame>
+        <reputation>0</reputation>
+      </reward>
+    </tower>
+    <tower>
+      <name>Ice Golems</name>
+      <attack>
+        <strength>2</strength>
+        <cold />
+        <paralyze />
+      </attack>
+      <defense>
+        <strength>4</strength>
+        <cold />
+        <physical />
+      </defense>
+      <reward>
+        <fame>5</fame>
+        <reputation>0</reputation>
+      </reward>
+    </tower>
+    <tower>
+      <name>Fire Golems</name>
+      <attack>
+        <strength>3</strength>
+        <fire />
+        <brutal />
+      </attack>
+      <defense>
+        <strength>4</strength>
+        <fire />
+        <physical />
+      </defense>
+      <reward>
+        <fame>5</fame>
+        <reputation>0</reputation>
+      </reward>
+    </tower>
+    <dungeon>
+      <name>Minotaur</name>
+      <attack>
+        <strength>5</strength>
+        <brutal />
+      </attack>
+      <defense>
+        <strength>5</strength>
+      </defense>
+      <reward>
+        <fame>4</fame>
+        <reputation>0</reputation>
+      </reward>
+    </dungeon>
+    <dungeon>
+      <name>Gargoyle</name>
+      <attack>
+        <strength>5</strength>
+      </attack>
+      <defense>
+        <strength>4</strength>
+        <physical />
+      </defense>
+      <reward>
+        <fame>4</fame>
+        <reputation>0</reputation>
+      </reward>
+    </dungeon>
+    <dungeon>
+      <name>Medusa</name>
+      <attack>
+        <strength>6</strength>
+        <paralyse />
+      </attack>
+      <defense>
+        <strength>4</strength>
+      </defense>
+      <reward>
+        <fame>5</fame>
+        <reputation>0</reputation>
+      </reward>
+    </dungeon>
+    <dungeon>
+      <name>Crypt Worm</name>
+      <attack>
+        <strength>6</strength>
+      </attack>
+      <defense>
+        <strength>6</strength>
+        <fortified />
+      </defense>
+      <reward>
+        <fame>5</fame>
+        <reputation>0</reputation>
+      </reward>
+    </dungeon>
+    <dungeon>
+      <name>Werewolf</name>
+      <attack>
+        <strength>7</strength>
+        <swiftness />
+      </attack>
+      <defense>
+        <strength>5</strength>
+      </defense>
+      <reward>
+        <fame>5</fame>
+        <reputation>0</reputation>
+      </reward>
+    </dungeon>
+    <draconum>
+      <name>Swamp Dragon</name>
+      <attack>
+        <strength>5</strength>
+        <swiftness />
+        <poison />
+      </attack>
+      <defense>
+        <strength>9</strength>
+      </defense>
+      <reward>
+        <fame>7</fame>
+        <reputation>2</reputation>
+      </reward>
+    </draconum>
+    <draconum>
+      <name>Fire Dragon</name>
+      <attack>
+        <strength>9</strength>
+        <fire />
+      </attack>
+      <defense>
+        <strength>7</strength>
+        <fire />
+        <physical />
+      </defense>
+      <reward>
+        <fame>8</fame>
+        <reputation>2</reputation>
+      </reward>
+    </draconum>
+    <draconum>
+      <name>Ice Dragon</name>
+      <attack>
+        <strength>6</strength>
+        <cold />
+        <paralyse />
+      </attack>
+      <defense>
+        <strength>7</strength>
+        <cold />
+        <physical />
+      </defense>
+      <reward>
+        <fame>8</fame>
+        <reputation>2</reputation>
+      </reward>
+    </draconum>
+    <draconum>
+      <name>High Dragon</name>
+      <attack>
+        <strength>6</strength>
+        <cold />
+        <fire />
+        <brutal />
+      </attack>
+      <defense>
+        <strength>9</strength>
+        <cold />
+        <fire />
+      </defense>
+      <reward>
+        <fame>9</fame>
+        <reputation>2</reputation>
+      </reward>
+    </draconum>
+    <city>
+      <name>Freezers</name>
+      <attack>
+        <strength>3</strength>
+        <cold />
+        <swiftness />
+        <paralyse />
+      </attack>
+      <defense>
+        <strength>7</strength>
+        <fire />
+      </defense>
+      <reward>
+        <fame>7</fame>
+        <reputation>0</reputation>
+      </reward>
+    </city>
+    <city>
+      <name>Gunners</name>
+      <attack>
+        <strength>6</strength>
+        <fire />
+        <brutal />
+      </attack>
+      <defense>
+        <strength>6</strength>
+        <cold />
+      </defense>
+      <reward>
+        <fame>7</fame>
+        <reputation>0</reputation>
+      </reward>
+    </city>
+    <city>
+      <name>Altem Guardsmen</name>
+      <attack>
+        <strength>6</strength>
+      </attack>
+      <defense>
+        <strength>7</strength>
+        <cold />
+        <fire />
+        <physical />
+        <fortified />
+      </defense>
+      <reward>
+        <fame>8</fame>
+        <reputation>0</reputation>
+      </reward>
+    </city>
+    <city>
+      <name>Altem Mages</name>
+      <attack>
+        <strength>4</strength>
+        <cold />
+        <fire />
+        <poison />
+        <brutal />
+      </attack>
+      <defense>
+        <strength>8</strength>
+        <physical />
+        <fortified />
+      </defense>
+      <reward>
+        <fame>8</fame>
+        <reputation>0</reputation>
+      </reward>
+    </city>
+  </Enemies>
 </MageKnightData>

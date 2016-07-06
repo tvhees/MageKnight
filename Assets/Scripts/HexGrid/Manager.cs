@@ -13,9 +13,8 @@ namespace BoardGame
             // INITIALISATION
             // ****************
 
-            // Component References
+            // Component Reference
             private Rules.TerrainInfo m_terrain;
-            private Hex m_hex;
 
             public Rules.TerrainInfo GetTerrain()
             {
@@ -29,7 +28,6 @@ namespace BoardGame
             public void Init(Rules.Components.Terrain input)
             {
                 m_terrain = new Rules.TerrainInfo(input);
-                m_hex = GetComponent<Hex>();
                 m_isSelected = false;
             }
 
