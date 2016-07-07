@@ -91,7 +91,7 @@ namespace BoardGame
                 {
                     if (!m_focused)
                     {
-                        m_movingObject.SetTargetPos(m_movingObject.GetHomePos() + GetZoomVector());
+                        StartCoroutine(m_movingObject.SetTargetPos(m_movingObject.GetHomePos() + GetZoomVector()));
                     }
                 }
             }
@@ -153,7 +153,7 @@ namespace BoardGame
             void ZoomAndFocus()
             {
                 m_focused = true;
-                m_movingObject.SetTargetPos(m_Camera.transform.position + m_clickDepth); // Move to center of screen
+                StartCoroutine(m_movingObject.SetTargetPos(m_Camera.transform.position + m_clickDepth)); // Move to center of screen
 
                 for (int i = 0; i < m_effectButtons.Length; i++)
                     m_effectButtons[i].Enable();

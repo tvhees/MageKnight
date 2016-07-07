@@ -35,18 +35,14 @@ namespace BoardGame
                     // HACKY CODE!!
                     string feat = feature.ToString();
 
-                    if (feat == "keep")
-                        Debug.Log(hex.transform.position);
-
-
                     // Place required features on the tile
                     switch (feat)
                     {
                         case "orc":
                         case "draconum":
                             Enemy.Object newEnemy = Enemy.Manager.Instance.GetEnemy(feat);
+                            StartCoroutine(newEnemy.GetComponent<MovingObject>().SetHomePos(hex.transform.position + 0.1f * Vector3.up));
                             newEnemy.transform.SetParent(hex.transform);
-                            newEnemy.transform.localPosition = Vector3.zero;
                             break;
                         default:
                             if (m_featurePrefabs[(int)feature] != null)
