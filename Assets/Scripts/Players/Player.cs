@@ -96,7 +96,7 @@ namespace BoardGame
             public void MoveToPlayArea(Cards.Object card)
             {
                 card.SetLocation(Location.play);
-                card.GetMover().SetHomePos(m_playedArea.transform.position);
+                StartCoroutine(card.GetMover().SetHomePos(m_playedArea.transform.position));
             }
 
             void RefillHand()
@@ -115,14 +115,14 @@ namespace BoardGame
                 }
 
                 card.transform.SetParent(m_hand.transform);
-                card.GetMover().SetHomePos(m_hand.transform.position + Vector3.right * m_cardsInHand.Count * m_cardSlotWidth / 2f);
+                StartCoroutine(card.GetMover().SetHomePos(m_hand.transform.position + Vector3.right * m_cardsInHand.Count * m_cardSlotWidth / 2f));
                 ChangeCardLocation(card, Location.hand);
                 m_cardsInHand.Add(card);
             }
 
             void ShiftCardHome(Cards.Object card, Vector3 target, float delta)
             {
-                card.GetMover().SetHomePos(Vector3.MoveTowards(card.GetMover().GetHomePos(), target, delta));
+                StartCoroutine(card.GetMover().SetHomePos(Vector3.MoveTowards(card.GetMover().GetHomePos(), target, delta)));
             }
 
             void ChangeCardLocation(Cards.Object card, Location newLocation)

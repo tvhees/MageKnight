@@ -88,6 +88,7 @@
     <Compile Include="Assets\Scripts\Game\UIManager.cs" />
     <Compile Include="Assets\Scripts\General\CameraDrawer.cs" />
     <Compile Include="Assets\Scripts\General\MovingObject.cs" />
+    <Compile Include="Assets\Scripts\General\PhaseIndicator.cs" />
     <Compile Include="Assets\Scripts\HexGrid\Factory.cs" />
     <Compile Include="Assets\Scripts\HexGrid\Group.cs" />
     <Compile Include="Assets\Scripts\HexGrid\Hex.cs" />

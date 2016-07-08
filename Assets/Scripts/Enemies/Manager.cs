@@ -40,7 +40,7 @@ namespace BoardGame
                 }
             }
 
-            public Object GetEnemy(string type)
+            public Object GetEnemy(string type, Transform parentObj)
             {
                 List<Object> stack;
                 m_enemyStacks.TryGetValue(type, out stack);
@@ -48,6 +48,13 @@ namespace BoardGame
                 // Take the top enemy off the stack
                 Object topOfStack = stack.GetLast();
                 stack.RemoveLast();
+
+                // Position enemy in heirarchy and world space
+                Vector3 newHome = parentObj.position + 0.1f * Vector3.up;
+                topOfStack.transform.position = newHome;
+                StartCoroutine(topOfStack.GetComponent<MovingObject>().SetHomePos(newHome));
+                topOfStack.transform.SetParent(parentObj);
+
                 return topOfStack;
             }
 

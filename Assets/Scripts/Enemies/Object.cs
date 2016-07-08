@@ -8,33 +8,61 @@ namespace BoardGame
     {
 		public class Object : MonoBehaviour 
 		{
+            public bool debugMode;
+
             private Enemy m_attributes;
             private MovingObject movingObject;
+            public Canvas enemyInformation;
 
             private float flipHeight;
             private bool showing;
 
+            
             public void OnMouseUpAsButton()
             {
-                if (showing)
-                    StartCoroutine(Flip(0f));
-                else
-                    StartCoroutine(Flip(180f));
+                if (debugMode)
+                {
+                    StartCoroutine(Flip());
+                }
+            }
 
-                showing = !showing;
+            public void OnMouseOver()
+            {
+                if (showing)
+                    enemyInformation.enabled = true;
+            }
+
+            public void OnMouseExit()
+            {
+                enemyInformation.enabled = false;
             }
 
             public void Awake()
             {
+
+            }
+
+            public void SetAttributes(Enemy input, Canvas enemyCanvas)
+            {
+                m_attributes = input;
+
                 flipHeight = 10f;
+                enemyInformation = enemyCanvas;
+                enemyCanvas.transform.SetParent(transform);
+                enemyCanvas.transform.localPosition = (2f * Vector3.down);
+                enemyCanvas.transform.localRotation = Quaternion.Euler(300f, 150f, 180f);
+
                 movingObject = GetComponent<MovingObject>();
                 movingObject.SetHomeRot(Quaternion.identity);
                 showing = false;
             }
 
-            public void SetAttributes(Enemy input)
+            public void CheckRampaging()
             {
-                m_attributes = input;
+                if (GetComponent<Rampaging>() != null)
+                {
+                    StartCoroutine(Flip());
+                }
             }
 
             public Attack GetAttack()
@@ -53,13 +81,24 @@ namespace BoardGame
             }
 
             // HACKY CODE because tokens are offset
-            public IEnumerator Flip(float finalAngle)
+            public IEnumerator Flip()
             {
+                float finalAngle;
+
+                if (showing)
+                    finalAngle = 0f;
+                else
+                    finalAngle = 180f;
+
+                Debug.Log(finalAngle);
+
                 StartCoroutine(movingObject.SetTargetPos(movingObject.GetHomePos() + flipHeight * Vector3.up));
                 yield return StartCoroutine(movingObject.SetTargetRot(Quaternion.Euler(90f, 0f, 0f), true));
                 StartCoroutine(movingObject.SetTargetRot(Quaternion.Euler(finalAngle, 0f, 0f)));
                 yield return new WaitForSeconds(0.1f);
                 StartCoroutine(movingObject.SetHomePos());
+
+                showing = !showing;
             }
         }
 	}

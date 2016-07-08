@@ -11,11 +11,12 @@ namespace BoardGame
             public Enemy.Factory.EnemyType enemyType;
             private Enemy.Object garrisonEnemy;
 
-            void Awake()
+            public void Init()
             {
-                garrisonEnemy = Enemy.Manager.Instance.GetEnemy(enemyType.ToString());
-                garrisonEnemy.transform.SetParent(transform);
-                garrisonEnemy.transform.localPosition = Vector3.zero;
+                // Get an enemy token to live in this garrison.
+                // Need to do this AFTER instantiation of the building is finished
+                // so that the correct position reference is passed to the enemy
+                garrisonEnemy = Enemy.Manager.Instance.GetEnemy(enemyType.ToString(), transform);
             }
 
 		}

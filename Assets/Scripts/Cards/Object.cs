@@ -28,7 +28,7 @@ namespace BoardGame
 
                 SetLocation(startLoc);
                 m_Camera = camera;
-                m_movingObject.SetHomePos(transform.parent.position + m_movingObject.GetHomePos());
+                StartCoroutine(m_movingObject.SetHomePos(transform.parent.position + m_movingObject.GetHomePos()));
 
                 // Initialise effect buttons
                 m_effectButtons = GetComponentsInChildren<EffectButton>();
@@ -102,7 +102,7 @@ namespace BoardGame
                 {
                     if (!m_focused)
                     {
-                        m_movingObject.SetHomePos();
+                        StartCoroutine(m_movingObject.SetHomePos());
                     }
                 }
             }
@@ -165,7 +165,7 @@ namespace BoardGame
             void SendToHome()
             {
                 m_focused = false;
-                m_movingObject.SetHomePos(); // Move back to wherever it came from
+                StartCoroutine(m_movingObject.SetHomePos()); // Move back to wherever it came from
 
                 for (int i = 0; i < m_effectButtons.Length; i++)
                     m_effectButtons[i].Disable();

@@ -79,7 +79,6 @@ namespace BoardGame
                     // Stop tracking this card's movement if it reaches its destination
                     if (Quaternion.Angle(tar, rot) < Mathf.Epsilon)
                     {
-                        Debug.Log(tar.eulerAngles + " " + rot.eulerAngles);
                         m_objectsToRotate.Remove(obj);
                         if(debugMode)
                             Debug.Log("Objects to Rotate: " + m_objectsToRotate.Count + " - " + obj.name);

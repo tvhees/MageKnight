@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -15,6 +16,7 @@ namespace BoardGame
 
             // Image and text data sources
             public TextAsset m_enemyXML; // XML file reference
+            public GameObject enemyCanvasPrefab; // Canvas for showing enemy information within the scene
 
             // Enemy dictionary
             Dictionary<string, Enemy> m_enemyDictionary = new Dictionary<string, Enemy>();
@@ -28,7 +30,25 @@ namespace BoardGame
             {
                 Enemy output;
                 m_enemyDictionary.TryGetValue(name, out output);
-                enemy.SetAttributes(output);
+
+                Canvas enemyCanvas = CreateCanvas(name);
+
+                enemy.SetAttributes(output, enemyCanvas);
+            }
+
+            private Canvas CreateCanvas(string name)
+            {
+                Canvas enemyCanvas = (Instantiate(enemyCanvasPrefab) as GameObject)
+                                    .GetComponent<Canvas>();
+
+                Sprite enemyImage = Resources.Load<Sprite>("EnemyImages/" + name);
+
+                if (enemyImage != null)
+                    enemyCanvas.GetComponentInChildren<Image>().sprite = enemyImage;
+
+                enemyCanvas.enabled = false;
+
+                return enemyCanvas;
             }
 
             //************
@@ -86,12 +106,13 @@ namespace BoardGame
                 names = new string[0];
                 numbers = new int[0];
 
-                // Define the card numbers to include in each type of deck here
-                // The same card can be included multiple times
+                // Define the enemy names to include in each type of stack
+                // The same enemy can be included multiple times
+                // HACKY CODE - this could be read from the data file
                 switch (type)
                 {
                     case Factory.EnemyType.orc:
-                        names = new string[6] { "Prowlers", "Diggers", "Cursed Hags", "Wolf Riders", "Ironclads", "Orc Summoners" };
+                        names = new string[6] { "Prowlers", "Diggers", "CursedHags", "WolfRiders", "Ironclads", "OrcSummoners" };
                         numbers = new int[6] { 2, 2, 2, 2, 2, 2 };
                         break;
                     case Factory.EnemyType.keep:
@@ -99,19 +120,19 @@ namespace BoardGame
                         numbers = new int[4] { 3, 3, 2, 2 };
                         break;
                     case Factory.EnemyType.tower:
-                        names = new string[6] { "Monks", "Ice Mages", "Fire Mages", "Illusionists", "Ice Golems", "Fire Golems" };
+                        names = new string[6] { "Monks", "IceMages", "FireMages", "Illusionists", "IceGolems", "FireGolems" };
                         numbers = new int[6] { 2, 2, 2, 2, 1, 1 };
                         break;
                     case Factory.EnemyType.dungeon:
-                        names = new string[5] { "Minotaur", "Gargoyle", "Medusa", "Crypt Worm", "Werewolf" };
+                        names = new string[5] { "Minotaur", "Gargoyle", "Medusa", "CryptWorm", "Werewolf" };
                         numbers = new int[5] { 2, 2, 2, 2, 2 };
                         break;
                     case Factory.EnemyType.draconum:
-                        names = new string[4] { "Swamp Dragon", "Fire Dragon", "Ice Dragon", "High Dragon" };
+                        names = new string[4] { "Swamp Dragon", "FireDragon", "IceDragon", "HighDragon" };
                         numbers = new int[4] { 2, 2, 2, 2 };
                         break;
                     case Factory.EnemyType.city:
-                        names = new string[4] { "Freezers", "Gunners", "Altem Guardsmen", "Altem Mages" };
+                        names = new string[4] { "Freezers", "Gunners", "AltemGuardsmen", "AltemMages" };
                         numbers = new int[4] { 3, 3, 2, 2 };
                         break;
                 }

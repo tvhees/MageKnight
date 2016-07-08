@@ -111,8 +111,7 @@ namespace BoardGame
                 MovingObject player = Game.Manager.Instance.GetCurrentPlayer().GetComponent<MovingObject>();
                 for (int i = 0; i < n; i++)
                 {
-                    player.SetTargetPos(m_hexPath[i].transform.position);
-                    yield return StartCoroutine(Game.ObjectMover.Instance.MoveUntilFinished(player));
+                    yield return StartCoroutine(player.SetTargetPos(m_hexPath[i].transform.position, true));
                 }
 
 

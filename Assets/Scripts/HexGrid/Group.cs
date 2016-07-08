@@ -40,9 +40,14 @@ namespace BoardGame
                     {
                         case "orc":
                         case "draconum":
-                            Enemy.Object newEnemy = Enemy.Manager.Instance.GetEnemy(feat);
-                            StartCoroutine(newEnemy.GetComponent<MovingObject>().SetHomePos(hex.transform.position + 0.1f * Vector3.up));
-                            newEnemy.transform.SetParent(hex.transform);
+                            Enemy.Object newEnemy = Enemy.Manager.Instance.GetEnemy(feat, hex.transform);
+                            newEnemy.CheckRampaging();
+                            break;
+                        case "keep":
+                        case "tower":
+                            Building.Garrison newGarrison = hex.transform.InstantiateChild(
+                                    m_featurePrefabs[(int)feature]).GetComponent<Building.Garrison>();
+                            newGarrison.Init();
                             break;
                         default:
                             if (m_featurePrefabs[(int)feature] != null)

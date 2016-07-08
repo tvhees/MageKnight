@@ -12,7 +12,7 @@ namespace BoardGame
 
             public Enemy.Object Spawn()
             {
-                return Enemy.Manager.Instance.GetEnemy(enemyType.ToString());
+                return Enemy.Manager.Instance.GetEnemy(enemyType.ToString(), transform);
             }
 
 		}

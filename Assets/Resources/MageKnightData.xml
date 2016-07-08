@@ -565,7 +565,7 @@
       </reward>
     </orc>
     <orc>
-      <name>Cursed Hags</name>
+      <name>CursedHags</name>
       <attack>
         <strength>4</strength>
         <poison />
@@ -579,7 +579,7 @@
       </reward>
     </orc>
     <orc>
-      <name>Wolf Riders</name>
+      <name>WolfRiders</name>
       <attack>
         <strength>3</strength>
         <swiftness />
@@ -608,7 +608,7 @@
       </reward>
     </orc>
     <orc>
-      <name>Orc Summoners</name>
+      <name>OrcSummoners</name>
       <attack>
         <strength>0</strength>
         <summoner />
