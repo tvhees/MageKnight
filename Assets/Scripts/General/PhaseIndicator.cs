@@ -29,7 +29,7 @@ namespace BoardGame
 
         // Turn off current phase text, activate next one.
         // Returns whether or not combat has ended.
-        public bool ProgressCombat()
+        public bool NextPhase()
         {
             textArray[index].color = inactiveColour;
             index++;

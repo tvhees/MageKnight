@@ -111,6 +111,15 @@ namespace BoardGame
                 MovingObject player = Game.Manager.Instance.GetCurrentPlayer().GetComponent<MovingObject>();
                 for (int i = 0; i < n; i++)
                 {
+                    // Check if there's enemies where we want to move
+                    Enemy.Object[] enemies = m_hexPath[i].GetComponentsInChildren<Enemy.Object>();
+
+                    if (enemies.Length > 0)
+                    {
+                        // Fight before moving
+                        yield return StartCoroutine(Combat.Instance.StartCombat(enemies));
+                    }
+
                     yield return StartCoroutine(player.SetTargetPos(m_hexPath[i].transform.position, true));
                 }
 
