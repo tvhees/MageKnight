@@ -15,6 +15,7 @@ namespace BoardGame
             public GameObject m_boardPrefab;
             public GameObject m_cardHolderPrefab;
             public GameObject m_cameraPrefab;
+            public GameObject m_playerCanvasPrefab;
 
             private int m_playerID;
             private Camera m_playerCamera;
@@ -23,6 +24,9 @@ namespace BoardGame
             private GameObject m_discard;
             private GameObject m_deck;
             private GameObject m_hand;
+            private GameObject m_playerCanvas;
+
+            private Fame m_playerFame;
 
             private Vector3 m_deckPos = new Vector3(-4f, 0.5f, 0f);
             private Vector3 m_playedAreaPos = new Vector3(-4f, 4f, 0f);
@@ -46,6 +50,7 @@ namespace BoardGame
                 m_discard = playerBoard.transform.InstantiateChild(m_cardHolderPrefab);
                 m_deck = playerBoard.transform.InstantiateChild(m_cardHolderPrefab, m_deckPos);
                 m_hand = playerBoard.transform.InstantiateChild(m_cardHolderPrefab);
+                m_playerCanvas = playerBoard.transform.InstantiateChild(m_playerCanvasPrefab);
 
                 // Rename for clarity in editor
                 playerBoard.name = "Player " + m_playerID + " board";
@@ -53,9 +58,15 @@ namespace BoardGame
                 m_playedArea.name = "Played Cards";
                 m_discard.name = "Discard";
                 m_deck.name = "Deck";
+                m_playerCanvas.name = "Player Canvas";
 
                 // Add camera to show hand
                 m_playerCamera = playerBoard.transform.InstantiateChild(m_cameraPrefab, new Vector3(0f, 2f, -10f)).GetComponent<Camera>();
+                m_playerCanvas.GetComponent<Canvas>().worldCamera = m_playerCamera;
+
+                // Initialise Fame and Reputation sliders
+                m_playerFame = m_playerCanvas.GetComponentInChildren<Fame>();
+                m_playerFame.Init();
             }
 
             // Create a deck only this player can see and start tracking the cards in it
@@ -145,6 +156,16 @@ namespace BoardGame
 
                 card.SetLocation(newLocation);
             }
+
+            //**********
+            // FAME AND REPUTATION
+            //**********
+
+            public void AddFame(int value)
+            {
+                m_playerFame.AddFame(value);
+            }
+
         }
     }
 }

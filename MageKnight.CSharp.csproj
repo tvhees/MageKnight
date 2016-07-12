@@ -93,7 +93,9 @@
     <Compile Include="Assets\Scripts\HexGrid\Hex.cs" />
     <Compile Include="Assets\Scripts\HexGrid\Loader.cs" />
     <Compile Include="Assets\Scripts\HexGrid\Manager.cs" />
+    <Compile Include="Assets\Scripts\Players\Fame.cs" />
     <Compile Include="Assets\Scripts\Players\Player.cs" />
+    <Compile Include="Assets\Scripts\Players\Reputation.cs" />
     <Compile Include="Assets\Scripts\Rules\Features\City.cs" />
     <Compile Include="Assets\Scripts\Rules\Features\Dungeon.cs" />
     <Compile Include="Assets\Scripts\Rules\Features\Garrison.cs" />
