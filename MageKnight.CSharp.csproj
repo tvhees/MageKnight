@@ -88,7 +88,6 @@
     <Compile Include="Assets\Scripts\Game\UIManager.cs" />
     <Compile Include="Assets\Scripts\General\CameraDrawer.cs" />
     <Compile Include="Assets\Scripts\General\MovingObject.cs" />
-    <Compile Include="Assets\Scripts\General\PhaseIndicator.cs" />
     <Compile Include="Assets\Scripts\HexGrid\Factory.cs" />
     <Compile Include="Assets\Scripts\HexGrid\Group.cs" />
     <Compile Include="Assets\Scripts\HexGrid\Hex.cs" />
@@ -104,6 +103,11 @@
     <Compile Include="Assets\Scripts\Rules\Systems\Combat.cs" />
     <Compile Include="Assets\Scripts\Rules\Systems\Components.cs" />
     <Compile Include="Assets\Scripts\Rules\Systems\Movement.cs" />
+    <Compile Include="Assets\Scripts\UI\Combat\CombatPanel.cs" />
+    <Compile Include="Assets\Scripts\UI\Combat\EnemyArea.cs" />
+    <Compile Include="Assets\Scripts\UI\Combat\EnemyHolder.cs" />
+    <Compile Include="Assets\Scripts\UI\PhaseIndicator.cs" />
+    <Compile Include="Assets\Scripts\UI\PlayerArea.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\CardInfo.xml" />

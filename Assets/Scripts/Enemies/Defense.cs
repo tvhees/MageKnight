@@ -15,8 +15,12 @@ namespace BoardGame
                 fire = false;
                 physical = false;
                 fortified = false;
+
+                images = new List<Sprite>();
             }
             public int strength;
+
+            public List<Sprite> images;
 
             // Resistances
             public bool cold;

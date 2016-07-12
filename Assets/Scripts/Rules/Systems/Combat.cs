@@ -9,10 +9,9 @@ namespace BoardGame
     {
         public class Combat : Singleton<Combat>
         {
-            public PhaseIndicator combatPhases;
-            public GameObject combatPanel;
+            public GUI.CombatPanel m_combatPanel;
 
-            private enum Phase
+            public enum Phase
             {
                 siege,
                 ranged,
@@ -21,48 +20,77 @@ namespace BoardGame
                 end
             }
 
-            private Phase phase;
+            private Phase m_phase;
 
-            private List<Enemy.Object> listOfEnemies;
-            private bool combatOngoing;
+            public bool TestPhase(Phase testPhase)
+            {
+                if (m_phase == testPhase)
+                    return true;
+                else
+                    return false;
+            }
+
+            // Lists to track all enemies in combat and those that have been selected
+            private List<Enemy.Object> m_listOfEnemies;
+            public CombatInstance m_currentInstance;
 
             public IEnumerator StartCombat(Enemy.Object[] newEnemies)
             {
-                // Open the combat UI
-                combatPanel.SetActive(true);
-                combatPhases.StartCombat();
+                m_listOfEnemies = new List<Enemy.Object>(newEnemies); // Store the list of enemies being fought
+                m_currentInstance = new CombatInstance(); // Create a new combat instance
+                m_combatPanel.StartCombat(m_listOfEnemies); // Open the combat UI
 
-                // Store the list of enemies being fought
-                listOfEnemies = new List<Enemy.Object>(newEnemies);
-
-                // Start the first phase
-                StartCoroutine(PlayerAttack(Phase.siege));
-
-                while (phase != Phase.end)
+                StartCoroutine(PlayerAttack(Phase.siege)); // Start the first phase
+                while (m_phase != Phase.end) // Don't pass control back to the main game until combat is finished
                 {
                     yield return null;
                 }
+            }
+
+            // Add together the strength of all enemies involved in a combat instance
+            // During block phase this should only ever be one enemy.
+            public int SumEnemies(List<GUI.EnemyHolder> input)
+            {
+                int total = 0;
+
+                foreach (GUI.EnemyHolder obj in input)
+                {
+                    if (m_phase == Phase.block)
+                        total += obj.m_enemy.GetAttack().strength;
+                    else
+                        total += obj.m_enemy.GetDefense().strength;
+                }
+
+                return total;
             }
 
             IEnumerator PlayerAttack(Phase thisPhase)
             {
-                // Start whichever phase has been called. This should also end previous Co-routines;
-                phase = thisPhase;
+                m_phase = thisPhase; // Start whichever phase has been called (siege, ranged, attack)
 
-                Debug.Log(listOfEnemies[0].GetDefense().strength);
-
-                while (phase == thisPhase)
+                while (m_phase == thisPhase) // Stay in this phase until the next has been started
                 {
                     yield return null;
                 }
             }
 
+            public bool AddAttackOrBlock(int value) // Add to a player's total played block or attack
+            {
+                if (!m_currentInstance.IsEmpty())
+                {
+                    int pStrength = m_currentInstance.AddToPlayerTotal(value);
+                    m_combatPanel.m_playerArea.SetStrength(pStrength); // update UI to reflect current strength
+                    return true;
+                }
+
+                return false; // returns false if there's no selected enemies
+            }
+
             IEnumerator PlayerBlock()
             {
-                phase = Phase.block;
-                Debug.Log(listOfEnemies[0].GetDefense().strength);
+                m_phase = Phase.block; // Start the block phase
 
-                while (phase == Phase.block)
+                while (m_phase == Phase.block)
                 {
                     yield return null;
                 }
@@ -70,14 +98,45 @@ namespace BoardGame
 
             public void Resolve()
             {
-                NextPhase();
+                if (m_currentInstance.IsEmpty()) // If we've pressed this with no enemies selected, move on to the next phase
+                {
+                    NextPhase();
+                    return;
+                }
+                else if (m_currentInstance.Successful()) // Otherwise evaluate whether the player has succeeded and proceed accordingly
+                {
+                    if (m_phase == Phase.block)
+                        Debug.Log("attack blocked");
+                    else
+                        AddRewards(); // This enemy has been killed, at the end of combat we'll get something
+                }
+                else
+                {
+                    if (m_phase == Phase.block)
+                        AddWounds(); // Unblocked attacks cause wounds
+                    else
+                        Debug.Log("enemy not defeated");
+                }
+
+                m_currentInstance.Disable(); // Disable all enemies in the current instance
+
+                m_combatPanel.m_enemyArea.SelectNext(); // Select the next enemy in line
+            }
+
+            void AddWounds()
+            {
+                Debug.Log("Wounds suffered!");
+            }
+
+            void AddRewards()
+            {
+                Debug.Log("enemy defeated");
             }
 
             void NextPhase()
             {
-                combatPhases.NextPhase();
-
-                switch (phase)
+                // Move to the next phase of combat based on where we are now
+                switch (m_phase)
                 {
                     case Phase.siege:
                         StartCoroutine(PlayerAttack(Phase.ranged));
@@ -86,21 +145,83 @@ namespace BoardGame
                         StartCoroutine(PlayerBlock());
                         break;
                     case Phase.block:
+                        m_combatPanel.m_enemyArea.ToggleGroup(true);
                         StartCoroutine(PlayerAttack(Phase.attack));
                         break;
                     case Phase.attack:
+                        m_combatPanel.m_enemyArea.ToggleGroup(false);
                         EndCombat();
                         break;
                 }
+
+                // Update UI components
+                m_combatPanel.NextPhase();
             }
 
             void EndCombat()
             {
-                phase = Phase.end;
-                combatPanel.SetActive(false);
-                combatOngoing = false;
+                m_phase = Phase.end;
+                m_combatPanel.gameObject.SetActive(false);
             }
 
+        }
+
+        public class CombatInstance
+        {
+            private List<GUI.EnemyHolder> m_enemies;
+            private int m_enemyTotal;
+            private int m_playerTotal;
+
+            // Constructor for new empty instance
+            public CombatInstance()
+            {
+                m_enemies = new List<GUI.EnemyHolder>();
+                m_enemyTotal = 0;
+                m_playerTotal = 0;
+            }
+
+            public void AddOrRemoveEnemy(GUI.EnemyHolder enemyHolder)
+            {
+                if (m_enemies.Contains(enemyHolder))
+                {
+                    m_enemies.Remove(enemyHolder); // Remove the enemy from the combat instance
+                }
+                else
+                {
+                    m_enemies.Add(enemyHolder); // Add the enemy to the combat instance
+                }
+
+                m_enemyTotal = Combat.Instance.SumEnemies(m_enemies); // Calculate the total strength of enemies in the instance
+            }
+
+            // Return true if this instance has no selected enemies
+            public bool IsEmpty()
+            {
+                return m_enemies.Count == 0;
+            }
+
+            // Add to player's attack or block total in this instance
+            public int AddToPlayerTotal(int value)
+            {
+                m_playerTotal += value;
+
+                return m_playerTotal;
+            }
+
+            public void Disable()
+            {
+                for(int i = 0; i < m_enemies.Count; i++)
+                {
+                    m_enemies.GetLast().Disable();
+                }
+
+                m_playerTotal = 0;
+            }
+
+            public bool Successful()
+            {
+                return m_playerTotal >= m_enemyTotal;
+            }
         }
     }
 }

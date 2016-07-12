@@ -14,6 +14,7 @@ namespace BoardGame
             private float maxDistance = 4f;
 
             // Tracking variables
+            private int m_playerPosition;
             private int m_totalCost;
             private int m_totalPaid;
             private List<HexGrid.Manager> m_hexPath = new List<HexGrid.Manager>(); // List for reference to hextile component
@@ -29,14 +30,22 @@ namespace BoardGame
                 // If we're removing a hex we need to work backwards down the list and remove any later movement nodes
                 else
                 {
-                    int i = m_hexPath.IndexOf(hex);
-
-                    while (m_hexPath.Count > i)
+                    if (Game.Turn.Instance.InMovementPhase())
                     {
-                        DeleteLastNode();
-                    }
+                        int i = m_hexPath.IndexOf(hex);
 
-                    return false; // Confirm that the tile is deselected
+                        while (m_hexPath.Count > i)
+                        {
+                            DeleteLastNode();
+                        }
+
+                        if (i == 0)
+                            Game.Turn.Instance.MoveBackward();
+
+                        return false; // Confirm that the tile is deselected
+                    }
+                    else
+                        return true; // We weren't in the movement phase, this tile could not be deselected
                 }
             }
 
@@ -53,18 +62,22 @@ namespace BoardGame
                 Vector3 direction = posB - posA;
                 if (direction.sqrMagnitude < maxDistance) // We can usually only move one tile away
                 {
-                    // Add new hex to the end of the list and show the total movement cost above the new arrow
-                    m_hexPath.Add(hex);
-                    m_totalCost += hex.GetTerrain().GetCost();
-                    m_pathCosts.Add(m_totalCost);
+                    if (Game.Turn.Instance.InMovementPhase()) // Check that we are in the movement phase
+                    {    // Add new hex to the end of the list and show the total movement cost above the new arrow
+                        m_hexPath.Add(hex);
+                        m_totalCost += hex.GetTerrain().GetCost();
+                        m_pathCosts.Add(m_totalCost);
 
-                    Board.UIManager.Instance.DrawPath(posA, posB, m_totalCost.ToString());
-                    ColourPath();
+                        Board.UIManager.Instance.DrawPath(posA, posB, m_totalCost.ToString());
+                        ColourPath();
 
-                    return true;
+                        return true;
+                    }
+                    else
+                        return false; // Not in the movement phase!
                 }
                 else
-                    return false;
+                    return false; // Too far away!
             }
 
             void DeleteLastNode()
@@ -109,7 +122,7 @@ namespace BoardGame
             IEnumerator MovePlayer(int n)
             {
                 MovingObject player = Game.Manager.Instance.GetCurrentPlayer().GetComponent<MovingObject>();
-                for (int i = 0; i < n; i++)
+                for (int i = m_playerPosition; i < n; i++)
                 {
                     // Check if there's enemies where we want to move
                     Enemy.Object[] enemies = m_hexPath[i].GetComponentsInChildren<Enemy.Object>();
@@ -117,10 +130,13 @@ namespace BoardGame
                     if (enemies.Length > 0)
                     {
                         // Fight before moving
+                        Game.Turn.Instance.MoveForward(Game.Turn.Phase.combat);
                         yield return StartCoroutine(Combat.Instance.StartCombat(enemies));
                     }
 
                     yield return StartCoroutine(player.SetTargetPos(m_hexPath[i].transform.position, true));
+
+                    m_playerPosition = i;
                 }
 
 

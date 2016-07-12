@@ -5,7 +5,7 @@ namespace BoardGame
 {
     namespace Game
     {
-        public class Turn : MonoBehaviour
+        public class Turn : Singleton<Turn>
         {
             public enum Phase
             {
@@ -19,6 +19,7 @@ namespace BoardGame
 
             [SerializeField]
             private Phase phase;
+            private Phase lastPhase;
 
             public Phase GetPhase()
             {
@@ -27,6 +28,7 @@ namespace BoardGame
 
             public void MoveForward(Phase expectedPhase = Phase.end)
             {
+                lastPhase = phase;
                 switch (phase)
                 {
                     case Phase.start:
@@ -47,6 +49,22 @@ namespace BoardGame
                         break;
 
                 }
+            }
+
+            public void MoveBackward()
+            {
+                phase = lastPhase;
+            }
+
+            // Check if we can add movement tiles and points
+            // i.e. we're in the movement phase or we're in the start phase
+            // and can begin the movement phase
+            public bool InMovementPhase()
+            {
+                if (phase == Phase.start)
+                    MoveForward(Phase.movement);
+
+                return phase == Phase.movement;
             }
 
             public void EndTurn()

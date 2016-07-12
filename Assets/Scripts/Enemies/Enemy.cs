@@ -17,6 +17,8 @@ namespace BoardGame
 
             public string name;
 
+            public Sprite image;
+
             public Attack attack;
 
             public Defense defense;

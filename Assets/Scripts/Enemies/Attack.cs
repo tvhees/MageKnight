@@ -18,7 +18,10 @@ namespace BoardGame
                 poison = false;
                 paralyze = false;
                 summoner = false;
+                images = new List<Sprite>();
             }
+
+            public List<Sprite> images;
 
             public int strength;
             

@@ -26,10 +26,12 @@ namespace BoardGame
                     foreach (XmlNode element in enemyInfo)
                     {
                         XmlNodeList subInfo = element.ChildNodes;
-                        
+
                         // Examples of XML tags to process
                         if (element.Name == "name")
+                        {
                             enemy.name = element.InnerText;
+                        }
 
                         if (element.Name == "attack")
                         {
@@ -47,10 +49,18 @@ namespace BoardGame
                                 ProcessReward(info, enemy.reward);
                         }
                     }
+                    // Get the image for this enemy
+                    LoadSprite(enemy);
+
                     enemyDictionary.Add(enemy.name, enemy);
                 }
 
                 return enemyDictionary;
+            }
+
+            static void LoadSprite(Enemy enemy)
+            {
+                enemy.image = Resources.Load<Sprite>("EnemyImages/" + enemy.name);
             }
 
             static void ProcessAttack(XmlNode node, Attack input)
@@ -82,6 +92,10 @@ namespace BoardGame
                         input.summoner = true;
                         break;
                 }
+
+                Sprite img = Resources.Load<Sprite>("Modifiers/Attack/" + node.Name);
+                if (img != null)
+                    input.images.Add(img);
             }
 
             static void ProcessDefense(XmlNode node, Defense input)
@@ -104,6 +118,10 @@ namespace BoardGame
                         input.fortified = true;
                         break;
                 }
+
+                Sprite img = Resources.Load<Sprite>("Modifiers/Defense/" + node.Name);
+                if(img != null)
+                    input.images.Add(img);
             }
 
             static void ProcessReward(XmlNode node, Reward input)

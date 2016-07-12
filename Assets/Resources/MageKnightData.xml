@@ -11,7 +11,7 @@
       <string name="type"><![CDATA[basic]]></string>
       <string name="colour"><![CDATA[red]]></string>
       <effect type="effect_1">
-        <string>Attack</string>
+        <string>Rage</string>
         <int><![CDATA[2]]></int>
       </effect>
       <effect type="effect_2">
@@ -25,7 +25,7 @@
       <string name="type"><![CDATA[basic]]></string>
       <string name="colour"><![CDATA[blue]]></string>
       <effect type="effect_1">
-        <string>Attack</string>
+        <string>Rage</string>
         <int><![CDATA[2]]></int>
       </effect>
       <effect type="effect_2">
@@ -691,7 +691,7 @@
       </reward>
     </tower>
     <tower>
-      <name>Ice Mages</name>
+      <name>IceMages</name>
       <attack>
         <strength>5</strength>
         <cold />
@@ -706,7 +706,7 @@
       </reward>
     </tower>
     <tower>
-      <name>Fire Mages</name>
+      <name>FireMages</name>
       <attack>
         <strength>6</strength>
         <fire />
@@ -736,7 +736,7 @@
       </reward>
     </tower>
     <tower>
-      <name>Ice Golems</name>
+      <name>IceGolems</name>
       <attack>
         <strength>2</strength>
         <cold />
@@ -753,7 +753,7 @@
       </reward>
     </tower>
     <tower>
-      <name>Fire Golems</name>
+      <name>FireGolems</name>
       <attack>
         <strength>3</strength>
         <fire />
@@ -812,7 +812,7 @@
       </reward>
     </dungeon>
     <dungeon>
-      <name>Crypt Worm</name>
+      <name>CryptWorm</name>
       <attack>
         <strength>6</strength>
       </attack>
@@ -840,7 +840,7 @@
       </reward>
     </dungeon>
     <draconum>
-      <name>Swamp Dragon</name>
+      <name>SwampDragon</name>
       <attack>
         <strength>5</strength>
         <swiftness />
@@ -855,7 +855,7 @@
       </reward>
     </draconum>
     <draconum>
-      <name>Fire Dragon</name>
+      <name>FireDragon</name>
       <attack>
         <strength>9</strength>
         <fire />
@@ -871,7 +871,7 @@
       </reward>
     </draconum>
     <draconum>
-      <name>Ice Dragon</name>
+      <name>IceDragon</name>
       <attack>
         <strength>6</strength>
         <cold />
@@ -888,7 +888,7 @@
       </reward>
     </draconum>
     <draconum>
-      <name>High Dragon</name>
+      <name>HighDragon</name>
       <attack>
         <strength>6</strength>
         <cold />
@@ -939,7 +939,7 @@
       </reward>
     </city>
     <city>
-      <name>Altem Guardsmen</name>
+      <name>AltemGuardsmen</name>
       <attack>
         <strength>6</strength>
       </attack>
@@ -956,7 +956,7 @@
       </reward>
     </city>
     <city>
-      <name>Altem Mages</name>
+      <name>AltemMages</name>
       <attack>
         <strength>4</strength>
         <cold />

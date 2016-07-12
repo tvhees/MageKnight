@@ -80,6 +80,11 @@ namespace BoardGame
                 return m_attributes.reward;
             }
 
+            public Sprite GetImage()
+            {
+                return m_attributes.image;
+            }
+
             // HACKY CODE because tokens are offset
             public IEnumerator Flip()
             {
@@ -89,8 +94,6 @@ namespace BoardGame
                     finalAngle = 0f;
                 else
                     finalAngle = 180f;
-
-                Debug.Log(finalAngle);
 
                 StartCoroutine(movingObject.SetTargetPos(movingObject.GetHomePos() + flipHeight * Vector3.up));
                 yield return StartCoroutine(movingObject.SetTargetRot(Quaternion.Euler(90f, 0f, 0f), true));

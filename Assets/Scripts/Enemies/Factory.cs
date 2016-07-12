@@ -31,20 +31,17 @@ namespace BoardGame
                 Enemy output;
                 m_enemyDictionary.TryGetValue(name, out output);
 
-                Canvas enemyCanvas = CreateCanvas(name);
+                Canvas enemyCanvas = CreateCanvas(output);
 
                 enemy.SetAttributes(output, enemyCanvas);
             }
 
-            private Canvas CreateCanvas(string name)
+            private Canvas CreateCanvas(Enemy enemy)
             {
                 Canvas enemyCanvas = (Instantiate(enemyCanvasPrefab) as GameObject)
                                     .GetComponent<Canvas>();
 
-                Sprite enemyImage = Resources.Load<Sprite>("EnemyImages/" + name);
-
-                if (enemyImage != null)
-                    enemyCanvas.GetComponentInChildren<Image>().sprite = enemyImage;
+                enemyCanvas.GetComponentInChildren<Image>().sprite = enemy.image;
 
                 enemyCanvas.enabled = false;
 
@@ -128,7 +125,7 @@ namespace BoardGame
                         numbers = new int[5] { 2, 2, 2, 2, 2 };
                         break;
                     case Factory.EnemyType.draconum:
-                        names = new string[4] { "Swamp Dragon", "FireDragon", "IceDragon", "HighDragon" };
+                        names = new string[4] { "SwampDragon", "FireDragon", "IceDragon", "HighDragon" };
                         numbers = new int[4] { 2, 2, 2, 2 };
                         break;
                     case Factory.EnemyType.city:

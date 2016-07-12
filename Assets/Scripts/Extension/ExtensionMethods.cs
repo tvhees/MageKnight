@@ -141,5 +141,16 @@ namespace BoardGame
 
             return current;
         }
+
+        /// <summary>
+        /// Resets a RectTransform component to zero offset and uniform scale of 1
+        /// </summary>
+        /// <param name="param"></param>
+        public static void Reset(this RectTransform param)
+        {
+            param.offsetMax = Vector2.zero;
+            param.offsetMin = Vector2.zero;
+            param.localScale = Vector3.one;
+        }
     }
 }
