@@ -17,8 +17,9 @@ namespace BoardGame
             public GameObject m_cameraPrefab;
             public GameObject m_playerCanvasPrefab;
 
-            private int m_playerID;
-            private Camera m_playerCamera;
+            public int m_playerID { get; private set; }
+            public Stats stats { get; private set; }
+            public Camera m_playerCamera { get; private set; }
 
             private GameObject m_playedArea;
             private GameObject m_discard;
@@ -35,6 +36,8 @@ namespace BoardGame
             public void Init(int id)
             {
                 m_playerID = id;
+
+                stats = new Stats(5, 2);
 
                 CreatePlayerBoard();
 
@@ -79,21 +82,16 @@ namespace BoardGame
 
                 for (int i = 0; i < m_cardsInDeck.Count; i++)
                 {
-                    m_cardsInDeck[i].Init(m_playerID, Location.deck, Vector3.zero, m_playerCamera);
+                    m_cardsInDeck[i].Init(m_playerID, Location.deck, m_playerCamera);
                 }
-            }
-
-            public int GetID()
-            {
-                return m_playerID;
             }
 
             //**********
             //CARD TRACKING
             //**********
             private List<Cards.Object> m_cardsInDeck = new List<Cards.Object>();
-            private List<Cards.Object> m_cardsInHand = new List<Cards.Object>();
-            private List<Cards.Object> m_cardsInPlay = new List<Cards.Object>();
+            public List<Cards.Object> m_cardsInHand = new List<Cards.Object>();
+            public List<Cards.Object> m_cardsInPlay = new List<Cards.Object>();
             private List<Cards.Object> m_cardsInDiscard = new List<Cards.Object>();
 
             public enum Location
@@ -109,8 +107,9 @@ namespace BoardGame
 
             public void MoveToPlayArea(Cards.Object card)
             {
-                card.SetLocation(Location.play);
-                StartCoroutine(card.GetMover().SetHomePos(m_playedArea.transform.position));
+                ChangeCardLocation(card, Location.play);
+                ShiftCardsInHand(card.m_movingObject.m_homePos, m_cardSlotWidth / 2f);
+                StartCoroutine(card.m_movingObject.SetHomePos(m_playedArea.transform.position));
             }
 
             void RefillHand()
@@ -123,25 +122,30 @@ namespace BoardGame
 
             public void MoveToHand(Cards.Object card)
             {
-                for (int i = 0; i < m_cardsInHand.Count; i++)
-                {
-                    ShiftCardHome(m_cardsInHand[i], m_hand.transform.position + 100f * Vector3.left, m_cardSlotWidth / 2f);
-                }
+                // Shift all cards currently in hand half a space to the left
+                ShiftCardsInHand(m_hand.transform.position + 100f * Vector3.left, m_cardSlotWidth / 2f);
 
-                card.transform.SetParent(m_hand.transform);
-                StartCoroutine(card.GetMover().SetHomePos(m_hand.transform.position + Vector3.right * m_cardsInHand.Count * m_cardSlotWidth / 2f));
-                ChangeCardLocation(card, Location.hand);
-                m_cardsInHand.Add(card);
+                // The new card will go half a card width to the right of the middle of the hand for ever card already in the hand
+                Vector3 newCardPos = m_hand.transform.position + Vector3.right * m_cardsInHand.Count * m_cardSlotWidth / 2f;
+
+                MovingObject cardMO = card.m_movingObject;
+                StartCoroutine(cardMO.SetHomePos(newCardPos));
+
+                ChangeCardLocation(card, Location.hand); 
             }
 
-            void ShiftCardHome(Cards.Object card, Vector3 target, float delta)
+            void ShiftCardsInHand(Vector3 target, float delta)
             {
-                StartCoroutine(card.GetMover().SetHomePos(Vector3.MoveTowards(card.GetMover().GetHomePos(), target, delta)));
+                for (int i = 0; i < m_cardsInHand.Count; i++)
+                {
+                    MovingObject cardMO = m_cardsInHand[i].m_movingObject; // Use the card's moving object script to set it's home position delta units in the target's direction
+                    StartCoroutine(cardMO.MoveHomeTowards(target, delta));
+                }
             }
 
             void ChangeCardLocation(Cards.Object card, Location newLocation)
             {
-                switch (card.GetLocation())
+                switch (card.m_location)
                 {
                     case Location.deck:
                         m_cardsInDeck.Remove(card);
@@ -157,7 +161,44 @@ namespace BoardGame
                         break;
                 }
 
+                switch(newLocation)
+                {
+                    case Location.deck:
+                        m_cardsInDeck.Add(card);
+                        card.transform.SetParent(m_deck.transform);
+                        break;
+                    case Location.hand:
+                        m_cardsInHand.Add(card);
+                        card.transform.SetParent(m_hand.transform);
+                        break;
+                    case Location.play:
+                        m_cardsInPlay.Add(card);
+                        card.transform.SetParent(m_playedArea.transform);
+                        break;
+                    case Location.discard:
+                        m_cardsInDiscard.Add(card);
+                        card.transform.SetParent(m_discard.transform);
+                        break;
+                }
+
                 card.SetLocation(newLocation);
+            }
+
+            //**********
+            // COMBAT
+            //**********
+
+            public void TakeDamage(int damage)
+            {
+                int remaining = damage;
+
+                while (remaining > 0)
+                {
+                    Cards.Object wound = Cards.SharedDecks.Instance.GetWound();
+                    MoveToHand(wound);
+                    remaining -= stats.m_armour;
+                }
+
             }
 
             //**********
@@ -172,6 +213,18 @@ namespace BoardGame
             public void AddReputation(int value)
             {
                 m_playerReputation.AddReputation(value);
+            }
+        }
+
+        public struct Stats
+        {
+            public int m_handSize { get; private set; }
+            public int m_armour { get; private set; }
+
+            public Stats(int handSize, int armour)
+            {
+                m_handSize = handSize;
+                m_armour = armour;
             }
         }
     }

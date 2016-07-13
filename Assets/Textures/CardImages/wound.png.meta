@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 75163665cbac7654bb3622a3c63f62a2
-timeCreated: 1467449193
+guid: 57c48c1037d9ee54e8013f9aa53c0ad0
+timeCreated: 1468397273
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName: {}
@@ -44,14 +44,14 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 400
   alphaIsTransparency: 1
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
     sprites: []
     outline: []
-  spritePackingTag: 
+  spritePackingTag: CardImages
   userData: 
   assetBundleName: 
   assetBundleVariant: 

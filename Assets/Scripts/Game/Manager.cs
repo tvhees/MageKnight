@@ -103,7 +103,7 @@ namespace BoardGame
                     Players.Player newPlayer = Instantiate(m_playerPrefab).GetComponent<Players.Player>();
                     newPlayer.Init(i);
                     AddPlayer(newPlayer);
-                }
+                }                
             }
 
             /// <summary>

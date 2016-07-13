@@ -32,12 +32,14 @@ namespace BoardGame
 
             // Lists to track all enemies in combat and those that have been selected
             private List<Enemy.Object> m_listOfEnemies;
-            public CombatInstance m_currentInstance;
+            public EnemyBand m_currentInstance;
+            private Players.Player m_currentPlayer;
 
             public IEnumerator StartCombat(Enemy.Object[] newEnemies)
             {
+                m_currentPlayer = Game.Manager.Instance.GetCurrentPlayer();
                 m_listOfEnemies = new List<Enemy.Object>(newEnemies); // Store the list of enemies being fought
-                m_currentInstance = new CombatInstance(); // Create a new combat instance
+                m_currentInstance = new EnemyBand(); // Create a new combat instance
                 m_combatPanel.StartCombat(m_listOfEnemies); // Open the combat UI
 
                 m_fame = 0;
@@ -48,23 +50,6 @@ namespace BoardGame
                 {
                     yield return null;
                 }
-            }
-
-            // Add together the strength of all enemies involved in a combat instance
-            // During block phase this should only ever be one enemy.
-            public int SumEnemies(List<GUI.EnemyHolder> input)
-            {
-                int total = 0;
-
-                foreach (GUI.EnemyHolder obj in input)
-                {
-                    if (m_phase == Phase.block)
-                        total += obj.m_enemy.GetAttack().strength;
-                    else
-                        total += obj.m_enemy.GetDefense().strength;
-                }
-
-                return total;
             }
 
             IEnumerator PlayerAttack(Phase thisPhase)
@@ -116,7 +101,7 @@ namespace BoardGame
                 else
                 {
                     if (m_phase == Phase.block)
-                        AddWounds(); // Unblocked attacks cause wounds
+                        m_currentPlayer.TakeDamage(m_currentInstance.m_enemyTotal); // Unblocked attacks cause wounds
                     else
                         Debug.Log("enemy not defeated");
                 }
@@ -124,11 +109,6 @@ namespace BoardGame
                 m_currentInstance.Disable(); // Disable all enemies in the current instance
 
                 m_combatPanel.m_enemyArea.SelectNext(); // Select the next enemy in line
-            }
-
-            void AddWounds()
-            {
-                Debug.Log("Wounds suffered!");
             }
 
             private int m_fame;
@@ -170,20 +150,24 @@ namespace BoardGame
             {
                 m_phase = Phase.end;
                 m_combatPanel.gameObject.SetActive(false);
-                Game.Manager.Instance.GetCurrentPlayer().AddFame(m_fame);
-                Game.Manager.Instance.GetCurrentPlayer().AddReputation(m_reputation);
+                m_currentPlayer.AddFame(m_fame);
+                m_currentPlayer.AddReputation(m_reputation);
             }
 
         }
 
-        public class CombatInstance
+        public class EnemyBand
         {
+            public Enemy.Attack m_attack { get; private set; }
+            public Enemy.Defense m_defense { get; private set; }
+            public Enemy.Reward m_reward { get; private set; }
+            public int m_enemyTotal { get; private set; }
+
             private List<GUI.EnemyHolder> m_enemies;
-            private int m_enemyTotal;
             private int m_playerTotal;
 
             // Constructor for new empty instance
-            public CombatInstance()
+            public EnemyBand()
             {
                 m_enemies = new List<GUI.EnemyHolder>();
                 m_enemyTotal = 0;
@@ -201,7 +185,25 @@ namespace BoardGame
                     m_enemies.Add(enemyHolder); // Add the enemy to the combat instance
                 }
 
-                m_enemyTotal = Combat.Instance.SumEnemies(m_enemies); // Calculate the total strength of enemies in the instance
+                SetProperties();
+            }
+
+            void SetProperties()
+            {
+                m_attack = m_enemies[0].m_enemy.GetAttack(); // Only ever one attack at a time
+
+                m_defense = new Enemy.Defense(); // multiple defenders means we add their strength and properties
+                foreach (GUI.EnemyHolder holder in m_enemies)
+                {
+                    m_defense += holder.m_enemy.GetDefense();
+                }
+
+                m_reward = new Enemy.Reward(); // multiple defenders means we add rewards
+                foreach (GUI.EnemyHolder holder in m_enemies)
+                {
+                    m_reward += holder.m_enemy.GetReward();
+                }
+
             }
 
             // Return true if this instance has no selected enemies

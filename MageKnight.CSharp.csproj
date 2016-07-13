@@ -71,6 +71,7 @@
     <Compile Include="Assets\Scripts\Cards\Loader.cs" />
     <Compile Include="Assets\Scripts\Cards\Manager.cs" />
     <Compile Include="Assets\Scripts\Cards\Object.cs" />
+    <Compile Include="Assets\Scripts\Cards\SharedDecks.cs" />
     <Compile Include="Assets\Scripts\Enemies\Attack.cs" />
     <Compile Include="Assets\Scripts\Enemies\Defense.cs" />
     <Compile Include="Assets\Scripts\Enemies\Enemy.cs" />

@@ -28,8 +28,6 @@ namespace BoardGame
             {
                 m_total += value;
                 m_total = Mathf.Clamp(m_total, 0, 14);
-
-                Debug.Log(GetReputationBonus());
             }
 
             void Update()

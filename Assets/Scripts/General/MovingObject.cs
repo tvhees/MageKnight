@@ -12,12 +12,12 @@ namespace BoardGame
         private float m_angularSpeed;
 
         // Vectors for object position 
-        private Vector3 m_homePos;
-        private Vector3 m_targetPos;
+        public Vector3 m_homePos { get; private set; }
+        public Vector3 m_targetPos { get; private set; }
 
         // Quaternions for object rotation
-        private Quaternion m_homeRot;
-        private Quaternion m_targetRot;
+        public Quaternion m_homeRot { get; private set; }
+        public Quaternion m_targetRot { get; private set; }
 
         public float GetSpeed()
         {
@@ -35,20 +35,15 @@ namespace BoardGame
 
             if (wait)
             {
-                yield return StartCoroutine(Game.ObjectMover.Instance.MoveUntilFinished(this));
+                yield return StartCoroutine(Game.ObjectMover.MoveUntilFinished(this));
             }
             else
             {
-                Game.ObjectMover.Instance.MoveThisObject(this);
+                Game.ObjectMover.MoveThisObject(this);
             }
         }
 
-        public Vector3 GetTargetPos()
-        {
-            return m_targetPos;
-        }
-
-        public IEnumerator SetHomePos(bool wait = false)
+        public IEnumerator ReturnHome(bool wait = false)
         {
             if (wait)
                 yield return StartCoroutine(SetTargetPos(m_homePos, true));
@@ -62,9 +57,9 @@ namespace BoardGame
             yield return StartCoroutine(SetTargetPos(m_homePos, wait));
         }
 
-        public Vector3 GetHomePos()
+        public IEnumerator MoveHomeTowards(Vector3 target, float maxDistance, bool wait = false)
         {
-            return m_homePos;
+            yield return SetHomePos(Vector3.MoveTowards(m_homePos, target, maxDistance), wait);
         }
 
         public IEnumerator SetTargetRot(Quaternion newRot, bool wait = false)
@@ -73,17 +68,12 @@ namespace BoardGame
 
             if (wait)
             {
-                yield return StartCoroutine(Game.ObjectMover.Instance.RotateUntilFinished(this));
+                yield return StartCoroutine(Game.ObjectMover.RotateUntilFinished(this));
             }
             else
             {
-                Game.ObjectMover.Instance.RotateThisObject(this);
+                Game.ObjectMover.RotateThisObject(this);
             }
-        }
-
-        public Quaternion GetTargetRot()
-        {
-            return m_targetRot;
         }
 
         public IEnumerator SetHomeRot(bool wait = false)
@@ -98,11 +88,6 @@ namespace BoardGame
         {
             m_homeRot = newHomeRot;
             yield return StartCoroutine(SetTargetRot(m_homeRot, wait));
-        }
-
-        public Quaternion GetHomeRot()
-        {
-            return m_homeRot;
         }
     }
 }

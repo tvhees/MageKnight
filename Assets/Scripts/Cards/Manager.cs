@@ -21,8 +21,9 @@ namespace BoardGame
 
             void CreateDecks()
             {
+                Factory.Instance.CreateDeck(new GameObject("WoundDeck"), Game.Manager.Instance.m_sharedCamera, Factory.DeckType.WoundDeck);
                 // Create a shared deck all players can see
-                // cardFactory.CreateDeck(new GameObject("SharedDeck"), Game.Manager.Instance.m_sharedCamera, Factory.DeckType.SharedDeck);
+                SharedDecks.Instance.Init();
             }
 
             //************
@@ -43,14 +44,14 @@ namespace BoardGame
                 // List effect types as necessary
             }
 
-            public void ProcessEffect(int playerID, Object card, int cardID, EffectType effectType)
+            public void ProcessEffect(int playerID, Object card, EffectType effectType)
             {
                 // Store reference to the card and player
                 m_effectCard = card;
                 m_effectPlayerID = playerID;
 
                 // Get the dictionary entry for this card
-                Dictionary<string, string> cardInfo = Factory.Instance.GetCard(cardID);
+                Dictionary<string, string> cardInfo = Factory.Instance.GetCard(m_effectCard.m_ID);
                 string name;
                 string value;
 
@@ -74,7 +75,7 @@ namespace BoardGame
             {
                 if (tap)
                 {
-                    StartCoroutine(m_effectCard.GetMover().SetTargetRot(Quaternion.Euler(0f, 0f, 90f)));
+                    StartCoroutine(m_effectCard.m_movingObject.SetTargetRot(Quaternion.Euler(0f, 0f, 90f)));
                 }
 
                 // By default, successfully using a card sends it to the play area
