@@ -40,6 +40,9 @@ namespace BoardGame
                 m_currentInstance = new CombatInstance(); // Create a new combat instance
                 m_combatPanel.StartCombat(m_listOfEnemies); // Open the combat UI
 
+                m_fame = 0;
+                m_reputation = 0;
+
                 StartCoroutine(PlayerAttack(Phase.siege)); // Start the first phase
                 while (m_phase != Phase.end) // Don't pass control back to the main game until combat is finished
                 {
@@ -128,9 +131,14 @@ namespace BoardGame
                 Debug.Log("Wounds suffered!");
             }
 
+            private int m_fame;
+            private int m_reputation;
+
             void AddRewards()
             {
-                Debug.Log("enemy defeated");
+                m_fame += m_currentInstance.GetFame();
+                m_reputation += m_currentInstance.GetFame();
+                Debug.Log(m_fame + " fame and " + m_reputation + " reputation earned this combat");
             }
 
             void NextPhase()
@@ -162,6 +170,8 @@ namespace BoardGame
             {
                 m_phase = Phase.end;
                 m_combatPanel.gameObject.SetActive(false);
+                Game.Manager.Instance.GetCurrentPlayer().AddFame(m_fame);
+                Game.Manager.Instance.GetCurrentPlayer().AddReputation(m_reputation);
             }
 
         }
@@ -221,6 +231,24 @@ namespace BoardGame
             public bool Successful()
             {
                 return m_playerTotal >= m_enemyTotal;
+            }
+
+            public int GetFame()
+            {
+                int fame = 0;
+                foreach (GUI.EnemyHolder enemy in m_enemies)
+                    fame += enemy.m_enemy.GetReward().fame;
+
+                return fame;
+            }
+
+            public int GetReputation()
+            {
+                int rep = 0;
+                foreach (GUI.EnemyHolder enemy in m_enemies)
+                    rep += enemy.m_enemy.GetReward().reputation;
+
+                return rep;
             }
         }
     }

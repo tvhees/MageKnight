@@ -27,6 +27,7 @@ namespace BoardGame
             private GameObject m_playerCanvas;
 
             private Fame m_playerFame;
+            private Reputation m_playerReputation;
 
             private Vector3 m_deckPos = new Vector3(-4f, 0.5f, 0f);
             private Vector3 m_playedAreaPos = new Vector3(-4f, 4f, 0f);
@@ -67,6 +68,8 @@ namespace BoardGame
                 // Initialise Fame and Reputation sliders
                 m_playerFame = m_playerCanvas.GetComponentInChildren<Fame>();
                 m_playerFame.Init();
+                m_playerReputation = m_playerCanvas.GetComponentInChildren<Reputation>();
+                m_playerReputation.Init();
             }
 
             // Create a deck only this player can see and start tracking the cards in it
@@ -166,6 +169,10 @@ namespace BoardGame
                 m_playerFame.AddFame(value);
             }
 
+            public void AddReputation(int value)
+            {
+                m_playerReputation.AddReputation(value);
+            }
         }
     }
 }
