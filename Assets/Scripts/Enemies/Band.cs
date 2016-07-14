@@ -37,20 +37,25 @@ namespace BoardGame
             void SetProperties()
             {
                 if(!IsEmpty())
-                    m_attack = m_enemies[0].m_enemy.GetAttack(); // Only ever one attack at a time
+                    m_attack = m_enemies[0].enemy.GetAttack(); // Only ever one attack at a time
 
                 m_defense = new Defense(); // multiple defenders means we add their strength and properties
                 foreach (GUI.EnemyHolder holder in m_enemies)
                 {
-                    m_defense += holder.m_enemy.GetDefense();
+                    m_defense += holder.enemy.GetDefense();
                 }
 
                 m_reward = Reward.NullReward(); // multiple defenders means we add rewards
                 foreach (GUI.EnemyHolder holder in m_enemies)
                 {
-                    m_reward += holder.m_enemy.GetReward();
+                    m_reward += holder.enemy.GetReward();
                 }
 
+            }
+
+            public List<GUI.EnemyHolder> Enemies()
+            {
+                return m_enemies;
             }
 
             // Return true if this instance has no selected enemies

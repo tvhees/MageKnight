@@ -15,7 +15,7 @@ namespace BoardGame
 
             private EffectButton[] m_effectButtons;
             private int m_playerID;
-            public MovingObject m_movingObject { get; private set; }
+            public MovingObject movingObject { get; private set; }
 
             // Initialisation method for cards owned by players
             public void Init(int playerID, Players.Player.Location startLoc, Camera camera)
@@ -25,11 +25,12 @@ namespace BoardGame
                 m_spriteRenderer = GetComponent<SpriteRenderer>();
                 m_spriteRenderer.sprite = m_faceSprite;
 
-                m_movingObject = GetComponent<MovingObject>();
+                movingObject = GetComponent<MovingObject>();
+                movingObject.SetSpeed(40);
 
                 SetLocation(startLoc);
                 m_Camera = camera;
-                StartCoroutine(m_movingObject.SetHomePos(transform.parent.position + m_movingObject.m_homePos));
+                StartCoroutine(movingObject.SetHomePos(transform.parent.position + movingObject.m_homePos));
 
                 // Initialise effect buttons
                 m_effectButtons = GetComponentsInChildren<EffectButton>();
@@ -43,10 +44,10 @@ namespace BoardGame
                 m_spriteRenderer = GetComponent<SpriteRenderer>();
                 m_spriteRenderer.sprite = m_faceSprite;
 
-                m_movingObject = GetComponent<MovingObject>();
+                movingObject = GetComponent<MovingObject>();
 
                 m_Camera = camera;
-                StartCoroutine(m_movingObject.SetHomePos(transform.parent.position + m_movingObject.m_homePos));
+                StartCoroutine(movingObject.SetHomePos(transform.parent.position + movingObject.m_homePos));
             }
 
             // ****************
@@ -99,7 +100,7 @@ namespace BoardGame
                 {
                     if (!m_focused)
                     {
-                        StartCoroutine(m_movingObject.SetTargetPos(m_movingObject.m_homePos + GetZoomVector()));
+                        StartCoroutine(movingObject.SetTargetPos(movingObject.m_homePos + GetZoomVector()));
                     }
                 }
             }
@@ -110,7 +111,7 @@ namespace BoardGame
                 {
                     if (!m_focused)
                     {
-                        StartCoroutine(m_movingObject.ReturnHome());
+                        StartCoroutine(movingObject.ReturnHome());
                     }
                 }
             }
@@ -146,7 +147,7 @@ namespace BoardGame
             /// <returns></returns>
             private Vector3 GetZoomVector()
             {
-                Vector3 directionToCamera = m_zoomDistance * Vector3.Normalize(m_Camera.transform.position - m_movingObject.m_homePos);
+                Vector3 directionToCamera = m_zoomDistance * Vector3.Normalize(m_Camera.transform.position - movingObject.m_homePos);
                 return directionToCamera;
             }
 
@@ -156,7 +157,7 @@ namespace BoardGame
             void ZoomAndFocus()
             {
                 m_focused = true;
-                StartCoroutine(m_movingObject.SetTargetPos(m_Camera.transform.position + m_clickDepth)); // Move to center of screen
+                StartCoroutine(movingObject.SetTargetPos(m_Camera.transform.position + m_clickDepth)); // Move to center of screen
 
                 for (int i = 0; i < m_effectButtons.Length; i++)
                     m_effectButtons[i].Enable();
@@ -168,7 +169,7 @@ namespace BoardGame
             void SendToHome()
             {
                 m_focused = false;
-                StartCoroutine(m_movingObject.ReturnHome()); // Move back to wherever it came from
+                StartCoroutine(movingObject.ReturnHome()); // Move back to wherever it came from
 
                 for (int i = 0; i < m_effectButtons.Length; i++)
                     m_effectButtons[i].Disable();

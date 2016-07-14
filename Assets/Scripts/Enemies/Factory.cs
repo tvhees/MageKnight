@@ -26,14 +26,14 @@ namespace BoardGame
                 m_enemyDictionary = Loader.LoadEnemies(m_enemyXML, type);
             }
 
-            private void GiveEnemyIdentity(Object enemy, string name) // Set a card to a specific number and matching sprites 
+            private void GiveEnemyIdentity(Object enemy, string name, EnemyType type) // Set a card to a specific number and matching sprites 
             {
                 Enemy output;
                 m_enemyDictionary.TryGetValue(name, out output);
 
                 Canvas enemyCanvas = CreateCanvas(output);
 
-                enemy.SetAttributes(output, enemyCanvas);
+                enemy.SetAttributes(output, enemyCanvas, type);
             }
 
             private Canvas CreateCanvas(Enemy enemy)
@@ -78,7 +78,7 @@ namespace BoardGame
                     for (int j = 0; j < enemyNumbers[i]; j++)
                     {
                         Object newEnemy = stackHolder.transform.InstantiateChild(m_enemyPrefabs[(int)type]).GetComponent<Object>();
-                        GiveEnemyIdentity(newEnemy, enemyNames[i]);
+                        GiveEnemyIdentity(newEnemy, enemyNames[i], type);
                         stackList.Add(newEnemy);
                     }
                 }
@@ -93,11 +93,11 @@ namespace BoardGame
         [System.Serializable]
         public struct EnemyStack
         {
-            // Cardlists are stored as an array of integers representing card IDs
+            // Enemy stacks are stored as an array of strings + integers representing enemy names and numbers
             public string[] names;
             public int[] numbers;
 
-            // Constructor for making a new decklist
+            // Constructor for making a new stack of enemies
             public EnemyStack(Factory.EnemyType type)
             {
                 names = new string[0];

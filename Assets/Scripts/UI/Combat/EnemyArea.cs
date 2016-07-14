@@ -40,6 +40,20 @@ namespace BoardGame
                 }
             }
 
+            public void DefeatEnemy(List<EnemyHolder> defeatedEnemies)
+            {
+                for (int i = 0; i < defeatedEnemies.Count; i++)
+                {
+                    enemyHolders.Remove(defeatedEnemies[i]);
+                    Enemy.Manager.Instance.DiscardEnemy(defeatedEnemies[i].enemy);
+                }
+            }
+
+            public bool IsEmpty()
+            {
+                return enemyHolders.Count == 0;
+            }
+
             public void ResetAll()
             {
                 foreach (EnemyHolder holder in enemyHolders)

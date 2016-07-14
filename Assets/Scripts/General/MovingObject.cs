@@ -6,10 +6,8 @@ namespace BoardGame
     public class MovingObject : MonoBehaviour
     {
         // Variables controlling speed of changes for this object
-        [SerializeField]
-        private float m_speed;
-        [SerializeField]
-        private float m_angularSpeed;
+        public float speed { get; private set; }
+        public float angularSpeed { get; private set; }
 
         // Vectors for object position 
         public Vector3 m_homePos { get; private set; }
@@ -19,14 +17,24 @@ namespace BoardGame
         public Quaternion m_homeRot { get; private set; }
         public Quaternion m_targetRot { get; private set; }
 
+        public void SetSpeed(float speed)
+        {
+            this.speed = speed;
+        }
+
+        public void SetAngularSpeed(float angularSpeed)
+        {
+            this.angularSpeed = angularSpeed;
+        }
+
         public float GetSpeed()
         {
-            return m_speed;
+            return speed;
         }
 
         public float GetAngularSpeed()
         {
-            return m_angularSpeed;
+            return angularSpeed;
         }
 
         public IEnumerator SetTargetPos(Vector3 newPos, bool wait = false)

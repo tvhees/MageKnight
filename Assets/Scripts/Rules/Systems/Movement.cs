@@ -130,8 +130,9 @@ namespace BoardGame
                     if (enemies.Length > 0)
                     {
                         // Fight before moving
-                        Game.Turn.Instance.MoveForward(Game.Turn.Phase.combat);
-                        yield return StartCoroutine(Combat.Instance.StartCombat(enemies));
+                        foreach (Enemy.Object enemy in enemies)
+                            Combat.Instance.AddOrRemoveEnemy(enemy);
+                        yield return StartCoroutine(Combat.Instance.StartCombat());
                     }
 
                     yield return StartCoroutine(player.SetTargetPos(m_hexPath[i].transform.position, true));

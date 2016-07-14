@@ -12,7 +12,7 @@ namespace BoardGame
             public Text m_strength;
             public Image[] m_modifiers;
             public Image m_token;
-            public Enemy.Object m_enemy { get; private set; }
+            public Enemy.Object enemy { get; private set; }
 
             private RectTransform m_rTrans;
             private Toggle m_toggle;
@@ -21,7 +21,7 @@ namespace BoardGame
             {
                 m_toggle = GetComponentInChildren<Toggle>();
 
-                m_enemy = enemy;
+                this.enemy = enemy;
                 ShowDefense();
                 m_token.sprite = enemy.GetImage();
 
@@ -60,7 +60,7 @@ namespace BoardGame
 
             public void ShowDefense()
             {
-                Enemy.Defense def = m_enemy.GetDefense();
+                Enemy.Defense def = enemy.GetDefense();
                 m_strength.text = def.strength.ToString();
 
                 for (int i = 0; i < m_modifiers.Length; i++)
@@ -78,7 +78,7 @@ namespace BoardGame
 
             public void ShowAttack()
             {
-                Enemy.Attack atk = m_enemy.GetAttack();
+                Enemy.Attack atk = enemy.GetAttack();
                 m_strength.text = atk.strength.ToString();
 
                 for (int i = 0; i < m_modifiers.Length; i++)

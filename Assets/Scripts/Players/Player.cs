@@ -39,6 +39,8 @@ namespace BoardGame
 
                 stats = new Stats(5, 2);
 
+                GetComponent<MovingObject>().SetSpeed(25);
+
                 CreatePlayerBoard();
 
                 CreatePlayerDeck();
@@ -108,8 +110,8 @@ namespace BoardGame
             public void MoveToPlayArea(Cards.Object card)
             {
                 ChangeCardLocation(card, Location.play);
-                ShiftCardsInHand(card.m_movingObject.m_homePos, m_cardSlotWidth / 2f);
-                StartCoroutine(card.m_movingObject.SetHomePos(m_playedArea.transform.position));
+                ShiftCardsInHand(card.movingObject.m_homePos, m_cardSlotWidth / 2f);
+                StartCoroutine(card.movingObject.SetHomePos(m_playedArea.transform.position));
             }
 
             void RefillHand()
@@ -128,7 +130,7 @@ namespace BoardGame
                 // The new card will go half a card width to the right of the middle of the hand for ever card already in the hand
                 Vector3 newCardPos = m_hand.transform.position + Vector3.right * m_cardsInHand.Count * m_cardSlotWidth / 2f;
 
-                MovingObject cardMO = card.m_movingObject;
+                MovingObject cardMO = card.movingObject;
                 StartCoroutine(cardMO.SetHomePos(newCardPos));
 
                 ChangeCardLocation(card, Location.hand);
@@ -138,7 +140,7 @@ namespace BoardGame
             {
                 for (int i = 0; i < m_cardsInHand.Count; i++)
                 {
-                    MovingObject cardMO = m_cardsInHand[i].m_movingObject; // Use the card's moving object script to set it's home position delta units in the target's direction
+                    MovingObject cardMO = m_cardsInHand[i].movingObject; // Use the card's moving object script to set it's home position delta units in the target's direction
                     StartCoroutine(cardMO.MoveHomeTowards(target, delta));
                 }
             }

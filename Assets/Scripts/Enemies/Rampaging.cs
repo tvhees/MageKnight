@@ -8,16 +8,22 @@ namespace BoardGame
     {
 		public class Rampaging : MonoBehaviour 
 		{
-            // Rampaging enemies will be fought immediately when clicked on instead of moving on to the hex first
-            void OnMouseUpAsButton()
+            public float AttackDistance = 4f;
+            private Object thisEnemy;
+            void Awake()
             {
-                Provoke();
+                thisEnemy = GetComponent<Object>();
             }
-
             // Rampaging enemies will halt movement and fight when passed on two adjacent hexes
             public void Provoke()
             {
-                // Send this enemy to combat
+                float squareDistance = (transform.position - Game.Manager.Instance.GetCurrentPlayer().transform.position).sqrMagnitude;
+
+                if (squareDistance < AttackDistance)
+                {
+                    Rules.Combat.Instance.AddOrRemoveEnemy(thisEnemy);
+                    StartCoroutine(Rules.Combat.Instance.StartCombat());// Send this enemy to combat
+                }
             }
 
         }

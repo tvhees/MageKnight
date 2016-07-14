@@ -10,8 +10,10 @@ namespace BoardGame
 		{
             public Canvas enemyInformation;
             private Enemy m_attributes;
-            private MovingObject movingObject;
+            public Factory.EnemyType type { get; private set; }
+            public MovingObject movingObject { get; private set; }
 
+            private float normalSpeed = 40f;
             private float flipHeight;
             private bool showing;
 
@@ -26,14 +28,10 @@ namespace BoardGame
                 enemyInformation.enabled = false;
             }
 
-            public void Awake()
-            {
-
-            }
-
-            public void SetAttributes(Enemy input, Canvas enemyCanvas)
+            public void SetAttributes(Enemy input, Canvas enemyCanvas, Factory.EnemyType type)
             {
                 m_attributes = input;
+                this.type = type;
 
                 flipHeight = 10f;
                 enemyInformation = enemyCanvas;
@@ -42,6 +40,8 @@ namespace BoardGame
                 enemyCanvas.transform.localRotation = Quaternion.Euler(300f, 150f, 180f);
 
                 movingObject = GetComponent<MovingObject>();
+                movingObject.SetSpeed(normalSpeed);
+                movingObject.SetAngularSpeed(400f);
                 movingObject.SetHomeRot(Quaternion.identity);
                 showing = false;
             }
@@ -84,13 +84,17 @@ namespace BoardGame
                 else
                     finalAngle = 180f;
 
+                movingObject.SetSpeed(2f);
+
                 StartCoroutine(movingObject.SetTargetPos(movingObject.m_homePos + flipHeight * Vector3.up));
                 yield return StartCoroutine(movingObject.SetTargetRot(Quaternion.Euler(90f, 0f, 0f), true));
                 StartCoroutine(movingObject.SetTargetRot(Quaternion.Euler(finalAngle, 0f, 0f)));
                 yield return new WaitForSeconds(0.1f);
-                StartCoroutine(movingObject.ReturnHome());
+                yield return StartCoroutine(movingObject.ReturnHome(true));
 
                 showing = !showing;
+
+                movingObject.SetSpeed(normalSpeed);
             }
         }
 	}

@@ -75,7 +75,7 @@ namespace BoardGame
             {
                 if (tap)
                 {
-                    StartCoroutine(m_effectCard.m_movingObject.SetTargetRot(Quaternion.Euler(0f, 0f, 90f)));
+                    StartCoroutine(m_effectCard.movingObject.SetTargetRot(Quaternion.Euler(0f, 0f, 90f)));
                 }
 
                 // By default, successfully using a card sends it to the play area
