@@ -73,6 +73,7 @@
     <Compile Include="Assets\Scripts\Cards\Object.cs" />
     <Compile Include="Assets\Scripts\Cards\SharedDecks.cs" />
     <Compile Include="Assets\Scripts\Enemies\Attack.cs" />
+    <Compile Include="Assets\Scripts\Enemies\Band.cs" />
     <Compile Include="Assets\Scripts\Enemies\Defense.cs" />
     <Compile Include="Assets\Scripts\Enemies\Enemy.cs" />
     <Compile Include="Assets\Scripts\Enemies\Factory.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="Assets\Scripts\Players\Fame.cs" />
     <Compile Include="Assets\Scripts\Players\Player.cs" />
     <Compile Include="Assets\Scripts\Players\Reputation.cs" />
+    <Compile Include="Assets\Scripts\Players\Strength.cs" />
     <Compile Include="Assets\Scripts\Rules\Features\City.cs" />
     <Compile Include="Assets\Scripts\Rules\Features\Dungeon.cs" />
     <Compile Include="Assets\Scripts\Rules\Features\Garrison.cs" />

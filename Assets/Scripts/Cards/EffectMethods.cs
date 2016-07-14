@@ -27,7 +27,7 @@ namespace BoardGame
                         StartCoroutine(Movement(effectValue));
                         break;
                     case Game.Turn.Phase.combat:
-                        if(Rules.Combat.Instance.TestPhase(Rules.Combat.Phase.block))
+                        if(Rules.Combat.Instance.m_phase == Rules.Combat.Phase.block)
                             StartCoroutine(Block(effectValue));
                         else
                             StartCoroutine(Attack(effectValue));
@@ -62,7 +62,7 @@ namespace BoardGame
             // HACKY CODE - could these be condensed? Do I need to pass a special attack class?
             IEnumerator Attack(string effectValue)
             {
-                if (Rules.Combat.Instance.TestPhase(Rules.Combat.Phase.attack))
+                if (Rules.Combat.Instance.m_phase == Rules.Combat.Phase.attack)
                 {
                     StartCoroutine(Siege(effectValue));
                 }
@@ -74,7 +74,7 @@ namespace BoardGame
 
             IEnumerator Ranged(string effectValue)
             {
-                if (Rules.Combat.Instance.TestPhase(Rules.Combat.Phase.attack) || Rules.Combat.Instance.TestPhase(Rules.Combat.Phase.ranged))
+                if (Rules.Combat.Instance.m_phase == Rules.Combat.Phase.attack || Rules.Combat.Instance.m_phase == Rules.Combat.Phase.ranged)
                 {
                     StartCoroutine(Siege(effectValue));
                 }
@@ -104,7 +104,7 @@ namespace BoardGame
                 int value = 0;
                 if (int.TryParse(effectValue, out value))
                 {
-                    if (Rules.Combat.Instance.TestPhase(Rules.Combat.Phase.block))
+                    if (Rules.Combat.Instance.m_phase == Rules.Combat.Phase.block)
                     {
                         Rules.Combat.Instance.AddAttackOrBlock(value);
                         Manager.Instance.UsedEffect();

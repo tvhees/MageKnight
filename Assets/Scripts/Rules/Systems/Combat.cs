@@ -20,30 +20,28 @@ namespace BoardGame
                 end
             }
 
-            private Phase m_phase;
-
-            public bool TestPhase(Phase testPhase)
-            {
-                if (m_phase == testPhase)
-                    return true;
-                else
-                    return false;
-            }
+            public Phase m_phase { get; private set; }
 
             // Lists to track all enemies in combat and those that have been selected
             private List<Enemy.Object> m_listOfEnemies;
-            public EnemyBand m_currentInstance;
-            private Players.Player m_currentPlayer;
+            public Enemy.Band m_band { get; private set; }
+            private Players.Strength m_strength;
+            private Players.Player m_player;
+            private Enemy.Reward m_reward;
+
+            private int woundsThisCombat; // Used to keep track of wounds added to hand THIS combat - for "knocked out" rule
 
             public IEnumerator StartCombat(Enemy.Object[] newEnemies)
             {
-                m_currentPlayer = Game.Manager.Instance.GetCurrentPlayer();
+                m_player = Game.Manager.Instance.GetCurrentPlayer();
                 m_listOfEnemies = new List<Enemy.Object>(newEnemies); // Store the list of enemies being fought
-                m_currentInstance = new EnemyBand(); // Create a new combat instance
-                m_combatPanel.StartCombat(m_listOfEnemies); // Open the combat UI
+                m_band = new Enemy.Band(); // Create a new combat instance
+                m_reward = Enemy.Reward.NullReward(); // Create a new container for fame + reputation rewards
+                m_strength = new Players.Strength(); // Create a new container for player values
 
-                m_fame = 0;
-                m_reputation = 0;
+                woundsThisCombat = 0; // Reset counter for wounds taken
+
+                m_combatPanel.StartCombat(m_listOfEnemies); // Open the combat UI
 
                 StartCoroutine(PlayerAttack(Phase.siege)); // Start the first phase
                 while (m_phase != Phase.end) // Don't pass control back to the main game until combat is finished
@@ -62,18 +60,6 @@ namespace BoardGame
                 }
             }
 
-            public bool AddAttackOrBlock(int value) // Add to a player's total played block or attack
-            {
-                if (!m_currentInstance.IsEmpty())
-                {
-                    int pStrength = m_currentInstance.AddToPlayerTotal(value);
-                    m_combatPanel.m_playerArea.SetStrength(pStrength); // update UI to reflect current strength
-                    return true;
-                }
-
-                return false; // returns false if there's no selected enemies
-            }
-
             IEnumerator PlayerBlock()
             {
                 m_phase = Phase.block; // Start the block phase
@@ -84,14 +70,70 @@ namespace BoardGame
                 }
             }
 
+            public bool AddAttackOrBlock(int value, string type = "physical") // Add to a player's total played block or attack
+            {
+                if (!m_band.IsEmpty())
+                {
+                    int strength = m_strength.AddStrength(value, type); // Add the attack to the player's status
+                    m_combatPanel.m_playerArea.SetStrength(strength, type); // update UI to reflect current strength
+                    return true;
+                }
+
+                return false; // returns false if there's no selected enemies
+            }
+
+            public bool SuccessfulCombat(Players.Strength player, Enemy.Band band)
+            {
+                int playerTotal = 0;
+                int enemyTotal = 0;
+                // Block phase rules: Cold attacks require Fire block and vice versa. Ineffective blocks are halved, rounded down
+                if (Rules.Combat.Instance.m_phase == Rules.Combat.Phase.block)
+                {
+                    enemyTotal = band.m_attack.strength;
+
+                    if (band.m_attack.swiftness) // Double the block needed
+                        enemyTotal *= 2;
+
+                    if (band.m_attack.cold)
+                        player.cold = Mathf.FloorToInt(player.cold / 2f);
+
+                    if (band.m_attack.fire)
+                        player.fire = Mathf.FloorToInt(player.fire / 2f);
+
+                    if (band.m_attack.cold || band.m_attack.fire)
+                        player.physical = Mathf.FloorToInt(player.fire / 2f);
+                }
+                // Attack phase rules: Cold attacks halved by Cold resistance, same with Fire.
+                else
+                {
+                    enemyTotal = band.m_defense.strength;
+
+                    if (band.m_defense.physical)
+                        player.physical = Mathf.FloorToInt(player.physical / 2f);
+
+                    if (band.m_defense.cold)
+                        player.cold = Mathf.FloorToInt(player.cold / 2f);
+
+                    if (band.m_defense.fire)
+                        player.cold = Mathf.FloorToInt(player.fire / 2f);
+
+                    if (band.m_defense.cold && band.m_defense.fire)
+                        player.coldfire = Mathf.FloorToInt(player.coldfire / 2f);
+                }
+
+                playerTotal = player.Total(); // Sum the player's modified values
+
+                return playerTotal >= enemyTotal; // True if the player defeated the enemy in this phase
+            }
+
             public void Resolve()
             {
-                if (m_currentInstance.IsEmpty()) // If we've pressed this with no enemies selected, move on to the next phase
+                if (m_band.IsEmpty()) // If we've pressed this with no enemies selected, move on to the next phase
                 {
                     NextPhase();
                     return;
                 }
-                else if (m_currentInstance.Successful()) // Otherwise evaluate whether the player has succeeded and proceed accordingly
+                else if (SuccessfulCombat(m_strength, m_band)) // Otherwise evaluate whether the player has succeeded and proceed accordingly
                 {
                     if (m_phase == Phase.block)
                         Debug.Log("attack blocked");
@@ -101,24 +143,21 @@ namespace BoardGame
                 else
                 {
                     if (m_phase == Phase.block)
-                        m_currentPlayer.TakeDamage(m_currentInstance.m_enemyTotal); // Unblocked attacks cause wounds
+                        woundsThisCombat += m_player.TakeDamage(m_band.m_attack); // Unblocked attacks cause wounds
                     else
                         Debug.Log("enemy not defeated");
                 }
 
-                m_currentInstance.Disable(); // Disable all enemies in the current instance
+                m_band.Disable(); // Disable all enemies in the current instance
 
                 m_combatPanel.m_enemyArea.SelectNext(); // Select the next enemy in line
             }
 
-            private int m_fame;
-            private int m_reputation;
-
             void AddRewards()
             {
-                m_fame += m_currentInstance.GetFame();
-                m_reputation += m_currentInstance.GetFame();
-                Debug.Log(m_fame + " fame and " + m_reputation + " reputation earned this combat");
+                // Store the fame and reputation earned from defeating enemie(s)
+                m_reward += m_band.m_reward;
+                Debug.Log(m_reward.fame + " fame and " + m_reward.reputation + " reputation earned this combat");
             }
 
             void NextPhase()
@@ -148,109 +187,11 @@ namespace BoardGame
 
             void EndCombat()
             {
-                m_phase = Phase.end;
-                m_combatPanel.gameObject.SetActive(false);
-                m_currentPlayer.AddFame(m_fame);
-                m_currentPlayer.AddReputation(m_reputation);
-            }
-
-        }
-
-        public class EnemyBand
-        {
-            public Enemy.Attack m_attack { get; private set; }
-            public Enemy.Defense m_defense { get; private set; }
-            public Enemy.Reward m_reward { get; private set; }
-            public int m_enemyTotal { get; private set; }
-
-            private List<GUI.EnemyHolder> m_enemies;
-            private int m_playerTotal;
-
-            // Constructor for new empty instance
-            public EnemyBand()
-            {
-                m_enemies = new List<GUI.EnemyHolder>();
-                m_enemyTotal = 0;
-                m_playerTotal = 0;
-            }
-
-            public void AddOrRemoveEnemy(GUI.EnemyHolder enemyHolder)
-            {
-                if (m_enemies.Contains(enemyHolder))
-                {
-                    m_enemies.Remove(enemyHolder); // Remove the enemy from the combat instance
-                }
-                else
-                {
-                    m_enemies.Add(enemyHolder); // Add the enemy to the combat instance
-                }
-
-                SetProperties();
-            }
-
-            void SetProperties()
-            {
-                m_attack = m_enemies[0].m_enemy.GetAttack(); // Only ever one attack at a time
-
-                m_defense = new Enemy.Defense(); // multiple defenders means we add their strength and properties
-                foreach (GUI.EnemyHolder holder in m_enemies)
-                {
-                    m_defense += holder.m_enemy.GetDefense();
-                }
-
-                m_reward = new Enemy.Reward(); // multiple defenders means we add rewards
-                foreach (GUI.EnemyHolder holder in m_enemies)
-                {
-                    m_reward += holder.m_enemy.GetReward();
-                }
-
-            }
-
-            // Return true if this instance has no selected enemies
-            public bool IsEmpty()
-            {
-                return m_enemies.Count == 0;
-            }
-
-            // Add to player's attack or block total in this instance
-            public int AddToPlayerTotal(int value)
-            {
-                m_playerTotal += value;
-
-                return m_playerTotal;
-            }
-
-            public void Disable()
-            {
-                for(int i = 0; i < m_enemies.Count; i++)
-                {
-                    m_enemies.GetLast().Disable();
-                }
-
-                m_playerTotal = 0;
-            }
-
-            public bool Successful()
-            {
-                return m_playerTotal >= m_enemyTotal;
-            }
-
-            public int GetFame()
-            {
-                int fame = 0;
-                foreach (GUI.EnemyHolder enemy in m_enemies)
-                    fame += enemy.m_enemy.GetReward().fame;
-
-                return fame;
-            }
-
-            public int GetReputation()
-            {
-                int rep = 0;
-                foreach (GUI.EnemyHolder enemy in m_enemies)
-                    rep += enemy.m_enemy.GetReward().reputation;
-
-                return rep;
+                m_phase = Phase.end; // End all combat loops
+                m_combatPanel.gameObject.SetActive(false); // Turn off the combat UI
+                // Give the player combat rewards
+                m_player.AddFame(m_reward.fame);
+                m_player.AddReputation(m_reward.reputation);
             }
         }
     }

@@ -31,7 +31,7 @@ namespace BoardGame
                 m_enemyArea.ResetAll();
                 m_enemyArea.ShowAttackOrDefense();
                 m_enemyArea.SelectNext();
-                m_playerArea.SetStrength(0);
+                m_playerArea.ResetStrength();
             }
 
             public void EndCombat()

@@ -8,20 +8,34 @@ namespace BoardGame
     {
 		public class Reward 
 		{
-            public Reward()
-            {
-                fame = 0;
-                reputation = 0;
-            }
-
             public int fame;
             public int reputation;
 
-            public static Reward operator +(Reward r1, Reward r2)
+            // Base constructor
+            private Reward(int fame, int reputation)
             {
-                Reward output = new Reward();
-                output.fame = r1.fame + r2.fame;
-                output.reputation = r1.reputation + r2.reputation;
+                this.fame = 0;
+                this.reputation = 0;
+            }
+
+            // Create reward with 0 fame or reputation
+            public static Reward NullReward()
+            {
+                return new Reward(0, 0);
+            }
+
+            // Create reward with specified fame and reputation
+            public static Reward RewardFromInt(int fame, int reputation)
+            {
+                return new Reward(fame, reputation);
+            }
+
+            // Add two Reward classes together
+            public static Reward operator +(Reward inputRewardOne, Reward inputRewardTwo)
+            {
+                Reward output = NullReward();
+                output.fame = inputRewardOne.fame + inputRewardTwo.fame;
+                output.reputation = inputRewardOne.reputation + inputRewardTwo.reputation;
                 return output;
             }
 		}

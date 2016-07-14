@@ -8,23 +8,19 @@ namespace BoardGame
     {
 		public class Enemy 
 		{
+            public string name;
+            public Sprite image;
+
+            public Attack attack;
+            public Defense defense;
+            public Reward reward;
+
             public Enemy()
             {
                 attack = new Attack();
                 defense = new Defense();
-                reward = new Reward();
+                reward = Reward.NullReward();
             }
-
-            public string name;
-
-            public Sprite image;
-
-            public Attack attack;
-
-            public Defense defense;
-
-            public Reward reward;
-
 		}
 	}
 }

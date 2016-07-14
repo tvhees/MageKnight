@@ -131,7 +131,7 @@ namespace BoardGame
                 MovingObject cardMO = card.m_movingObject;
                 StartCoroutine(cardMO.SetHomePos(newCardPos));
 
-                ChangeCardLocation(card, Location.hand); 
+                ChangeCardLocation(card, Location.hand);
             }
 
             void ShiftCardsInHand(Vector3 target, float delta)
@@ -161,7 +161,7 @@ namespace BoardGame
                         break;
                 }
 
-                switch(newLocation)
+                switch (newLocation)
                 {
                     case Location.deck:
                         m_cardsInDeck.Add(card);
@@ -188,16 +188,33 @@ namespace BoardGame
             // COMBAT
             //**********
 
-            public void TakeDamage(int damage)
+            public int TakeDamage(Enemy.Attack attack)
             {
-                int remaining = damage;
+                int remaining = attack.strength;
+                int woundsTaken = 0;
+
+                if (attack.brutal) // Doubles strength of unblocked attacks
+                    remaining *= 2;
 
                 while (remaining > 0)
                 {
                     Cards.Object wound = Cards.SharedDecks.Instance.GetWound();
                     MoveToHand(wound);
+                    woundsTaken++;
                     remaining -= stats.m_armour;
+
+                    if (attack.poison)
+                    {
+                        Debug.Log("Add poison wound to discard pile");
+                    }
                 }
+
+                if (woundsTaken > 1 && attack.paralyze)
+                {
+                    Debug.Log("Discard hand to Paralyze");
+                }
+
+                return woundsTaken;
 
             }
 
