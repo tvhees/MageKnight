@@ -47,7 +47,7 @@ namespace BoardGame
 
             public void OnMouseUpAsButton()
             {
-                Manager.Instance.ProcessEffect(m_playerID, m_card, m_card.GetID(), effectType);
+                Manager.Instance.ProcessEffect(m_playerID, m_card, effectType);
             }
         }
     }

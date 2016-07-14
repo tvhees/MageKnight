@@ -5,36 +5,97 @@ namespace BoardGame
 {
     public class MovingObject : MonoBehaviour
     {
+        // Variables controlling speed of changes for this object
+        public float speed { get; private set; }
+        public float angularSpeed { get; private set; }
 
-        // Vectors for card position 
-        private Vector3 m_homePos;
-        private Vector3 m_targetPos;
+        // Vectors for object position 
+        public Vector3 m_homePos { get; private set; }
+        public Vector3 m_targetPos { get; private set; }
 
-        public void SetTargetPos(Vector3 newPos)
+        // Quaternions for object rotation
+        public Quaternion m_homeRot { get; private set; }
+        public Quaternion m_targetRot { get; private set; }
+
+        public void SetSpeed(float speed)
         {
-            Game.ObjectMover.Instance.MoveThisObject(this);
+            this.speed = speed;
+        }
+
+        public void SetAngularSpeed(float angularSpeed)
+        {
+            this.angularSpeed = angularSpeed;
+        }
+
+        public float GetSpeed()
+        {
+            return speed;
+        }
+
+        public float GetAngularSpeed()
+        {
+            return angularSpeed;
+        }
+
+        public IEnumerator SetTargetPos(Vector3 newPos, bool wait = false)
+        {
             m_targetPos = newPos;
+
+            if (wait)
+            {
+                yield return StartCoroutine(Game.ObjectMover.MoveUntilFinished(this));
+            }
+            else
+            {
+                Game.ObjectMover.MoveThisObject(this);
+            }
         }
 
-        public Vector3 GetTargetPos()
+        public IEnumerator ReturnHome(bool wait = false)
         {
-            return m_targetPos;
+            if (wait)
+                yield return StartCoroutine(SetTargetPos(m_homePos, true));
+            else
+                StartCoroutine(SetTargetPos(m_homePos));
         }
 
-        public void SetHomePos()
-        {
-            SetTargetPos(m_homePos);
-        }
-
-        public void SetHomePos(Vector3 newHomePos)
+        public IEnumerator SetHomePos(Vector3 newHomePos, bool wait = false)
         {
             m_homePos = newHomePos;
-            SetTargetPos(m_homePos);
+            yield return StartCoroutine(SetTargetPos(m_homePos, wait));
         }
 
-        public Vector3 GetHomePos()
+        public IEnumerator MoveHomeTowards(Vector3 target, float maxDistance, bool wait = false)
         {
-            return m_homePos;
+            yield return SetHomePos(Vector3.MoveTowards(m_homePos, target, maxDistance), wait);
+        }
+
+        public IEnumerator SetTargetRot(Quaternion newRot, bool wait = false)
+        {
+            m_targetRot = newRot;
+
+            if (wait)
+            {
+                yield return StartCoroutine(Game.ObjectMover.RotateUntilFinished(this));
+            }
+            else
+            {
+                Game.ObjectMover.RotateThisObject(this);
+            }
+        }
+
+        public IEnumerator SetHomeRot(bool wait = false)
+        {
+            if(wait)
+                yield return StartCoroutine(SetTargetRot(m_homeRot, true));
+            else
+                StartCoroutine(SetTargetRot(m_homeRot, true));
+        }
+
+        public IEnumerator SetHomeRot(Quaternion newHomeRot, bool wait = false)
+        {
+            m_homeRot = newHomeRot;
+            yield return StartCoroutine(SetTargetRot(m_homeRot, wait));
         }
     }
 }

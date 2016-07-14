@@ -101,7 +101,7 @@ namespace BoardGame
         /// </summary>
         public static GameObject InstantiateChild(this Transform parent, GameObject obj, Vector3 localPosition = default(Vector3), Quaternion localRotation = default(Quaternion))
         {
-            GameObject instance = (GameObject)Object.Instantiate(obj);
+            GameObject instance = Object.Instantiate(obj);
             instance.transform.SetParent(parent);
             instance.transform.localPosition = localPosition;
             instance.transform.localRotation = localRotation;
@@ -129,6 +129,28 @@ namespace BoardGame
         {
             layerMask = 1 << layer;
             return layerMask;
+        }
+
+        /// <summary>
+        /// Move a Rect current towards a target
+        /// <summary>
+        public static Rect MoveTowards(this Rect current, Rect target, float maxDistanceDelta)
+        {
+            current.position = Vector2.MoveTowards(current.position, target.position, maxDistanceDelta);
+            current.size = Vector2.MoveTowards(current.size, target.size, maxDistanceDelta);
+
+            return current;
+        }
+
+        /// <summary>
+        /// Resets a RectTransform component to zero offset and uniform scale of 1
+        /// </summary>
+        /// <param name="param"></param>
+        public static void Reset(this RectTransform param)
+        {
+            param.offsetMax = Vector2.zero;
+            param.offsetMin = Vector2.zero;
+            param.localScale = Vector3.one;
         }
     }
 }

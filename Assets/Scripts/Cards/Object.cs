@@ -15,20 +15,22 @@ namespace BoardGame
 
             private EffectButton[] m_effectButtons;
             private int m_playerID;
-            private MovingObject m_movingObject;
+            public MovingObject movingObject { get; private set; }
 
-            public void Init(int playerID, Players.Player.Location startLoc, Vector3 homePos, Camera camera)
+            // Initialisation method for cards owned by players
+            public void Init(int playerID, Players.Player.Location startLoc, Camera camera)
             {
                 m_playerID = playerID;
 
                 m_spriteRenderer = GetComponent<SpriteRenderer>();
                 m_spriteRenderer.sprite = m_faceSprite;
 
-                m_movingObject = GetComponent<MovingObject>();
+                movingObject = GetComponent<MovingObject>();
+                movingObject.SetSpeed(40);
 
                 SetLocation(startLoc);
                 m_Camera = camera;
-                m_movingObject.SetHomePos(transform.parent.position + m_movingObject.GetHomePos());
+                StartCoroutine(movingObject.SetHomePos(transform.parent.position + movingObject.m_homePos));
 
                 // Initialise effect buttons
                 m_effectButtons = GetComponentsInChildren<EffectButton>();
@@ -36,21 +38,28 @@ namespace BoardGame
                     m_effectButtons[i].Init(m_playerID);
             }
 
+            // Initialisation method for cards owned by shared decks
+            public void Init(Vector3 homePos, Camera camera)
+            {
+                m_spriteRenderer = GetComponent<SpriteRenderer>();
+                m_spriteRenderer.sprite = m_faceSprite;
+
+                movingObject = GetComponent<MovingObject>();
+
+                m_Camera = camera;
+                StartCoroutine(movingObject.SetHomePos(transform.parent.position + movingObject.m_homePos));
+            }
+
             // ****************
             // CARD ID, ART AND HIGHLIGHTING
             // ****************
 
             // Card type variables
-            private int cardID;
+            public int m_ID { get; private set; }
 
             public void SetID(int newID)
             {
-                cardID = newID;
-            }
-
-            public int GetID()
-            {
-                return cardID;
+                m_ID = newID;
             }
 
             // Sprites and renderer
@@ -66,7 +75,7 @@ namespace BoardGame
 
             public void ChooseSprite()
             {
-                switch (location)
+                switch (m_location)
                 {
                     case Players.Player.Location.deck:
                         m_spriteRenderer.sprite = m_backSprite;
@@ -87,22 +96,22 @@ namespace BoardGame
 
             void OnMouseOver()
             {
-                if (location == Players.Player.Location.hand)
+                if (m_location == Players.Player.Location.hand)
                 {
                     if (!m_focused)
                     {
-                        m_movingObject.SetTargetPos(m_movingObject.GetHomePos() + GetZoomVector());
+                        StartCoroutine(movingObject.SetTargetPos(movingObject.m_homePos + GetZoomVector()));
                     }
                 }
             }
 
             void OnMouseExit()
             {
-                if (location == Players.Player.Location.hand)
+                if (m_location == Players.Player.Location.hand)
                 {
                     if (!m_focused)
                     {
-                        m_movingObject.SetHomePos();
+                        StartCoroutine(movingObject.ReturnHome());
                     }
                 }
             }
@@ -132,18 +141,13 @@ namespace BoardGame
             private Vector3 m_clickDepth = new Vector3(0f, 0f, 3f);
             private float m_zoomDistance = 2f;
 
-            public MovingObject GetMover()
-            {
-                return m_movingObject;
-            }
-
             /// <summary>
             /// Returns a vector of length zoomDistance in the direction of the camera showing this card
             /// </summary>
             /// <returns></returns>
             private Vector3 GetZoomVector()
             {
-                Vector3 directionToCamera = m_zoomDistance * Vector3.Normalize(m_Camera.transform.position - m_movingObject.GetHomePos());
+                Vector3 directionToCamera = m_zoomDistance * Vector3.Normalize(m_Camera.transform.position - movingObject.m_homePos);
                 return directionToCamera;
             }
 
@@ -153,7 +157,7 @@ namespace BoardGame
             void ZoomAndFocus()
             {
                 m_focused = true;
-                m_movingObject.SetTargetPos(m_Camera.transform.position + m_clickDepth); // Move to center of screen
+                StartCoroutine(movingObject.SetTargetPos(m_Camera.transform.position + m_clickDepth)); // Move to center of screen
 
                 for (int i = 0; i < m_effectButtons.Length; i++)
                     m_effectButtons[i].Enable();
@@ -165,7 +169,7 @@ namespace BoardGame
             void SendToHome()
             {
                 m_focused = false;
-                m_movingObject.SetHomePos(); // Move back to wherever it came from
+                StartCoroutine(movingObject.ReturnHome()); // Move back to wherever it came from
 
                 for (int i = 0; i < m_effectButtons.Length; i++)
                     m_effectButtons[i].Disable();
@@ -174,17 +178,12 @@ namespace BoardGame
             // ****************
             // CARD LOCATION
             // ****************
-            private Players.Player.Location location;
+            public Players.Player.Location m_location { get; private set; }
 
             public void SetLocation(Players.Player.Location newLocation)
             {
-                location = newLocation;
+                m_location = newLocation;
                 ChooseSprite();
-            }
-
-            public Players.Player.Location GetLocation()
-            {
-                return location;
             }
         }
     }

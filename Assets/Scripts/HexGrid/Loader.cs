@@ -13,7 +13,7 @@ namespace BoardGame
             {
                 // Dictionary objects to store all card data
                 List<Dictionary<string, string>> hexGroups = new List<Dictionary<string, string>>();
-                Dictionary<string, string> m_obj;
+                Dictionary<string, string> obj;
 
                 XmlDocument cardDB = new XmlDocument(); // Create XML container
                 cardDB.LoadXml(XML.text); // Load card information stored in XML
@@ -24,7 +24,7 @@ namespace BoardGame
                 {
                     XmlNodeList groupInfo = group.ChildNodes; // Get child nodes for current group
 
-                    m_obj = new Dictionary<string, string>(); // Create a object(Dictionary) to collect the group info and put it in the array.
+                    obj = new Dictionary<string, string>(); // Create a object(Dictionary) to collect the group info and put it in the array.
 
                     int i = 0; // track which number hex this we are in
                     foreach (XmlNode hex in groupInfo)
@@ -36,12 +36,12 @@ namespace BoardGame
                             // E.g. "terrain0", "feature0"
                             if (element.Name == "string")
                             {
-                                m_obj.Add(element.Attributes["name"].Value + i, element.InnerText);
+                                obj.Add(element.Attributes["name"].Value + i, element.InnerText);
                             }
                         }
                         i++;
                     }
-                    hexGroups.Add(m_obj);
+                    hexGroups.Add(obj);
                 }
 
                 return hexGroups;

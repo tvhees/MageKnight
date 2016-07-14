@@ -14,7 +14,8 @@ namespace BoardGame
             //************
 
             // Image and text data sources
-            public Sprite[] m_cardImages; // Sprite 0 should be the shared card back
+            public Sprite[] m_cardImages; // Sprite 0 is the wound card
+            public Sprite m_cardBack; // separate sprite for card backs
             public TextAsset m_cardXML; // XML file reference
 
             // List of card dictionaries
@@ -29,7 +30,7 @@ namespace BoardGame
             {
                 card.SetID(id);
 
-                card.SetSprites(GetCardFront(id), m_cardImages[0]);
+                card.SetSprites(GetCardFront(id), m_cardBack);
             }
 
             private Sprite GetCardFront(int id) // Get face sprite matching a card ID
@@ -48,7 +49,8 @@ namespace BoardGame
             public enum DeckType
             {
                 SharedDeck,
-                PlayerDeck
+                PlayerDeck,
+                WoundDeck
                 // List deck types as necessary
             }
 
@@ -64,6 +66,7 @@ namespace BoardGame
                 for (int i = 0; i < cardNumbers.Length; i++)
                 {
                     Object newCard = deck.transform.InstantiateChild(m_cardPrefab).GetComponent<Object>();
+
                     GiveCardIdentity(newCard, cardNumbers[i]);
                     deckList.Add(newCard);
                 }
@@ -93,6 +96,14 @@ namespace BoardGame
                         break;
                     case Factory.DeckType.PlayerDeck:
                         cards = new int[16] { 1, 1, 2, 3, 3, 4, 4, 5, 5, 6, 7, 8, 9, 10, 11, 12 };
+                        break;
+                    case Factory.DeckType.WoundDeck:
+                        // Make a big deck of only wounds (card type 0)
+                        cards = new int[50];
+                        for (int i = 0; i < cards.Length; i++)
+                        {
+                            cards[i] = 0;
+                        }
                         break;
                 }
             }

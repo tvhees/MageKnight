@@ -1,0 +1,159 @@
+fileFormatVersion: 2
+guid: e1c8f2d27f9f91a48be2a4353be26b1d
+timeCreated: 1467858743
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: KeepCren
+    100004: KeepCren1
+    100006: KeepCrennelation
+    100008: KeepCrennelation1
+    100010: KeepCrennelation2
+    100012: KeepCrennelation3
+    100014: KeepHole
+    100016: KeepTower
+    100018: KeepTower1
+    100020: KeepTower2
+    100022: KeepTower3
+    100024: pCube1
+    100026: pCube2
+    100028: pCube3
+    100030: transform1
+    100032: transform2
+    100034: transform3
+    100036: transform4
+    100038: KeepHole1
+    100040: transform10
+    100042: transform11
+    100044: transform12
+    100046: transform13
+    100048: transform5
+    100050: transform6
+    100052: transform7
+    100054: transform8
+    100056: transform9
+    400000: //RootNode
+    400002: KeepCren
+    400004: KeepCren1
+    400006: KeepCrennelation
+    400008: KeepCrennelation1
+    400010: KeepCrennelation2
+    400012: KeepCrennelation3
+    400014: KeepHole
+    400016: KeepTower
+    400018: KeepTower1
+    400020: KeepTower2
+    400022: KeepTower3
+    400024: pCube1
+    400026: pCube2
+    400028: pCube3
+    400030: transform1
+    400032: transform2
+    400034: transform3
+    400036: transform4
+    400038: KeepHole1
+    400040: transform10
+    400042: transform11
+    400044: transform12
+    400046: transform13
+    400048: transform5
+    400050: transform6
+    400052: transform7
+    400054: transform8
+    400056: transform9
+    2300000: KeepCrennelation
+    2300002: KeepCrennelation1
+    2300004: KeepCrennelation2
+    2300006: KeepCrennelation3
+    2300008: KeepTower
+    2300010: KeepTower1
+    2300012: KeepTower2
+    2300014: KeepTower3
+    2300016: pCube3
+    2300018: KeepHole1
+    3300000: KeepCrennelation
+    3300002: KeepCrennelation1
+    3300004: KeepCrennelation2
+    3300006: KeepCrennelation3
+    3300008: KeepTower
+    3300010: KeepTower1
+    3300012: KeepTower2
+    3300014: KeepTower3
+    3300016: pCube3
+    3300018: KeepHole1
+    4300000: pCube3
+    4300002: KeepTower
+    4300004: KeepCrennelation
+    4300006: KeepTower1
+    4300008: KeepCrennelation1
+    4300010: KeepTower2
+    4300012: KeepCrennelation2
+    4300014: KeepTower3
+    4300016: KeepCrennelation3
+    4300018: KeepHole1
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 6
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

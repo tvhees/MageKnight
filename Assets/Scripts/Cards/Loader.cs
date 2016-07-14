@@ -13,7 +13,7 @@ namespace BoardGame
             {
                 // Dictionary objects to store all card data
                 List<Dictionary<string, string>> cardList = new List<Dictionary<string, string>>();
-                Dictionary<string, string> m_obj;
+                Dictionary<string, string> obj;
 
                 XmlDocument cardDB = new XmlDocument(); // Create XML container
                 cardDB.LoadXml(XML.text); // Load card information stored in XML
@@ -25,13 +25,13 @@ namespace BoardGame
                 foreach (XmlNode node in nodeList)
                 {
                     XmlNodeList cardInfo = node.ChildNodes; // Get child nodes for current card
-                    m_obj = new Dictionary<string, string>(); // Create a object(Dictionary) to collect the card info and put the card in the cards array.
+                    obj = new Dictionary<string, string>(); // Create a object(Dictionary) to collect the card info and put the card in the cards array.
 
                     foreach (XmlNode element in cardInfo)
                     {
                         // Examples of XML tags to process
                         if (element.Name == "string")
-                            m_obj.Add(element.Attributes["name"].Value, element.InnerText);
+                            obj.Add(element.Attributes["name"].Value, element.InnerText);
 
                         if (element.Name == "effect")
                             switch (element.Attributes["type"].Value)
@@ -39,20 +39,20 @@ namespace BoardGame
                                 case "effect_1":
                                     foreach (XmlNode effectElement in element)
                                         if (effectElement.Name == "string")
-                                            m_obj.Add("effect_1", effectElement.InnerText);
+                                            obj.Add("effect_1", effectElement.InnerText);
                                         else if (effectElement.Name == "int")
-                                            m_obj.Add("value_1", effectElement.InnerText);
+                                            obj.Add("value_1", effectElement.InnerText);
                                     break;
                                 case "effect_2":
                                     foreach (XmlNode effectElement in element)
                                         if (effectElement.Name == "string")
-                                            m_obj.Add("effect_2", effectElement.InnerText);
+                                            obj.Add("effect_2", effectElement.InnerText);
                                         else if (effectElement.Name == "int")
-                                            m_obj.Add("value_2", effectElement.InnerText);
+                                            obj.Add("value_2", effectElement.InnerText);
                                     break;
                             }
                     }
-                    cardList.Add(m_obj);
+                    cardList.Add(obj);
                     cardNumber++;
                 }
 

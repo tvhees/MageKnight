@@ -32,9 +32,30 @@ namespace BoardGame
                     // Place the hex at the required co-ordinates
                     hex.GetComponent<Hex>().SetCoordinates(coOrds);
 
+                    // HACKY CODE!!
+                    string feat = feature.ToString();
+
                     // Place required features on the tile
-                    if (m_featurePrefabs[(int)feature] != null)
-                        hex.transform.InstantiateChild(m_featurePrefabs[(int)feature]);
+                    switch (feat)
+                    {
+                        case "orc":
+                        case "draconum":
+                            Enemy.Object newEnemy = Enemy.Manager.Instance.GetEnemy(feat, hex.transform);
+                            newEnemy.CheckRampaging();
+                            break;
+                        case "keep":
+                        case "tower":
+                            Building.Garrison newGarrison = hex.transform.InstantiateChild(
+                                    m_featurePrefabs[(int)feature]).GetComponent<Building.Garrison>();
+                            newGarrison.Init();
+                            break;
+                        default:
+                            if (m_featurePrefabs[(int)feature] != null)
+                            {
+                                hex.transform.InstantiateChild(m_featurePrefabs[(int)feature]);
+                            }
+                            break;
+                    }
                 }
             }
 
