@@ -18,19 +18,13 @@ namespace BoardGame
             public MovingObject movingObject { get; private set; }
 
             // Initialisation method for cards owned by players
-            public void Init(int playerID, Players.Player.Location startLoc, Camera camera)
+            public void InitialiseForPlayer(int playerID, Players.Player.Location startLoc, Camera camera)
             {
                 m_playerID = playerID;
 
-                m_spriteRenderer = GetComponent<SpriteRenderer>();
-                m_spriteRenderer.sprite = m_faceSprite;
-
-                movingObject = GetComponent<MovingObject>();
-                movingObject.SetSpeed(40);
+                Initialise(camera);
 
                 SetLocation(startLoc);
-                m_Camera = camera;
-                StartCoroutine(movingObject.SetHomePos(transform.parent.position + movingObject.m_homePos));
 
                 // Initialise effect buttons
                 m_effectButtons = GetComponentsInChildren<EffectButton>();
@@ -39,12 +33,13 @@ namespace BoardGame
             }
 
             // Initialisation method for cards owned by shared decks
-            public void Init(Vector3 homePos, Camera camera)
+            public void Initialise(Camera camera)
             {
                 m_spriteRenderer = GetComponent<SpriteRenderer>();
                 m_spriteRenderer.sprite = m_faceSprite;
 
                 movingObject = GetComponent<MovingObject>();
+                movingObject.SetSpeed(40);
 
                 m_Camera = camera;
                 StartCoroutine(movingObject.SetHomePos(transform.parent.position + movingObject.m_homePos));

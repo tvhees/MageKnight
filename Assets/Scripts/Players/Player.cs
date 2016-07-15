@@ -84,7 +84,7 @@ namespace BoardGame
 
                 for (int i = 0; i < m_cardsInDeck.Count; i++)
                 {
-                    m_cardsInDeck[i].Init(m_playerID, Location.deck, m_playerCamera);
+                    m_cardsInDeck[i].InitialiseForPlayer(m_playerID, Location.deck, m_playerCamera);
                 }
             }
 
@@ -130,10 +130,10 @@ namespace BoardGame
                 // The new card will go half a card width to the right of the middle of the hand for ever card already in the hand
                 Vector3 newCardPos = m_hand.transform.position + Vector3.right * m_cardsInHand.Count * m_cardSlotWidth / 2f;
 
+                ChangeCardLocation(card, Location.hand);
+
                 MovingObject cardMO = card.movingObject;
                 StartCoroutine(cardMO.SetHomePos(newCardPos));
-
-                ChangeCardLocation(card, Location.hand);
             }
 
             void ShiftCardsInHand(Vector3 target, float delta)

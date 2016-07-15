@@ -32,7 +32,7 @@ namespace BoardGame
 
                 for (int i = 0; i < deckList.Count; i++)
                 {
-                    deckList[i].Init(Vector3.zero, m_sharedCamera);
+                    deckList[i].Initialise(m_sharedCamera);
                 }
 
                 return deckList;

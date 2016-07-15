@@ -29,7 +29,6 @@ namespace BoardGame
 
                     foreach (XmlNode element in cardInfo)
                     {
-                        // Examples of XML tags to process
                         if (element.Name == "string")
                             obj.Add(element.Attributes["name"].Value, element.InnerText);
 

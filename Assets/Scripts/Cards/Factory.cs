@@ -14,7 +14,6 @@ namespace BoardGame
             //************
 
             // Image and text data sources
-            public Sprite[] m_cardImages; // Sprite 0 is the wound card
             public Sprite m_cardBack; // separate sprite for card backs
             public TextAsset m_cardXML; // XML file reference
 
@@ -30,12 +29,23 @@ namespace BoardGame
             {
                 card.SetID(id);
 
-                card.SetSprites(GetCardFront(id), m_cardBack);
+                Dictionary<string, string> cardInfo = GetCard(id);
+
+                string name;
+                cardInfo.TryGetValue("name", out name);
+
+                card.SetSprites(GetCardFront(name), m_cardBack);
             }
 
-            private Sprite GetCardFront(int id) // Get face sprite matching a card ID
+            private Sprite GetCardFront(string name)
             {
-                return m_cardImages[id];
+                Sprite cardFront;
+                cardFront = Resources.Load<Sprite>("CardImages/" + name);
+
+                if (cardFront == null)
+                    Debug.Log(name);
+
+                return cardFront;
             }
 
             public Dictionary<string, string> GetCard(int id) // Get text dictionary matching a card id
