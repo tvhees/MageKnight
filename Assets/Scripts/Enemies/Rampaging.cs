@@ -17,12 +17,15 @@ namespace BoardGame
             // Rampaging enemies will halt movement and fight when passed on two adjacent hexes
             public void Provoke()
             {
-                float squareDistance = (transform.position - Game.Manager.Instance.GetCurrentPlayer().transform.position).sqrMagnitude;
-
-                if (squareDistance < AttackDistance)
+                if (Game.Turn.Instance.InMovementPhase())
                 {
-                    Rules.Combat.Instance.AddOrRemoveEnemy(thisEnemy);
-                    StartCoroutine(Rules.Combat.Instance.StartCombat());// Send this enemy to combat
+                    float squareDistance = (transform.position - Game.Manager.Instance.GetCurrentPlayer().transform.position).sqrMagnitude;
+
+                    if (squareDistance < AttackDistance)
+                    {
+                        Rules.Combat.Instance.AddOrRemoveEnemy(thisEnemy);
+                        StartCoroutine(Rules.Combat.Instance.StartCombat());// Send this enemy to combat
+                    }
                 }
             }
 

@@ -50,7 +50,7 @@ namespace BoardGame
                         }
                     }
                     // Get the image for this enemy
-                    LoadSprite(enemy);
+                    LoadSprite(enemy, type);
 
                     enemyDictionary.Add(enemy.name, enemy);
                 }
@@ -58,9 +58,10 @@ namespace BoardGame
                 return enemyDictionary;
             }
 
-            static void LoadSprite(Enemy enemy)
+            static void LoadSprite(Enemy enemy, Factory.EnemyType type)
             {
                 enemy.image = Resources.Load<Sprite>("EnemyImages/" + enemy.name);
+                enemy.backImage = Resources.Load<Sprite>("EnemyImages/" + type.ToString());
             }
 
             static void ProcessAttack(XmlNode node, Attack input)

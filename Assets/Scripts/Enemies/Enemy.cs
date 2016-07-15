@@ -10,6 +10,7 @@ namespace BoardGame
 		{
             public string name;
             public Sprite image;
+            public Sprite backImage;
 
             public Attack attack;
             public Defense defense;

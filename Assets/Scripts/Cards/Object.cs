@@ -13,12 +13,16 @@ namespace BoardGame
             // INITIALISATION
             // ****************
 
+            public GameObject tapButtonPrefab;
+            public GameObject effect1ButtonPrefab;
+            public GameObject effect2ButtonPrefab;
+
             private EffectButton[] m_effectButtons;
             private int m_playerID;
             public MovingObject movingObject { get; private set; }
 
             // Initialisation method for cards owned by players
-            public void InitialiseForPlayer(int playerID, Players.Player.Location startLoc, Camera camera)
+            public void InitialiseForPlayer(int playerID, Players.Player.Location startLoc, Camera camera, bool buttonsOn = true)
             {
                 m_playerID = playerID;
 
@@ -27,9 +31,23 @@ namespace BoardGame
                 SetLocation(startLoc);
 
                 // Initialise effect buttons
+                Vector3 buttonScale = new Vector3(1.3f, 1.3f, 0.01f);
+                transform.InstantiateChild(tapButtonPrefab, localPosition: new Vector3(0f, -0.15f, -0.05f)).transform.localScale = buttonScale;
+                transform.InstantiateChild(effect1ButtonPrefab, localPosition: new Vector3(0f, -0.15f, -0.05f)).transform.localScale = buttonScale;
+                transform.InstantiateChild(effect2ButtonPrefab, localPosition: new Vector3(0f, -0.15f, -0.05f)).transform.localScale = buttonScale;
+
                 m_effectButtons = GetComponentsInChildren<EffectButton>();
+
                 for (int i = 0; i < m_effectButtons.Length; i++)
-                    m_effectButtons[i].Init(m_playerID);
+                {
+                    if (buttonsOn)
+                    {
+                        m_effectButtons[i].gameObject.SetActive(true);
+                        m_effectButtons[i].Init(m_playerID);
+                    }
+                    else
+                        m_effectButtons[i].gameObject.SetActive(false);
+                }
             }
 
             // Initialisation method for cards owned by shared decks
@@ -42,7 +60,7 @@ namespace BoardGame
                 movingObject.SetSpeed(40);
 
                 m_Camera = camera;
-                StartCoroutine(movingObject.SetHomePos(transform.parent.position + movingObject.m_homePos));
+                StartCoroutine(movingObject.SetHomePos(transform.parent.position + movingObject.homePos));
             }
 
             // ****************
@@ -70,7 +88,7 @@ namespace BoardGame
 
             public void ChooseSprite()
             {
-                switch (m_location)
+                switch (location)
                 {
                     case Players.Player.Location.deck:
                         m_spriteRenderer.sprite = m_backSprite;
@@ -87,24 +105,24 @@ namespace BoardGame
             // MOUSE INTERACTION
             // ****************
 
-            private bool m_focused;
+            private bool focused;
 
             void OnMouseOver()
             {
-                if (m_location == Players.Player.Location.hand)
+                if (location == Players.Player.Location.hand)
                 {
-                    if (!m_focused)
+                    if (!focused)
                     {
-                        StartCoroutine(movingObject.SetTargetPos(movingObject.m_homePos + GetZoomVector()));
+                        StartCoroutine(movingObject.SetTargetPos(movingObject.homePos + GetZoomVector()));
                     }
                 }
             }
 
             void OnMouseExit()
             {
-                if (m_location == Players.Player.Location.hand)
+                if (location == Players.Player.Location.hand)
                 {
-                    if (!m_focused)
+                    if (!focused)
                     {
                         StartCoroutine(movingObject.ReturnHome());
                     }
@@ -116,7 +134,7 @@ namespace BoardGame
             /// </summary>
             void OnMouseUpAsButton()
             {
-                if (!m_focused)
+                if (!focused)
                 {
                     ZoomAndFocus();
                 }
@@ -142,7 +160,7 @@ namespace BoardGame
             /// <returns></returns>
             private Vector3 GetZoomVector()
             {
-                Vector3 directionToCamera = m_zoomDistance * Vector3.Normalize(m_Camera.transform.position - movingObject.m_homePos);
+                Vector3 directionToCamera = m_zoomDistance * Vector3.Normalize(m_Camera.transform.position - movingObject.homePos);
                 return directionToCamera;
             }
 
@@ -151,7 +169,7 @@ namespace BoardGame
             /// </summary>
             void ZoomAndFocus()
             {
-                m_focused = true;
+                focused = true;
                 StartCoroutine(movingObject.SetTargetPos(m_Camera.transform.position + m_clickDepth)); // Move to center of screen
 
                 for (int i = 0; i < m_effectButtons.Length; i++)
@@ -163,7 +181,7 @@ namespace BoardGame
             /// </summary>
             void SendToHome()
             {
-                m_focused = false;
+                focused = false;
                 StartCoroutine(movingObject.ReturnHome()); // Move back to wherever it came from
 
                 for (int i = 0; i < m_effectButtons.Length; i++)
@@ -173,11 +191,11 @@ namespace BoardGame
             // ****************
             // CARD LOCATION
             // ****************
-            public Players.Player.Location m_location { get; private set; }
+            public Players.Player.Location location { get; private set; }
 
             public void SetLocation(Players.Player.Location newLocation)
             {
-                m_location = newLocation;
+                location = newLocation;
                 ChooseSprite();
             }
         }

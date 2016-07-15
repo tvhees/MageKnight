@@ -14,6 +14,7 @@ namespace BoardGame
             private float maxDistance = 4f;
 
             // Tracking variables
+            public bool successfulCombat;
             private int m_playerPosition;
             private int m_totalCost;
             private int m_totalPaid;
@@ -133,6 +134,9 @@ namespace BoardGame
                         foreach (Enemy.Object enemy in enemies)
                             Combat.Instance.AddOrRemoveEnemy(enemy);
                         yield return StartCoroutine(Combat.Instance.StartCombat());
+
+                        if (!successfulCombat)
+                            yield break; // Stop all movement if we haven't killed all the enemies.
                     }
 
                     yield return StartCoroutine(player.SetTargetPos(m_hexPath[i].transform.position, true));

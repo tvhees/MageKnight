@@ -34,6 +34,11 @@ namespace BoardGame
                 this.type = type;
 
                 flipHeight = 10f;
+
+                SpriteRenderer[] spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
+                spriteRenderers[0].sprite = input.image;
+                spriteRenderers[1].sprite = input.backImage;
+
                 enemyInformation = enemyCanvas;
                 enemyCanvas.transform.SetParent(transform);
                 enemyCanvas.transform.localPosition = (2f * Vector3.down);
@@ -86,7 +91,7 @@ namespace BoardGame
 
                 movingObject.SetSpeed(2f);
 
-                StartCoroutine(movingObject.SetTargetPos(movingObject.m_homePos + flipHeight * Vector3.up));
+                StartCoroutine(movingObject.SetTargetPos(movingObject.homePos + flipHeight * Vector3.up));
                 yield return StartCoroutine(movingObject.SetTargetRot(Quaternion.Euler(90f, 0f, 0f), true));
                 StartCoroutine(movingObject.SetTargetRot(Quaternion.Euler(finalAngle, 0f, 0f)));
                 yield return new WaitForSeconds(0.1f);

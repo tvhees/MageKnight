@@ -25,7 +25,7 @@ namespace BoardGame
             // Lists to track all enemies in combat and those that have been selected
             private List<Enemy.Object> m_listOfEnemies = new List<Enemy.Object>();
             public Enemy.Band m_band { get; private set; }
-            private Players.Strength m_strength;
+            private Players.Strength playerStrength;
             private Players.Player m_player;
             private Enemy.Reward m_reward;
 
@@ -42,11 +42,12 @@ namespace BoardGame
             public IEnumerator StartCombat()
             {
                 Game.Turn.Instance.MoveForward(Game.Turn.Phase.combat); // Enter the combat phase
+                Movement.Instance.successfulCombat = false;
 
                 m_player = Game.Manager.Instance.GetCurrentPlayer();
                 m_band = new Enemy.Band(); // Create a new combat instance
                 m_reward = Enemy.Reward.NullReward(); // Create a new container for fame + reputation rewards
-                m_strength = new Players.Strength(); // Create a new container for player values
+                playerStrength = new Players.Strength(); // Create a new container for player values
 
                 woundsThisCombat = 0; // Reset counter for wounds taken
 
@@ -61,6 +62,8 @@ namespace BoardGame
 
             IEnumerator PlayerAttack(Phase thisPhase)
             {
+                
+
                 m_phase = thisPhase; // Start whichever phase has been called (siege, ranged, attack)
 
                 while (m_phase == thisPhase) // Stay in this phase until the next has been started
@@ -83,7 +86,7 @@ namespace BoardGame
             {
                 if (!m_band.IsEmpty())
                 {
-                    int strength = m_strength.AddStrength(value, type); // Add the attack to the player's status
+                    int strength = playerStrength.AddStrength(value, type); // Add the attack to the player's status
                     m_combatPanel.m_playerArea.SetStrength(strength, type); // update UI to reflect current strength
                     return true;
                 }
@@ -142,7 +145,7 @@ namespace BoardGame
                     NextPhase();
                     return;
                 }
-                else if (SuccessfulCombat(m_strength, m_band)) // Otherwise evaluate whether the player has succeeded and proceed accordingly
+                else if (SuccessfulCombat(playerStrength, m_band)) // Otherwise evaluate whether the player has succeeded and proceed accordingly
                 {
                     if (m_phase == Phase.block) // Block phase - player being attacked
                         Debug.Log("attack blocked");
@@ -162,7 +165,10 @@ namespace BoardGame
                 m_band.Disable(); // Disable all enemies in the current instance
 
                 if (m_combatPanel.m_enemyArea.IsEmpty())
+                {
+                    Movement.Instance.successfulCombat = true;
                     EndCombat();
+                }
                 else
                     m_combatPanel.m_enemyArea.SelectNext(); // Select the next enemy in line
             }
@@ -170,7 +176,7 @@ namespace BoardGame
             void DefeatAndGetRewards()
             {
                 m_combatPanel.m_enemyArea.DefeatEnemy(m_band.Enemies());
-
+                
                 // Store the fame and reputation earned from defeating enemie(s)
                 m_reward += m_band.m_reward;
                 Debug.Log(m_reward.fame + " fame and " + m_reward.reputation + " reputation earned this combat");
@@ -196,6 +202,9 @@ namespace BoardGame
                         EndCombat();
                         break;
                 }
+
+                // Reset player strength
+                playerStrength.Reset();
 
                 // Update UI components
                 m_combatPanel.NextPhase();

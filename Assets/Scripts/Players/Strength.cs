@@ -8,7 +8,19 @@ namespace BoardGame
     {
 		public class Strength 
 		{
+            public int physical;
+
+            // Elements
+            public int cold;
+            public int fire;
+            public int coldfire;
+
             public Strength()
+            {
+                Reset();
+            }
+
+            public void Reset()
             {
                 physical = 0;
                 cold = 0;
@@ -41,13 +53,6 @@ namespace BoardGame
             {
                 return physical + cold + fire + coldfire;
             }
-
-            public int physical;
-
-            // Elements
-            public int cold;
-            public int fire;
-            public int coldfire;
         }
 
     }

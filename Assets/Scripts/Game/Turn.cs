@@ -75,6 +75,8 @@ namespace BoardGame
 
             IEnumerator Cleanup()
             {
+                Manager.Instance.GetCurrentPlayer().EndOfTurn();
+
                 yield return null;
 
                 Manager.Instance.NextPlayer();

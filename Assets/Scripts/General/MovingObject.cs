@@ -10,7 +10,7 @@ namespace BoardGame
         public float angularSpeed { get; private set; }
 
         // Vectors for object position 
-        public Vector3 m_homePos { get; private set; }
+        public Vector3 homePos { get; private set; }
         public Vector3 m_targetPos { get; private set; }
 
         // Quaternions for object rotation
@@ -54,20 +54,20 @@ namespace BoardGame
         public IEnumerator ReturnHome(bool wait = false)
         {
             if (wait)
-                yield return StartCoroutine(SetTargetPos(m_homePos, true));
+                yield return StartCoroutine(SetTargetPos(homePos, true));
             else
-                StartCoroutine(SetTargetPos(m_homePos));
+                StartCoroutine(SetTargetPos(homePos));
         }
 
         public IEnumerator SetHomePos(Vector3 newHomePos, bool wait = false)
         {
-            m_homePos = newHomePos;
-            yield return StartCoroutine(SetTargetPos(m_homePos, wait));
+            homePos = newHomePos;
+            yield return StartCoroutine(SetTargetPos(homePos, wait));
         }
 
         public IEnumerator MoveHomeTowards(Vector3 target, float maxDistance, bool wait = false)
         {
-            yield return SetHomePos(Vector3.MoveTowards(m_homePos, target, maxDistance), wait);
+            yield return SetHomePos(Vector3.MoveTowards(homePos, target, maxDistance), wait);
         }
 
         public IEnumerator SetTargetRot(Quaternion newRot, bool wait = false)

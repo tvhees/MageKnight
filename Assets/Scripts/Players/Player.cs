@@ -12,30 +12,41 @@ namespace BoardGame
             // PREFABS
             //**********
 
-            public GameObject m_boardPrefab;
-            public GameObject m_cardHolderPrefab;
-            public GameObject m_cameraPrefab;
-            public GameObject m_playerCanvasPrefab;
+            public GameObject boardPrefab;
+            public GameObject cardHolderPrefab;
+            public GameObject cameraPrefab;
+            public GameObject playerCanvasPrefab;
 
-            public int m_playerID { get; private set; }
+            public int playerID { get; private set; }
             public Stats stats { get; private set; }
-            public Camera m_playerCamera { get; private set; }
+            public Camera playerCamera { get; private set; }
 
-            private GameObject m_playedArea;
-            private GameObject m_discard;
-            private GameObject m_deck;
-            private GameObject m_hand;
-            private GameObject m_playerCanvas;
+            private GameObject playedArea;
+            private GameObject discard;
+            private GameObject deck;
+            private GameObject hand;
+            private GameObject playerCanvas;
 
             private Fame m_playerFame;
             private Reputation m_playerReputation;
 
-            private Vector3 m_deckPos = new Vector3(-4f, 0.5f, 0f);
-            private Vector3 m_playedAreaPos = new Vector3(-4f, 4f, 0f);
+            private Vector3 deckPos = new Vector3(-4f, 0.1f, 0f);
+            private Vector3 discardPos = new Vector3(-4, 2f, 0f);
+            private Vector3 playedAreaPos = new Vector3(-4f, 4f, 0f);
+
+            void Update()
+            {
+                if (Input.GetKeyDown(KeyCode.W))
+                {
+                    Enemy.Attack newAttack = new Enemy.Attack();
+                    newAttack.strength = 4;
+                    TakeDamage(newAttack);
+                }
+            }
 
             public void Init(int id)
             {
-                m_playerID = id;
+                playerID = id;
 
                 stats = new Stats(5, 2);
 
@@ -51,40 +62,40 @@ namespace BoardGame
             void CreatePlayerBoard()
             {
                 // Instantiate locator/holder objects for this player's cards
-                GameObject playerBoard = Instantiate(m_boardPrefab, 10f * Vector3.down, Quaternion.identity) as GameObject; // Create player board to hold all this player's objects
-                m_playedArea = playerBoard.transform.InstantiateChild(m_cardHolderPrefab, m_playedAreaPos);
-                m_discard = playerBoard.transform.InstantiateChild(m_cardHolderPrefab);
-                m_deck = playerBoard.transform.InstantiateChild(m_cardHolderPrefab, m_deckPos);
-                m_hand = playerBoard.transform.InstantiateChild(m_cardHolderPrefab);
-                m_playerCanvas = playerBoard.transform.InstantiateChild(m_playerCanvasPrefab);
+                GameObject playerBoard = Instantiate(boardPrefab, 10f * Vector3.down, Quaternion.identity) as GameObject; // Create player board to hold all this player's objects
+                playedArea = playerBoard.transform.InstantiateChild(cardHolderPrefab, playedAreaPos);
+                discard = playerBoard.transform.InstantiateChild(cardHolderPrefab, discardPos);
+                deck = playerBoard.transform.InstantiateChild(cardHolderPrefab, deckPos);
+                hand = playerBoard.transform.InstantiateChild(cardHolderPrefab);
+                playerCanvas = playerBoard.transform.InstantiateChild(playerCanvasPrefab);
 
                 // Rename for clarity in editor
-                playerBoard.name = "Player " + m_playerID + " board";
-                m_hand.name = "Hand";
-                m_playedArea.name = "Played Cards";
-                m_discard.name = "Discard";
-                m_deck.name = "Deck";
-                m_playerCanvas.name = "Player Canvas";
+                playerBoard.name = "Player " + playerID + " board";
+                hand.name = "Hand";
+                playedArea.name = "Played Cards";
+                discard.name = "Discard";
+                deck.name = "Deck";
+                playerCanvas.name = "Player Canvas";
 
                 // Add camera to show hand
-                m_playerCamera = playerBoard.transform.InstantiateChild(m_cameraPrefab, new Vector3(0f, 2f, -10f)).GetComponent<Camera>();
-                m_playerCanvas.GetComponent<Canvas>().worldCamera = m_playerCamera;
+                playerCamera = playerBoard.transform.InstantiateChild(cameraPrefab, new Vector3(0f, 2f, -10f)).GetComponent<Camera>();
+                playerCanvas.GetComponent<Canvas>().worldCamera = playerCamera;
 
                 // Initialise Fame and Reputation sliders
-                m_playerFame = m_playerCanvas.GetComponentInChildren<Fame>();
+                m_playerFame = playerCanvas.GetComponentInChildren<Fame>();
                 m_playerFame.Init();
-                m_playerReputation = m_playerCanvas.GetComponentInChildren<Reputation>();
+                m_playerReputation = playerCanvas.GetComponentInChildren<Reputation>();
                 m_playerReputation.Init();
             }
 
             // Create a deck only this player can see and start tracking the cards in it
             void CreatePlayerDeck()
             {
-                m_cardsInDeck = Cards.Factory.Instance.CreateDeck(m_deck, m_playerCamera, Cards.Factory.DeckType.PlayerDeck);
+                m_cardsInDeck = Cards.Factory.Instance.CreateDeck(deck, playerCamera, Cards.Factory.DeckType.PlayerDeck);
 
                 for (int i = 0; i < m_cardsInDeck.Count; i++)
                 {
-                    m_cardsInDeck[i].InitialiseForPlayer(m_playerID, Location.deck, m_playerCamera);
+                    m_cardsInDeck[i].InitialiseForPlayer(playerID, Location.deck, playerCamera);
                 }
             }
 
@@ -93,7 +104,7 @@ namespace BoardGame
             //**********
             private List<Cards.Object> m_cardsInDeck = new List<Cards.Object>();
             public List<Cards.Object> m_cardsInHand = new List<Cards.Object>();
-            public List<Cards.Object> m_cardsInPlay = new List<Cards.Object>();
+            public List<Cards.Object> cardsInPlay = new List<Cards.Object>();
             private List<Cards.Object> m_cardsInDiscard = new List<Cards.Object>();
 
             public enum Location
@@ -110,8 +121,16 @@ namespace BoardGame
             public void MoveToPlayArea(Cards.Object card)
             {
                 ChangeCardLocation(card, Location.play);
-                ShiftCardsInHand(card.movingObject.m_homePos, m_cardSlotWidth / 2f);
-                StartCoroutine(card.movingObject.SetHomePos(m_playedArea.transform.position));
+                ShiftCardsInHand(card.movingObject.homePos, m_cardSlotWidth / 2f);
+                StartCoroutine(card.movingObject.SetHomePos(playedArea.transform.position));
+            }
+
+            public void MoveToDiscard(Cards.Object card)
+            {
+                if(card.location == Location.hand)
+                    ShiftCardsInHand(card.movingObject.homePos, m_cardSlotWidth / 2f);
+                ChangeCardLocation(card, Location.discard);
+                StartCoroutine(card.movingObject.SetHomePos(discard.transform.position));
             }
 
             void RefillHand()
@@ -125,10 +144,10 @@ namespace BoardGame
             public void MoveToHand(Cards.Object card)
             {
                 // Shift all cards currently in hand half a space to the left
-                ShiftCardsInHand(m_hand.transform.position + 100f * Vector3.left, m_cardSlotWidth / 2f);
+                ShiftCardsInHand(hand.transform.position + 100f * Vector3.left, m_cardSlotWidth / 2f);
 
                 // The new card will go half a card width to the right of the middle of the hand for ever card already in the hand
-                Vector3 newCardPos = m_hand.transform.position + Vector3.right * m_cardsInHand.Count * m_cardSlotWidth / 2f;
+                Vector3 newCardPos = hand.transform.position + Vector3.right * m_cardsInHand.Count * m_cardSlotWidth / 2f;
 
                 ChangeCardLocation(card, Location.hand);
 
@@ -147,7 +166,7 @@ namespace BoardGame
 
             void ChangeCardLocation(Cards.Object card, Location newLocation)
             {
-                switch (card.m_location)
+                switch (card.location)
                 {
                     case Location.deck:
                         m_cardsInDeck.Remove(card);
@@ -156,7 +175,7 @@ namespace BoardGame
                         m_cardsInHand.Remove(card);
                         break;
                     case Location.play:
-                        m_cardsInPlay.Remove(card);
+                        cardsInPlay.Remove(card);
                         break;
                     case Location.discard:
                         m_cardsInDiscard.Remove(card);
@@ -167,19 +186,19 @@ namespace BoardGame
                 {
                     case Location.deck:
                         m_cardsInDeck.Add(card);
-                        card.transform.SetParent(m_deck.transform);
+                        card.transform.SetParent(deck.transform);
                         break;
                     case Location.hand:
                         m_cardsInHand.Add(card);
-                        card.transform.SetParent(m_hand.transform);
+                        card.transform.SetParent(hand.transform);
                         break;
                     case Location.play:
-                        m_cardsInPlay.Add(card);
-                        card.transform.SetParent(m_playedArea.transform);
+                        cardsInPlay.Add(card);
+                        card.transform.SetParent(playedArea.transform);
                         break;
                     case Location.discard:
                         m_cardsInDiscard.Add(card);
-                        card.transform.SetParent(m_discard.transform);
+                        card.transform.SetParent(discard.transform);
                         break;
                 }
 
@@ -201,6 +220,7 @@ namespace BoardGame
                 while (remaining > 0)
                 {
                     Cards.Object wound = Cards.SharedDecks.Instance.GetWound();
+                    wound.InitialiseForPlayer(playerID, Location.hand, playerCamera, false);
                     MoveToHand(wound);
                     woundsTaken++;
                     remaining -= stats.m_armour;
@@ -232,6 +252,23 @@ namespace BoardGame
             public void AddReputation(int value)
             {
                 m_playerReputation.AddReputation(value);
+            }
+
+            //**********
+            // END OF TURN
+            //**********
+
+            public void EndOfTurn()
+            {
+                CleanUpPlayedArea();
+                RefillHand();
+            }
+
+            void CleanUpPlayedArea()
+            {
+                int cardsToDiscard = cardsInPlay.Count;
+                for(int i = 0; i < cardsToDiscard; i++)
+                    MoveToDiscard(cardsInPlay[0]);
             }
         }
 

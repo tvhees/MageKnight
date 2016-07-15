@@ -138,8 +138,6 @@ namespace BoardGame
             public void NextPlayer()
             {
                 currentPlayer = (int)Mathf.Repeat(currentPlayer + 1, numberOfPlayers);
-
-                Debug.Log(currentPlayer);
             }
         }
     }
