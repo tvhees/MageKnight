@@ -15,6 +15,8 @@ namespace BoardGame
             public Camera m_sharedCamera;
             public int numberOfPlayers = 1;
 
+            public static float unitOfDistance = 2.0f;
+
             void Awake()
             {
                 SetState(State.start);

@@ -14,7 +14,7 @@ namespace BoardGame
             private float maxDistance = 4f;
 
             // Tracking variables
-            public bool successfulCombat;
+            public bool haveDefeatedEnemies;
             private int m_playerPosition;
             private int m_totalCost;
             private int m_totalPaid;
@@ -61,7 +61,7 @@ namespace BoardGame
                 Vector3 posB = hex.transform.position; // Draw to the new tile
 
                 Vector3 direction = posB - posA;
-                if (direction.sqrMagnitude < maxDistance) // We can usually only move one tile away
+                if (Mathf.Sqrt(direction.sqrMagnitude) < Game.Manager.unitOfDistance) // We can usually only move one tile away
                 {
                     if (Game.Turn.Instance.InMovementPhase()) // Check that we are in the movement phase
                     {    // Add new hex to the end of the list and show the total movement cost above the new arrow
@@ -122,29 +122,62 @@ namespace BoardGame
 
             IEnumerator MovePlayer(int n)
             {
+                haveDefeatedEnemies = false; // We haven't fought anything yet
+
+                // Create a list to hold any enemies we have to fight
+                List<Enemy.Object> enemiesToFight = new List<Enemy.Object>();
+
+                // Get the player's moving object component
                 MovingObject player = Game.Manager.Instance.GetCurrentPlayer().GetComponent<MovingObject>();
+
                 for (int i = m_playerPosition; i < n; i++)
                 {
-                    // Check if there's enemies where we want to move
-                    Enemy.Object[] enemies = m_hexPath[i].GetComponentsInChildren<Enemy.Object>();
-
-                    if (enemies.Length > 0)
+                    // Check if we're moving past any rampaging enemies and add them to enemies list
+                    List<Enemy.Object> enemiesAdjacentToNextMove = AdjacencyChecker.OverlapSphereForEnemies(player.transform.position);
+                    foreach (Enemy.Object enemy in enemiesAdjacentToNextMove)
                     {
-                        // Fight before moving
-                        foreach (Enemy.Object enemy in enemies)
-                            Combat.Instance.AddOrRemoveEnemy(enemy);
-                        yield return StartCoroutine(Combat.Instance.StartCombat());
+                        // If the enemy is adjacent NOW as well as where we're moving, then we must be moving past them
+                        if (AdjacencyChecker.ByDistance(player.transform.position, enemy.transform.position))
+                            enemiesToFight.Add(enemy);
+                    }
 
-                        if (!successfulCombat)
+                    // Check if there's enemies where we want to move
+                    Enemy.Object[] enemiesAtDestination = m_hexPath[i].GetComponentsInChildren<Enemy.Object>();
+
+                    if (enemiesAtDestination.Length > 0)
+                    {
+                        // We must fight before moving
+                        enemiesToFight.AddRange(enemiesAtDestination);
+
+                        yield return StartCombatPhase(enemiesToFight);
+
+                        if (!haveDefeatedEnemies)
                             yield break; // Stop all movement if we haven't killed all the enemies.
                     }
 
+                    // If we have killed required enemies OR not fought any, continue to next hex
                     yield return StartCoroutine(player.SetTargetPos(m_hexPath[i].transform.position, true));
-
                     m_playerPosition = i;
+
+                    if (enemiesToFight.Count > 0 && !haveDefeatedEnemies) // We moved past rampaging enemies but haven't fought anything yet
+                    {
+                        yield return StartCombatPhase(enemiesToFight);
+
+                        yield break; // Rampaging enemies always prevent further movement
+                    }
+
+                    // If we fought nothing, continue to next movement
+
+                    // We need to delete the node here!
                 }
+            }
 
+            IEnumerator StartCombatPhase(List<Enemy.Object> enemies)
+            {
+                foreach (Enemy.Object enemy in enemies)
+                    Combat.Instance.AddOrRemoveEnemy(enemy);
 
+                yield return StartCoroutine(Combat.Instance.StartCombat());
             }
         }
     }

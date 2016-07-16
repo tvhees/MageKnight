@@ -42,7 +42,7 @@ namespace BoardGame
             public IEnumerator StartCombat()
             {
                 Game.Turn.Instance.MoveForward(Game.Turn.Phase.combat); // Enter the combat phase
-                Movement.Instance.successfulCombat = false;
+                Movement.Instance.haveDefeatedEnemies = false;
 
                 m_player = Game.Manager.Instance.GetCurrentPlayer();
                 m_band = new Enemy.Band(); // Create a new combat instance
@@ -166,7 +166,7 @@ namespace BoardGame
 
                 if (m_combatPanel.m_enemyArea.IsEmpty())
                 {
-                    Movement.Instance.successfulCombat = true;
+                    Movement.Instance.haveDefeatedEnemies = true;
                     EndCombat();
                 }
                 else

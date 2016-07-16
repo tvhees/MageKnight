@@ -8,7 +8,6 @@ namespace BoardGame
     {
 		public class Rampaging : MonoBehaviour 
 		{
-            public float AttackDistance = 4f;
             private Object thisEnemy;
             void Awake()
             {
@@ -21,10 +20,10 @@ namespace BoardGame
                 {
                     float squareDistance = (transform.position - Game.Manager.Instance.GetCurrentPlayer().transform.position).sqrMagnitude;
 
-                    if (squareDistance < AttackDistance)
+                    if (Mathf.Sqrt(squareDistance) < Game.Manager.unitOfDistance)
                     {
                         Rules.Combat.Instance.AddOrRemoveEnemy(thisEnemy);
-                        StartCoroutine(Rules.Combat.Instance.StartCombat());// Send this enemy to combat
+                        StartCoroutine(Rules.Combat.Instance.StartCombat()); // Send this enemy to combat
                     }
                 }
             }
