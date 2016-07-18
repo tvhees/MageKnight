@@ -6,20 +6,33 @@ namespace BoardGame
 {
     public static class AdjacencyChecker
     {
-        public static List<Enemy.Object> OverlapSphereForEnemies(Vector3 centerOfSphere)
+        public static List<Enemy.Object> OverlapSphereForEnemies(Vector3 centerOfSphere, float radiusOfSphere = 1.5f)
         {
-            LayerMask enemyLayer = 1 << LayerMask.NameToLayer("Enemies");
-
-            Collider[] enemyColliders = Physics.OverlapSphere(centerOfSphere, 1.5f * Game.Manager.unitOfDistance, enemyLayer);
-
+            List<Enemy.Object> enemies = OverlapSphereForType<Enemy.Object>(centerOfSphere, radiusOfSphere, "Enemies");
             List<Enemy.Object> rampagingEnemies = new List<Enemy.Object>();
-            for (int i = 0; i < enemyColliders.Length; i++)
+            for (int i = 0; i < enemies.Count; i++)
             {
-                if (enemyColliders[i].GetComponent<Enemy.Rampaging>())
-                    rampagingEnemies.Add(enemyColliders[i].GetComponent<Enemy.Object>());
+                if (enemies[i].GetComponent<Enemy.Rampaging>() != null)
+                    rampagingEnemies.Add(enemies[i]);
             }
 
             return rampagingEnemies;
+        }
+
+        public static List<T> OverlapSphereForType<T>(Vector3 centerOfSphere, float radiusOfSphere, string layerMaskName)
+        {
+            LayerMask layer = 1 << LayerMask.NameToLayer(layerMaskName);
+
+            Collider[] colliders = Physics.OverlapSphere(centerOfSphere, radiusOfSphere * Game.Manager.unitOfDistance, layer);
+
+            List<T> listOfType = new List<T>();
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                if (colliders[i].GetComponent<T>() != null)
+                    listOfType.Add(colliders[i].GetComponent<T>());
+            }
+
+            return listOfType;
         }
 
         public static bool ByDistance(Vector3 positionA, Vector3 positionB)

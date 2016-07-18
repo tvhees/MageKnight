@@ -173,6 +173,398 @@
         <int>5</int>
       </effect>
     </card>
+    <card>
+      <number>13</number>
+      <string name="name"><![CDATA[firebolt]]></string>
+      <string name="type"><![CDATA[advanced]]></string>
+      <string name="colour"><![CDATA[red]]></string>
+      <effect type="effect_1">
+        <string>Improvisation</string>
+        <int>3</int>
+      </effect>
+      <effect type="effect_2">
+        <string>Improvisation</string>
+        <int>5</int>
+      </effect>
+    </card>
+    <card>
+      <number>14</number>
+      <string name="name"><![CDATA[icebolt]]></string>
+      <string name="type"><![CDATA[advanced]]></string>
+      <string name="colour"><![CDATA[blue]]></string>
+      <effect type="effect_1">
+        <string>Improvisation</string>
+        <int>3</int>
+      </effect>
+      <effect type="effect_2">
+        <string>Improvisation</string>
+        <int>5</int>
+      </effect>
+    </card>
+    <card>
+      <number>15</number>
+      <string name="name"><![CDATA[swiftbolt]]></string>
+      <string name="type"><![CDATA[advanced]]></string>
+      <string name="colour"><![CDATA[white]]></string>
+      <effect type="effect_1">
+        <string>Improvisation</string>
+        <int>3</int>
+      </effect>
+      <effect type="effect_2">
+        <string>Improvisation</string>
+        <int>5</int>
+      </effect>
+    </card>
+    <card>
+      <number>16</number>
+      <string name="name"><![CDATA[crushingbolt]]></string>
+      <string name="type"><![CDATA[advanced]]></string>
+      <string name="colour"><![CDATA[green]]></string>
+      <effect type="effect_1">
+        <string>Improvisation</string>
+        <int>3</int>
+      </effect>
+      <effect type="effect_2">
+        <string>Improvisation</string>
+        <int>5</int>
+      </effect>
+    </card>
+    <card>
+      <number>17</number>
+      <string name="name"><![CDATA[bloodrage]]></string>
+      <string name="type"><![CDATA[advanced]]></string>
+      <string name="colour"><![CDATA[red]]></string>
+      <effect type="effect_1">
+        <string>Improvisation</string>
+        <int>3</int>
+      </effect>
+      <effect type="effect_2">
+        <string>Improvisation</string>
+        <int>5</int>
+      </effect>
+    </card>
+    <card>
+      <number>18</number>
+      <string name="name"><![CDATA[iceshield]]></string>
+      <string name="type"><![CDATA[advanced]]></string>
+      <string name="colour"><![CDATA[blue]]></string>
+      <effect type="effect_1">
+        <string>Improvisation</string>
+        <int>3</int>
+      </effect>
+      <effect type="effect_2">
+        <string>Improvisation</string>
+        <int>5</int>
+      </effect>
+    </card>
+    <card>
+      <number>19</number>
+      <string name="name"><![CDATA[agility]]></string>
+      <string name="type"><![CDATA[advanced]]></string>
+      <string name="colour"><![CDATA[white]]></string>
+      <effect type="effect_1">
+        <string>Improvisation</string>
+        <int>3</int>
+      </effect>
+      <effect type="effect_2">
+        <string>Improvisation</string>
+        <int>5</int>
+      </effect>
+    </card>
+    <card>
+      <number>20</number>
+      <string name="name"><![CDATA[refreshingwalk]]></string>
+      <string name="type"><![CDATA[advanced]]></string>
+      <string name="colour"><![CDATA[green]]></string>
+      <effect type="effect_1">
+        <string>Improvisation</string>
+        <int>3</int>
+      </effect>
+      <effect type="effect_2">
+        <string>Improvisation</string>
+        <int>5</int>
+      </effect>
+    </card>
+    <card>
+      <number>21</number>
+      <string name="name"><![CDATA[intimidate]]></string>
+      <string name="type"><![CDATA[advanced]]></string>
+      <string name="colour"><![CDATA[red]]></string>
+      <effect type="effect_1">
+        <string>Improvisation</string>
+        <int>3</int>
+      </effect>
+      <effect type="effect_2">
+        <string>Improvisation</string>
+        <int>5</int>
+      </effect>
+    </card>
+    <card>
+      <number>22</number>
+      <string name="name"><![CDATA[frostbridge]]></string>
+      <string name="type"><![CDATA[advanced]]></string>
+      <string name="colour"><![CDATA[blue]]></string>
+      <effect type="effect_1">
+        <string>Improvisation</string>
+        <int>3</int>
+      </effect>
+      <effect type="effect_2">
+        <string>Improvisation</string>
+        <int>5</int>
+      </effect>
+    </card>
+    <card>
+      <number>23</number>
+      <string name="name"><![CDATA[songofwind]]></string>
+      <string name="type"><![CDATA[advanced]]></string>
+      <string name="colour"><![CDATA[white]]></string>
+      <effect type="effect_1">
+        <string>Improvisation</string>
+        <int>3</int>
+      </effect>
+      <effect type="effect_2">
+        <string>Improvisation</string>
+        <int>5</int>
+      </effect>
+    </card>
+    <card>
+      <number>24</number>
+      <string name="name"><![CDATA[pathfinding]]></string>
+      <string name="type"><![CDATA[advanced]]></string>
+      <string name="colour"><![CDATA[green]]></string>
+      <effect type="effect_1">
+        <string>Improvisation</string>
+        <int>3</int>
+      </effect>
+      <effect type="effect_2">
+        <string>Improvisation</string>
+        <int>5</int>
+      </effect>
+    </card>
+    <card>
+      <number>25</number>
+      <string name="name"><![CDATA[bloodritual]]></string>
+      <string name="type"><![CDATA[advanced]]></string>
+      <string name="colour"><![CDATA[red]]></string>
+      <effect type="effect_1">
+        <string>Improvisation</string>
+        <int>3</int>
+      </effect>
+      <effect type="effect_2">
+        <string>Improvisation</string>
+        <int>5</int>
+      </effect>
+    </card>
+    <card>
+      <number>26</number>
+      <string name="name"><![CDATA[puremagic]]></string>
+      <string name="type"><![CDATA[advanced]]></string>
+      <string name="colour"><![CDATA[blue]]></string>
+      <effect type="effect_1">
+        <string>Improvisation</string>
+        <int>3</int>
+      </effect>
+      <effect type="effect_2">
+        <string>Improvisation</string>
+        <int>5</int>
+      </effect>
+    </card>
+    <card>
+      <number>27</number>
+      <string name="name"><![CDATA[heroictale]]></string>
+      <string name="type"><![CDATA[advanced]]></string>
+      <string name="colour"><![CDATA[white]]></string>
+      <effect type="effect_1">
+        <string>Improvisation</string>
+        <int>3</int>
+      </effect>
+      <effect type="effect_2">
+        <string>Improvisation</string>
+        <int>5</int>
+      </effect>
+    </card>
+    <card>
+      <number>28</number>
+      <string name="name"><![CDATA[regeneration]]></string>
+      <string name="type"><![CDATA[advanced]]></string>
+      <string name="colour"><![CDATA[green]]></string>
+      <effect type="effect_1">
+        <string>Improvisation</string>
+        <int>3</int>
+      </effect>
+      <effect type="effect_2">
+        <string>Improvisation</string>
+        <int>5</int>
+      </effect>
+    </card>
+    <card>
+      <number>29</number>
+      <string name="name"><![CDATA[intotheheat]]></string>
+      <string name="type"><![CDATA[advanced]]></string>
+      <string name="colour"><![CDATA[red]]></string>
+      <effect type="effect_1">
+        <string>Improvisation</string>
+        <int>3</int>
+      </effect>
+      <effect type="effect_2">
+        <string>Improvisation</string>
+        <int>5</int>
+      </effect>
+    </card>
+    <card>
+      <number>30</number>
+      <string name="name"><![CDATA[steadytempo]]></string>
+      <string name="type"><![CDATA[advanced]]></string>
+      <string name="colour"><![CDATA[blue]]></string>
+      <effect type="effect_1">
+        <string>Improvisation</string>
+        <int>3</int>
+      </effect>
+      <effect type="effect_2">
+        <string>Improvisation</string>
+        <int>5</int>
+      </effect>
+    </card>
+    <card>
+      <number>31</number>
+      <string name="name"><![CDATA[diplomacy]]></string>
+      <string name="type"><![CDATA[advanced]]></string>
+      <string name="colour"><![CDATA[white]]></string>
+      <effect type="effect_1">
+        <string>Improvisation</string>
+        <int>3</int>
+      </effect>
+      <effect type="effect_2">
+        <string>Improvisation</string>
+        <int>5</int>
+      </effect>
+    </card>
+    <card>
+      <number>32</number>
+      <string name="name"><![CDATA[inneed]]></string>
+      <string name="type"><![CDATA[advanced]]></string>
+      <string name="colour"><![CDATA[green]]></string>
+      <effect type="effect_1">
+        <string>Improvisation</string>
+        <int>3</int>
+      </effect>
+      <effect type="effect_2">
+        <string>Improvisation</string>
+        <int>5</int>
+      </effect>
+    </card>
+    <card>
+      <number>33</number>
+      <string name="name"><![CDATA[decompose]]></string>
+      <string name="type"><![CDATA[advanced]]></string>
+      <string name="colour"><![CDATA[red]]></string>
+      <effect type="effect_1">
+        <string>Improvisation</string>
+        <int>3</int>
+      </effect>
+      <effect type="effect_2">
+        <string>Improvisation</string>
+        <int>5</int>
+      </effect>
+    </card>
+    <card>
+      <number>34</number>
+      <string name="name"><![CDATA[crystalmastery]]></string>
+      <string name="type"><![CDATA[advanced]]></string>
+      <string name="colour"><![CDATA[blue]]></string>
+      <effect type="effect_1">
+        <string>Improvisation</string>
+        <int>3</int>
+      </effect>
+      <effect type="effect_2">
+        <string>Improvisation</string>
+        <int>5</int>
+      </effect>
+    </card>
+    <card>
+      <number>35</number>
+      <string name="name"><![CDATA[manastorm]]></string>
+      <string name="type"><![CDATA[advanced]]></string>
+      <string name="colour"><![CDATA[white]]></string>
+      <effect type="effect_1">
+        <string>Improvisation</string>
+        <int>3</int>
+      </effect>
+      <effect type="effect_2">
+        <string>Improvisation</string>
+        <int>5</int>
+      </effect>
+    </card>
+    <card>
+      <number>36</number>
+      <string name="name"><![CDATA[ambush]]></string>
+      <string name="type"><![CDATA[advanced]]></string>
+      <string name="colour"><![CDATA[green]]></string>
+      <effect type="effect_1">
+        <string>Improvisation</string>
+        <int>3</int>
+      </effect>
+      <effect type="effect_2">
+        <string>Improvisation</string>
+        <int>5</int>
+      </effect>
+    </card>
+    <card>
+      <number>37</number>
+      <string name="name"><![CDATA[maximaleffect]]></string>
+      <string name="type"><![CDATA[advanced]]></string>
+      <string name="colour"><![CDATA[red]]></string>
+      <effect type="effect_1">
+        <string>Improvisation</string>
+        <int>3</int>
+      </effect>
+      <effect type="effect_2">
+        <string>Improvisation</string>
+        <int>5</int>
+      </effect>
+    </card>
+    <card>
+      <number>38</number>
+      <string name="name"><![CDATA[magictalent]]></string>
+      <string name="type"><![CDATA[advanced]]></string>
+      <string name="colour"><![CDATA[blue]]></string>
+      <effect type="effect_1">
+        <string>Improvisation</string>
+        <int>3</int>
+      </effect>
+      <effect type="effect_2">
+        <string>Improvisation</string>
+        <int>5</int>
+      </effect>
+    </card>
+    <card>
+      <number>39</number>
+      <string name="name"><![CDATA[learning]]></string>
+      <string name="type"><![CDATA[advanced]]></string>
+      <string name="colour"><![CDATA[white]]></string>
+      <effect type="effect_1">
+        <string>Improvisation</string>
+        <int>3</int>
+      </effect>
+      <effect type="effect_2">
+        <string>Improvisation</string>
+        <int>5</int>
+      </effect>
+    </card>
+    <card>
+      <number>40</number>
+      <string name="name"><![CDATA[training]]></string>
+      <string name="type"><![CDATA[advanced]]></string>
+      <string name="colour"><![CDATA[training]]></string>
+      <effect type="effect_1">
+        <string>Improvisation</string>
+        <int>3</int>
+      </effect>
+      <effect type="effect_2">
+        <string>Improvisation</string>
+        <int>5</int>
+      </effect>
+    </card>
   </Cards>
   <HexGroups>
     <group>
@@ -567,7 +959,7 @@
     <orc>
       <name>CursedHags</name>
       <attack>
-        <strength>4</strength>
+        <strength>3</strength>
         <poison />
       </attack>
       <defense>

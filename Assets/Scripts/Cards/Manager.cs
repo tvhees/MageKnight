@@ -21,7 +21,6 @@ namespace BoardGame
 
             void CreateDecks()
             {
-                Factory.Instance.CreateDeck(new GameObject("WoundDeck"), Game.Manager.Instance.m_sharedCamera, Factory.DeckType.WoundDeck);
                 // Create a shared deck all players can see
                 SharedDecks.Instance.Init();
             }
@@ -79,7 +78,7 @@ namespace BoardGame
                 }
 
                 // By default, successfully using a card sends it to the play area
-                Game.Manager.Instance.GetCurrentPlayer().MoveToPlayArea(m_effectCard);
+                Game.Manager.Instance.GetCurrentPlayer().MoveCardToPlayArea(m_effectCard);
             }
 
             public void FailedEffect()

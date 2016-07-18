@@ -58,32 +58,58 @@ namespace BoardGame
             //************
             public enum DeckType
             {
-                SharedDeck,
-                PlayerDeck,
-                WoundDeck
-                // List deck types as necessary
+                Shared,
+                Player,
+                Wound,
+                AdvancedAction,
+                Spell,
+                Artifact,
+                CommonUnit,
+                EliteUnit
             }
 
-            public GameObject m_cardPrefab;
+            public GameObject cardPrefab;
 
-            public List<Object> CreateDeck(GameObject deck, Camera camera, DeckType type)
+            public void CreatePlayerDeck(Players.Player player, Camera camera, DeckType type)
             {
                 int[] cardNumbers = new DeckList(type).cards;
                 cardNumbers.Randomise(false);
 
-                List<Object> deckList = new List<Object>();
+                for (int i = 0; i < cardNumbers.Length; i++)
+                {
+                    Object newCard = Instantiate(cardPrefab).GetComponent<Object>();
+
+                    GiveCardIdentity(newCard, cardNumbers[i]);
+                    newCard.InitialiseForPlayer(player);
+                    player.MoveCardToDeck(newCard);
+                }
+            }
+
+            public List<Object> CreateSharedDeck(GameObject deckHolder, Camera camera, DeckType type, Vector3 deckPosition)
+            {
+                int[] cardNumbers = new DeckList(type).cards;
+                cardNumbers.Randomise(false);
+
+                List<Object> cardList = new List<Object>();
+
+                deckHolder.transform.SetParent(SharedDecks.Instance.transform);
+                deckHolder.transform.localPosition = deckPosition;
 
                 for (int i = 0; i < cardNumbers.Length; i++)
                 {
-                    Object newCard = deck.transform.InstantiateChild(m_cardPrefab).GetComponent<Object>();
+                    Object newCard = deckHolder.transform.InstantiateChild(cardPrefab).GetComponent<Object>();
 
                     GiveCardIdentity(newCard, cardNumbers[i]);
-                    deckList.Add(newCard);
+                    newCard.Initialise(camera);
+                    SharedDecks.Instance.MoveCardToDeck(newCard, deckHolder, cardList);
+                    cardList.Add(newCard);
                 }
 
-                return deckList;
+                return cardList;
             }
         }
+
+
 
         // This struct contains information on which cards to include in each deck of cards to be created
         [System.Serializable]
@@ -101,19 +127,31 @@ namespace BoardGame
                 // The same card can be included multiple times
                 switch (type)
                 {
-                    case Factory.DeckType.SharedDeck:
+                    case Factory.DeckType.Player:
                         cards = new int[16] { 1, 1, 2, 3, 3, 4, 4, 5, 5, 6, 7, 8, 9, 10, 11, 12 };
                         break;
-                    case Factory.DeckType.PlayerDeck:
-                        cards = new int[16] { 1, 1, 2, 3, 3, 4, 4, 5, 5, 6, 7, 8, 9, 10, 11, 12 };
-                        break;
-                    case Factory.DeckType.WoundDeck:
+                    case Factory.DeckType.Wound:
                         // Make a big deck of only wounds (card type 0)
                         cards = new int[50];
                         for (int i = 0; i < cards.Length; i++)
                         {
                             cards[i] = 0;
                         }
+                        break;
+                    case Factory.DeckType.AdvancedAction:
+                        cards = new int[28];
+                        for (int i = 0; i < cards.Length; i++)
+                        {
+                            cards[i] = 13 + i;
+                        }
+                        break;
+                    case Factory.DeckType.Spell:
+                        break;
+                    case Factory.DeckType.Artifact:
+                        break;
+                    case Factory.DeckType.CommonUnit:
+                        break;
+                    case Factory.DeckType.EliteUnit:
                         break;
                 }
             }

@@ -24,9 +24,9 @@ namespace BoardGame
 
             // Lists to track all enemies in combat and those that have been selected
             private List<Enemy.Object> m_listOfEnemies = new List<Enemy.Object>();
-            public Enemy.Band m_band { get; private set; }
+            public Enemy.Band band { get; private set; }
             private Players.Strength playerStrength;
-            private Players.Player m_player;
+            private Players.Player currentPlayer;
             private Enemy.Reward m_reward;
 
             private int woundsThisCombat; // Used to keep track of wounds added to hand THIS combat - for "knocked out" rule
@@ -42,10 +42,9 @@ namespace BoardGame
             public IEnumerator StartCombat()
             {
                 Game.Turn.Instance.MoveForward(Game.Turn.Phase.combat); // Enter the combat phase
-                Movement.Instance.haveDefeatedEnemies = false;
 
-                m_player = Game.Manager.Instance.GetCurrentPlayer();
-                m_band = new Enemy.Band(); // Create a new combat instance
+                currentPlayer = Game.Manager.Instance.GetCurrentPlayer();
+                band = new Enemy.Band(); // Create a new combat instance
                 m_reward = Enemy.Reward.NullReward(); // Create a new container for fame + reputation rewards
                 playerStrength = new Players.Strength(); // Create a new container for player values
 
@@ -84,7 +83,7 @@ namespace BoardGame
 
             public bool AddAttackOrBlock(int value, string type = "physical") // Add to a player's total played block or attack
             {
-                if (!m_band.IsEmpty())
+                if (!band.IsEmpty())
                 {
                     int strength = playerStrength.AddStrength(value, type); // Add the attack to the player's status
                     m_combatPanel.m_playerArea.SetStrength(strength, type); // update UI to reflect current strength
@@ -101,18 +100,18 @@ namespace BoardGame
                 // Block phase rules: Cold attacks require Fire block and vice versa. Ineffective blocks are halved, rounded down
                 if (Instance.m_phase == Phase.block)
                 {
-                    enemyTotal = band.m_attack.strength;
+                    enemyTotal = band.attack.strength;
 
-                    if (band.m_attack.swiftness) // Double the block needed
+                    if (band.attack.swiftness) // Double the block needed
                         enemyTotal *= 2;
 
-                    if (band.m_attack.cold)
+                    if (band.attack.cold)
                         player.cold = Mathf.FloorToInt(player.cold / 2f);
 
-                    if (band.m_attack.fire)
+                    if (band.attack.fire)
                         player.fire = Mathf.FloorToInt(player.fire / 2f);
 
-                    if (band.m_attack.cold || band.m_attack.fire)
+                    if (band.attack.cold || band.attack.fire)
                         player.physical = Mathf.FloorToInt(player.fire / 2f);
                 }
                 // Attack phase rules: Cold attacks halved by Cold resistance, same with Fire.
@@ -140,12 +139,12 @@ namespace BoardGame
 
             public void Resolve()
             {
-                if (m_band.IsEmpty()) // If we've pressed this with no enemies selected, move on to the next phase
+                if (band.IsEmpty()) // If we've pressed this with no enemies selected, move on to the next phase
                 {
                     NextPhase();
                     return;
                 }
-                else if (SuccessfulCombat(playerStrength, m_band)) // Otherwise evaluate whether the player has succeeded and proceed accordingly
+                else if (SuccessfulCombat(playerStrength, band)) // Otherwise evaluate whether the player has succeeded and proceed accordingly
                 {
                     if (m_phase == Phase.block) // Block phase - player being attacked
                         Debug.Log("attack blocked");
@@ -157,16 +156,15 @@ namespace BoardGame
                 else
                 {
                     if (m_phase == Phase.block) // Block phase - player being attacked
-                        woundsThisCombat += m_player.TakeDamage(m_band.m_attack); // Unblocked attacks cause wounds
+                        woundsThisCombat += currentPlayer.WoundsDueToAttack(band.attack); // Unblocked attacks cause wounds
                     else
                         Debug.Log("enemy not defeated"); // Attack phase - player trying to kill enemies
                 }
 
-                m_band.Disable(); // Disable all enemies in the current instance
+                band.Disable(); // Disable all enemies in the current instance
 
                 if (m_combatPanel.m_enemyArea.IsEmpty())
                 {
-                    Movement.Instance.haveDefeatedEnemies = true;
                     EndCombat();
                 }
                 else
@@ -175,10 +173,10 @@ namespace BoardGame
 
             void DefeatAndGetRewards()
             {
-                m_combatPanel.m_enemyArea.DefeatEnemy(m_band.Enemies());
+                m_combatPanel.m_enemyArea.DefeatEnemy(band.Enemies());
                 
                 // Store the fame and reputation earned from defeating enemie(s)
-                m_reward += m_band.m_reward;
+                m_reward += band.m_reward;
                 Debug.Log(m_reward.fame + " fame and " + m_reward.reputation + " reputation earned this combat");
             }
 
@@ -217,8 +215,8 @@ namespace BoardGame
                 m_listOfEnemies.Clear(); // Empty the list of enemies
 
                 // Give the player combat rewards
-                m_player.AddFame(m_reward.fame);
-                m_player.AddReputation(m_reward.reputation);
+                currentPlayer.AddFame(m_reward.fame);
+                currentPlayer.AddReputation(m_reward.reputation);
 
                 // Move the game to the next phase
                 Game.Turn.Instance.MoveForward();

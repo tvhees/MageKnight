@@ -8,7 +8,7 @@ namespace BoardGame
     {
         public class Band
         {
-            public Attack m_attack { get; private set; }
+            public Attack attack { get; private set; }
             public Defense m_defense { get; private set; }
             public Reward m_reward { get; private set; }
 
@@ -37,7 +37,7 @@ namespace BoardGame
             void SetProperties()
             {
                 if(!IsEmpty())
-                    m_attack = m_enemies[0].enemy.GetAttack(); // Only ever one attack at a time
+                    attack = m_enemies[0].enemy.GetAttack(); // Only ever one attack at a time
 
                 m_defense = new Defense(); // multiple defenders means we add their strength and properties
                 foreach (GUI.EnemyHolder holder in m_enemies)

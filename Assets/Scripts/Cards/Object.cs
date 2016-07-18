@@ -17,36 +17,32 @@ namespace BoardGame
             public GameObject effect1ButtonPrefab;
             public GameObject effect2ButtonPrefab;
 
-            private EffectButton[] m_effectButtons;
-            private int m_playerID;
+            private EffectButton[] effectButtons;
+            private int playerID;
             public MovingObject movingObject { get; private set; }
 
             // Initialisation method for cards owned by players
-            public void InitialiseForPlayer(int playerID, Players.Player.Location startLoc, Camera camera, bool buttonsOn = true)
+            public void InitialiseForPlayer(Players.Player player, bool buttonsOn = true)
             {
-                m_playerID = playerID;
+                playerID = player.id;
 
-                Initialise(camera);
+                Initialise(player.playerCamera);
 
-                SetLocation(startLoc);
+                if (buttonsOn)
+                {               
+                    // Initialise effect buttons
+                    Vector3 buttonScale = new Vector3(1.3f, 1.3f, 0.01f);
+                    transform.InstantiateChild(tapButtonPrefab, localPosition: new Vector3(0f, -0.15f, -0.05f)).transform.localScale = buttonScale;
+                    transform.InstantiateChild(effect1ButtonPrefab, localPosition: new Vector3(0f, -0.15f, -0.05f)).transform.localScale = buttonScale;
+                    transform.InstantiateChild(effect2ButtonPrefab, localPosition: new Vector3(0f, -0.15f, -0.05f)).transform.localScale = buttonScale;
 
-                // Initialise effect buttons
-                Vector3 buttonScale = new Vector3(1.3f, 1.3f, 0.01f);
-                transform.InstantiateChild(tapButtonPrefab, localPosition: new Vector3(0f, -0.15f, -0.05f)).transform.localScale = buttonScale;
-                transform.InstantiateChild(effect1ButtonPrefab, localPosition: new Vector3(0f, -0.15f, -0.05f)).transform.localScale = buttonScale;
-                transform.InstantiateChild(effect2ButtonPrefab, localPosition: new Vector3(0f, -0.15f, -0.05f)).transform.localScale = buttonScale;
-
-                m_effectButtons = GetComponentsInChildren<EffectButton>();
-
-                for (int i = 0; i < m_effectButtons.Length; i++)
-                {
-                    if (buttonsOn)
+                    effectButtons = GetComponentsInChildren<EffectButton>();
+                    for (int i = 0; i < effectButtons.Length; i++)
                     {
-                        m_effectButtons[i].gameObject.SetActive(true);
-                        m_effectButtons[i].Init(m_playerID);
+                        effectButtons[i].Init(playerID);
                     }
-                    else
-                        m_effectButtons[i].gameObject.SetActive(false);
+
+                    EnableEffectButtons();
                 }
             }
 
@@ -60,12 +56,40 @@ namespace BoardGame
                 movingObject.SetSpeed(40);
 
                 m_Camera = camera;
-                StartCoroutine(movingObject.SetHomePos(transform.parent.position + movingObject.homePos));
+                //StartCoroutine(movingObject.SetHomePos(transform.parent.position + movingObject.homePos));
+
+                effectButtons = new EffectButton[0];
+            }
+
+            // Activate card effect buttons
+            public void EnableEffectButtons()
+            {
+                for (int i = 0; i < effectButtons.Length; i++)
+                {
+                    effectButtons[i].Activate();
+                }
+            }
+
+            public void DisableEffectButtons()
+            {
+                for (int i = 0; i < effectButtons.Length; i++)
+                {
+                    effectButtons[i].Deactivate();
+                }
             }
 
             // ****************
             // CARD ID, ART AND HIGHLIGHTING
             // ****************
+
+            public enum Location
+            {
+                deck,
+                hand,
+                play,
+                discard,
+                offer
+            }
 
             // Card type variables
             public int m_ID { get; private set; }
@@ -90,12 +114,13 @@ namespace BoardGame
             {
                 switch (location)
                 {
-                    case Players.Player.Location.deck:
+                    case Location.deck:
                         m_spriteRenderer.sprite = m_backSprite;
                         break;
-                    case Players.Player.Location.hand:
-                    case Players.Player.Location.play:
-                    case Players.Player.Location.discard:
+                    case Location.hand:
+                    case Location.play:
+                    case Location.discard:
+                    case Location.offer:
                         m_spriteRenderer.sprite = m_faceSprite;
                         break;
                 }
@@ -109,7 +134,7 @@ namespace BoardGame
 
             void OnMouseOver()
             {
-                if (location == Players.Player.Location.hand)
+                if (location == Location.hand)
                 {
                     if (!focused)
                     {
@@ -120,7 +145,7 @@ namespace BoardGame
 
             void OnMouseExit()
             {
-                if (location == Players.Player.Location.hand)
+                if (location == Location.hand)
                 {
                     if (!focused)
                     {
@@ -172,8 +197,8 @@ namespace BoardGame
                 focused = true;
                 StartCoroutine(movingObject.SetTargetPos(m_Camera.transform.position + m_clickDepth)); // Move to center of screen
 
-                for (int i = 0; i < m_effectButtons.Length; i++)
-                    m_effectButtons[i].Enable();
+                for (int i = 0; i < effectButtons.Length; i++)
+                    effectButtons[i].Activate();
             }
 
             /// <summary>
@@ -184,16 +209,16 @@ namespace BoardGame
                 focused = false;
                 StartCoroutine(movingObject.ReturnHome()); // Move back to wherever it came from
 
-                for (int i = 0; i < m_effectButtons.Length; i++)
-                    m_effectButtons[i].Disable();
+                for (int i = 0; i < effectButtons.Length; i++)
+                    effectButtons[i].Deactivate();
             }
 
             // ****************
             // CARD LOCATION
             // ****************
-            public Players.Player.Location location { get; private set; }
+            public Location location { get; private set; }
 
-            public void SetLocation(Players.Player.Location newLocation)
+            public void SetLocation(Location newLocation)
             {
                 location = newLocation;
                 ChooseSprite();

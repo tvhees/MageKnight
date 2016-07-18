@@ -12,26 +12,26 @@ namespace BoardGame
 
             private Object m_card;
             private int m_playerID;
-            private Collider m_collider;
+            private Collider collider;
             private MeshRenderer m_meshRenderer;
 
             public void Init(int playerID)
             {
                 m_card = GetComponentInParent<Object>();
                 m_playerID = playerID;
-                m_collider = GetComponent<Collider>();
+                collider = GetComponent<Collider>();
                 m_meshRenderer = GetComponent<MeshRenderer>();
-                Disable();
+                Deactivate(); // We don't want to fully activate buttons until the card is zoomed on
             }
 
-            public void Enable()
+            public void Activate()
             {
-                m_collider.enabled = true;
+                collider.enabled = true;
             }
 
-            public void Disable()
+            public void Deactivate()
             {
-                m_collider.enabled = false;
+                collider.enabled = false;
                 m_meshRenderer.enabled = false;
             }
 
