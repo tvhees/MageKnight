@@ -72,7 +72,7 @@ namespace BoardGame
 
             public void ShowAttackOrDefense()
             {
-                if (Rules.Combat.Instance.m_phase == Rules.Combat.Phase.block)
+                if (Rules.Combat.Instance.phase == Rules.Combat.Phase.block)
                 {
                     foreach (EnemyHolder obj in enemyHolders)
                         obj.ShowAttack();

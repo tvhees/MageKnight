@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 52cf5dc1d0bfec940856568a5d12a712
+timeCreated: 1468990930
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - choiceCanvasPrefab: {fileID: 109008, guid: 782c336fa08b1114493fcabd0d856b06, type: 2}
+  - choiceOptionPrefab: {fileID: 155130, guid: 33eec2db94dfa0044a1e42d88034bd21, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

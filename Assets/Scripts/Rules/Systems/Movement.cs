@@ -57,7 +57,7 @@ namespace BoardGame
                 {
                     if (listOfTilesToMoveTo.Count < 1)
                     {
-                        listOfTilesToMoveTo.Add(Game.Manager.Instance.GetCurrentPlayer().currentTile); // If we don't have a path yet, start it at the player's current tile
+                        listOfTilesToMoveTo.Add(Game.Manager.GetCurrentPlayer().currentTile); // If we don't have a path yet, start it at the player's current tile
                         listOfCostsToPay.Add(0); // We need a dummy cost to keep indices consistent with the list of tiles
                     }
 
@@ -127,7 +127,7 @@ namespace BoardGame
                     yield break;
 
                 // Get the player's moving object component because we're going to be moving
-                MovingObject player = Game.Manager.Instance.GetCurrentPlayer().GetComponent<MovingObject>();
+                MovingObject player = Game.Manager.GetCurrentPlayer().GetComponent<MovingObject>();
 
                 // Create a list to hold any enemies we have to fight
                 List<Enemy.Object> enemiesToFight = new List<Enemy.Object>();
