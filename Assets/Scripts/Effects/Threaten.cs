@@ -13,7 +13,7 @@ namespace BoardGame
             {
                 if (Game.Turn.Instance.GetPhase() == Game.Turn.Phase.influence)
                 {
-                    GetComponent<Button>().player.AddReputation(-1);
+                    GetComponent<CardButton>().player.AddReputation(-1);
                     Rules.Influence.Instance.AddInfluence(intValue);                        
                 }
                 else return;

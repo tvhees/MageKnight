@@ -173,7 +173,6 @@ namespace BoardGame
 
             void ShiftCardsInHand(Vector3 target, float delta)
             {
-                Debug.Log(target);
                 for (int i = 0; i < cardsInHand.Count; i++)
                 {
                     MovingObject cardMO = cardsInHand[i].movingObject; // Use the card's moving object script to set it's home position delta units in the target's direction

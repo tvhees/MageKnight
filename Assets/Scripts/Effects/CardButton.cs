@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -7,12 +8,11 @@ namespace BoardGame
 {
     namespace Effect
     {
-        public class Button : MonoBehaviour
+        public class CardButton : MonoBehaviour
         {
+            private Button button;
             private Object card;
             public Players.Player player { get; private set; }
-            private Collider buttonCollider;
-            private MeshRenderer meshRenderer;
 
             // Effect component
             BaseEffect effect;
@@ -21,10 +21,15 @@ namespace BoardGame
             {
                 card = GetComponentInParent<Card.Object>();
                 this.player = player;
-                buttonCollider = GetComponent<Collider>();
-                meshRenderer = GetComponent<MeshRenderer>();
 
                 Deactivate(); // We don't want to fully activate buttons until the card is zoomed on
+            }
+
+            public void AddUnityActionsForButton(Dictionary<string, string> cardInfo, int effectNumber)
+            {
+                button = GetComponent<Button>();
+                UnityAction action = AddEffectActionByName(cardInfo, effectNumber);
+                button.onClick.AddListener(action);
             }
 
             public UnityAction AddEffectActionByName(Dictionary<string, string> cardInfo, int effectNumber, string choiceChar = "")
@@ -117,28 +122,12 @@ namespace BoardGame
 
             public void Activate()
             {
-                buttonCollider.enabled = true;
+                button.interactable = true;
             }
 
             public void Deactivate()
             {
-                buttonCollider.enabled = false;
-                meshRenderer.enabled = false;
-            }
-
-            public void OnMouseEnter()
-            {
-                meshRenderer.enabled = true;
-            }
-
-            public void OnMouseExit()
-            {
-                meshRenderer.enabled = false;
-            }
-
-            public void OnMouseUpAsButton()
-            {
-                effect.UseEffect();
+                button.interactable = false;
             }
         }
     }

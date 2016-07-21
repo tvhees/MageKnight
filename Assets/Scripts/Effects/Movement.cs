@@ -11,6 +11,7 @@ namespace BoardGame
 		{
             public override void UseEffect()
             {
+                Debug.Log("Movement called");
                 if (Game.Turn.Instance.GetPhase() == Game.Turn.Phase.movement)
                 {
                     Rules.Movement.Instance.AddMovement(intValue);

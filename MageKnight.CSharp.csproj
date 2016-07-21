@@ -73,7 +73,7 @@
     <Compile Include="Assets\Scripts\Effects\Attack.cs" />
     <Compile Include="Assets\Scripts\Effects\BaseEffect.cs" />
     <Compile Include="Assets\Scripts\Effects\Block.cs" />
-    <Compile Include="Assets\Scripts\Effects\Button.cs" />
+    <Compile Include="Assets\Scripts\Effects\CardButton.cs" />
     <Compile Include="Assets\Scripts\Effects\ChoiceButtons.cs" />
     <Compile Include="Assets\Scripts\Effects\CleanupMethod.cs" />
     <Compile Include="Assets\Scripts\Effects\Concentration.cs" />
@@ -111,6 +111,8 @@
     <Compile Include="Assets\Scripts\Game\UIManager.cs" />
     <Compile Include="Assets\Scripts\General\AdjacencyChecker.cs" />
     <Compile Include="Assets\Scripts\General\CameraDrawer.cs" />
+    <Compile Include="Assets\Scripts\General\MouseClick.cs" />
+    <Compile Include="Assets\Scripts\General\MouseEnter.cs" />
     <Compile Include="Assets\Scripts\General\MovingObject.cs" />
     <Compile Include="Assets\Scripts\HexGrid\Factory.cs" />
     <Compile Include="Assets\Scripts\HexGrid\Group.cs" />

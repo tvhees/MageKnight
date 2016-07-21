@@ -18,7 +18,8 @@ namespace BoardGame
             public GameObject effect1ButtonPrefab;
             public GameObject effect2ButtonPrefab;
 
-            private Effect.Button[] effectButtons;
+            public Canvas buttonCanvas;
+            private Effect.CardButton[] effectButtons;
             public Players.Player owningPlayer { get; private set; }
             public MovingObject movingObject { get; private set; }
 
@@ -30,15 +31,14 @@ namespace BoardGame
                 movingObject.SetSpeed(40);
 
                 // Add no effects by default
-                effectButtons = new Effect.Button[0];
+                effectButtons = new Effect.CardButton[0];
             }
 
             public void AddEffectButtons(Players.Player player, Dictionary<string, string> cardInfo)
             {
                 owningPlayer = player;
 
-                Vector3 buttonScale = new Vector3(1.3f, 1.3f, 0.01f);
-                Vector3 buttonPosition = new Vector3(0f, -0.15f, -0.05f);
+                buttonCanvas.worldCamera = player.playerCamera; // Set it so that the buttons will register clicks through this player's camera
 
                 GameObject[] buttonPrefabs = new GameObject[3] { tapButtonPrefab, effect1ButtonPrefab, effect2ButtonPrefab };
 
@@ -48,17 +48,17 @@ namespace BoardGame
                     string choiceKey = "choice_" + i.ToString();
                     if (cardInfo.ContainsKey(effectKey) || cardInfo.ContainsKey(choiceKey))
                     {
-                        Effect.Button effectButton = transform.InstantiateChild(buttonPrefabs[i], localPosition: buttonPosition).GetComponent<Effect.Button>();
-                        effectButton.transform.localScale = buttonScale;
+                        Effect.CardButton effectButton = buttonCanvas.transform.InstantiateChild(buttonPrefabs[i]).GetComponent<Effect.CardButton>();
+                        effectButton.GetComponent<RectTransform>().Reset();
 
-                        effectButton.AddEffectActionByName(cardInfo, i);
+                        effectButton.AddUnityActionsForButton(cardInfo, i);
                         effectButton.AddEffectCostByType(cardType, i, cardColour);
                         effectButton.AddCleanupMethod();
                     }
 
                 }
 
-                effectButtons = GetComponentsInChildren<Effect.Button>();
+                effectButtons = GetComponentsInChildren<Effect.CardButton>();
                 for (int i = 0; i < effectButtons.Length; i++)
                 {
                     effectButtons[i].Init(player);
@@ -153,7 +153,7 @@ namespace BoardGame
 
             private bool focused;
 
-            void OnMouseOver()
+            void MouseEntered()
             {
                 if (location == Location.hand)
                 {
@@ -164,7 +164,7 @@ namespace BoardGame
                 }
             }
 
-            void OnMouseExit()
+            void MouseExited()
             {
                 if (location == Location.hand)
                 {
@@ -178,7 +178,7 @@ namespace BoardGame
             /// <summary>
             /// Zoom and center a card if clicked to select, return it to the home position if clicked to deselect
             /// </summary>
-            void OnMouseUpAsButton()
+            void MouseClicked()
             {
                 if (!focused)
                 {
@@ -188,7 +188,6 @@ namespace BoardGame
                 {
                     SendToHome();
                 }
-
             }
 
             // ****************

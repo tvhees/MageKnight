@@ -11,7 +11,7 @@ namespace BoardGame
 		{
             public override void UseEffect()
             {
-                GetComponent<Button>().player.DrawCards(intValue);
+                GetComponent<CardButton>().player.DrawCards(intValue);
                 GetComponent<CleanupMethod>().Success();
             }
         }
