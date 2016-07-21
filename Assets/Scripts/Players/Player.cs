@@ -203,28 +203,23 @@ namespace BoardGame
                     case Card.Object.Location.deck:
                         cardsInDeck.Add(card);
                         card.transform.SetParent(deck.transform);
-                        card.DisableEffectButtons();
                         break;
                     case Card.Object.Location.hand:
                         cardsInHand.Add(card);
                         card.transform.SetParent(hand.transform);
-                        card.EnableEffectButtons();
+                        
                         break;
                     case Card.Object.Location.play:
                         cardsInPlay.Add(card);
                         card.transform.SetParent(playedArea.transform);
-                        card.DisableEffectButtons();
                         break;
                     case Card.Object.Location.discard:
                         cardsInDiscard.Add(card);
                         card.transform.SetParent(discard.transform);
-                        card.DisableEffectButtons();
                         break;
                     case Card.Object.Location.throwAway:
-                        card.DisableEffectButtons();
                         break;
                 }
-
                 card.SetLocation(newLocation);
             }
 

@@ -63,8 +63,6 @@ namespace BoardGame
                 {
                     effectButtons[i].Init(player);
                 }
-
-                EnableEffectButtons();
             }
 
 
@@ -219,11 +217,14 @@ namespace BoardGame
             /// </summary>
             void ZoomAndFocus()
             {
-                focused = true;
-                StartCoroutine(movingObject.SetTargetPos(camera.transform.position + m_clickDepth)); // Move to center of screen
+                if (location != Location.deck)
+                {
+                    focused = true;
+                    StartCoroutine(movingObject.SetTargetPos(camera.transform.position + m_clickDepth)); // Move to center of screen
 
-                for (int i = 0; i < effectButtons.Length; i++)
-                    effectButtons[i].Activate();
+                    if (location == Location.hand)
+                        EnableEffectButtons();
+                }
             }
 
             /// <summary>
@@ -232,10 +233,8 @@ namespace BoardGame
             void SendToHome()
             {
                 focused = false;
+                DisableEffectButtons();
                 StartCoroutine(movingObject.ReturnHome()); // Move back to wherever it came from
-
-                for (int i = 0; i < effectButtons.Length; i++)
-                    effectButtons[i].Deactivate();
             }
 
             // ****************
@@ -247,6 +246,7 @@ namespace BoardGame
             {
                 location = newLocation;
                 ChooseSprite();
+                DisableEffectButtons();
             }
         }
     }

@@ -11,6 +11,7 @@ namespace BoardGame
         public class CardButton : MonoBehaviour
         {
             private Button button;
+            private Image image;
             private Object card;
             public Players.Player player { get; private set; }
 
@@ -19,10 +20,10 @@ namespace BoardGame
 
             public void Init(Players.Player player)
             {
+                Debug.Log("get image component");
+                image = GetComponent<Image>();
                 card = GetComponentInParent<Card.Object>();
                 this.player = player;
-
-                Deactivate(); // We don't want to fully activate buttons until the card is zoomed on
             }
 
             public void AddUnityActionsForButton(Dictionary<string, string> cardInfo, int effectNumber)
@@ -122,12 +123,14 @@ namespace BoardGame
 
             public void Activate()
             {
-                button.interactable = true;
+                image.enabled = true;
+                button.enabled = true;
             }
 
             public void Deactivate()
             {
-                button.interactable = false;
+                image.enabled = false;
+                button.enabled = false;
             }
         }
     }
