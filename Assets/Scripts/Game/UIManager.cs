@@ -8,43 +8,83 @@ namespace BoardGame
     {
         public class UIManager : Singleton<UIManager>
         {
-            public GameObject m_arrowPrefab;
-            public GameObject m_signPrefab;
-            private List<GameObject> m_pathArrows = new List<GameObject>();
-            private List<GameObject> m_pathSigns = new List<GameObject>();
+            public GameObject arrowPrefab;
+            public GameObject costNumberPrefab;
+            private List<GameObject> listOfArrows = new List<GameObject>();
+            private List<GameObject> listOfMovementCostNumbers = new List<GameObject>();
 
 
             // Draw a path of arrows across relevant hexes
-            public void DrawPath(Vector3 start, Vector3 end, string sign)
+            public void DrawUIForMovementPath(List<HexGrid.Manager> listOfTilesToDrawAcross, string movementCostAsString)
             {
-                Vector3 midPoint = (end + start) * 0.5f; // Place arrows and numbers at midpoint between tiles
-                Quaternion rotation = Quaternion.LookRotation(Vector3.Cross((end - start), Vector3.up)); // arrow prefab is already rotated 90 degrees so we need to make it 'look' at the orthogonal direction
-                GameObject arrow = Instantiate(m_arrowPrefab, midPoint, rotation) as GameObject;
-                m_pathArrows.Add(arrow);
+                int i = listOfTilesToDrawAcross.Count - 1;
 
-                // Show total movement cost on number above array
-                GameObject number = Instantiate(m_signPrefab, midPoint, Quaternion.Euler(60f, 30f, 0f)) as GameObject;
-                number.GetComponent<TextMesh>().text = sign;
-                m_pathSigns.Add(number);
+                Vector3 start = listOfTilesToDrawAcross[i - 1].transform.position;
+                Vector3 end = listOfTilesToDrawAcross[i].transform.position;
+                Vector3 midPoint = (start + end) * 0.5f; // Place arrows and numbers at midpoint between tiles
+                DrawArrow(start, end, midPoint);
+                DrawCostNumber(midPoint, movementCostAsString);                
             }
 
-            public void ColourNode(int i, Color colour)
+            void DrawArrow(Vector3 arrowTail, Vector3 arrowHead, Vector3 arrowMidpoint)
             {
-                if (i < m_pathSigns.Count)
-                    m_pathSigns[i].GetComponent<TextMesh>().color = colour;
+                Quaternion arrowRotation = Quaternion.LookRotation(Vector3.Cross((arrowHead - arrowTail), Vector3.up)); // arrow prefab is already rotated 90 degrees so we need to make it 'look' at the orthogonal direction
+                GameObject arrow = Instantiate(arrowPrefab, arrowMidpoint, arrowRotation) as GameObject;
+                listOfArrows.Add(arrow);
             }
 
-            public void DeleteLast()
+            void DrawCostNumber(Vector3 numberPosition, string movementCost)
+            {
+                Quaternion numberRotation = Quaternion.Euler(60f, 30f, 0f); // rotate to face the camera;
+                GameObject number = Instantiate(costNumberPrefab, numberPosition, numberRotation) as GameObject;
+                number.GetComponent<TextMesh>().text = movementCost;
+                listOfMovementCostNumbers.Add(number);
+            }
+
+            public void DeleteArrowPath()
+            {
+                for (int i = 0; i < listOfArrows.Count; i++)
+                {
+                    Destroy(listOfArrows[i]);
+                    Destroy(listOfMovementCostNumbers[i]);
+                }
+
+                listOfArrows.Clear();
+                listOfMovementCostNumbers.Clear();
+            }
+
+            public void ColourMovementPath(int progressInMovementPath, int totalNumberOfCostsPaid)
+            {
+                for (int i = progressInMovementPath; i < listOfMovementCostNumbers.Count; i++)
+                {
+                    if (i < totalNumberOfCostsPaid)
+                    {
+                        ColourPathCost(i, Color.red);
+                    }
+                    else
+                    {
+                        ColourPathCost(i, Color.white);
+                    }
+                }
+            }
+
+            void ColourPathCost(int i, Color colour)
+            {
+                if (i < listOfMovementCostNumbers.Count)
+                    listOfMovementCostNumbers[i].GetComponent<TextMesh>().color = colour;
+            }
+
+            public void DeleteLastPathArrow()
             {
                 // Destroy associated arrow
-                GameObject arrow = m_pathArrows.GetLast();
+                GameObject arrow = listOfArrows.GetLast();
                 Destroy(arrow);
-                m_pathArrows.RemoveLast();
+                listOfArrows.RemoveLast();
 
                 // Destroy associated number
-                GameObject number = m_pathSigns.GetLast();
+                GameObject number = listOfMovementCostNumbers.GetLast();
                 Destroy(number);
-                m_pathSigns.RemoveLast();
+                listOfMovementCostNumbers.RemoveLast();
             }
         }
     }

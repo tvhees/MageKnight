@@ -22,13 +22,13 @@ namespace BoardGame
             }
 
             // Toggles
-            private bool m_isSelected;
+            private bool selected;
 
             // Use this for initialization
             public void Init(Rules.Components.Terrain input)
             {
                 m_terrain = new Rules.TerrainInfo(input);
-                m_isSelected = false;
+                selected = false;
             }
 
             // ****************
@@ -43,12 +43,22 @@ namespace BoardGame
                     rampagingEnemy.Provoke(); // There's a rampaging enemy on this hex - we can't move there until it's gone
                 else
                     // Set the tile to selected if successfully add it to movement path
-                    m_isSelected = Rules.Movement.Instance.ChangeCost(m_isSelected, this);
+                    Rules.Movement.Instance.AddTileToPath(this);
+            }
+
+            public bool isSelected
+            {
+                get { return selected; }
+            }
+
+            public void Select()
+            {
+                selected = true;
             }
 
             public void Deselect()
             {
-                m_isSelected = false;
+                selected = false;
             }
         }
     }

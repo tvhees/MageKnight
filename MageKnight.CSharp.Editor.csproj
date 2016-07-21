@@ -99,11 +99,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Golden Demo\Editor\GoldenMaterialEditor.cs" />
-    <Compile Include="Assets\Golden Demo\Editor\HelperExtensions.cs" />
+    <Compile Include="Assets\Scripts\Editor\BaseEffectUtility.cs" />
+    <Compile Include="Assets\Scripts\Editor\ScriptableObjectUtility.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Golden Demo\Golden.shader" />
+    <None Include="Assets\Resources\CardInfo.xml" />
+    <None Include="Assets\Resources\MageKnightData.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

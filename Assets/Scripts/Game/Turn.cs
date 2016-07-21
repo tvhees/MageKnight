@@ -51,7 +51,7 @@ namespace BoardGame
                 }
             }
 
-            public void MoveBackward()
+            public void GoToPreviousPhase()
             {
                 phase = lastPhase;
             }
@@ -75,7 +75,8 @@ namespace BoardGame
 
             IEnumerator Cleanup()
             {
-                Manager.Instance.GetCurrentPlayer().EndOfTurn();
+                Manager.GetCurrentPlayer().EndOfTurn();
+                Rules.Movement.Instance.EndMovementPhase();
 
                 yield return null;
 

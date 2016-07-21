@@ -9,167 +9,189 @@ namespace BoardGame
     {
         public class Movement : Singleton<Movement>
         {
-
-            // Game Rules
-            private float maxDistance = 4f;
-
             // Tracking variables
             public bool haveDefeatedEnemies;
-            private int m_playerPosition;
-            private int m_totalCost;
-            private int m_totalPaid;
-            private List<HexGrid.Manager> m_hexPath = new List<HexGrid.Manager>(); // List for reference to hextile component
-            private List<int> m_pathCosts = new List<int>(); // Keep track of running total movecost for payment UI
+            private int progressInMovementPath;
+            private int totalPaid;
+            private List<HexGrid.Manager> listOfTilesToMoveTo = new List<HexGrid.Manager>(); // List for reference to hextile component
+            private List<int> listOfCostsToPay = new List<int>(); // Keep track of running total movecost for payment UI
 
-            public bool ChangeCost(bool removeHex, HexGrid.Manager hex)
+            public void AddTileToPath(HexGrid.Manager tile)
             {
-                // If we're adding new hexes to movement path they go at the end of the list
-                if (!removeHex)
+                if (!tile.isSelected && CanAddToPath(tile)) // If the tile is not already selected, select it and add it to our movement path
                 {
-                    return AddNewNode(hex); // Tell the tile that it is selected iff we manage to add it as a movement node 
+                    tile.Select();
+                    listOfTilesToMoveTo.Add(tile);
+
+                    int movementCost = tile.GetTerrain().cost;
+                    listOfCostsToPay.Add(movementCost);
+
+                    Board.UIManager.Instance.DrawUIForMovementPath(listOfTilesToMoveTo, movementCost.ToString());
+
+                    StartCoroutine(MovePlayer(TotalMovesPaidFor()));
+
                 }
                 // If we're removing a hex we need to work backwards down the list and remove any later movement nodes
                 else
                 {
                     if (Game.Turn.Instance.InMovementPhase())
                     {
-                        int i = m_hexPath.IndexOf(hex);
+                        int i = listOfTilesToMoveTo.IndexOf(tile);
 
-                        while (m_hexPath.Count > i)
+                        while (listOfTilesToMoveTo.Count > i)
                         {
-                            DeleteLastNode();
+                            RemoveLastTileFromPath();
                         }
 
-                        if (i == 0)
-                            Game.Turn.Instance.MoveBackward();
+                        if (i <= 1)
+                            Game.Turn.Instance.GoToPreviousPhase();
 
-                        return false; // Confirm that the tile is deselected
+                        tile.Deselect();
                     }
-                    else
-                        return true; // We weren't in the movement phase, this tile could not be deselected
                 }
             }
 
-            bool AddNewNode(HexGrid.Manager hex)
+            bool CanAddToPath(HexGrid.Manager tile)
             {
-                // Store positions of previous and current movement nodes
-                Vector3 posA;
-                if (m_hexPath.Count < 1)
-                    posA = Game.Manager.Instance.GetCurrentPlayer().transform.position; // Player position is always the first node
-                else
-                    posA = m_hexPath.GetLast().transform.position; // Draw from the last tile added to movement path
-                Vector3 posB = hex.transform.position; // Draw to the new tile
-
-                Vector3 direction = posB - posA;
-                if (Mathf.Sqrt(direction.sqrMagnitude) < Game.Manager.unitOfDistance) // We can usually only move one tile away
+                if (Game.Turn.Instance.InMovementPhase()) // We can only add tiles in the movement phase
                 {
-                    if (Game.Turn.Instance.InMovementPhase()) // Check that we are in the movement phase
-                    {    // Add new hex to the end of the list and show the total movement cost above the new arrow
-                        m_hexPath.Add(hex);
-                        m_totalCost += hex.GetTerrain().GetCost();
-                        m_pathCosts.Add(m_totalCost);
+                    if (listOfTilesToMoveTo.Count < 1)
+                    {
+                        listOfTilesToMoveTo.Add(Game.Manager.GetCurrentPlayer().currentTile); // If we don't have a path yet, start it at the player's current tile
+                        listOfCostsToPay.Add(0); // We need a dummy cost to keep indices consistent with the list of tiles
+                    }
 
-                        Board.UIManager.Instance.DrawPath(posA, posB, m_totalCost.ToString());
-                        ColourPath();
+                    // Store positions of previous and current movement nodes
+                    Vector3 positionOfPathEnd = listOfTilesToMoveTo.GetLast().transform.position; // Check distance from the end of the current path
+                    Vector3 positionOfNewTile = tile.transform.position; // Draw to the new tile
 
-                        return true;
+                    float distanceOfMovement = Mathf.Abs((positionOfNewTile - positionOfPathEnd).magnitude);
+                    if (distanceOfMovement < Game.Manager.unitOfDistance) // We can usually only move one tile away
+                    {
+                        return true; // This tile can be added to the path
                     }
                     else
-                        return false; // Not in the movement phase!
+                        return false; // Too far away from the end of the current path
                 }
                 else
-                    return false; // Too far away!
+                    return false;
             }
 
-            void DeleteLastNode()
+            void RemoveLastTileFromPath()
             {
                 // Remove hex and cost attributes
-                HexGrid.Manager lastHex = m_hexPath.GetLast();
+                HexGrid.Manager lastHex = listOfTilesToMoveTo.GetLast();
                 lastHex.GetComponent<HexGrid.Manager>().Deselect();
-                m_hexPath.RemoveLast();
-                m_totalCost -= lastHex.GetTerrain().GetCost();
-                m_pathCosts.RemoveLast();
+                listOfTilesToMoveTo.RemoveLast();
+                listOfCostsToPay.RemoveLast();
 
-                Board.UIManager.Instance.DeleteLast();
+                Board.UIManager.Instance.DeleteLastPathArrow();
             }
 
+            // Add movement points to a player's total
             public void AddMovement(int value)
             {
-                m_totalPaid += value;
+                totalPaid += value;
 
-                ColourPath();
+                StartCoroutine(MovePlayer(TotalMovesPaidFor())); // Move as many tiles as the player has now paid for.
             }
 
-            void ColourPath()
+            int TotalMovesPaidFor()
             {
-                int nodesPaid = 0;
-                for (int i = 0; i < m_pathCosts.Count; i++)
+                int n = AdditionalMovesPaidFor() + progressInMovementPath;
+                Board.UIManager.Instance.ColourMovementPath(progressInMovementPath, n); // Colour the moves that have been paid for
+                return n;
+            }
+
+
+            // Calculate how many of the queued movements they player has payed enough movement points for
+            int AdditionalMovesPaidFor()
+            {
+                int movesPaidFor = 0;
+                for (int i = progressInMovementPath + 1; i < listOfCostsToPay.Count; i++)
                 {
-                    if (m_pathCosts[i] <= m_totalPaid)
+                    int tileCost = listOfCostsToPay[i];
+                    if (totalPaid >= tileCost)
                     {
-                        Board.UIManager.Instance.ColourNode(i, Color.red);
-                        nodesPaid++;
-                    }
-                    else
-                    {
-                        Board.UIManager.Instance.ColourNode(i, Color.white);
+                        totalPaid -= tileCost;
+                        movesPaidFor++;
                     }
                 }
 
-                if(nodesPaid > 0)
-                    StartCoroutine(MovePlayer(nodesPaid));
+                return movesPaidFor;
             }
 
-            IEnumerator MovePlayer(int n)
+            IEnumerator MovePlayer(int numberOfTilesToMove)
             {
-                haveDefeatedEnemies = false; // We haven't fought anything yet
+                if (numberOfTilesToMove == 0) // If we're not moving anywhere we can safely skip this method
+                    yield break;
+
+                // Get the player's moving object component because we're going to be moving
+                MovingObject player = Game.Manager.GetCurrentPlayer().GetComponent<MovingObject>();
 
                 // Create a list to hold any enemies we have to fight
                 List<Enemy.Object> enemiesToFight = new List<Enemy.Object>();
 
-                // Get the player's moving object component
-                MovingObject player = Game.Manager.Instance.GetCurrentPlayer().GetComponent<MovingObject>();
+                bool combatOccurred = false;
 
-                for (int i = m_playerPosition; i < n; i++)
+                for (int i = progressInMovementPath; i < numberOfTilesToMove; i++)
                 {
-                    // Check if we're moving past any rampaging enemies and add them to enemies list
+                    // The player is currently at tile i
+                    int nextTileIndex = i + 1; // We want to look at the cost, position etc of the tile we're moving to
+                    HexGrid.Manager nextTile = listOfTilesToMoveTo[nextTileIndex];
+
+                    // Look for rampaging enemies adjacent to our destination - the player always has the option to fight these
                     List<Enemy.Object> enemiesAdjacentToNextMove = AdjacencyChecker.OverlapSphereForEnemies(player.transform.position);
                     foreach (Enemy.Object enemy in enemiesAdjacentToNextMove)
                     {
-                        // If the enemy is adjacent NOW as well as where we're moving, then we must be moving past them
+                        // If the enemy is adjacent NOW as well as where we're moving, then we must be moving past them - the player is forced to fight these
                         if (AdjacencyChecker.ByDistance(player.transform.position, enemy.transform.position))
                             enemiesToFight.Add(enemy);
                     }
 
-                    // Check if there's enemies where we want to move
-                    Enemy.Object[] enemiesAtDestination = m_hexPath[i].GetComponentsInChildren<Enemy.Object>();
+                    // Check if there's enemies ON our destination
+                    Enemy.Object[] enemiesAtDestination = nextTile.GetComponentsInChildren<Enemy.Object>();
 
                     if (enemiesAtDestination.Length > 0)
                     {
-                        // We must fight before moving
+                        // We are assaulting a building and must successfully fight BEFORE we can complete the move
                         enemiesToFight.AddRange(enemiesAtDestination);
 
                         yield return StartCombatPhase(enemiesToFight);
+                        combatOccurred = true;
 
-                        if (!haveDefeatedEnemies)
-                            yield break; // Stop all movement if we haven't killed all the enemies.
+                        if (nextTile.GetComponentInChildren<Enemy.Object>() != null) // If there are still enemies on our destination we can't move there
+                        {
+                            EndMovementPhase();
+                            break;
+                        }
                     }
 
-                    // If we have killed required enemies OR not fought any, continue to next hex
-                    yield return StartCoroutine(player.SetTargetPos(m_hexPath[i].transform.position, true));
-                    m_playerPosition = i;
+                    // The tile ahead is empty, we move on to it.
+                    yield return StartCoroutine(player.SetTargetPos(nextTile.transform.position, true));
+                    progressInMovementPath = nextTileIndex;
 
-                    if (enemiesToFight.Count > 0 && !haveDefeatedEnemies) // We moved past rampaging enemies but haven't fought anything yet
+                    // Store the current tile the player is occupying
+                    player.GetComponent<Players.Player>().currentTile = nextTile;
+
+                    if (enemiesToFight.Count > 0 && !combatOccurred) // We moved past rampaging enemies but haven't fought anything yet
                     {
                         yield return StartCombatPhase(enemiesToFight);
-
-                        yield break; // Rampaging enemies always prevent further movement
+                        combatOccurred = true;
+                        break; // Combat prevents further movement
                     }
 
-                    // If we fought nothing, continue to next movement
-
-                    // We need to delete the node here!
+                    // If we fought nothing, clear the list of potential enemies and continue to next movement
+                    enemiesToFight.Clear();
                 }
+
+                if (combatOccurred)
+                    EndMovementPhase();
+            }
+
+            void GetRampagingEnemiesAdjacentToDestination()
+            {
+
             }
 
             IEnumerator StartCombatPhase(List<Enemy.Object> enemies)
@@ -178,6 +200,22 @@ namespace BoardGame
                     Combat.Instance.AddOrRemoveEnemy(enemy);
 
                 yield return StartCoroutine(Combat.Instance.StartCombat());
+            }
+
+            public void EndMovementPhase()
+            {
+                totalPaid = 0;
+                progressInMovementPath = 0;
+
+                foreach (HexGrid.Manager tile in listOfTilesToMoveTo)
+                {
+                    tile.Deselect();
+                }
+
+                listOfTilesToMoveTo.Clear();
+                listOfCostsToPay.Clear();
+
+                Board.UIManager.Instance.DeleteArrowPath();
             }
         }
     }

@@ -54,14 +54,14 @@ namespace BoardGame
         public struct TerrainInfo
         {
             private Components.Terrain m_terrain;
-            private int m_dayCost;
-            private int m_nightCost;
+            private int dayCost;
+            private int nightCost;
 
             public TerrainInfo(Components.Terrain input)
             {
                 m_terrain = input;
-                m_dayCost = 0;
-                m_nightCost = 0;
+                dayCost = 0;
+                nightCost = 0;
                 SetCost(m_terrain);
             }
 
@@ -72,44 +72,47 @@ namespace BoardGame
                 switch (type)
                 {
                     case Components.Terrain.plains:
-                        m_dayCost = m_nightCost = 2;
+                        dayCost = nightCost = 2;
                         break;
                     case Components.Terrain.forest:
-                        m_dayCost = 3;
-                        m_nightCost = 5;
+                        dayCost = 3;
+                        nightCost = 5;
                         break;
                     case Components.Terrain.hill:
-                        m_dayCost = m_nightCost = 3;
+                        dayCost = nightCost = 3;
                         break;
                     case Components.Terrain.wasteland:
-                        m_dayCost = m_nightCost = 4;
+                        dayCost = nightCost = 4;
                         break;
                     case Components.Terrain.desert:
-                        m_dayCost = 5;
-                        m_nightCost = 3;
+                        dayCost = 5;
+                        nightCost = 3;
                         break;
                     case Components.Terrain.swamp:
-                        m_dayCost = m_nightCost = 5;
+                        dayCost = nightCost = 5;
                         break;
                     case Components.Terrain.lake:
-                        m_dayCost = m_nightCost = int.MaxValue;
+                        dayCost = nightCost = int.MaxValue;
                         break;
                     case Components.Terrain.mountain:
-                        m_dayCost = m_nightCost = int.MaxValue;
+                        dayCost = nightCost = int.MaxValue;
                         break;
                 }
             }
 
             // Get the current movement cost given the time of day
-            public int GetCost()
+            public int cost
             {
-                if (Board.State.IsDayTime())
+                get
                 {
-                    return m_dayCost;
-                }
-                else
-                {
-                    return m_nightCost;
+                    if (Board.State.IsDayTime())
+                    {
+                        return dayCost;
+                    }
+                    else
+                    {
+                        return nightCost;
+                    }
                 }
             }
         }

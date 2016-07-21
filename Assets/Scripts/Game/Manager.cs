@@ -30,9 +30,9 @@ namespace BoardGame
                     Board.Manager.Instance.CreateBoard();
                 }
 
-                if (Cards.Manager.Instance != null)
+                if (Card.Manager.Instance != null)
                 {
-                    Cards.Manager.Instance.Init();
+                    Card.Manager.Instance.Init();
                 }
 
                 CreatePlayers(numberOfPlayers);
@@ -86,8 +86,8 @@ namespace BoardGame
             // ****************
             public GameObject m_playerPrefab;
 
-            private List<Players.Player> m_players = new List<Players.Player>();
-            private int currentPlayer = 0;
+            private static List<Players.Player> m_players = new List<Players.Player>();
+            private static int currentPlayer = 0;
 
             /// <summary>
             /// Add n players to the game
@@ -127,7 +127,7 @@ namespace BoardGame
                 m_players.RemoveAt(i);
             }
 
-            public Players.Player GetCurrentPlayer()
+            public static Players.Player GetCurrentPlayer()
             {
                 return m_players[currentPlayer];
             }

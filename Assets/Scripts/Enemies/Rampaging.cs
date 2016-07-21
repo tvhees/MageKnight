@@ -18,7 +18,7 @@ namespace BoardGame
             {
                 if (Game.Turn.Instance.InMovementPhase())
                 {
-                    float squareDistance = (transform.position - Game.Manager.Instance.GetCurrentPlayer().transform.position).sqrMagnitude;
+                    float squareDistance = (transform.position - Game.Manager.GetCurrentPlayer().transform.position).sqrMagnitude;
 
                     if (Mathf.Sqrt(squareDistance) < Game.Manager.unitOfDistance)
                     {

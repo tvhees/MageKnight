@@ -55,7 +55,7 @@ namespace BoardGame
 
             public void ToggleEnemySelection() // Add or remove an enemy from the current instance when their toggle value changes
             {
-                Rules.Combat.Instance.m_band.AddOrRemoveEnemy(this);
+                Rules.Combat.Instance.band.AddOrRemoveEnemy(this);
             }
 
             public void ShowDefense()
