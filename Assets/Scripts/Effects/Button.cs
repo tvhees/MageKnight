@@ -44,7 +44,8 @@ namespace BoardGame
                 {
                     ChoiceButtons choiceScript = gameObject.AddComponent<ChoiceButtons>(); // Convert the effect reference to ChoiceButtons class specifically
                     List<UnityAction> choices = AddChoiceEffects(cardInfo, effectNumber); // Get a reference list for the effects to choose between
-                    choiceScript.AddButtons(choices); // Set up the buttons and listeners for each effect choice, these will be added with their "effect_" keys
+                    List<string> descriptions = AddEffectDescriptions(cardInfo, effectNumber);
+                    choiceScript.AddButtons(choices, descriptions); // Set up the buttons and listeners for each effect choice, these will be added with their "effect_" keys
 
                     // After adding the child effects, make sure we set the choice script as the one to call on click
                     effect = choiceScript;
@@ -57,7 +58,6 @@ namespace BoardGame
             List<UnityAction> AddChoiceEffects(Dictionary<string, string> cardInfo, int effectNumber) // Recursive method - reuses the AddEffectByName method to add all choices for a single effect
             {
                 List<UnityAction> choices = new List<UnityAction>();
-
                 foreach (string i in new string[4] { "a", "b", "c", "d" })
                 {
                     UnityAction choiceAction = AddEffectActionByName(cardInfo, effectNumber, i);
@@ -65,6 +65,20 @@ namespace BoardGame
                 }
 
                 return choices;
+            }
+
+            List<string> AddEffectDescriptions(Dictionary<string, string> cardInfo, int effectNumber)
+            {
+                List<string> descriptions = new List<string>();
+                foreach (string i in new string[4] { "a", "b", "c", "d" })
+                {
+                    string descriptionKey = "effect_" + effectNumber.ToString() + i;
+                    string effectDescription;
+                    cardInfo.TryGetValue(descriptionKey, out effectDescription);
+                    if (effectDescription != null) descriptions.Add(effectDescription);
+                }
+
+                return descriptions;
             }
 
             void AddEffectValue(Dictionary<string, string> cardInfo, BaseEffect effect, int effectNumber, string choiceChar = "")
