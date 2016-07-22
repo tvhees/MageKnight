@@ -46,7 +46,8 @@ namespace BoardGame
                 {
                     string effectKey = "effect_" + i.ToString();
                     string choiceKey = "choice_" + i.ToString();
-                    if (cardInfo.ContainsKey(effectKey) || cardInfo.ContainsKey(choiceKey))
+                    string combineKey = "combine_" + i.ToString();
+                    if (cardInfo.ContainsKey(effectKey) || cardInfo.ContainsKey(choiceKey) || cardInfo.ContainsKey(combineKey))
                     {
                         Effect.CardButton effectButton = buttonCanvas.transform.InstantiateChild(buttonPrefabs[i]).GetComponent<Effect.CardButton>();
                         effectButton.GetComponent<RectTransform>().Reset();

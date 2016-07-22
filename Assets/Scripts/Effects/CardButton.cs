@@ -20,7 +20,6 @@ namespace BoardGame
 
             public void Init(Players.Player player)
             {
-                Debug.Log("get image component");
                 image = GetComponent<Image>();
                 card = GetComponentInParent<Card.Object>();
                 this.player = player;
@@ -33,44 +32,52 @@ namespace BoardGame
                 button.onClick.AddListener(action);
             }
 
-            public UnityAction AddEffectActionByName(Dictionary<string, string> cardInfo, int effectNumber, string choiceChar = "")
+            public UnityAction AddEffectActionByName(Dictionary<string, string> cardInfo, int effectNumber, string subChar = "")
             {
                 // Attach a method to the button by name
-                string effectKey = "effect_" + effectNumber.ToString() + choiceChar; // The key is of the form effect_0, effect_1, etc.
-                string choiceKey = "choice_" + effectNumber.ToString() + choiceChar; // The key is of the form choice_0, choice_1, etc.
+                string effectKey = "effect_" + effectNumber.ToString() + subChar; // The key is of the form effect_0, effect_1, etc.
+                string choiceKey = "choice_" + effectNumber.ToString() + subChar; // The key is of the form choice_0, choice_1, etc.
+                string combineKey = "combine_" + effectNumber.ToString() + subChar; // The key is of the form combine_0, combine_1, etc.
                 string effectName;
 
                 if (cardInfo.TryGetValue(effectKey, out effectName)) // Get the name of the Class to add from the card's dictionary
                 {
                     System.Type effectMethod = System.Type.GetType("BoardGame.Effect." + effectName); // Convert the name to a Class type
                     effect = (BaseEffect)gameObject.AddComponent(effectMethod); // Add the Class component to the button
-                    AddEffectValue(cardInfo, effect, effectNumber, choiceChar); // Effects can have a value in the dictionary too
+                    AddEffectValue(cardInfo, effect, effectNumber, subChar); // Effects can have a value in the dictionary too
                 }
                 else if (cardInfo.ContainsKey(choiceKey)) // If we're adding a multiple method choice there's more classes to set up
                 {
-                    ChoiceButtons choiceScript = gameObject.AddComponent<ChoiceButtons>(); // Convert the effect reference to ChoiceButtons class specifically
-                    List<UnityAction> choices = AddChoiceEffects(cardInfo, effectNumber); // Get a reference list for the effects to choose between
+                    ChoiceButtons choiceScript = gameObject.AddComponent<ChoiceButtons>(); // This button will call the class written to generate choices
+                    List<UnityAction> choices = AddMultipleEffects(cardInfo, effectNumber); // Get a reference list for the effects to choose between
                     List<string> descriptions = AddEffectDescriptions(cardInfo, effectNumber);
                     choiceScript.AddButtons(choices, descriptions); // Set up the buttons and listeners for each effect choice, these will be added with their "effect_" keys
 
-                    // After adding the child effects, make sure we set the choice script as the one to call on click
-                    effect = choiceScript;
+                    effect = choiceScript; // After adding the child effects, make sure we set the choice class as the one to call on click
+                }
+                else if (cardInfo.ContainsKey(combineKey)) // If we're getting a combination of effects
+                {
+                    CombineEffects combineScript = gameObject.AddComponent<CombineEffects>(); // This button will call the class written to fire multiple actions
+                    List<UnityAction> combinedEffects = AddMultipleEffects(cardInfo, effectNumber); // Grab all the effects to combine
+                    combineScript.AddEffects(combinedEffects); // Give the combinedScript the list of actions to execute when called
+
+                    effect = combineScript; // After adding the child effects, make sure we set the combine class as the one to call on click
                 }
                 else return null; // There's no effect or choice of this type in the dictionary to get
 
                 return effect.UseEffect;
             }
 
-            List<UnityAction> AddChoiceEffects(Dictionary<string, string> cardInfo, int effectNumber) // Recursive method - reuses the AddEffectByName method to add all choices for a single effect
+            List<UnityAction> AddMultipleEffects(Dictionary<string, string> cardInfo, int effectNumber) // Recursive method - reuses the AddEffectByName method to add all choices for a single effect
             {
-                List<UnityAction> choices = new List<UnityAction>();
+                List<UnityAction> effects = new List<UnityAction>();
                 foreach (string i in new string[4] { "a", "b", "c", "d" })
                 {
-                    UnityAction choiceAction = AddEffectActionByName(cardInfo, effectNumber, i);
-                    if (choiceAction != null) choices.Add(choiceAction);
+                    UnityAction effectAction = AddEffectActionByName(cardInfo, effectNumber, i);
+                    if (effectAction != null) effects.Add(effectAction);
                 }
 
-                return choices;
+                return effects;
             }
 
             List<string> AddEffectDescriptions(Dictionary<string, string> cardInfo, int effectNumber)

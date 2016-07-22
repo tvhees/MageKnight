@@ -7,14 +7,14 @@ namespace BoardGame
 {
 	namespace Effect
     {
-		public class Wound : BaseEffect 
+		public class HealWound : BaseEffect 
 		{
             public override void UseEffect()
             {
-                if (Rules.Healing.Instance.totalPaid <= 0) return;
+                if (Rules.Healing.Instance.totalPaid < intValue) return;
 
                 GetComponent<CleanupMethod>().ThrowAway(GetComponentInParent<Card.Object>());
-                Rules.Healing.Instance.AddHealing(-1);
+                Rules.Healing.Instance.AddHealing(-intValue);
             }
         }
 	}

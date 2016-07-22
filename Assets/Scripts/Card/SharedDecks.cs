@@ -24,7 +24,7 @@ namespace BoardGame
 
             // Vectors for locating each deck
             private Vector3 woundPosition = new Vector3(-10f, 2f, 3f);
-            private Vector3 advancedActionPosition = new Vector3(-2f, 4f, 3f);
+            private Vector3 advancedActionPosition = new Vector3(-1f, 4f, 3f);
 
             // Vector offset to create a 3D card 'stack'
             private Vector3 stackingOffset = new Vector3(0f, 0f, -0.05f);
@@ -32,7 +32,7 @@ namespace BoardGame
             public void Init()
             {
                 woundDeck = Factory.Instance.CreateSharedDeck(woundHolder = new GameObject("Wound Deck"), sharedCamera, Factory.DeckType.Wound, woundPosition);
-                //advancedActionDeck = Factory.Instance.CreateSharedDeck(new GameObject("Advanced Action Deck"), sharedCamera, Factory.DeckType.AdvancedAction, advancedActionPosition);
+                advancedActionDeck = Factory.Instance.CreateSharedDeck(new GameObject("Advanced Action Deck"), sharedCamera, Factory.DeckType.AdvancedAction, advancedActionPosition);
                 //spellDeck = Factory.Instance.CreateSharedDeck(new GameObject("Spell Deck"), sharedCamera, Factory.DeckType.Wound);
                 //artifactDeck = Factory.Instance.CreateSharedDeck(new GameObject("Artifact Deck"), sharedCamera, Factory.DeckType.Wound);
                 //commonUnitDeck = Factory.Instance.CreateSharedDeck(new GameObject("Common Unit Deck"), sharedCamera, Factory.DeckType.Wound);
