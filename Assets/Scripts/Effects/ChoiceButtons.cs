@@ -17,7 +17,7 @@ namespace BoardGame
             private GameObject choiceOptionPrefab;
 
             private Canvas choiceCanvas;
-            private UnityEngine.UI.Button[] choiceOptions;
+            private Button[] choiceOptions;
 
             public void AddButtons(List<UnityAction> choices, List<string> descriptions)
             {
@@ -26,13 +26,13 @@ namespace BoardGame
 
                 choiceCanvas = transform.InstantiateChild(choiceCanvasPrefab).GetComponent<Canvas>();
                 choiceCanvas.worldCamera = GetComponentInParent<Card.Object>().owningPlayer.playerCamera;
-                choiceOptions = new UnityEngine.UI.Button[choices.Count];
+                choiceOptions = new Button[choices.Count];
 
                 for (int i = 0; i < choices.Count; i++)
                 {
                     GameObject button = choiceCanvas.transform.InstantiateChild(choiceOptionPrefab);
                     button.transform.GetComponentInChildren<Text>().text = descriptions[i];
-                    choiceOptions[i] = button.GetComponent<UnityEngine.UI.Button>(); // Get the regular Unity Button class
+                    choiceOptions[i] = button.GetComponent<Button>(); // Get the regular Unity Button class
                     choiceOptions[i].onClick.AddListener(choices[i]); // Tell it to run Method i
                     choiceOptions[i].onClick.AddListener(ButtonCallback); // Add callback method to end the choice coroutine
                 }

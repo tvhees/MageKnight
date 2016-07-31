@@ -17,13 +17,13 @@ namespace BoardGame
             private float flipHeight;
             private bool showing;
 
-            public void OnMouseOver()
+            public void MouseEntered()
             {
                 if (showing)
                     enemyInformation.enabled = true;
             }
 
-            public void OnMouseExit()
+            public void MouseExited()
             {
                 enemyInformation.enabled = false;
             }

@@ -29,7 +29,7 @@ namespace BoardGame
             private Players.Player currentPlayer;
             private Enemy.Reward m_reward;
 
-            private int woundsThisCombat; // Used to keep track of wounds added to hand THIS combat - for "knocked out" rule
+            public int woundsThisCombat; // Used to keep track of wounds added to hand THIS combat - for "knocked out" rule
 
             public void AddOrRemoveEnemy(Enemy.Object enemy)
             {
@@ -156,7 +156,7 @@ namespace BoardGame
                 else
                 {
                     if (phase == Phase.block) // Block phase - player being attacked
-                        woundsThisCombat += currentPlayer.WoundsDueToAttack(band.attack); // Unblocked attacks cause wounds
+                        currentPlayer.WoundsDueToAttack(band.attack); // Unblocked attacks cause wounds
                     else
                         Debug.Log("enemy not defeated"); // Attack phase - player trying to kill enemies
                 }

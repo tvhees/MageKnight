@@ -4,23 +4,27 @@
     <card>
       <number>0</number>
       <string name="name"><![CDATA[wound]]></string>
+      <effect type="effect">
+        <string>HealWound</string>
+        <int>1</int>
+      </effect>
     </card>
     <card>
       <number>1</number>
       <string name="name"><![CDATA[rage]]></string>
       <string name="type"><![CDATA[basic]]></string>
       <string name="colour"><![CDATA[red]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
+      </effect>
+      <effect type="effect">
         <string>Rage</string>
         <int><![CDATA[2]]></int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Attack</string>
         <int>4</int>
-      </effect>
-      <effect type="effect_0">
-        <string>Tap</string>
-        <int>1</int>
       </effect>
     </card>
     <card>
@@ -28,17 +32,17 @@
       <string name="name"><![CDATA[determination]]></string>
       <string name="type"><![CDATA[basic]]></string>
       <string name="colour"><![CDATA[blue]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
+      </effect>
+      <effect type="effect">
         <string>Rage</string>
         <int><![CDATA[2]]></int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Block</string>
         <int>5</int>
-      </effect>
-      <effect type="effect_0">
-        <string>Tap</string>
-        <int>1</int>
       </effect>
     </card>
     <card>
@@ -46,17 +50,17 @@
       <string name="name"><![CDATA[march]]></string>
       <string name="type"><![CDATA[basic]]></string>
       <string name="colour"><![CDATA[green]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
+      </effect>
+      <effect type="effect">
         <string>Movement</string>
         <int><![CDATA[2]]></int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Movement</string>
         <int>4</int>
-      </effect>
-      <effect type="effect_0">
-        <string>Tap</string>
-        <int>1</int>
       </effect>
     </card>
     <card>
@@ -64,17 +68,17 @@
       <string name="name"><![CDATA[swiftness]]></string>
       <string name="type"><![CDATA[basic]]></string>
       <string name="colour"><![CDATA[white]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
+      </effect>
+      <effect type="effect">
         <string>Movement</string>
         <int>2</int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Ranged</string>
         <int>3</int>
-      </effect>
-      <effect type="effect_0">
-        <string>Tap</string>
-        <int>1</int>
       </effect>
     </card>
     <card>
@@ -82,17 +86,17 @@
       <string name="name"><![CDATA[stamina]]></string>
       <string name="type"><![CDATA[basic]]></string>
       <string name="colour"><![CDATA[blue]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
+      </effect>
+      <effect type="effect">
         <string>Movement</string>
         <int><![CDATA[2]]></int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Movement</string>
         <int>4</int>
-      </effect>
-      <effect type="effect_0">
-        <string>Tap</string>
-        <int>1</int>
       </effect>
     </card>
     <card>
@@ -100,29 +104,29 @@
       <string name="name"><![CDATA[tranquility]]></string>
       <string name="type"><![CDATA[basic]]></string>
       <string name="colour"><![CDATA[green]]></string>
-      <effect type="choice_1">
-        <effect type="effect_1a">
-          <string>Heal</string>
-          <int>1</int>
-        </effect>
-        <effect type="effect_1b">
-          <string>Draw</string>
-          <int>1</int>
-        </effect>
-      </effect>
-      <effect type="choice_2">
-        <effect type="effect_2a">
-          <string>Heal</string>
-          <int>2</int>
-        </effect>
-        <effect type="effect_2b">
-          <string>Draw</string>
-          <int>2</int>
-        </effect>
-      </effect>
-      <effect type="effect_0">
+      <effect type="effect">
         <string>Tap</string>
         <int>1</int>
+      </effect>
+      <effect type="choice">
+        <effect type="effect">
+          <string>Heal</string>
+          <int>1</int>
+        </effect>
+        <effect type="effect">
+          <string>Draw</string>
+          <int>1</int>
+        </effect>
+      </effect>
+      <effect type="choice">
+        <effect type="effect">
+          <string>Heal</string>
+          <int>2</int>
+        </effect>
+        <effect type="effect">
+          <string>Draw</string>
+          <int>2</int>
+        </effect>
       </effect>
     </card>
     <card>
@@ -130,17 +134,17 @@
       <string name="name"><![CDATA[promise]]></string>
       <string name="type"><![CDATA[basic]]></string>
       <string name="colour"><![CDATA[white]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
+      </effect>
+      <effect type="effect">
         <string>Influence</string>
         <int><![CDATA[2]]></int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Influence</string>
         <int>4</int>
-      </effect>
-      <effect type="effect_0">
-        <string>Tap</string>
-        <int>1</int>
       </effect>
     </card>
     <card>
@@ -148,17 +152,23 @@
       <string name="name"><![CDATA[threaten]]></string>
       <string name="type"><![CDATA[basic]]></string>
       <string name="colour"><![CDATA[red]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
+      </effect>
+      <effect type="effect">
         <string>Influence</string>
         <int><![CDATA[2]]></int>
       </effect>
-      <effect type="effect_2">
-        <string>Threaten</string>
-        <int>5</int>
-      </effect>
-      <effect type="effect_0">
-        <string>Tap</string>
-        <int>1</int>
+      <effect type="combine">
+        <effect type="effect">
+          <string>Influence</string>
+          <int>5</int>
+        </effect>
+        <effect type="effect">
+          <string>Reputation</string>
+          <int>-1</int>
+        </effect>
       </effect>
     </card>
     <card>
@@ -166,42 +176,42 @@
       <string name="name"><![CDATA[crystallize]]></string>
       <string name="type"><![CDATA[basic]]></string>
       <string name="colour"><![CDATA[blue]]></string>
-      <effect type="effect_0">
+      <effect type="effect">
         <string>Tap</string>
         <int>1</int>
       </effect>
-      <effect type="choice_1">
-        <effect type="effect_1a">
+      <effect type="choice">
+        <effect type="effect">
           <string>ManaCrystal</string>
           <int>1</int>
         </effect>
-        <effect type="effect_1b">
+        <effect type="effect">
           <string>ManaCrystal</string>
           <int>1</int>
         </effect>
-        <effect type="effect_1c">
+        <effect type="effect">
           <string>ManaCrystal</string>
           <int>1</int>
         </effect>
-        <effect type="effect_1d">
+        <effect type="effect">
           <string>ManaCrystal</string>
           <int>1</int>
         </effect>
       </effect>
-      <effect type="choice_2">
-        <effect type="effect_2a">
+      <effect type="choice">
+        <effect type="effect">
           <string>ManaCrystal</string>
           <int>1</int>
         </effect>
-        <effect type="effect_2b">
+        <effect type="effect">
           <string>ManaCrystal</string>
           <int>1</int>
         </effect>
-        <effect type="effect_2c">
+        <effect type="effect">
           <string>ManaCrystal</string>
           <int>1</int>
         </effect>
-        <effect type="effect_2d">
+        <effect type="effect">
           <string>ManaCrystal</string>
           <int>1</int>
         </effect>
@@ -212,17 +222,17 @@
       <string name="name"><![CDATA[manadraw]]></string>
       <string name="type"><![CDATA[basic]]></string>
       <string name="colour"><![CDATA[white]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
+      </effect>
+      <effect type="effect">
         <string>ExtraDie</string>
         <int>1</int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>ManaDraw</string>
         <int>2</int>
-      </effect>
-      <effect type="effect_0">
-        <string>Tap</string>
-        <int>1</int>
       </effect>
     </card>
     <card>
@@ -230,27 +240,27 @@
       <string name="name"><![CDATA[concentration]]></string>
       <string name="type"><![CDATA[basic]]></string>
       <string name="colour"><![CDATA[green]]></string>
-      <effect type="choice_1">
-        <effect type="effect_1a">
-          <string>ManaToken</string>
-          <int>1</int>
-        </effect>
-        <effect type="effect_1b">
-          <string>ManaToken</string>
-          <int>1</int>
-        </effect>
-        <effect type="effect_1c">
-          <string>ManaToken</string>
-          <int>1</int>
-        </effect>
-      </effect>
-      <effect type="effect_2">
-        <string>Concentration</string>
-        <int>2</int>
-      </effect>
-      <effect type="effect_0">
+      <effect type="effect">
         <string>Tap</string>
         <int>1</int>
+      </effect>
+      <effect type="choice">
+        <effect type="effect">
+          <string>ManaToken</string>
+          <int>1</int>
+        </effect>
+        <effect type="effect">
+          <string>ManaToken</string>
+          <int>1</int>
+        </effect>
+        <effect type="effect">
+          <string>ManaToken</string>
+          <int>1</int>
+        </effect>
+      </effect>
+      <effect type="effect">
+        <string>Concentration</string>
+        <int>2</int>
       </effect>
     </card>
     <card>
@@ -258,17 +268,17 @@
       <string name="name"><![CDATA[improvisation]]></string>
       <string name="type"><![CDATA[basic]]></string>
       <string name="colour"><![CDATA[red]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
+      </effect>
+      <effect type="effect">
         <string>Improvisation</string>
         <int>3</int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>5</int>
-      </effect>
-      <effect type="effect_0">
-        <string>Tap</string>
-        <int>1</int>
       </effect>
     </card>
   </BasicActions>
@@ -278,13 +288,17 @@
       <string name="name"><![CDATA[firebolt]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[red]]></string>
-      <effect type="effect_1">
-        <string>Improvisation</string>
-        <int>3</int>
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
       </effect>
-      <effect type="effect_2">
-        <string>Improvisation</string>
-        <int>5</int>
+      <effect type="effect">
+        <string>ManaCrystal</string>
+        <int>1</int>
+      </effect>
+      <effect type="effect">
+        <string>Ranged</string>
+        <int>3</int>
       </effect>
     </card>
     <card>
@@ -292,13 +306,17 @@
       <string name="name"><![CDATA[icebolt]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[blue]]></string>
-      <effect type="effect_1">
-        <string>Improvisation</string>
-        <int>3</int>
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
       </effect>
-      <effect type="effect_2">
-        <string>Improvisation</string>
-        <int>5</int>
+      <effect type="effect">
+        <string>ManaCrystal</string>
+        <int>1</int>
+      </effect>
+      <effect type="effect">
+        <string>Ranged</string>
+        <int>3</int>
       </effect>
     </card>
     <card>
@@ -306,13 +324,17 @@
       <string name="name"><![CDATA[swiftbolt]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[white]]></string>
-      <effect type="effect_1">
-        <string>Improvisation</string>
-        <int>3</int>
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
       </effect>
-      <effect type="effect_2">
-        <string>Improvisation</string>
-        <int>5</int>
+      <effect type="effect">
+        <string>ManaCrystal</string>
+        <int>1</int>
+      </effect>
+      <effect type="effect">
+        <string>Ranged</string>
+        <int>4</int>
       </effect>
     </card>
     <card>
@@ -320,13 +342,17 @@
       <string name="name"><![CDATA[crushingbolt]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[green]]></string>
-      <effect type="effect_1">
-        <string>Improvisation</string>
-        <int>3</int>
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
       </effect>
-      <effect type="effect_2">
-        <string>Improvisation</string>
-        <int>5</int>
+      <effect type="effect">
+        <string>ManaCrystal</string>
+        <int>1</int>
+      </effect>
+      <effect type="effect">
+        <string>Siege</string>
+        <int>3</int>
       </effect>
     </card>
     <card>
@@ -334,13 +360,29 @@
       <string name="name"><![CDATA[bloodrage]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[red]]></string>
-      <effect type="effect_1">
-        <string>Improvisation</string>
-        <int>3</int>
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
       </effect>
-      <effect type="effect_2">
-        <string>Improvisation</string>
-        <int>5</int>
+      <effect type="choice">
+        <effect type="effect">
+          <string>Attack</string>
+          <int>2</int>
+        </effect>
+        <effect type="effect">
+          <string>BloodRage</string>
+          <int>5</int>
+        </effect>
+      </effect>
+      <effect type="choice">
+        <effect type="effect">
+          <string>Attack</string>
+          <int>4</int>
+        </effect>
+        <effect type="effect">
+          <string>BloodRage</string>
+          <int>9</int>
+        </effect>
       </effect>
     </card>
     <card>
@@ -348,13 +390,23 @@
       <string name="name"><![CDATA[iceshield]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[blue]]></string>
-      <effect type="effect_1">
-        <string>Improvisation</string>
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
+      </effect>
+      <effect type="effect">
+        <string>Block</string>
         <int>3</int>
       </effect>
-      <effect type="effect_2">
-        <string>Improvisation</string>
-        <int>5</int>
+      <effect type="combine">
+        <effect type="effect">
+          <string>Block</string>
+          <int>3</int>
+        </effect>
+        <effect type="effect">
+          <string>ReduceArmourOnBlock</string>
+          <int>3</int>
+        </effect>
       </effect>
     </card>
     <card>
@@ -362,13 +414,29 @@
       <string name="name"><![CDATA[agility]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[white]]></string>
-      <effect type="effect_1">
-        <string>Improvisation</string>
-        <int>3</int>
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
       </effect>
-      <effect type="effect_2">
-        <string>Improvisation</string>
-        <int>5</int>
+      <effect type="combine">
+        <effect type="effect">
+          <string>Movement</string>
+          <int>2</int>
+        </effect>
+        <effect type="effect">
+          <string>Agility</string>
+          <int>1</int>
+        </effect>
+      </effect>
+      <effect type="combine">
+        <effect type="effect">
+          <string>Movement</string>
+          <int>4</int>
+        </effect>
+        <effect type="effect">
+          <string>Agility</string>
+          <int>2</int>
+        </effect>
       </effect>
     </card>
     <card>
@@ -376,13 +444,29 @@
       <string name="name"><![CDATA[refreshingwalk]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[green]]></string>
-      <effect type="effect_1">
-        <string>Improvisation</string>
-        <int>3</int>
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
       </effect>
-      <effect type="effect_2">
-        <string>Improvisation</string>
-        <int>5</int>
+      <effect type="combine">
+        <effect type="effect">
+          <string>Movement</string>
+          <int>2</int>
+        </effect>
+        <effect type="effect">
+          <string>Heal</string>
+          <int>1</int>
+        </effect>
+      </effect>
+      <effect type="combine">
+        <effect type="effect">
+          <string>Movement</string>
+          <int>4</int>
+        </effect>
+        <effect type="effect">
+          <string>Heal</string>
+          <int>2</int>
+        </effect>
       </effect>
     </card>
     <card>
@@ -390,13 +474,29 @@
       <string name="name"><![CDATA[intimidate]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[red]]></string>
-      <effect type="effect_1">
-        <string>Improvisation</string>
-        <int>3</int>
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
       </effect>
-      <effect type="effect_2">
-        <string>Improvisation</string>
-        <int>5</int>
+      <effect type="combine">
+        <effect type="effect">
+          <string>Influence</string>
+          <int>4</int>
+        </effect>
+        <effect type="effect">
+          <string>Reputation</string>
+          <int>-1</int>
+        </effect>
+      </effect>
+      <effect type="combine">
+        <effect type="effect">
+          <string>Influence</string>
+          <int>8</int>
+        </effect>
+        <effect type="effect">
+          <string>Reputation</string>
+          <int>-2</int>
+        </effect>
       </effect>
     </card>
     <card>
@@ -404,13 +504,29 @@
       <string name="name"><![CDATA[frostbridge]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[blue]]></string>
-      <effect type="effect_1">
-        <string>Improvisation</string>
-        <int>3</int>
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
       </effect>
-      <effect type="effect_2">
-        <string>Improvisation</string>
-        <int>5</int>
+      <effect type="combine">
+        <effect type="effect">
+          <string>Movement</string>
+          <int>2</int>
+        </effect>
+        <effect type="effect">
+          <string>FrostBridge</string>
+          <int>1</int>
+        </effect>
+      </effect>
+      <effect type="combine">
+        <effect type="effect">
+          <string>Movement</string>
+          <int>4</int>
+        </effect>
+        <effect type="effect">
+          <string>FrostBridge</string>
+          <int>2</int>
+        </effect>
       </effect>
     </card>
     <card>
@@ -418,13 +534,29 @@
       <string name="name"><![CDATA[songofwind]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[white]]></string>
-      <effect type="effect_1">
-        <string>Improvisation</string>
-        <int>3</int>
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
       </effect>
-      <effect type="effect_2">
-        <string>Improvisation</string>
-        <int>5</int>
+      <effect type="combine">
+        <effect type="effect">
+          <string>Movement</string>
+          <int>2</int>
+        </effect>
+        <effect type="effect">
+          <string>SongOfWind</string>
+          <int>1</int>
+        </effect>
+      </effect>
+      <effect type="combine">
+        <effect type="effect">
+          <string>Movement</string>
+          <int>2</int>
+        </effect>
+        <effect type="effect">
+          <string>SongOfWind</string>
+          <int>2</int>
+        </effect>
       </effect>
     </card>
     <card>
@@ -432,13 +564,29 @@
       <string name="name"><![CDATA[pathfinding]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[green]]></string>
-      <effect type="effect_1">
-        <string>Improvisation</string>
-        <int>3</int>
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
       </effect>
-      <effect type="effect_2">
-        <string>Improvisation</string>
-        <int>5</int>
+      <effect type="combine">
+        <effect type="effect">
+          <string>Movement</string>
+          <int>2</int>
+        </effect>
+        <effect type="effect">
+          <string>Pathfinding</string>
+          <int>1</int>
+        </effect>
+      </effect>
+      <effect type="combine">
+        <effect type="effect">
+          <string>Movement</string>
+          <int>4</int>
+        </effect>
+        <effect type="effect">
+          <string>Pathfinding</string>
+          <int>2</int>
+        </effect>
       </effect>
     </card>
     <card>
@@ -446,13 +594,41 @@
       <string name="name"><![CDATA[bloodritual]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[red]]></string>
-      <effect type="effect_1">
-        <string>Improvisation</string>
-        <int>3</int>
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
       </effect>
-      <effect type="effect_2">
-        <string>Improvisation</string>
-        <int>5</int>
+      <effect type="combine">
+        <effect type="effect">
+          <string>TakeWound</string>
+          <int>1</int>
+        </effect>
+        <effect type="effect">
+          <string>ManaToken</string>
+          <int>1</int>
+        </effect>
+        <effect type="effect">
+          <string>ManaToken</string>
+          <int>1</int>
+        </effect>
+      </effect>
+      <effect type="combine">
+        <effect type="effect">
+          <string>TakeWound</string>
+          <int>1</int>
+        </effect>
+        <effect type="effect">
+          <string>ManaToken</string>
+          <int>1</int>
+        </effect>
+        <effect type="effect">
+          <string>ManaToken</string>
+          <int>1</int>
+        </effect>
+        <effect type="effect">
+          <string>ManaToken</string>
+          <int>1</int>
+        </effect>
       </effect>
     </card>
     <card>
@@ -460,13 +636,45 @@
       <string name="name"><![CDATA[puremagic]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[blue]]></string>
-      <effect type="effect_1">
-        <string>Improvisation</string>
-        <int>3</int>
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
       </effect>
-      <effect type="effect_2">
-        <string>Improvisation</string>
-        <int>5</int>
+      <effect type="choice">
+        <effect type="effect">
+          <string>Movement</string>
+          <int>4</int>
+        </effect>
+        <effect type="effect">
+          <string>Influence</string>
+          <int>4</int>
+        </effect>
+        <effect type="effect">
+          <string>Block</string>
+          <int>4</int>
+        </effect>
+        <effect type="effect">
+          <string>Attack</string>
+          <int>4</int>
+        </effect>
+      </effect>
+      <effect type="choice">
+        <effect type="effect">
+          <string>Movement</string>
+          <int>7</int>
+        </effect>
+        <effect type="effect">
+          <string>Influence</string>
+          <int>7</int>
+        </effect>
+        <effect type="effect">
+          <string>Block</string>
+          <int>7</int>
+        </effect>
+        <effect type="effect">
+          <string>Attack</string>
+          <int>7</int>
+        </effect>
       </effect>
     </card>
     <card>
@@ -474,13 +682,29 @@
       <string name="name"><![CDATA[heroictale]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[white]]></string>
-      <effect type="effect_1">
-        <string>Improvisation</string>
-        <int>3</int>
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
       </effect>
-      <effect type="effect_2">
-        <string>Improvisation</string>
-        <int>5</int>
+      <effect type="combine">
+        <effect type="effect">
+          <string>Influence</string>
+          <int>3</int>
+        </effect>
+        <effect type="effect">
+          <string>HeroicTale</string>
+          <int>1</int>
+        </effect>
+      </effect>
+      <effect type="combine">
+        <effect type="effect">
+          <string>Influence</string>
+          <int>6</int>
+        </effect>
+        <effect type="effect">
+          <string>HeroicTale</string>
+          <int>2</int>
+        </effect>
       </effect>
     </card>
     <card>
@@ -488,13 +712,29 @@
       <string name="name"><![CDATA[regeneration]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[green]]></string>
-      <effect type="effect_1">
-        <string>Improvisation</string>
-        <int>3</int>
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
       </effect>
-      <effect type="effect_2">
-        <string>Improvisation</string>
-        <int>5</int>
+      <effect type="combine">
+        <effect type="effect">
+          <string>Heal</string>
+          <int>1</int>
+        </effect>
+        <effect type="effect">
+          <string>ReadyUnit</string>
+          <int>2</int>
+        </effect>
+      </effect>
+      <effect type="combine">
+        <effect type="effect">
+          <string>Heal</string>
+          <int>2</int>
+        </effect>
+        <effect type="effect">
+          <string>ReadyUnit</string>
+          <int>3</int>
+        </effect>
       </effect>
     </card>
     <card>
@@ -502,13 +742,17 @@
       <string name="name"><![CDATA[intotheheat]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[red]]></string>
-      <effect type="effect_1">
-        <string>Improvisation</string>
-        <int>3</int>
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
       </effect>
-      <effect type="effect_2">
-        <string>Improvisation</string>
-        <int>5</int>
+      <effect type="effect">
+        <string>IncreaseUnitStats</string>
+        <int>2</int>
+      </effect>
+      <effect type="effect">
+        <string>IncreaseUnitStats</string>
+        <int>3</int>
       </effect>
     </card>
     <card>
@@ -516,13 +760,29 @@
       <string name="name"><![CDATA[steadytempo]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[blue]]></string>
-      <effect type="effect_1">
-        <string>Improvisation</string>
-        <int>3</int>
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
       </effect>
-      <effect type="effect_2">
-        <string>Improvisation</string>
-        <int>5</int>
+      <effect type="combine">
+        <effect type="effect">
+          <string>Movement</string>
+          <int>2</int>
+        </effect>
+        <effect type="effect">
+          <string>ReturnToDeck</string>
+          <int>1</int>
+        </effect>
+      </effect>
+      <effect type="combine">
+        <effect type="effect">
+          <string>Movement</string>
+          <int>4</int>
+        </effect>
+        <effect type="effect">
+          <string>ReturnToDeck</string>
+          <int>2</int>
+        </effect>
       </effect>
     </card>
     <card>
@@ -530,13 +790,29 @@
       <string name="name"><![CDATA[diplomacy]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[white]]></string>
-      <effect type="effect_1">
-        <string>Improvisation</string>
-        <int>3</int>
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
       </effect>
-      <effect type="effect_2">
-        <string>Improvisation</string>
-        <int>5</int>
+      <effect type="combine">
+        <effect type="effect">
+          <string>Influence</string>
+          <int>2</int>
+        </effect>
+        <effect type="effect">
+          <string>InfluenceAsBlock</string>
+          <int>1</int>
+        </effect>
+      </effect>
+      <effect type="combine">
+        <effect type="effect">
+          <string>Influence</string>
+          <int>4</int>
+        </effect>
+        <effect type="effect">
+          <string>InfluenceAsBlock</string>
+          <int>2</int>
+        </effect>
       </effect>
     </card>
     <card>
@@ -544,13 +820,29 @@
       <string name="name"><![CDATA[inneed]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[green]]></string>
-      <effect type="effect_1">
-        <string>Improvisation</string>
-        <int>3</int>
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
       </effect>
-      <effect type="effect_2">
-        <string>Improvisation</string>
-        <int>5</int>
+      <effect type="combine">
+        <effect type="effect">
+          <string>Influence</string>
+          <int>2</int>
+        </effect>
+        <effect type="effect">
+          <string>InfluenceFromWounds</string>
+          <int>1</int>
+        </effect>
+      </effect>
+      <effect type="combine">
+        <effect type="effect">
+          <string>Influence</string>
+          <int>4</int>
+        </effect>
+        <effect type="effect">
+          <string>InfluenceFromWounds</string>
+          <int>2</int>
+        </effect>
       </effect>
     </card>
     <card>
@@ -558,13 +850,17 @@
       <string name="name"><![CDATA[decompose]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[red]]></string>
-      <effect type="effect_1">
-        <string>Improvisation</string>
-        <int>3</int>
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
       </effect>
-      <effect type="effect_2">
-        <string>Improvisation</string>
-        <int>5</int>
+      <effect type="effect">
+        <string>Decompose</string>
+        <int>2</int>
+      </effect>
+      <effect type="effect">
+        <string>Decompose</string>
+        <int>-1</int>
       </effect>
     </card>
     <card>
@@ -572,13 +868,17 @@
       <string name="name"><![CDATA[crystalmastery]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[blue]]></string>
-      <effect type="effect_1">
-        <string>Improvisation</string>
-        <int>3</int>
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
       </effect>
-      <effect type="effect_2">
-        <string>Improvisation</string>
-        <int>5</int>
+      <effect type="effect">
+        <string>ManaCrystal</string>
+        <int>0</int>
+      </effect>
+      <effect type="effect">
+        <string>ReturnCrystals</string>
+        <int>0</int>
       </effect>
     </card>
     <card>
@@ -586,13 +886,23 @@
       <string name="name"><![CDATA[manastorm]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[white]]></string>
-      <effect type="effect_1">
-        <string>Improvisation</string>
-        <int>3</int>
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
       </effect>
-      <effect type="effect_2">
-        <string>Improvisation</string>
-        <int>5</int>
+      <effect type="combine">
+        <effect type="effect">
+          <string>RerollDie</string>
+          <int>1</int>
+        </effect>
+        <effect type="effect">
+          <string>ManaCrystal</string>
+          <int>1</int>
+        </effect>
+      </effect>
+      <effect type="effect">
+        <string>ManaStorm</string>
+        <int>1</int>
       </effect>
     </card>
     <card>
@@ -600,13 +910,29 @@
       <string name="name"><![CDATA[ambush]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[green]]></string>
-      <effect type="effect_1">
-        <string>Improvisation</string>
-        <int>3</int>
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
       </effect>
-      <effect type="effect_2">
-        <string>Improvisation</string>
-        <int>5</int>
+      <effect type="combine">
+        <effect type="effect">
+          <string>Movement</string>
+          <int>2</int>
+        </effect>
+        <effect type="effect">
+          <string>Ambush</string>
+          <int>1</int>
+        </effect>
+      </effect>
+      <effect type="combine">
+        <effect type="effect">
+          <string>Movement</string>
+          <int>4</int>
+        </effect>
+        <effect type="effect">
+          <string>Ambush</string>
+          <int>2</int>
+        </effect>
       </effect>
     </card>
     <card>
@@ -614,13 +940,17 @@
       <string name="name"><![CDATA[maximaleffect]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[red]]></string>
-      <effect type="effect_1">
-        <string>Improvisation</string>
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
+      </effect>
+      <effect type="effect">
+        <string>MaximalEffect</string>
         <int>3</int>
       </effect>
-      <effect type="effect_2">
-        <string>Improvisation</string>
-        <int>5</int>
+      <effect type="effect">
+        <string>MaximalEffect</string>
+        <int>2</int>
       </effect>
     </card>
     <card>
@@ -628,13 +958,23 @@
       <string name="name"><![CDATA[magictalent]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[blue]]></string>
-      <effect type="effect_1">
-        <string>Improvisation</string>
-        <int>3</int>
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
       </effect>
-      <effect type="effect_2">
-        <string>Improvisation</string>
-        <int>5</int>
+      <effect type="combine">
+        <effect type="effect">
+          <string>Discard</string>
+          <int>1</int>
+        </effect>
+        <effect type="effect">
+          <string>PlayFromOffer</string>
+          <int>1</int>
+        </effect>
+      </effect>
+      <effect type="effect">
+        <string>GainSpell</string>
+        <int>1</int>
       </effect>
     </card>
     <card>
@@ -642,13 +982,29 @@
       <string name="name"><![CDATA[learning]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[white]]></string>
-      <effect type="effect_1">
-        <string>Improvisation</string>
-        <int>3</int>
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
       </effect>
-      <effect type="effect_2">
-        <string>Improvisation</string>
-        <int>5</int>
+      <effect type="combine">
+        <effect type="effect">
+          <string>Influence</string>
+          <int>2</int>
+        </effect>
+        <effect type="effect">
+          <string>Learning</string>
+          <int>6</int>
+        </effect>
+      </effect>
+      <effect type="combine">
+        <effect type="effect">
+          <string>Influence</string>
+          <int>4</int>
+        </effect>
+        <effect type="effect">
+          <string>Learning</string>
+          <int>9</int>
+        </effect>
       </effect>
     </card>
     <card>
@@ -656,13 +1012,17 @@
       <string name="name"><![CDATA[training]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[green]]></string>
-      <effect type="effect_1">
-        <string>Improvisation</string>
-        <int>3</int>
+      <effect type="effect">
+        <string>Tap</string>
+        <int>1</int>
       </effect>
-      <effect type="effect_2">
-        <string>Improvisation</string>
-        <int>5</int>
+      <effect type="effect">
+        <string>Training</string>
+        <int>1</int>
+      </effect>
+      <effect type="effect">
+        <string>Training</string>
+        <int>2</int>
       </effect>
     </card>
   </AdvancedActions>
@@ -672,11 +1032,11 @@
       <string name="name"><![CDATA[firebolt]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[red]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>3</int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>5</int>
       </effect>
@@ -686,11 +1046,11 @@
       <string name="name"><![CDATA[icebolt]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[blue]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>3</int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>5</int>
       </effect>
@@ -700,11 +1060,11 @@
       <string name="name"><![CDATA[swiftbolt]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[white]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>3</int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>5</int>
       </effect>
@@ -714,11 +1074,11 @@
       <string name="name"><![CDATA[crushingbolt]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[green]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>3</int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>5</int>
       </effect>
@@ -728,11 +1088,11 @@
       <string name="name"><![CDATA[bloodrage]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[red]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>3</int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>5</int>
       </effect>
@@ -742,11 +1102,11 @@
       <string name="name"><![CDATA[iceshield]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[blue]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>3</int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>5</int>
       </effect>
@@ -756,11 +1116,11 @@
       <string name="name"><![CDATA[agility]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[white]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>3</int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>5</int>
       </effect>
@@ -770,11 +1130,11 @@
       <string name="name"><![CDATA[refreshingwalk]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[green]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>3</int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>5</int>
       </effect>
@@ -784,11 +1144,11 @@
       <string name="name"><![CDATA[intimidate]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[red]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>3</int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>5</int>
       </effect>
@@ -798,11 +1158,11 @@
       <string name="name"><![CDATA[frostbridge]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[blue]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>3</int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>5</int>
       </effect>
@@ -812,11 +1172,11 @@
       <string name="name"><![CDATA[songofwind]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[white]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>3</int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>5</int>
       </effect>
@@ -826,11 +1186,11 @@
       <string name="name"><![CDATA[pathfinding]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[green]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>3</int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>5</int>
       </effect>
@@ -840,11 +1200,11 @@
       <string name="name"><![CDATA[bloodritual]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[red]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>3</int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>5</int>
       </effect>
@@ -854,11 +1214,11 @@
       <string name="name"><![CDATA[puremagic]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[blue]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>3</int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>5</int>
       </effect>
@@ -868,11 +1228,11 @@
       <string name="name"><![CDATA[heroictale]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[white]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>3</int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>5</int>
       </effect>
@@ -882,11 +1242,11 @@
       <string name="name"><![CDATA[regeneration]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[green]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>3</int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>5</int>
       </effect>
@@ -896,11 +1256,11 @@
       <string name="name"><![CDATA[intotheheat]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[red]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>3</int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>5</int>
       </effect>
@@ -910,11 +1270,11 @@
       <string name="name"><![CDATA[steadytempo]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[blue]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>3</int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>5</int>
       </effect>
@@ -924,11 +1284,11 @@
       <string name="name"><![CDATA[diplomacy]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[white]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>3</int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>5</int>
       </effect>
@@ -938,11 +1298,11 @@
       <string name="name"><![CDATA[inneed]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[green]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>3</int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>5</int>
       </effect>
@@ -952,11 +1312,11 @@
       <string name="name"><![CDATA[decompose]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[red]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>3</int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>5</int>
       </effect>
@@ -966,11 +1326,11 @@
       <string name="name"><![CDATA[crystalmastery]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[blue]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>3</int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>5</int>
       </effect>
@@ -980,11 +1340,11 @@
       <string name="name"><![CDATA[manastorm]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[white]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>3</int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>5</int>
       </effect>
@@ -994,11 +1354,11 @@
       <string name="name"><![CDATA[ambush]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[green]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>3</int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>5</int>
       </effect>
@@ -1008,11 +1368,11 @@
       <string name="name"><![CDATA[maximaleffect]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[red]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>3</int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>5</int>
       </effect>
@@ -1022,11 +1382,11 @@
       <string name="name"><![CDATA[magictalent]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[blue]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>3</int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>5</int>
       </effect>
@@ -1036,11 +1396,11 @@
       <string name="name"><![CDATA[learning]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[white]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>3</int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>5</int>
       </effect>
@@ -1050,11 +1410,11 @@
       <string name="name"><![CDATA[training]]></string>
       <string name="type"><![CDATA[advanced]]></string>
       <string name="colour"><![CDATA[green]]></string>
-      <effect type="effect_1">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>3</int>
       </effect>
-      <effect type="effect_2">
+      <effect type="effect">
         <string>Improvisation</string>
         <int>5</int>
       </effect>

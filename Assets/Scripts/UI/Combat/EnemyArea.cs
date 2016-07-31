@@ -20,7 +20,7 @@ namespace BoardGame
 
                 for (int i = 0; i < enemies.Count; i++)
                 {
-                    EnemyHolder instance = transform.InstantiateChild(enemyHolderPrefab).GetComponent<EnemyHolder>();
+                    EnemyHolder instance = transform.InstantiateChild(enemyHolderPrefab, Vector3.zero, Quaternion.identity).GetComponent<EnemyHolder>();
                     enemyHolders.Add(instance);
                     instance.Init(enemies[i], i);
                 }

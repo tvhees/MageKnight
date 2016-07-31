@@ -27,23 +27,25 @@ namespace BoardGame
                     XmlNodeList cardInfo = node.ChildNodes; // Get child nodes for current card
                     obj = new Dictionary<string, string>(); // Create a object(Dictionary) to collect the card info and put the card in the cards array.
 
+                    int effectNumber = 0;
                     foreach (XmlNode element in cardInfo)
                     {
                         if (element.Name == "string")
-                            obj.Add(element.Attributes["name"].Value, element.InnerText);
+                            AddToDictionary(obj, element.Attributes["name"].Value, element.InnerText);
 
                         // Read the card effects
                         if (element.Name == "effect")
                         {
-                            if (element.Attributes["type"].Value.Contains("choice"))
+                            if(element.Attributes["type"].Value.Contains("effect")) // Single effect entries
                             {
-                                SaveChoiceInformation(obj, element);
+                                SaveEffectInformation(obj, element, effectNumber.ToString());
                             }
-                            
-                            if(element.Attributes["type"].Value.Contains("effect"))
+
+                            if(element.Attributes["type"].Value.Contains("choice") || element.Attributes["type"].Value.Contains("combine"))
                             {
-                                SaveEffectInformation(obj, element);
+                                SaveMultipleEffectInformation(obj, element, effectNumber.ToString());
                             }
+                            effectNumber++;
                         }
                     }
                     cardList.Add(obj);
@@ -53,24 +55,45 @@ namespace BoardGame
                 return cardList;
             }
 
-            static void SaveEffectInformation(Dictionary<string, string> obj, XmlNode element)
+            static void SaveEffectInformation(Dictionary<string, string> obj, XmlNode element, string identifier)
             {
-                string effectType = element.Attributes["type"].Value;
+                string effectType = element.Attributes["type"].Value + "_" + identifier;
                 string valueType = effectType.Replace("effect", "value");
 
                 foreach (XmlNode effectElement in element)
                     if (effectElement.Name == "string")
-                        obj.Add(effectType, effectElement.InnerText);
+                        AddToDictionary(obj, effectType, effectElement.InnerText);
                     else if (effectElement.Name == "int")
-                        obj.Add(valueType, effectElement.InnerText);
+                        AddToDictionary(obj, valueType, effectElement.InnerText);
             }
 
-            static void SaveChoiceInformation(Dictionary<string, string> obj, XmlNode element)
+            static void SaveMultipleEffectInformation(Dictionary<string, string> obj, XmlNode element, string identifier)
             {
-                string choiceType = element.Attributes["type"].Value;
-                obj.Add(choiceType, "Choice");
+                string multipleEffectType = element.Attributes["type"].Value + "_" + identifier;
+                AddToDictionary(obj, multipleEffectType, "Multiple");
 
-                foreach (XmlNode choiceElement in element) SaveEffectInformation(obj, choiceElement);
+                char[] subChar = new char[10] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j' };
+                int i = 0;
+
+                foreach (XmlNode subEffect in element)
+                {
+                    string subIdentifier = identifier + subChar[i];
+                    SaveEffectInformation(obj, subEffect, subIdentifier);
+                    i++;
+                    
+                }
+            }
+
+            static void AddToDictionary(Dictionary<string, string> dictionary, string key, string value)
+            {
+                try
+                {
+                    dictionary.Add(key, value);
+                }
+                catch (System.Exception e)
+                {
+                    Debug.Log(string.Format("Error adding to dictionary: key = {0} value = {1}", key, value));
+                }
             }
         }
     }

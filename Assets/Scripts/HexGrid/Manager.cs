@@ -35,7 +35,7 @@ namespace BoardGame
             // CLICK BEHAVIOUR
             // ****************
 
-            void OnMouseUpAsButton()
+            void MouseClicked()
             {
                 Enemy.Rampaging rampagingEnemy = GetComponentInChildren<Enemy.Rampaging>();
 

@@ -173,7 +173,6 @@ namespace BoardGame
 
             void ShiftCardsInHand(Vector3 target, float delta)
             {
-                Debug.Log(target);
                 for (int i = 0; i < cardsInHand.Count; i++)
                 {
                     MovingObject cardMO = cardsInHand[i].movingObject; // Use the card's moving object script to set it's home position delta units in the target's direction
@@ -204,28 +203,23 @@ namespace BoardGame
                     case Card.Object.Location.deck:
                         cardsInDeck.Add(card);
                         card.transform.SetParent(deck.transform);
-                        card.DisableEffectButtons();
                         break;
                     case Card.Object.Location.hand:
                         cardsInHand.Add(card);
                         card.transform.SetParent(hand.transform);
-                        card.EnableEffectButtons();
+                        
                         break;
                     case Card.Object.Location.play:
                         cardsInPlay.Add(card);
                         card.transform.SetParent(playedArea.transform);
-                        card.DisableEffectButtons();
                         break;
                     case Card.Object.Location.discard:
                         cardsInDiscard.Add(card);
                         card.transform.SetParent(discard.transform);
-                        card.DisableEffectButtons();
                         break;
                     case Card.Object.Location.throwAway:
-                        card.DisableEffectButtons();
                         break;
                 }
-
                 card.SetLocation(newLocation);
             }
 
@@ -233,10 +227,10 @@ namespace BoardGame
             // COMBAT
             //**********
 
-            public int WoundsDueToAttack(Enemy.Attack attack)
+            public void WoundsDueToAttack(Enemy.Attack attack)
             {
+                bool tookWounds = false;
                 int remainingDamage = attack.strength;
-                int woundsTaken = 0;
 
                 if (attack.brutal) // Doubles strength of unblocked attacks
                     remainingDamage *= 2;
@@ -244,9 +238,7 @@ namespace BoardGame
                 while (remainingDamage > 0)
                 {
                     TakeWound(Card.Object.Location.hand);
-
-                    woundsTaken++;
-
+                    tookWounds = true;
                     remainingDamage -= stats.armour; // Subtract our current armour from the remaining damage total
 
                     if (attack.poison)
@@ -255,22 +247,23 @@ namespace BoardGame
                     }
                 }
 
-                if (woundsTaken > 1 && attack.paralyze)
+                if (tookWounds && attack.paralyze)
                 {
                     Paralyze();
                 }
-
-                return woundsTaken;
             }
 
-            void TakeWound(Card.Object.Location placeToSendWound)
+            public void TakeWound(Card.Object.Location placeToSendWound)
             {
                 Card.Object wound = Card.SharedDecks.Instance.GetWound();
                 //wound.AddEffectButtons(this);
                 wound.AddCamera(playerCamera);
 
                 if (placeToSendWound == Card.Object.Location.hand)
+                {
+                    if (Game.Turn.Instance.GetPhase() == Game.Turn.Phase.combat) Rules.Combat.Instance.woundsThisCombat++;
                     MoveToHand(wound);
+                }
                 else if (placeToSendWound == Card.Object.Location.discard)
                     MoveCardToDiscard(wound);
             }

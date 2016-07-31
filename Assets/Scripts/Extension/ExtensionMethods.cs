@@ -99,7 +99,17 @@ namespace BoardGame
         /// <summary>
         /// Instantiates a new GameObject as a child of the calling transform.
         /// </summary>
-        public static GameObject InstantiateChild(this Transform parent, GameObject obj, Vector3 localPosition = default(Vector3), Quaternion localRotation = default(Quaternion))
+        public static GameObject InstantiateChild(this Transform parent, GameObject obj)
+        {
+            GameObject instance = Object.Instantiate(obj, parent.transform.position, Quaternion.identity) as GameObject;
+            instance.transform.SetParent(parent);
+            return instance;
+        }
+
+        /// <summary>
+        /// Instantiates a new GameObject as a child of the calling transform, with specific position and rotation.
+        /// </summary>
+        public static GameObject InstantiateChild(this Transform parent, GameObject obj, Vector3 localPosition, Quaternion localRotation = default(Quaternion))
         {
             GameObject instance = Object.Instantiate(obj);
             instance.transform.SetParent(parent);

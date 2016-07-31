@@ -25,12 +25,12 @@ namespace BoardGame
 
             public void PlayAsNormal(Card.Object card)
             {
-                GetComponent<Button>().player.MoveCardToPlayArea(card);
+                GetComponent<CardButton>().player.MoveCardToPlayArea(card);
             }
 
             public void Discard(Card.Object card)
             {
-                GetComponent<Button>().player.MoveCardToDiscard(card);
+                GetComponent<CardButton>().player.MoveCardToDiscard(card);
             }
 
             public void ThrowAway(Card.Object card)
