@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 8f58312e43369614bb864b748c4c3bfb
+timeCreated: 1467626456
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - m_cardXML: {fileID: 4900000, guid: 917be991828e0b449b5b638c20c6ac33, type: 3}
+  - m_cardPrefab: {fileID: 147502, guid: f60d614f39d81494ea46df330d53ad6d, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,367 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FullConquest>
+  <HexGroups>
+    <Countryside>
+      <group>
+        <hex>
+          <string name="terrain"><![CDATA[plains]]></string>
+          <string name="feature"><![CDATA[portal]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[forest]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[plains]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[mountain]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[lake]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[mountain]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[plains]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+      </group>
+      <group>
+        <hex>
+          <string name="terrain"><![CDATA[forest]]></string>
+          <string name="feature"><![CDATA[glade]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[lake]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[plains]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[plains]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[plains]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[forest]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[plains]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+      </group>
+      <group>
+        <hex>
+          <string name="terrain"><![CDATA[hill]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[forest]]></string>
+          <string name="feature"><![CDATA[glade]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[plains]]></string>
+          <string name="feature"><![CDATA[village]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[plains]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[hill]]></string>
+          <string name="feature"><![CDATA[mine]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[plains]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[hill]]></string>
+          <string name="feature"><![CDATA[orc]]></string>
+        </hex>
+      </group>
+      <group>
+        <hex>
+          <string name="terrain"><![CDATA[forest]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[hill]]></string>
+          <string name="feature"><![CDATA[keep]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[hill]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[hill]]></string>
+          <string name="feature"><![CDATA[mine]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[plains]]></string>
+          <string name="feature"><![CDATA[village]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[plains]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[plains]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+      </group>
+      <group>
+        <hex>
+          <string name="terrain"><![CDATA[desert]]></string>
+          <string name="feature"><![CDATA[tower]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[desert]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[mountain]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[plains]]></string>
+          <string name="feature"><![CDATA[village]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[plains]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[hill]]></string>
+          <string name="feature"><![CDATA[orc]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[desert]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+      </group>
+      <group>
+        <hex>
+          <string name="terrain"><![CDATA[lake]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[plains]]></string>
+          <string name="feature"><![CDATA[monastery]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[plains]]></string>
+          <string name="feature"><![CDATA[orc]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[hill]]></string>
+          <string name="feature"><![CDATA[mine]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[forest]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[forest]]></string>
+          <string name="feature"><![CDATA[glade]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[forest]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+      </group>
+      <group>
+        <hex>
+          <string name="terrain"><![CDATA[hill]]></string>
+          <string name="feature"><![CDATA[mine]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[forest]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[plains]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[forest]]></string>
+          <string name="feature"><![CDATA[orc]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[hill]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[hill]]></string>
+          <string name="feature"><![CDATA[spawning]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[mountain]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+      </group>
+      <group>
+        <hex>
+          <string name="terrain"><![CDATA[swamp]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[forest]]></string>
+          <string name="feature"><![CDATA[orc]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[forest]]></string>
+          <string name="feature"><![CDATA[glade]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[plains]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[plains]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[plains]]></string>
+          <string name="feature"><![CDATA[monastery]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[lake]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+      </group>
+      <group>
+        <hex>
+          <string name="terrain"><![CDATA[swamp]]></string>
+          <string name="feature"><![CDATA[orc]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[forest]]></string>
+          <string name="feature"><![CDATA[ruins]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[plains]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[swamp]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[swamp]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[forest]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[forest]]></string>
+          <string name="feature"><![CDATA[glade]]></string>
+        </hex>
+      </group>
+      <group>
+        <hex>
+          <string name="terrain"><![CDATA[mountain]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[mountain]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[wasteland]]></string>
+          <string name="feature"><![CDATA[keep]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[mountain]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[wasteland]]></string>
+          <string name="feature"><![CDATA[tower]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[mountain]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[wasteland]]></string>
+          <string name="feature"><![CDATA[dungeon]]></string>
+        </hex>
+      </group>
+      <group>
+        <hex>
+          <string name="terrain"><![CDATA[mountain]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[forest]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[plains]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[hill]]></string>
+          <string name="feature"><![CDATA[ruins]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[hill]]></string>
+          <string name="feature"><![CDATA[keep]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[hill]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[hill]]></string>
+          <string name="feature"><![CDATA[spawning]]></string>
+        </hex>
+      </group>
+      <group>
+        <hex>
+          <string name="terrain"><![CDATA[plains]]></string>
+          <string name="feature"><![CDATA[tower]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[lake]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[lake]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[hill]]></string>
+          <string name="feature"><![CDATA[orc]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[lake]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[plains]]></string>
+          <string name="feature"><![CDATA[ruins]]></string>
+        </hex>
+        <hex>
+          <string name="terrain"><![CDATA[hill]]></string>
+          <string name="feature"><![CDATA[none]]></string>
+        </hex>
+      </group>
+    </Countryside>
+  </HexGroups>
+</FullConquest>
