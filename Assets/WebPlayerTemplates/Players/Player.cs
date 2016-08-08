@@ -34,7 +34,7 @@ namespace Boardgame
             private Vector3 discardPosition = new Vector3(-5.65f, 2f, 3f);
             private Vector3 playedAreaPosition = new Vector3(-5.65f, 4f, 3f);
 
-            public HexTile.Manager currentTile;
+            public HexGrid.Manager currentTile;
 
             public void Init(int id)
             {
@@ -55,7 +55,7 @@ namespace Boardgame
 
             void SetCurrentTile()
             {
-                currentTile = AdjacencyChecker.OverlapSphereForType<HexTile.Manager>(transform.position, 0.3f, "Board")[0];
+                currentTile = AdjacencyChecker.OverlapSphereForType<HexGrid.Manager>(transform.position, 0.3f, "Board")[0];
             }
 
             void CreatePlayerBoard()
@@ -256,7 +256,15 @@ namespace Boardgame
             public void TakeWound(Card.Object.Location placeToSendWound)
             {
                 Card.Object wound = Card.SharedDecks.Instance.GetWound();
+                //wound.AddEffectButtons(this);
                 wound.AddCamera(playerCamera);
+
+                if (placeToSendWound == Card.Object.Location.hand)
+                {
+                    MoveToHand(wound);
+                }
+                else if (placeToSendWound == Card.Object.Location.discard)
+                    MoveCardToDiscard(wound);
             }
 
             void Paralyze()

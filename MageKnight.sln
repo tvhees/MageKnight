@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2015
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MageKnight.CSharp", "MageKnight.CSharp.csproj", "{4809EC84-A17E-CA7E-6410-746E6FCD3A77}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MageKnight.CSharp.Editor", "MageKnight.CSharp.Editor.csproj", "{C560BDA4-077D-FF11-3681-19C7F50F93BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{4809EC84-A17E-CA7E-6410-746E6FCD3A77}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4809EC84-A17E-CA7E-6410-746E6FCD3A77}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4809EC84-A17E-CA7E-6410-746E6FCD3A77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C560BDA4-077D-FF11-3681-19C7F50F93BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C560BDA4-077D-FF11-3681-19C7F50F93BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C560BDA4-077D-FF11-3681-19C7F50F93BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C560BDA4-077D-FF11-3681-19C7F50F93BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

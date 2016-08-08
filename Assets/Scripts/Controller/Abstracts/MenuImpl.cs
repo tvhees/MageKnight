@@ -5,6 +5,9 @@ using UnityEngine.EventSystems;
 
 namespace Boardgame
 {
+    [System.Serializable]
+    public class MenuEvent : UnityEvent<string, object[]> { }
+
     public abstract class MenuImpl : MonoBehaviour, Menu
 	{
         private MenuEvent menuEvent = new MenuEvent();
@@ -38,7 +41,15 @@ namespace Boardgame
             if (input is Dropdown)
             {
                 Dropdown i = input as Dropdown;
-                i.onValueChanged.AddListener(delegate { InvokeEvent(i.name, i.captionText.text); });
+                if (i.name.EndsWith("Int"))
+                {
+                    string trimmedName = i.name.Remove(i.name.Length - 3);
+                    i.onValueChanged.AddListener(delegate { InvokeEvent(trimmedName, i.value); });
+                }
+                else
+                {
+                    i.onValueChanged.AddListener(delegate { InvokeEvent(i.name, i.captionText.text); });
+                }
             }
 
         }
@@ -53,7 +64,4 @@ namespace Boardgame
             menuEvent.AddListener(listener);
         }
     }
-
-    [System.Serializable]
-    public class MenuEvent : UnityEvent<string, object[]> { }
 }

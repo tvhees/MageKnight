@@ -72,11 +72,16 @@ namespace Boardgame
 
             public void ShowAttackOrDefense()
             {
-                foreach (EnemyHolder obj in enemyHolders)
-                    obj.ShowAttack();
-             
-                foreach (EnemyHolder obj in enemyHolders)
-                    obj.ShowDefense();
+                if (Rules.Combat.Instance.phase == Rules.Combat.Phase.block)
+                {
+                    foreach (EnemyHolder obj in enemyHolders)
+                        obj.ShowAttack();
+                }
+                else
+                {
+                    foreach (EnemyHolder obj in enemyHolders)
+                        obj.ShowDefense();
+                }
             }
 
             public void CleanUp()

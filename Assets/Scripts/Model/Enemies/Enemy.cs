@@ -5,8 +5,9 @@ using System;
 
 namespace Boardgame.Enemy
 {
-    public abstract class Enemy : MonoBehaviour
+    public abstract class Enemy : MonoBehaviour, Fighting
     {
-        
+        public abstract bool TestDefense(Boardgame.Attack input);
+        public abstract Boardgame.Attack GetAttack();
     }
 }

@@ -6,7 +6,7 @@ namespace Boardgame
 {
 	namespace Enemy
     {
-		public class Enemy 
+		public class EnemyDeprecated 
 		{
             public string name;
             public Sprite image;
@@ -16,7 +16,7 @@ namespace Boardgame
             public Defense defense;
             public Reward reward;
 
-            public Enemy()
+            public EnemyDeprecated()
             {
                 attack = new Attack();
                 defense = new Defense();

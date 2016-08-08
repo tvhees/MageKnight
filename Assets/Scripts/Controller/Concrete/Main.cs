@@ -1,61 +1,56 @@
 ﻿using UnityEngine;
-using System.Reflection;
+using UnityEngine.UI;
 using System.Collections.Generic;
 
 namespace Boardgame
 {
-    public class Main: MonoBehaviour 
-	{
-        public MenuImpl frontEndMenu;
+    public class Main : Singleton<Main>
+    {
+        public GameImpl game;
+        public Players players;
+        public Board.ScenarioDatabase scenarioDatabase;
+        public GameObject frontEndMenu;
+        public GameObject inGameUI;
+        public PathDrawer pathDrawer;
 
-        private Dictionary<string, MethodInfo> dictionaryOfMethods = new Dictionary<string, MethodInfo>();
+        private int numberOfPlayers = 1;
+        private string scenarioName = "Solo Conquest";
+        [SerializeField]
+        private Board.Scenario scenario;
 
-        void Awake()
+        public void SelectPlayerCount(Dropdown playerCountDropdown)
         {
-            SubscribeToMenu(frontEndMenu);
-            MakeDictionaryOfMethods();
+            numberOfPlayers = playerCountDropdown.value + 1;
         }
 
-        void SubscribeToMenu(Menu menu)
+        public void ChooseScenario(Text scenarioName)
         {
-            menu.AddListener(eventInput);
-        }
-
-        void MakeDictionaryOfMethods()
-        {
-            MethodInfo[] methodArray = GetArrayOfMethods();
-            AddMethodsToDictionary(methodArray);
-        }
-
-        MethodInfo[] GetArrayOfMethods()
-        {
-            var type = GetType();
-            return type.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
-        }
-
-        void AddMethodsToDictionary(MethodInfo[] methodArray)
-        {
-            foreach (MethodInfo method in methodArray)
-            {
-                dictionaryOfMethods.Add(method.Name, method);
-            }
-        }
-
-        void eventInput(string name, object[] parameters)
-        {
-            MethodInfo method;
-            if (dictionaryOfMethods.TryGetValue(name, out method))
-                method.Invoke(this, parameters);
+            this.scenarioName = scenarioName.text;
+            scenario = scenarioDatabase.GetScriptableObject(this.scenarioName);
         }
 
         public void NewGame()
         {
-            Debug.Log("Create new game");
+            if (numberOfPlayers < scenario.minPlayers)
+                Debug.Log(string.Format("This scenario requires at least {0} players.", scenario.minPlayers));
+            else if (numberOfPlayers > scenario.maxPlayers)
+                Debug.Log(string.Format("This scenario supports a maximum of {0} players.", scenario.maxPlayers));
+            else
+            {
+                game.StartScenario(scenario, numberOfPlayers);
+                ActivateGameMenu();
+            }
         }
 
-        public void ChooseScenario(string scenarioName)
+        public void DestroyGame()
         {
-            Debug.Log(string.Format("Scenario set to {0}", scenarioName));
+            game.EndScenario();
         }
-	}
+
+        void ActivateGameMenu()
+        {
+            frontEndMenu.SetActive(false);
+            inGameUI.SetActive(true);
+        }
+    }
 }

@@ -9,10 +9,10 @@ namespace Boardgame
     {
         public static class Loader
         {
-            public static Dictionary<string, Enemy> LoadEnemies(TextAsset XML, Factory.EnemyType type)
+            public static Dictionary<string, Component> LoadEnemies(TextAsset XML, Factory.EnemyType type)
             {
                 // Dictionary objects to store all enemy data
-                Dictionary<string, Enemy> enemyDictionary = new Dictionary<string, Enemy>();
+                Dictionary<string, Component> enemyDictionary = new Dictionary<string, Component>();
                 XmlDocument cardDB = new XmlDocument(); // Create XML container
                 cardDB.LoadXml(XML.text); // Load card information stored in XML
                 XmlNodeList nodeList = cardDB.GetElementsByTagName(type.ToString()); // Create array of nodes, one for each enemy of the requested type
@@ -20,7 +20,8 @@ namespace Boardgame
                 // Run through each node and extract enemy information
                 foreach (XmlNode node in nodeList)
                 {
-                    Enemy enemy = new Enemy();
+                    ComponentFactory enemyFactory = new EnemyFactory("Orc");
+                    Orc enemy = new Orc("WolfRiders", enemyFactory);
                     XmlNodeList enemyInfo = node.ChildNodes; // Get child nodes for current card
 
                     foreach (XmlNode element in enemyInfo)
@@ -58,7 +59,7 @@ namespace Boardgame
                 return enemyDictionary;
             }
 
-            static void LoadSprite(Enemy enemy, Factory.EnemyType type)
+            static void LoadSprite(Component enemy, Factory.EnemyType type)
             {
                 enemy.image = Resources.Load<Sprite>("EnemyImages/" + enemy.name);
                 enemy.backImage = Resources.Load<Sprite>("EnemyImages/" + type.ToString());

@@ -7,7 +7,7 @@
 /// 
 /// As a note, this is made as MonoBehaviour because we need Coroutines.
 /// </summary>
-namespace BoardGame
+namespace Boardgame
 {
     public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {

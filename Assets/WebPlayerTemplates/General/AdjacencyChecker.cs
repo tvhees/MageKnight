@@ -23,7 +23,7 @@ namespace Boardgame
         {
             LayerMask layer = 1 << LayerMask.NameToLayer(layerMaskName);
 
-            Collider[] colliders = Physics.OverlapSphere(centerOfSphere, radiusOfSphere * Game.Game.unitOfDistance, layer);
+            Collider[] colliders = Physics.OverlapSphere(centerOfSphere, radiusOfSphere * Game.unitOfDistance, layer);
 
             List<T> listOfType = new List<T>();
             for (int i = 0; i < colliders.Length; i++)
@@ -38,7 +38,7 @@ namespace Boardgame
         public static bool ByDistance(Vector3 positionA, Vector3 positionB)
         {
             float sqrDistance = (positionA - positionB).sqrMagnitude;
-            return Mathf.Sqrt(sqrDistance) < Game.Game.unitOfDistance;
+            return Mathf.Sqrt(sqrDistance) < Game.unitOfDistance;
         }
     }
 }

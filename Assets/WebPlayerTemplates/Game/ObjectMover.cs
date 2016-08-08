@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Boardgame
 {
-    namespace Game
+    namespace Model
     {
         public class ObjectMover : Singleton<ObjectMover>
         {

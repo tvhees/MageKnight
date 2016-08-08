@@ -1,21 +1,30 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 namespace Boardgame.Enemy
 {
-    public class Orc : Component 
+    public class Orc : Enemy 
 	{
-        public Orc(string name, ComponentFactory factory)
+        private Attack attack;
+        private Defense defense;
+
+        public Orc()
         {
-            this.factory = factory;
+
         }
 
-        public override void Prepare()
+        public override Attack GetAttack()
         {
-            sceneObject = factory.CreateSceneObject();
-            frontPicture = factory.CreateFrontPicture(name);
-            backPicture = factory.CreateBackPicture();
+            Debug.Log("Return this enemy's attack");
+            return attack;
+        }
+
+        public override bool TestDefense(Attack input)
+        {
+            Debug.Log("See if this enemy's defense was beaten by the player");
+            return true;
         }
     }
 }

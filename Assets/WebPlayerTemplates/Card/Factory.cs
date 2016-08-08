@@ -8,20 +8,26 @@ namespace Boardgame
     {
         public class Factory : Singleton<Factory>
         {
+
+            //************
+            // CARD FACTORY
+            //************
+
+            // Image and text data sources
             public Sprite m_cardBack; // separate sprite for card backs
+            public TextAsset m_cardXML; // XML file reference
 
             // List of card dictionaries
-            List<Dictionary<string, string>> cardList = new List<Dictionary<string, string>>();
+            List<Dictionary<string, string>> m_cardList = new List<Dictionary<string, string>>();
 
             public void LoadXML() // Load text data in to dictionaries
             {
-                var cardLoader = new XmlLoaderImp();
-                cardList = cardLoader.GetListOfDefinitions("FullConquest");
+                m_cardList = Loader.LoadCards(m_cardXML);
             }
 
             public Dictionary<string, string> GetCard(int id) // Get text dictionary matching a card id
             {
-                return cardList[id];
+                return m_cardList[id];
             }
 
             //************

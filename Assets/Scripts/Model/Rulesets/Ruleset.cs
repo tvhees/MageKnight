@@ -7,18 +7,26 @@ namespace Boardgame.Rulesets
 {
     public interface Ruleset : IEventSystemHandler
     {
-        void AddMovement(Effect.EffectData input);
+        Commands.Stack CommandStack { get; }
 
-        void AddInfluence(Effect.EffectData input);
+        Players Players { get; }
 
-        void AddAttack(Effect.EffectData input);
+        void AddMovement(EffectData input);
 
-        void AddBlock(Effect.EffectData input);
+        void AddInfluence(EffectData input);
 
-        void AddHealing(Effect.EffectData input);
+        void AddAttack(EffectData input);
 
-        void AddOrRemoveEnemyFromCombatSelection(Effect.EffectData input);
+        void AddBlock(EffectData input);
 
-        void StartCombat();
+        void AddHealing(EffectData input);
+
+        void AddOrRemoveEnemyFromCombatSelection(EffectData input);
+
+        void StartCombat(EffectData input);
+
+        void Provoke(EffectData input);
+
+        void HexClicked(EffectData input);
     }
 }

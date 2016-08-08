@@ -15,7 +15,7 @@ namespace Boardgame
 
 
             // Draw a path of arrows across relevant hexes
-            public void DrawUIForMovementPath(List<HexTile.Manager> listOfTilesToDrawAcross, string movementCostAsString)
+            public void DrawUIForMovementPath(List<HexGrid.Manager> listOfTilesToDrawAcross, string movementCostAsString)
             {
                 int i = listOfTilesToDrawAcross.Count - 1;
 

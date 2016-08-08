@@ -2,15 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Boardgame.Game
+namespace Boardgame.Model
 {
 	public class MovementState : TurnState
 	{
-        private Turn turn;
-
-        public MovementState(Turn turn)
+        public override void StartState()
         {
-            this.turn = turn;
+            pathDrawer.StartPath();
         }
 
         public override void EndCurrentState()
@@ -18,9 +16,14 @@ namespace Boardgame.Game
             turn.SetState(turn.GetInfluenceState());
         }
 
-        public override Rulesets.Ruleset GetRuleset()
+        public override Rulesets.Ruleset GetRuleset(Rulesets.Ruleset baseRuleset)
         {
-            return new Rulesets.MovementPhaseExtension(new Rulesets.BaseRuleset());
+            return new Rulesets.MovementPhaseRules(baseRuleset);
+        }
+
+        public override void CleanUpState()
+        {
+            // Clean up this state
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Boardgame
 		public class Object : MonoBehaviour 
 		{
             public Canvas enemyInformation;
-            private Enemy m_attributes;
+            private Component m_attributes;
             public Factory.EnemyType type { get; private set; }
             public MovingObject movingObject { get; private set; }
 
@@ -28,7 +28,7 @@ namespace Boardgame
                 enemyInformation.enabled = false;
             }
 
-            public void SetAttributes(Enemy input, Canvas enemyCanvas, Factory.EnemyType type)
+            public void SetAttributes(Component input, Canvas enemyCanvas, Factory.EnemyType type)
             {
                 m_attributes = input;
                 this.type = type;
@@ -77,11 +77,6 @@ namespace Boardgame
             public Sprite GetImage()
             {
                 return m_attributes.image;
-            }
-
-            public void EnterCombat()
-            {
-                Debug.Log("Entering combat");
             }
 
             // HACKY CODE because tokens are offset

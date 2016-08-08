@@ -43,11 +43,11 @@ namespace Boardgame
 
             if (wait)
             {
-                yield return StartCoroutine(Game.ObjectMover.MoveUntilFinished(this));
+                yield return StartCoroutine(Model.ObjectMover.MoveUntilFinished(this));
             }
             else
             {
-                Game.ObjectMover.MoveThisObject(this);
+                Model.ObjectMover.MoveThisObject(this);
             }
         }
 
@@ -76,11 +76,11 @@ namespace Boardgame
 
             if (wait)
             {
-                yield return StartCoroutine(Game.ObjectMover.RotateUntilFinished(this));
+                yield return StartCoroutine(Model.ObjectMover.RotateUntilFinished(this));
             }
             else
             {
-                Game.ObjectMover.RotateThisObject(this);
+                Model.ObjectMover.RotateThisObject(this);
             }
         }
 

@@ -42,7 +42,7 @@ namespace Boardgame
                 }
 
                 // By default, successfully using a card sends it to the play area
-                Game.Game.GetCurrentPlayer().MoveCardToPlayArea(m_effectCard);
+                Game.GetCurrentPlayer().MoveCardToPlayArea(m_effectCard);
             }
 
             public void FailedEffect()

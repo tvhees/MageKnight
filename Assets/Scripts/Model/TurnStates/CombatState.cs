@@ -3,25 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-namespace Boardgame.Game
+namespace Boardgame.Model
 {
 	public class CombatState : TurnState
 	{
-        private Turn turn;
-
-        public CombatState(Turn turn)
-        {
-            this.turn = turn;
-        }
-
         public override void EndCurrentState()
         {
             turn.SetState(turn.GetEndState());
         }
 
-        public override Rulesets.Ruleset GetRuleset()
+        public override Rulesets.Ruleset GetRuleset(Rulesets.Ruleset baseRuleset)
         {
-            return new Rulesets.MovementPhaseExtension(new Rulesets.BaseRuleset());
+            return new Rulesets.CombatPhaseRules(baseRuleset);
+        }
+
+        public override void CleanUpState()
+        {
+            // Clean up this state
         }
     }
 }

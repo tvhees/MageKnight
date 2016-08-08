@@ -99,11 +99,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\Editor\BaseEffectUtility.cs" />
-    <Compile Include="Assets\Scripts\Editor\ScriptableObjectUtility.cs" />
+    <Compile Include="Assets\Scripts\Editor\HexTileEditor.cs" />
+    <Compile Include="Assets\Scripts\Editor\HexVectorDrawer.cs" />
+    <Compile Include="Assets\Scripts\Editor\ScenarioEditor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\CardInfo.xml" />
+    <None Include="Assets\Resources\DataFiles\CardData.xml" />
+    <None Include="Assets\Resources\DataFiles\EnemyData.xml" />
+    <None Include="Assets\Resources\DataFiles\HexTilesFullConquest.xml" />
     <None Include="Assets\Resources\MageKnightData.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />

@@ -2,56 +2,39 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace BoardGame
+namespace Boardgame
 {
     public static class ExtensionMethods
     {
 
         /// <summary>
-        /// Returns a randomised copy of an array.
-        /// Does not alter original array by default.
+        /// Randomises and array
         /// </summary>
-        public static T[] Randomise<T>(this T[] param, bool createCopy = true)
+        public static T[] Randomise<T>(this T[] param)
         {
-
-            T[] randomArray = new T[param.Length];
-
-            if (createCopy)
-                randomArray = (T[])param.Clone();
-            else
-                randomArray = param;
-
             for (int i = 0; i < param.Length; i++)
             {
                 int j = Random.Range(i, param.Length);
-                var temp = randomArray[i];
-                randomArray[i] = randomArray[j];
-                randomArray[j] = temp;
+                var temp = param[i];
+                param[i] = param[j];
+                param[j] = temp;
             }
-            return randomArray;
+            return param;
         }
 
         /// <summary>
-        /// Returns a randomised copy of a list.
-        /// Does not alter original list by default.
+        /// Randomises a list
         /// </summary>
         public static List<T> Randomise<T>(this List<T> param, bool createCopy = true)
         {
-            List<T> randomList;
-
-            if (createCopy)
-                randomList = new List<T>(param);
-            else
-                randomList = param;
-
             for (int i = 0; i < param.Count; i++)
             {
                 int j = Random.Range(i, param.Count);
-                var temp = randomList[i];
-                randomList[i] = randomList[j];
-                randomList[j] = temp;
+                var temp = param[i];
+                param[i] = param[j];
+                param[j] = temp;
             }
-            return randomList;
+            return param;
         }
 
 

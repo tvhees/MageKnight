@@ -44,7 +44,7 @@ namespace Boardgame
                     List<Object> newStack = Factory.Instance.CreateStack(stackHolder, m_stackCamera, type);
 
                     // Randomise the order of the enemies in this stack and add it to the dictionary
-                    newStack.Randomise();
+                    newStack.Randomise(false);
                     enemyStacks.Add(type.ToString(), newStack);
                     stackHolders.Add(type.ToString(), stackHolder);
 
@@ -104,7 +104,7 @@ namespace Boardgame
                     enemy.movingObject.SetHomePos(stackHolder.transform.position);
                 }
 
-                stackList.Randomise();
+                stackList.Randomise(false);
             }
 		}
 	}

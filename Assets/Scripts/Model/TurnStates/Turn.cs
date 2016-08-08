@@ -2,43 +2,39 @@
 using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
-namespace Boardgame.Game
+namespace Boardgame.Model
 {
+    [System.Serializable]
+    public class StateChanged : UnityEvent<Rulesets.Ruleset> { }
+
     public class Turn : MonoBehaviour
     {
-        TurnState startState;
-        TurnState movementState;
-        TurnState influenceState;
-        TurnState combatState;
-        TurnState endState;
 
-        TurnState state;
+        public Rulesets.BaseRuleset baseRuleset;
+        public TurnState state;
+        public StateChanged stateChanged;
 
-        public UnityEvent stateChanged;
+        [SerializeField] private TurnState startState;
+        [SerializeField] private TurnState movementState;
+        [SerializeField] private TurnState influenceState;
+        [SerializeField] private TurnState combatState;
+        [SerializeField] private TurnState endState;
 
-        public Turn()
+        public void StartNewTurn()
         {
-            startState = new StartState(this);
-            movementState = new MovementState(this);
-            influenceState = new InfluenceState(this);
-            combatState = new CombatState(this);
-            endState = new EndState(this);
+            SetState(startState);
         }
 
         public void SetState(TurnState state)
         {
             this.state = state;
-            NotifyListeners();
+            state.StartState();
+            stateChanged.Invoke(GetRuleSet());
         }
 
-        public void NotifyListeners()
+        Rulesets.Ruleset GetRuleSet()
         {
-            stateChanged.Invoke();
-        }
-
-        public Rulesets.Ruleset GetRuleSet()
-        {
-            return state.GetRuleset();
+            return state.GetRuleset(baseRuleset);
         }
 
         public void EndCurrentState()
@@ -73,16 +69,6 @@ namespace Boardgame.Game
         public TurnState GetEndState()
         {
             return endState;
-        }
-
-        public void RegisterListener(UnityAction listenerMethod)
-        {
-            stateChanged.AddListener(listenerMethod);
-        }
-
-        public void RemoveListener(UnityAction listenerMethod)
-        {
-            stateChanged.RemoveListener(listenerMethod);
         }
     }
 }

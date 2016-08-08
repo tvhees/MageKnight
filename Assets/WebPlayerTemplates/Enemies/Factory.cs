@@ -19,7 +19,7 @@ namespace Boardgame
             public GameObject enemyCanvasPrefab; // Canvas for showing enemy information within the scene
 
             // Enemy dictionary
-            Dictionary<string, Enemy> m_enemyDictionary = new Dictionary<string, Enemy>();
+            Dictionary<string, Component> m_enemyDictionary = new Dictionary<string, Component>();
 
             public void LoadXML(EnemyType type) // Load text data in to dictionaries
             {
@@ -28,7 +28,7 @@ namespace Boardgame
 
             private void GiveEnemyIdentity(Object enemy, string name, EnemyType type) // Set a card to a specific number and matching sprites 
             {
-                Enemy output;
+                Component output;
                 m_enemyDictionary.TryGetValue(name, out output);
 
                 Canvas enemyCanvas = CreateCanvas(output);
@@ -36,7 +36,7 @@ namespace Boardgame
                 enemy.SetAttributes(output, enemyCanvas, type);
             }
 
-            private Canvas CreateCanvas(Enemy enemy)
+            private Canvas CreateCanvas(Component enemy)
             {
                 Canvas enemyCanvas = (Instantiate(enemyCanvasPrefab) as GameObject)
                                     .GetComponent<Canvas>();
@@ -83,7 +83,7 @@ namespace Boardgame
                     }
                 }
 
-                stackList.Randomise();
+                stackList.Randomise(false);
 
                 return stackList;
             }
