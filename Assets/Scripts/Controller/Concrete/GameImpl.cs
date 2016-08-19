@@ -4,42 +4,30 @@ using System.Collections.Generic;
 
 namespace Boardgame
 {
-    public class GameImpl : MonoBehaviour, Game
+    public class GameImpl : MonoBehaviour
     {
         public Camera sharedCamera;
 
-        private Board.Board board;
-        private Players players;
-        private Model.Turn turn;
         public static float unitOfDistance = 2.0f;
 
-        private Rulesets.Ruleset rules;
+        public Rulesets.Ruleset rules { get; private set; }
 
-        // Eventually move to a Command pattern
-        public Rulesets.Ruleset Rules
+        public void StartScenario(Board.Scenario scenario)
         {
-            get { return rules; }
-        }
+            Main.board.CreateBoard(scenario);
 
-        void Awake()
-        {
-            board = FindObjectOfType<Board.Board>();
-            players = FindObjectOfType<Players>();
-            turn = FindObjectOfType<Model.Turn>();
-        }
+            Main.cards.CreateSharedDecks();
 
-        public void StartScenario(Board.Scenario scenario, int numberOfPlayers)
-        {
-            board.CreateBoard(scenario, numberOfPlayers);
+            Main.cardOffer.FillCardOffers();
 
-            players.CreatePlayers(numberOfPlayers);
+            Main.players.CreatePlayers();
 
-            turn.StartNewTurn();
+            Main.turn.StartNewTurn();
         }
 
         public void EndScenario()
         {
-            board.DestroyBoard();
+            Main.board.DestroyBoard();
         }
 
         public void SetCurrentRules(Rulesets.Ruleset rulesForThisPhase)

@@ -14,6 +14,9 @@ public abstract class RulesetExtension : Ruleset
         public Players Players
         { get { return extendedRuleset.Players; } }
 
+        public Model.Turn Turn
+        { get { return extendedRuleset.Turn; } }
+
         public virtual void AddMovement(EffectData input)
         {
             extendedRuleset.AddMovement(input);
@@ -31,7 +34,7 @@ public abstract class RulesetExtension : Ruleset
 
         public virtual void AddBlock(EffectData input)
         {
-            extendedRuleset.AddAttack(input);
+            extendedRuleset.AddBlock(input);
         }
 
         public virtual void AddHealing(EffectData input)
@@ -54,9 +57,19 @@ public abstract class RulesetExtension : Ruleset
             extendedRuleset.Provoke(input);
         }
 
-        public virtual void HexClicked(EffectData input)
+        public virtual void Interact(EffectData input)
         {
-            extendedRuleset.HexClicked(input);
+            extendedRuleset.Interact(input);
+        }
+
+        public virtual void MoveToTile(EffectData input)
+        {
+            extendedRuleset.MoveToTile(input);
+        }
+
+        public virtual void UseShop(EffectData input)
+        {
+            extendedRuleset.UseShop(input);
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Boardgame.Board
+namespace Boardgame
 {
     public abstract class ScriptableObjectDatabase<T> : MonoBehaviour where T : ScriptableObject
     {

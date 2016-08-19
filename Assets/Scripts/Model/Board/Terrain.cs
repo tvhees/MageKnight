@@ -6,6 +6,16 @@ namespace Boardgame.Board
 {
     public class Terrain: MonoBehaviour 
 	{
-        public HexTile.Type type;
+        public Rulesets.TerrainType type;
+
+        public bool isTraversable
+        {
+            get { return Rulesets.MovementCosts.IsTraversable(type); }
+        }
+
+        public int movementCost
+        {
+            get { return Rulesets.MovementCosts.GetCost(type); }
+        }
 	}
 }

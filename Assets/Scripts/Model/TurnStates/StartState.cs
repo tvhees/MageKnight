@@ -7,9 +7,9 @@ namespace Boardgame.Model
 {
 	public class StartState : TurnState
 	{
-        public override void EndCurrentState()
+        public override void BeginState()
         {
-            turn.SetState(turn.GetMovementState());
+            Rulesets.MovementCosts.Reset(true);
         }
 
         public override Rulesets.Ruleset GetRuleset(Rulesets.Ruleset baseRuleset)
@@ -17,9 +17,9 @@ namespace Boardgame.Model
             return new Rulesets.StartPhaseRules(baseRuleset);
         }
 
-        public override void CleanUpState()
+        public override Command[] GetCleanupCommands()
         {
-            // Clean up this state
+            return new Command[0] { };
         }
     }
 }

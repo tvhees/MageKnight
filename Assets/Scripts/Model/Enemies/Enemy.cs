@@ -7,7 +7,7 @@ namespace Boardgame.Enemy
 {
     public abstract class Enemy : MonoBehaviour, Fighting
     {
-        public abstract bool TestDefense(Boardgame.Attack input);
-        public abstract Boardgame.Attack GetAttack();
+        public abstract bool TestDefense(Attack input);
+        public abstract Attack GetAttack();
     }
 }

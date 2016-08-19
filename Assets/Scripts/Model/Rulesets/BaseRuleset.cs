@@ -9,11 +9,13 @@ namespace Boardgame.Rulesets
     {
         private Commands.Stack commandStack;
         private Players players;
+        private Model.Turn turn;
 
         void Awake()
         {
             commandStack = FindObjectOfType<Commands.Stack>();
             players = FindObjectOfType<Players>();
+            turn = FindObjectOfType<Model.Turn>();
         }
 
         public Commands.Stack CommandStack
@@ -26,14 +28,21 @@ namespace Boardgame.Rulesets
             get { return players; }
         }
 
+        public Model.Turn Turn
+        {
+            get { return turn; }
+        }
+
         public void AddMovement(EffectData input)
         {
-            Debug.Log("Adding " + input.intValue + " movement points.");
+            int movement = input.intValue;
+            CommandStack.AddCommand(new AddMovementToPlayer(Players.currentPlayer, movement));
         }
 
         public void AddInfluence(EffectData input)
         {
-            Debug.Log("Adding " + input.intValue + " influence points.");
+            int influence = input.intValue;
+            CommandStack.AddCommand(new AddInfluenceToPlayer(Players.currentPlayer, influence));
         }
 
         public void AddAttack(EffectData input)
@@ -48,7 +57,8 @@ namespace Boardgame.Rulesets
 
         public void AddHealing(EffectData input)
         {
-            Debug.Log("Adding " + input.intValue + " healing points.");
+            int healing = input.intValue;
+            CommandStack.AddCommand(new AddHealingToPlayer(Players.currentPlayer, healing));
         }
 
         public void AddOrRemoveEnemyFromCombatSelection(EffectData input)
@@ -63,12 +73,47 @@ namespace Boardgame.Rulesets
 
         public void Provoke(EffectData input)
         {
-            Debug.Log("Provoking Enemy");
+            GameObject enemy = input.gameObjectValue;
+            float squareDistance = (enemy.transform.position - Players.currentPlayer.position).sqrMagnitude;
+
+            if (Mathf.Sqrt(squareDistance) < GameImpl.unitOfDistance)
+            {
+                Main.commandStack.AddCommand(new AddEnemyToCombat(enemy));
+            }
+            else
+                Debug.Log(string.Format("{0} is too far away to be provoked", enemy.name));
         }
 
-        public void HexClicked(EffectData input)
+        public void Interact(EffectData input)
         {
-            Debug.Log("Hex clicked: no generic action");
+            GameObject hex = input.gameObjectValue;
+            Board.InteractibleFeature interactible = hex.GetComponentInChildren<Board.InteractibleFeature>();
+            if (interactible != null)
+            {
+                interactible.ExecuteInteraction();
+            }
+            else
+                MoveToTile(input);
+        }
+
+        public void MoveToTile(EffectData input)
+        {
+            GameObject tile = input.gameObjectValue;
+            CommandStack.AddCommand(new MoveToTile(tile));
+        }
+
+        public void UseShop(EffectData input)
+        {
+            GameObject shop = input.gameObjectValue;
+
+            float squareDistance = (shop.transform.position - Players.currentPlayer.position).sqrMagnitude;
+
+            if (Mathf.Sqrt(squareDistance) < 0.5f * GameImpl.unitOfDistance)
+                Main.commandStack.AddCommand(new InfluenceLocals(shop));
+            else if (Mathf.Sqrt(squareDistance) < GameImpl.unitOfDistance)
+                Main.commandStack.AddCommand(new MoveToTile(shop.transform.parent.gameObject));
+            else
+                Debug.Log(string.Format("{0} is too far away to move to", shop.name));
         }
     }
 }

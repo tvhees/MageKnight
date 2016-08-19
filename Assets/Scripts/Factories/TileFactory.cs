@@ -14,7 +14,7 @@ namespace Boardgame.Board
             var tileData = data as HexTile;
             for(var i = 0; i < tileData.hexes.Length; i++)
             {
-                GameObject hex = hexFactory.CreateSceneObject(tileData.hexes[i]);
+                GameObject hex = hexFactory.CreateSceneObject(tileData.hexes[i], tileData.features[i]);
                 hex.transform.SetParent(hexTile.transform);
                 hex.transform.localPosition = tileData.localCoordinates[i].worldVector;
             }

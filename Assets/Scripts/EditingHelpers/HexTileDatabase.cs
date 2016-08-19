@@ -2,16 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Boardgame
+namespace Boardgame.Board
 {
-    namespace Board
+    public class HexTileDatabase : ScriptableObjectDatabase<HexTile>
     {
-        public class HexTileDatabase : ScriptableObjectDatabase<HexTile>
+        void Awake()
         {
-            void Awake()
-            {
-                path = "HexTiles";
-            }
+            path = "HexTiles";
         }
     }
 }

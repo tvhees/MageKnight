@@ -10,11 +10,6 @@ namespace Boardgame.Enemy
         private Attack attack;
         private Defense defense;
 
-        public Orc()
-        {
-
-        }
-
         public override Attack GetAttack()
         {
             Debug.Log("Return this enemy's attack");

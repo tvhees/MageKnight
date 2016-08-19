@@ -9,7 +9,6 @@ public class StartPhaseRules : RulesetExtension
         public StartPhaseRules (Ruleset extendedRuleset)
         {
             this.extendedRuleset = extendedRuleset;
-            Players.currentPlayer.NewVariables();
         }
-	}
+    }
 }

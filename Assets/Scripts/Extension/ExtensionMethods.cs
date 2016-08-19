@@ -102,6 +102,20 @@ namespace Boardgame
         }
 
         /// <summary>
+        /// Returns the last child of a transform by heirarchy index
+        /// </summary>
+        public static GameObject LastChild(this Transform parent)
+        {
+            if (parent.childCount > 0)
+            {
+                int index = parent.childCount - 1;
+                return parent.GetChild(index).gameObject;
+            }
+            else
+                return null;
+        }
+
+        /// <summary>
         /// Gets or add a component. Required for Singleton pattern. Usage example:
         /// BoxCollider boxCollider = transform.GetOrAddComponent<BoxCollider>();
         /// </summary>

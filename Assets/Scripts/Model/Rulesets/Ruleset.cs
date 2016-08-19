@@ -11,6 +11,8 @@ namespace Boardgame.Rulesets
 
         Players Players { get; }
 
+        Model.Turn Turn { get;  }
+
         void AddMovement(EffectData input);
 
         void AddInfluence(EffectData input);
@@ -27,6 +29,10 @@ namespace Boardgame.Rulesets
 
         void Provoke(EffectData input);
 
-        void HexClicked(EffectData input);
+        void Interact(EffectData input);
+
+        void MoveToTile(EffectData input);
+
+        void UseShop(EffectData input);
     }
 }

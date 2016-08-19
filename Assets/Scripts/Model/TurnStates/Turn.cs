@@ -11,7 +11,8 @@ namespace Boardgame.Model
     {
 
         public Rulesets.BaseRuleset baseRuleset;
-        public TurnState state;
+        public TurnState currentState;
+        [HideInInspector] public TurnState backupState;
         public StateChanged stateChanged;
 
         [SerializeField] private TurnState startState;
@@ -22,25 +23,20 @@ namespace Boardgame.Model
 
         public void StartNewTurn()
         {
+            Main.players.currentPlayer.NewVariables();
             SetState(startState);
         }
 
         public void SetState(TurnState state)
         {
-            this.state = state;
-            state.StartState();
+            currentState = state;
+            state.BeginState();
             stateChanged.Invoke(GetRuleSet());
         }
 
         Rulesets.Ruleset GetRuleSet()
         {
-            return state.GetRuleset(baseRuleset);
-        }
-
-        public void EndCurrentState()
-        {
-            state.CleanUpState();
-            state.EndCurrentState();
+            return currentState.GetRuleset(baseRuleset);
         }
 
         public void EndTurn()

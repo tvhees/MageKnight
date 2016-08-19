@@ -17,9 +17,9 @@ namespace Boardgame.Board
 
         private GameObject boardHolder;
 
-        public void CreateBoard(Scenario scenario, int numberOfPlayers)
+        public void CreateBoard(Scenario scenario)
         {
-            PlayerCount playerCountData = scenario.playerCounts[numberOfPlayers - scenario.minPlayers];
+            PlayerCount playerCountData = scenario.playerCounts[Main.Instance.NumberOfPlayers - scenario.minPlayers];
             CreateTilesForScenario(playerCountData);
             CreateStartingBoard(playerCountData);
         }
