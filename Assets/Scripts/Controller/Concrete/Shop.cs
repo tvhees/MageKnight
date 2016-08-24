@@ -167,6 +167,11 @@ namespace Boardgame.Cards
         {
             Main.rules.AddHealing(1, cost);
         }
+
+        public void PlunderVillage()
+        {
+            Main.rules.PlunderVillage();
+        }
         #endregion
     }
 }

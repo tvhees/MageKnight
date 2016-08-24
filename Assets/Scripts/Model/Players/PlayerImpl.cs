@@ -6,18 +6,19 @@ using System.Collections.Generic;
 namespace Boardgame
 {
     [System.Serializable]
-    public class VariableUpdate : UnityEvent<Player.Variables> { }
+    public class VariableUpdate : UnityEvent<Player.Variables, Player.Statistics> { }
 
     public class PlayerImpl: MonoBehaviour
 	{
         public GameObject tile;
         public Player.Variables variables { get; private set; }
+        public Player.Statistics statistics { get; private set; }
         public ObjectMover objectMover { get; private set; }
         public Player.Belongings belongings { get; private set; }
 
         public VariableUpdate variableUpdate = new VariableUpdate();
 
-        private Player.StatsDisplay statsDisplay;
+        private Player.VariablesDisplay varsDisplay;
         private GameObject playerObject;
 
         public Vector3 position { get { return playerObject.transform.position; } }
@@ -25,8 +26,9 @@ namespace Boardgame
 
         void Awake()
         {
-            statsDisplay = FindObjectOfType<Player.StatsDisplay>();
-            statsDisplay.SubscribeToVariables(variableUpdate);
+            statistics = new Player.Statistics();
+            varsDisplay = FindObjectOfType<Player.VariablesDisplay>();
+            varsDisplay.SubscribeToVariables(variableUpdate);
         }
 
         public void SetObject(GameObject playerObject)
@@ -47,7 +49,7 @@ namespace Boardgame
         public void NewVariables()
         {
             variables = new Player.Variables();
-            variableUpdate.Invoke(variables);
+            variableUpdate.Invoke(variables, statistics);
         }
 
         public bool AddInfluence(int value)
@@ -55,7 +57,7 @@ namespace Boardgame
             if (variables.influence + value >= 0)
             {
                 variables.influence += value;
-                variableUpdate.Invoke(variables);
+                variableUpdate.Invoke(variables, statistics);
                 return true;
             }
             else
@@ -65,21 +67,39 @@ namespace Boardgame
         public void AddMovement(int value)
         {
             variables.movement += value;
-            variableUpdate.Invoke(variables);
+            variableUpdate.Invoke(variables, statistics);
         }
 
         public void AddHealing(int value)
         {
             variables.healing += value;
-            variableUpdate.Invoke(variables);
+            variableUpdate.Invoke(variables, statistics);
         }
 
-        public void DrawCard()
+        public int AddReputation(int value)
         {
-            GameObject card = belongings.deckPanel.transform.LastChild();
-            var cardController = card.GetComponent<Cards.MovementAndDisplay>();
-            cardController.MoveToNewParent(belongings.handPanel.transform);
-            cardController.ShowFront();
+            Debug.Log("Adding rep: " + value);
+
+            int oldReputation = statistics.reputation;
+            statistics.reputation += value;
+
+            variableUpdate.Invoke(variables, statistics);
+
+            int changeInReputation = statistics.reputation - oldReputation;
+            return changeInReputation;
+        }
+
+        public void DrawCards(int cardsToDraw = 1)
+        {
+            for (int i = 0; i < cardsToDraw; i++)
+            {
+                GameObject card = belongings.deckPanel.transform.LastChild();
+                var cardController = card.GetComponent<Cards.MovementAndDisplay>();
+                cardController.MoveToNewParent(belongings.handPanel.transform);
+                cardController.ShowFront();
+
+                Main.commandStack.ClearCommandList();
+            }
         }
 
         public bool CanMoveToTile(GameObject tile)

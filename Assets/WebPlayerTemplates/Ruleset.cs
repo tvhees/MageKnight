@@ -15,7 +15,7 @@ namespace Boardgame.Rulesets
 
         void AddMovement(EffectData input);
 
-        void AddInfluence(EffectData input);
+        void AddInfluence(int input);
 
         void AddAttack(EffectData input);
 

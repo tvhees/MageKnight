@@ -6,11 +6,6 @@ namespace Boardgame.Model
 {
 	public class EndState : TurnState
 	{
-        public override Rulesets.Ruleset GetRuleset(Rulesets.Ruleset baseRuleset)
-        {
-            return new Rulesets.MovementPhaseRules(baseRuleset);
-        }
-
         public override Command[] GetCleanupCommands()
         {
             return new Command[0] { };

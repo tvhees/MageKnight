@@ -3,17 +3,12 @@ using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
 namespace Boardgame.Model
-{
-    [System.Serializable]
-    public class StateChanged : UnityEvent<Rulesets.Ruleset> { }
-
-    public class Turn : MonoBehaviour
+{    public class Turn : MonoBehaviour
     {
 
         public Rulesets.BaseRuleset baseRuleset;
         public TurnState currentState;
         [HideInInspector] public TurnState backupState;
-        public StateChanged stateChanged;
 
         [SerializeField] private TurnState startState;
         [SerializeField] private TurnState movementState;
@@ -31,12 +26,6 @@ namespace Boardgame.Model
         {
             currentState = state;
             state.BeginState();
-            stateChanged.Invoke(GetRuleSet());
-        }
-
-        Rulesets.Ruleset GetRuleSet()
-        {
-            return currentState.GetRuleset(baseRuleset);
         }
 
         public void EndTurn()

@@ -11,8 +11,6 @@ namespace Boardgame.Model
 
         }
 
-        public abstract Rulesets.Ruleset GetRuleset(Rulesets.Ruleset baseRuleset);
-
         public abstract Command[] GetCleanupCommands();
 	}
 }

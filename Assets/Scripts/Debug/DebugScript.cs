@@ -14,7 +14,7 @@ namespace Boardgame
 
         public void AddInfluence(int amount)
         {
-            Main.rules.AddInfluence(new EffectData(intValue: amount));
+            Main.rules.AddInfluence(amount);
         }
 
         public void AddAttack(int amount)
@@ -29,7 +29,7 @@ namespace Boardgame
 
         public void DrawCard()
         {
-            Main.players.currentPlayer.DrawCard();
+            Main.players.currentPlayer.DrawCards();
         }
 
         public void OpenShop()

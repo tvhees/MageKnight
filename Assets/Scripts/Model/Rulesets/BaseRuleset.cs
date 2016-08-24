@@ -5,7 +5,7 @@ using System;
 
 namespace Boardgame.Rulesets
 {
-    public class BaseRuleset : MonoBehaviour, Ruleset
+    public class BaseRuleset : MonoBehaviour
     {
         private Commands.Stack commandStack;
         private Players players;
@@ -39,10 +39,9 @@ namespace Boardgame.Rulesets
             CommandStack.AddCommand(new AddMovementToPlayer(Players.currentPlayer, movement));
         }
 
-        public void AddInfluence(EffectData input)
+        public void AddInfluence(int input)
         {
-            int influence = input.intValue;
-            CommandStack.AddCommand(new AddInfluenceToPlayer(Players.currentPlayer, influence));
+            CommandStack.AddCommand(new AddInfluenceToPlayer(Players.currentPlayer, input));
         }
 
         public void AddAttack(EffectData input)
@@ -58,6 +57,11 @@ namespace Boardgame.Rulesets
         public void AddHealing(int input, int cost)
         {
             CommandStack.AddCommand(new AddHealingToPlayer(Players.currentPlayer, input, cost));
+        }
+
+        public void AddReputation(int input)
+        {
+            CommandStack.AddCommand(new AddReputationToPlayer(Players.currentPlayer, input));
         }
 
         public void AddOrRemoveEnemyFromCombatSelection(EffectData input)
@@ -111,6 +115,12 @@ namespace Boardgame.Rulesets
                 Main.commandStack.AddCommand(new MoveToTile(input.transform.parent.gameObject));
             else
                 Debug.Log(string.Format("{0} is too far away to move to", input.name));
+        }
+
+        public void PlunderVillage()
+        {
+            AddReputation(-1);
+            Main.players.currentPlayer.DrawCards(2);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Boardgame
         public static Cards.Cards cards;
         public static Players players;
         public static Model.Turn turn;
-        public static Rulesets.Ruleset rules { get { return game.rules; } }
+        public static Rulesets.BaseRuleset rules { get { return game.rules; } }
         public static Board.ScenarioDatabase scenarioDatabase;
         public static Commands.Stack commandStack;
         public static Cards.Shop cardShop;

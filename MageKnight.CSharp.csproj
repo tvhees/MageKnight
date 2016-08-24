@@ -70,6 +70,7 @@
     <Compile Include="Assets\Scripts\Controller\Commands\Combat\AddEnemyToCombat.cs" />
     <Compile Include="Assets\Scripts\Controller\Commands\CommandResult.cs" />
     <Compile Include="Assets\Scripts\Controller\Commands\Influence\AddInfluenceToPlayer.cs" />
+    <Compile Include="Assets\Scripts\Controller\Commands\Influence\AddReputationToPlayer.cs" />
     <Compile Include="Assets\Scripts\Controller\Commands\Influence\InfluenceLocals.cs" />
     <Compile Include="Assets\Scripts\Controller\Commands\Movement\AddMovementToPlayer.cs" />
     <Compile Include="Assets\Scripts\Controller\Commands\Movement\MoveToTile.cs" />
@@ -133,15 +134,10 @@
     <Compile Include="Assets\Scripts\Model\Players\Belongings.cs" />
     <Compile Include="Assets\Scripts\Model\Players\ObjectMover.cs" />
     <Compile Include="Assets\Scripts\Model\Players\PlayerImpl.cs" />
+    <Compile Include="Assets\Scripts\Model\Players\Statistics.cs" />
     <Compile Include="Assets\Scripts\Model\Players\Variables.cs" />
     <Compile Include="Assets\Scripts\Model\Rulesets\BaseRuleset.cs" />
-    <Compile Include="Assets\Scripts\Model\Rulesets\CombatPhaseRules.cs" />
-    <Compile Include="Assets\Scripts\Model\Rulesets\InfluencePhaseRules.cs" />
     <Compile Include="Assets\Scripts\Model\Rulesets\MovementCosts.cs" />
-    <Compile Include="Assets\Scripts\Model\Rulesets\MovementPhaseRules.cs" />
-    <Compile Include="Assets\Scripts\Model\Rulesets\Ruleset.cs" />
-    <Compile Include="Assets\Scripts\Model\Rulesets\RulesetExtension.cs" />
-    <Compile Include="Assets\Scripts\Model\Rulesets\StartPhaseRules.cs" />
     <Compile Include="Assets\Scripts\Model\TurnStates\CombatState.cs" />
     <Compile Include="Assets\Scripts\Model\TurnStates\EndState.cs" />
     <Compile Include="Assets\Scripts\Model\TurnStates\InfluenceState.cs" />
@@ -150,9 +146,9 @@
     <Compile Include="Assets\Scripts\Model\TurnStates\Turn.cs" />
     <Compile Include="Assets\Scripts\Model\TurnStates\TurnState.cs" />
     <Compile Include="Assets\Scripts\View\FaceCameraScript.cs" />
-    <Compile Include="Assets\Scripts\View\StatsDisplay.cs" />
     <Compile Include="Assets\Scripts\View\ToolTips\ToolTip.cs" />
     <Compile Include="Assets\Scripts\View\ToolTips\toolTipPanel.cs" />
+    <Compile Include="Assets\Scripts\View\VariablesDisplay.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Resources\CardInfo.xml" />

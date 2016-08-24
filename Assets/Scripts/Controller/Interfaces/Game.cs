@@ -4,6 +4,6 @@ namespace Boardgame
 {
     interface Game
     {
-        Rulesets.Ruleset Rules { get; }
+        Rulesets.BaseRuleset Rules { get; }
     }
 }

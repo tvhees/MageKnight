@@ -22,7 +22,7 @@ public abstract class RulesetExtension : Ruleset
             extendedRuleset.AddMovement(input);
         }
 
-        public virtual void AddInfluence(EffectData input)
+        public virtual void AddInfluence(int input)
         {
             extendedRuleset.AddInfluence(input);
         }

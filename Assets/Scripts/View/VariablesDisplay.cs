@@ -6,22 +6,26 @@ using System.Collections.Generic;
 
 namespace Boardgame.Player
 {
-    public class StatsDisplay: MonoBehaviour 
+    public class VariablesDisplay: MonoBehaviour 
 	{
         public Text movement;
         public Text influence;
         public Text healing;
+        public Text level;
+        public Text reputation;
 
-        public void SubscribeToVariables(UnityEvent<Variables> variablesUpdate)
+        public void SubscribeToVariables(UnityEvent<Variables, Statistics> variablesUpdate)
         {
             variablesUpdate.AddListener(UpdateStats);
         }
 
-        void UpdateStats(Variables variables)
+        void UpdateStats(Variables variables, Statistics statistics)
         {
             movement.text = "Movement: " + variables.movement.ToString();
             influence.text = "Influence: " + variables.influence.ToString();
             healing.text = "Healing: " + variables.healing.ToString();
+            level.text = "Level: " + statistics.level.ToString();
+            reputation.text = "Reputation: " + statistics.reputation.ToString();
         }
 	}
 }

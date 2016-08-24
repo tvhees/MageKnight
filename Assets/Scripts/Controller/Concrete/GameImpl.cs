@@ -10,7 +10,7 @@ namespace Boardgame
 
         public static float unitOfDistance = 2.0f;
 
-        public Rulesets.Ruleset rules { get; private set; }
+        public Rulesets.BaseRuleset rules;
 
         public void StartScenario(Board.Scenario scenario)
         {
@@ -28,11 +28,6 @@ namespace Boardgame
         public void EndScenario()
         {
             Main.board.DestroyBoard();
-        }
-
-        public void SetCurrentRules(Rulesets.Ruleset rulesForThisPhase)
-        {
-            rules = rulesForThisPhase;
         }
 
         public enum State
