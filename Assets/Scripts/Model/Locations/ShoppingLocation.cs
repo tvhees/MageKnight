@@ -4,11 +4,13 @@ using System.Collections.Generic;
 
 namespace Boardgame.Board
 {
-    public class Shop : InteractibleFeature 
+    public class ShoppingLocation : InteractibleFeature 
 	{
+        public Cards.Shop.Type type;
+
         public override void ExecuteInteraction()
         {
-            Main.rules.UseShop(new EffectData(gameObjectValue: gameObject));
+            Main.rules.UseShop(this);
         }
     }
 }

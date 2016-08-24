@@ -8,11 +8,16 @@ namespace Boardgame.Cards
 {
     public class MovementAndDisplay: MonoBehaviour
 	{
-        public SpriteRenderer cardImage;
+        public Image cardImage;
         public Sprite cardFront;
         public Sprite cardBack;
 
-        public void MoveToNewParent(GameObject parent)
+        void Awake()
+        {
+            cardImage = GetComponentInChildren<Image>();
+        }
+
+        public void MoveToNewParent(Transform parent)
         {
             transform.SetParent(parent.transform);
             ResetTransform();

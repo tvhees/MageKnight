@@ -8,19 +8,20 @@ namespace Boardgame.Commands
 	{
         public List<Command> oldCommands = new List<Command>();
 
-        public void AddCommand(Command command)
+        public CommandResult AddCommand(Command command)
         {
             CommandResult result = command.Execute();
 
             if (result.succeeded)
             {
                 oldCommands.Add(command);
-                Debug.Log(command.ToString() + " - total = " + oldCommands.Count);
             }
             else if (result.alternative != null)
-                AddCommand(result.alternative);
+                result = AddCommand(result.alternative);
 
             Main.turn.backupState = null;
+
+            return result;
         }
 
         public void UndoLastCommand()

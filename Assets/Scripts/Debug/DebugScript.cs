@@ -32,23 +32,28 @@ namespace Boardgame
             Main.players.currentPlayer.DrawCard();
         }
 
+        public void OpenShop()
+        {
+            Main.cardShop.OpenShop();
+        }
+
         public void SetTarget(int value)
         {
-            CardHolder target = null;
             switch (value)
             {
+                case 0:
+                    Main.cardShop.TurnOffAcquisitionTarget();
+                    break;
                 case 1:
-                    target = Main.players.currentPlayer.belongings.deckPanel;
+                    Main.cardShop.SetDeckAsTarget();
                     break;
                 case 2:
-                    target = Main.players.currentPlayer.belongings.discardPanel;
+                    Main.cardShop.SetDiscardAsTarget();
                     break;
                 case 3:
-                    target = Main.players.currentPlayer.belongings.handPanel;
+                    Main.cardShop.SetHandAsTarget();
                     break;
             }
-
-            Main.players.currentPlayer.belongings.SetCardAcquisitionTarget(target);
         }
     }
 }

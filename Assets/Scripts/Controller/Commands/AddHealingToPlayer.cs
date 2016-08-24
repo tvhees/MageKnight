@@ -10,10 +10,13 @@ namespace Boardgame
         PlayerImpl player;
         int healing;
 
-        public AddHealingToPlayer(PlayerImpl player, int healing)
+        public AddHealingToPlayer(PlayerImpl player, int healing, int cost)
         {
             this.player = player;
             this.healing = healing;
+
+            if (cost > 0)
+                requirements.Add(new AddInfluenceToPlayer(player, -cost));
         }
 
         protected override CommandResult ExecuteThisCommand()

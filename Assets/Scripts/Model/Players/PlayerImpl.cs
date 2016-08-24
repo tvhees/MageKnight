@@ -50,10 +50,16 @@ namespace Boardgame
             variableUpdate.Invoke(variables);
         }
 
-        public void AddInfluence(int value)
+        public bool AddInfluence(int value)
         {
-            variables.influence += value;
-            variableUpdate.Invoke(variables);
+            if (variables.influence + value >= 0)
+            {
+                variables.influence += value;
+                variableUpdate.Invoke(variables);
+                return true;
+            }
+            else
+                return false;
         }
 
         public void AddMovement(int value)
@@ -72,7 +78,7 @@ namespace Boardgame
         {
             GameObject card = belongings.deckPanel.transform.LastChild();
             var cardController = card.GetComponent<Cards.MovementAndDisplay>();
-            cardController.MoveToNewParent(belongings.handPanel.gameObject);
+            cardController.MoveToNewParent(belongings.handPanel.transform);
             cardController.ShowFront();
         }
 

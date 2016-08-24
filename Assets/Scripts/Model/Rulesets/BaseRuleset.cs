@@ -55,10 +55,9 @@ namespace Boardgame.Rulesets
             Debug.Log("Adding " + input.intValue + " block points.");
         }
 
-        public void AddHealing(EffectData input)
+        public void AddHealing(int input, int cost)
         {
-            int healing = input.intValue;
-            CommandStack.AddCommand(new AddHealingToPlayer(Players.currentPlayer, healing));
+            CommandStack.AddCommand(new AddHealingToPlayer(Players.currentPlayer, input, cost));
         }
 
         public void AddOrRemoveEnemyFromCombatSelection(EffectData input)
@@ -102,18 +101,16 @@ namespace Boardgame.Rulesets
             CommandStack.AddCommand(new MoveToTile(tile));
         }
 
-        public void UseShop(EffectData input)
+        public void UseShop(Board.ShoppingLocation input)
         {
-            GameObject shop = input.gameObjectValue;
-
-            float squareDistance = (shop.transform.position - Players.currentPlayer.position).sqrMagnitude;
+            float squareDistance = (input.transform.position - Players.currentPlayer.position).sqrMagnitude;
 
             if (Mathf.Sqrt(squareDistance) < 0.5f * GameImpl.unitOfDistance)
-                Main.commandStack.AddCommand(new InfluenceLocals(shop));
+                Main.cardShop.OpenShop(input.type);
             else if (Mathf.Sqrt(squareDistance) < GameImpl.unitOfDistance)
-                Main.commandStack.AddCommand(new MoveToTile(shop.transform.parent.gameObject));
+                Main.commandStack.AddCommand(new MoveToTile(input.transform.parent.gameObject));
             else
-                Debug.Log(string.Format("{0} is too far away to move to", shop.name));
+                Debug.Log(string.Format("{0} is too far away to move to", input.name));
         }
     }
 }

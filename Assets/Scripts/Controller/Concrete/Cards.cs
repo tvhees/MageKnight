@@ -30,6 +30,9 @@ namespace Boardgame.Cards
         {
             GameObject card = list.GetLast();
             list.RemoveLast();
+            if (card == null)
+                Debug.Log("No cards left in " + list.ToString());
+
             return card;
         }
 

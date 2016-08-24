@@ -18,7 +18,7 @@ namespace Boardgame
 
             Main.cards.CreateSharedDecks();
 
-            Main.cardOffer.FillCardOffers();
+            Main.cardShop.FillUnitOffer();
 
             Main.players.CreatePlayers();
 

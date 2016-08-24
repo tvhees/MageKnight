@@ -10,34 +10,32 @@ namespace Boardgame.Player
 {
     public class Belongings: MonoBehaviour
 	{
-        public CardHolder deckPanel;
-        public CardHolder handPanel;
-        public CardHolder discardPanel;
+        public GameObject deckPanel;
+        public GameObject handPanel;
+        public GameObject discardPanel;
 
-        private CardHolder target;
-
-        public void GainCardToTarget(GameObject card)
+        public void GainCardToDeck(Cards.MovementAndDisplay card)
         {
-            Assert.IsNotNull(target);
+            GainCardToBelongings(card, deckPanel, showFront: false);
+        }
 
-            var cardController = card.GetComponent<Cards.MovementAndDisplay>();
-            cardController.MoveToNewParent(target.gameObject);
+        public void GainCardToDiscard(Cards.MovementAndDisplay card)
+        {
+            GainCardToBelongings(card, discardPanel);
+        }
 
-            if (target == deckPanel)
-                cardController.HideFront();
-            else
+        public void GainCardToHand(Cards.MovementAndDisplay card)
+        {
+            GainCardToBelongings(card, handPanel);
+        }
+
+        void GainCardToBelongings(Cards.MovementAndDisplay cardController, GameObject target, bool showFront = true)
+        {
+            cardController.MoveToNewParent(target.transform);
+            if (showFront)
                 cardController.ShowFront();
-        }
-
-        public void SetCardAcquisitionTarget(CardHolder target)
-        {
-            this.target = target;
-            target.ShowDropZone();
-        }
-
-        public void TurnOffAcquisitionTarget()
-        {
-            target = null;
+            else
+                cardController.HideFront();
         }
     }
 }

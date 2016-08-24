@@ -37,9 +37,9 @@ public abstract class RulesetExtension : Ruleset
             extendedRuleset.AddBlock(input);
         }
 
-        public virtual void AddHealing(EffectData input)
+        public virtual void AddHealing(int input, int cost = 0)
         {
-            extendedRuleset.AddHealing(input);
+            extendedRuleset.AddHealing(input, cost);
         }
 
         public virtual void AddOrRemoveEnemyFromCombatSelection(EffectData input)
@@ -67,7 +67,7 @@ public abstract class RulesetExtension : Ruleset
             extendedRuleset.MoveToTile(input);
         }
 
-        public virtual void UseShop(EffectData input)
+        public virtual void UseShop(Board.ShoppingLocation input)
         {
             extendedRuleset.UseShop(input);
         }

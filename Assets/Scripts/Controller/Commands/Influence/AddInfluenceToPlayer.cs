@@ -17,9 +17,7 @@ namespace Boardgame
 
         protected override CommandResult ExecuteThisCommand()
         {
-            player.AddInfluence(influence);
-
-            return CommandResult.success;
+            return new CommandResult(player.AddInfluence(influence));
         }
 
         protected override void UndoThisCommand()

@@ -29,10 +29,9 @@ namespace Boardgame
 
             player.SetBelongings(transform.InstantiateChild(playerViewPrefab, 100f * Vector3.left).GetComponentInChildren<Player.Belongings>());
             List<GameObject> playerDeck = Main.cards.CreatePlayerDeck();
-            player.belongings.SetCardAcquisitionTarget(player.belongings.deckPanel);
+            
             foreach (GameObject card in playerDeck)
-                player.belongings.GainCardToTarget(card);
-            player.belongings.TurnOffAcquisitionTarget();
+                player.belongings.GainCardToDeck(card.GetComponent<Cards.MovementAndDisplay>());
         }
         
         public PlayerImpl currentPlayer

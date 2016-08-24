@@ -9,7 +9,7 @@ namespace Boardgame
         public int layoutHeight;
         public string displayName = "Feature";
 
-        [TextArea(1, 10)]
+        [TextArea(1, 8)]
         public string description = "A location or enemy";
 	}
 }

@@ -7,38 +7,42 @@ using System;
 
 namespace Boardgame
 {
-    public class Moveable : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IDragHandler, IBeginDragHandler, IEndDragHandler, IDropHandler
+    public class Moveable : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IDragHandler, IBeginDragHandler, IEndDragHandler
     {
-        static GameObject currentObject;
+        static Moveable currentObject;
+        public CanvasGroup canvasGroup;
+        public Cards.MovementAndDisplay startParent;
+
+        bool zoomedIn;
 
         #region dragging
-        float zPosition;
-
         public void OnBeginDrag(PointerEventData eventData)
         {
-            if (currentObject == null)
+            if (!zoomedIn)
             {
-                zPosition = transform.position.z;
-                currentObject = gameObject;
+                canvasGroup.blocksRaycasts = false;
+                currentObject = this;
             }
         }
 
         public void OnDrag(PointerEventData eventData)
         {
-            if (currentObject == gameObject)
+            if (!zoomedIn)
             {
-                Vector3 pointerWorldPos = eventData.pointerCurrentRaycast.worldPosition;
-                transform.position = new Vector3(pointerWorldPos.x, pointerWorldPos.y, zPosition);
+                Vector3 worldPos;
+                RectTransformUtility.ScreenPointToWorldPointInRectangle(transform as RectTransform, eventData.position, eventData.pressEventCamera, out worldPos);
+                transform.position = worldPos;
             }
         }
 
         public void OnEndDrag(PointerEventData eventData)
         {
-        }
-
-        public void OnDrop(PointerEventData eventData)
-        {
-            throw new NotImplementedException();
+            if (!zoomedIn)
+            {
+                canvasGroup.blocksRaycasts = true;
+                currentObject = null;
+                ZoomOut();
+            }
         }
         #endregion
 
@@ -48,9 +52,9 @@ namespace Boardgame
             if (currentObject == null)
             {
                 MajorZoom(eventData);
-                currentObject = gameObject;
+                currentObject = this;
             }
-            else if (currentObject == gameObject)
+            else if (currentObject == this)
             {
                 ZoomOut();
                 currentObject = null;
@@ -71,10 +75,9 @@ namespace Boardgame
 
         public void MajorZoom(PointerEventData eventData)
         {
-            Camera eventCamera = eventData.pressEventCamera;
-            Vector3 target = Vector3.Lerp(PositionAlongCentrelineOfCamera(eventCamera), eventCamera.transform.position, 0.6f);
-            transform.position = target;
-            Debug.Log("MajorZoom");
+            zoomedIn = true;
+            transform.SetParent(Main.Instance.displayPanel.transform);
+            (transform as RectTransform).Reset();
         }
 
         public Vector3 PositionAlongCentrelineOfCamera(Camera camera)
@@ -91,7 +94,13 @@ namespace Boardgame
 
         void ZoomOut()
         {
+            if (zoomedIn)
+            {
+                transform.SetParent(startParent.transform);
+                (transform as RectTransform).Reset();
+            }
             transform.localPosition = Vector3.zero;
+            zoomedIn = false;
         }
         #endregion
     }

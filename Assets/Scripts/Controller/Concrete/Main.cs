@@ -6,7 +6,7 @@ namespace Boardgame
 {
     public class Main : Singleton<Main>
     {
-        public static float scalingFactor = 50f;
+        public static float scalingFactor = 1f;
         public static GameImpl game;
         public static Board.Board board;
         public static Cards.Cards cards;
@@ -15,11 +15,12 @@ namespace Boardgame
         public static Rulesets.Ruleset rules { get { return game.rules; } }
         public static Board.ScenarioDatabase scenarioDatabase;
         public static Commands.Stack commandStack;
-        public static Cards.CardOffer cardOffer;
+        public static Cards.Shop cardShop;
 
         public GameObject frontEndMenu;
         public GameObject inGameUI;
         public GameObject statsDisplay;
+        public GameObject displayPanel;
         public Camera shopCamera;
         public Camera mainCamera;
         public ToolTip toolTip;
@@ -37,7 +38,7 @@ namespace Boardgame
             players = FindObjectOfType<Players>();
             turn = FindObjectOfType<Model.Turn>();
             commandStack = FindObjectOfType<Commands.Stack>();
-            cardOffer = FindObjectOfType<Cards.CardOffer>();
+            cardShop = FindObjectOfType<Cards.Shop>();
         }
 
         public void SelectPlayerCount(Dropdown playerCountDropdown)

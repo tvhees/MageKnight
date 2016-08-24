@@ -8,6 +8,6 @@ namespace Boardgame.Cards
 {
     public class Acquirable: MonoBehaviour
 	{
-        
+        public MovementAndDisplay startParent;
     }
 }

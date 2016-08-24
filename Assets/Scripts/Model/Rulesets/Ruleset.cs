@@ -21,7 +21,7 @@ namespace Boardgame.Rulesets
 
         void AddBlock(EffectData input);
 
-        void AddHealing(EffectData input);
+        void AddHealing(int input, int cost);
 
         void AddOrRemoveEnemyFromCombatSelection(EffectData input);
 
@@ -33,6 +33,6 @@ namespace Boardgame.Rulesets
 
         void MoveToTile(EffectData input);
 
-        void UseShop(EffectData input);
+        void UseShop(Board.ShoppingLocation input);
     }
 }
