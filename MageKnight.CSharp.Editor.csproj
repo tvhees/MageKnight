@@ -99,11 +99,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\Editor\HexTileEditor.cs" />
-    <Compile Include="Assets\Scripts\Editor\HexVectorDrawer.cs" />
-    <Compile Include="Assets\Scripts\Editor\ScenarioEditor.cs" />
+    <Compile Include="Assets\_scripts\Other\Editor\HexTileEditor.cs" />
+    <Compile Include="Assets\_scripts\Other\Editor\HexVectorDrawer.cs" />
+    <Compile Include="Assets\_scripts\Other\Editor\ScenarioEditor.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Fonts\OpenSans\License!.txt" />
+    <None Include="Assets\Lobby\Documentation.txt" />
+    <None Include="Assets\Lobby\Instruction.txt" />
     <None Include="Assets\Resources\CardInfo.xml" />
     <None Include="Assets\Resources\DataFiles\CardData.xml" />
     <None Include="Assets\Resources\DataFiles\EnemyData.xml" />
