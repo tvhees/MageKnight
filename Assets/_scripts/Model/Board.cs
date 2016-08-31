@@ -1,27 +1,27 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 using System.Collections.Generic;
 using Other.Factory;
 using Other.Data;
 using Other.Utility;
 
-public class Board
+public class Board : NetworkBehaviour
 {
     public BoardFactory boardFactory;
+    public GameObject holderPrefab;
 
     private List<HexVector> tilePositions;
     private List<GameObject> countrysideTiles;
     private List<GameObject> coreTiles;
 
     private GameObject tileStack;
-
     private GameObject boardHolder;
 
-    #region Constructor
-    public Board(Scenario scenario)
+    #region Public
+    public void CreateBoard(Scenario scenario)
     {
         DataForPlayerCount data = scenario.playerCounts[Network.connections.Length + 1 - scenario.minPlayers];
 
-        boardFactory = Object.FindObjectOfType<BoardFactory>();
         CreateTilesForScenario(data);
         CreateStartingBoard(data);
     }
@@ -31,7 +31,9 @@ public class Board
 
     private void CreateTilesForScenario(DataForPlayerCount data)
     {
-        tileStack = new GameObject("TileStack");
+        tileStack = Instantiate(holderPrefab);
+        tileStack.name = "Tile Stack";
+        NetworkServer.Spawn(tileStack);
 
         countrysideTiles = boardFactory.CreateCountrysideStack(data);
         coreTiles = boardFactory.CreateCoreAndCityStack(data);
@@ -39,7 +41,7 @@ public class Board
         AddTilesToStack(countrysideTiles);
         AddTilesToStack(coreTiles);
 
-        tileStack.transform.position = new Vector3(0f, 30f, 0f);
+        tileStack.transform.position = new Vector3(-30f, 30f, 0f);
     }
 
     private void AddTilesToStack(List<GameObject> tileList)
@@ -50,7 +52,10 @@ public class Board
 
     private void CreateStartingBoard(DataForPlayerCount playerCountData)
     {
-        boardHolder = new GameObject("BoardHolder");
+        boardHolder = Instantiate(holderPrefab);
+        boardHolder.name = "Board Holder";
+        NetworkServer.Spawn(boardHolder);
+
         var mapShape = MapShapeDatabase.GetScriptableObject(playerCountData.shape.ToString());
         tilePositions = new List<HexVector>(mapShape.listOfTilePositions);
 

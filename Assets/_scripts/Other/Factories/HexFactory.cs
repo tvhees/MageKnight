@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 using Other.Data;
 
 namespace Other.Factory
 {
     [RequireComponent(typeof(TileFactory))]
-    public class HexFactory: MonoBehaviour 
+    public class HexFactory: NetworkBehaviour 
 	{
         public GameObject[] hexPrefabs;
         public GameObject[] featurePrefabs;
@@ -13,8 +14,13 @@ namespace Other.Factory
         {
             GameObject hex = Instantiate(hexPrefabs[(int)type]);
             hex.name = hex.name.Replace("(Clone)", "");
-            if(feature != HexTile.FeatureType.Empty)
-                hex.transform.InstantiateChild(featurePrefabs[(int)feature]);
+            NetworkServer.Spawn(hex);
+            if (feature != HexTile.FeatureType.Empty)
+            {
+                var feat = hex.transform.InstantiateChild(featurePrefabs[(int)feature]);
+                NetworkServer.Spawn(feat);
+            }
+
             return hex;
         }        
 	}

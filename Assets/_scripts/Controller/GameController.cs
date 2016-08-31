@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 using System.Collections;
 using System.Collections.Generic;
 using Other.Data;
@@ -6,7 +7,7 @@ using Other.Utility;
 
 namespace Boardgame
 {
-    public class GameController: MonoBehaviour 
+    public class GameController : NetworkBehaviour
 	{
         public Game game = new Game();
         public Board board;
@@ -17,9 +18,13 @@ namespace Boardgame
         {
             PlayerControl.Started.AddListener(OnPlayerStarted);
             PlayerControl.StartedLocal.AddListener(OnPlayerStartedLocal);
+        }
 
+        public override void OnStartServer()
+        {
+            base.OnStartServer();
             Scenario scenario = ScenarioDatabase.GetScriptableObject("Solo Conquest");
-            board = new Board(scenario);
+            board.CreateBoard(scenario);
         }
 
         #region Event Handlers

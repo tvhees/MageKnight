@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 using Other.Data;
 
 namespace Other.Factory
 {
     [RequireComponent(typeof(BoardFactory), typeof(HexFactory))]
-    public class TileFactory : MonoBehaviour
+    public class TileFactory : NetworkBehaviour
 	{
         private HexFactory hexFactory;
 
