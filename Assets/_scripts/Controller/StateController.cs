@@ -12,7 +12,20 @@ public class StateController : NetworkBehaviour {
     public int stateIndex;
     public GameObject gameState;
 
-    public void ChangeState(GameObject newState)
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        OnStateIndexChanged(stateIndex);
+    }
+
+    [Server]
+    public void ServerChangeState(GameObject newState)
+    {
+        ChangeState(newState);
+        stateIndex = gameState.transform.GetSiblingIndex();
+    }
+
+    void ChangeState(GameObject newState)
     {
         if (gameState == newState)
             return;
@@ -24,10 +37,19 @@ public class StateController : NetworkBehaviour {
         gameState.SetActive(true);
     }
 
+    [Client]
     public void OnStateIndexChanged(int newIndex)
     {
         stateIndex = newIndex;
 
+        EventManager.debugMessage.Invoke(stateIndex.ToString());
+
         ChangeState(transform.GetChild(stateIndex).gameObject);
+    }
+
+    [Server]
+    public void ServerSpawnObject(GameObject obj)
+    {
+        NetworkServer.Spawn(obj);
     }
 }

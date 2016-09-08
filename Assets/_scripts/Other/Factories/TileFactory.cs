@@ -4,7 +4,7 @@ using Other.Data;
 
 namespace Other.Factory
 {
-    [RequireComponent(typeof(BoardFactory), typeof(HexFactory))]
+    [RequireComponent(typeof(HexFactory))]
     public class TileFactory : NetworkBehaviour
 	{
         private HexFactory hexFactory;

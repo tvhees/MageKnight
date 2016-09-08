@@ -13,7 +13,12 @@ public class GameController : NetworkBehaviour
 {
     public static GameController singleton;
 
-    public StateController stateController;
+    public Scenario scenario { get {
+            if (players.Count <= 1)
+                return ScenarioDatabase.GetScriptableObject("Solo Conquest");
+            else
+                return ScenarioDatabase.GetScriptableObject("Full Conquest");
+        } }
 
     #region References
     public PlayerControl localPlayer;
@@ -22,8 +27,11 @@ public class GameController : NetworkBehaviour
     public int startPlayerIndex;
     public int currentPlayerIndex = -1;
     public int expectedPlayers;
-
     public PlayerControl currentPlayer;
+
+    public int playerSelectionCounter = 0;
+
+    public StateController stateController;
     public CommandStack commandStack;
     #endregion
 
@@ -43,14 +51,7 @@ public class GameController : NetworkBehaviour
         EventManager.endTurn.AddListener(UiEndTurn);
     }
 
-#if UNITY_EDITOR
-    void Start()
-    {
-        ServerStartGame();
-    }
-#endif
-
-#region UnetCallbacks
+    #region UnetCallbacks
     public override void OnStartServer()
     {
         base.OnStartServer();
@@ -77,7 +78,10 @@ public class GameController : NetworkBehaviour
         ServerCalculateExpectedPlayers();
 
         if (players.Count == expectedPlayers)
-            stateController.ChangeState(stateController.characterSelect);
+        {
+            ServerStartGame();
+            stateController.ServerChangeState(stateController.characterSelect);
+        }
     }
 
     [Server]
@@ -91,6 +95,9 @@ public class GameController : NetworkBehaviour
     public void ServerOnCharacterSelected(string name)
     {
         playerView.RpcDisableCharacterButton(name);
+        playerSelectionCounter++;
+        if (playerSelectionCounter >= players.Count)
+            stateController.ServerChangeState(stateController.boardSetup);
     }
 
     [Server]

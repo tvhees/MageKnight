@@ -89,11 +89,13 @@
     <Compile Include="Assets\_scripts\Model\Board.cs" />
     <Compile Include="Assets\_scripts\Model\Game.cs" />
     <Compile Include="Assets\_scripts\Model\Player.cs" />
+    <Compile Include="Assets\_scripts\Other\BoardSetup.cs" />
     <Compile Include="Assets\_scripts\Other\Data\Card.cs" />
     <Compile Include="Assets\_scripts\Other\Data\Character.cs" />
     <Compile Include="Assets\_scripts\Other\Data\Deck.cs" />
     <Compile Include="Assets\_scripts\Other\Data\HexTile.cs" />
     <Compile Include="Assets\_scripts\Other\Data\MapShape.cs" />
+    <Compile Include="Assets\_scripts\Other\Data\PrefabArray.cs" />
     <Compile Include="Assets\_scripts\Other\Data\Scenario.cs" />
     <Compile Include="Assets\_scripts\Other\EventManager.cs" />
     <Compile Include="Assets\_scripts\Other\Factories\BoardFactory.cs" />

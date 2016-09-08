@@ -27,7 +27,8 @@ public class PlayerControl : NetworkBehaviour
 #if !UNITY_EDITOR
     void Start()
     {
-        StartCoroutine(WaitForGameController());
+        if(isLocalPlayer)
+            StartCoroutine(WaitForGameController());
     }
 
     IEnumerator WaitForGameController()
@@ -35,7 +36,7 @@ public class PlayerControl : NetworkBehaviour
         while (GameController.singleton == null)
             yield return null;
 
-        Debug.Log("Ended Coroutine");
+        EventManager.debugMessage.Invoke("GameController Ready");
 
         OnStartPlayer();
     }
@@ -56,6 +57,9 @@ public class PlayerControl : NetworkBehaviour
         {
             CmdSetPlayerId(playerId);
             GameController.singleton.localPlayer = this;
+
+            EventManager.debugMessage.Invoke("Adding Player");
+
             CmdAddToPlayerList();
         }
     }

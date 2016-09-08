@@ -10,9 +10,12 @@ namespace Other.Factory
     [RequireComponent(typeof(TileFactory))]
     public class BoardFactory : NetworkBehaviour
 	{
+        public Board board;
+
         private TileFactory tileFactory;
         private HexTile[] allTiles;
 
+        [ServerCallback]
         void OnEnable()
         {
             tileFactory = GetComponent<TileFactory>();
