@@ -20,60 +20,37 @@ public class PlayerControl : NetworkBehaviour
 
     public bool isYourTurn { get { return GameController.singleton.currentPlayer == this; } }
 
-    public TextMesh playerNameText;
     public CharacterView characterView;
 
     #region Initialisation
-#if !UNITY_EDITOR
-    void Start()
+    public override void OnStartClient()
     {
-        if(isLocalPlayer)
-            StartCoroutine(WaitForGameController());
+        base.OnStartClient();
     }
 
-    IEnumerator WaitForGameController()
+    // This fires BEFORE other NetworkIdentity objects are activated in the scene, but only in standalone builds
+    // We use a coroutine to wait until scene objects are loaded, otherwise standalone builds are not initialised properly.
+    public override void OnStartLocalPlayer()
+    {
+        StartCoroutine(WaitForLocalSceneLoad());
+    }
+
+    [Client]
+    IEnumerator WaitForLocalSceneLoad()
     {
         while (GameController.singleton == null)
             yield return null;
 
-        EventManager.debugMessage.Invoke("GameController Ready");
-
-        OnStartPlayer();
-    }
-#endif
-
-#if UNITY_EDITOR
-    public override void OnStartLocalPlayer()
-    {
-        base.OnStartLocalPlayer();
-
-        OnStartPlayer();
-    }
-#endif
-
-    void OnStartPlayer()
-    {
-        if (isLocalPlayer)
-        {
-            CmdSetPlayerId(playerId);
-            GameController.singleton.localPlayer = this;
-
-            EventManager.debugMessage.Invoke("Adding Player");
-
-            CmdAddToPlayerList();
-        }
+        OnLocalSceneLoaded();
     }
 
-    void DebugEventMethod(Character input)
+    [Client]
+    void OnLocalSceneLoaded()
     {
-        EventManager.debugMessage.Invoke("Event triggered: " + input.ToString());
-    }
-
-    public override void OnStartClient()
-    {
-        base.OnStartClient();
-        OnPlayerIdChanged(playerId);
-        OnColourChanged(colour);
+        EventManager.debugMessage.Invoke("Local Scene Loaded");
+        GameController.singleton.localPlayer = this;
+        CmdSetPlayerId(playerId);
+        CmdAddToPlayerList();
     }
 #endregion
 
@@ -99,7 +76,15 @@ public class PlayerControl : NetworkBehaviour
             colour = character.colour;
 
             GameController.singleton.ServerOnCharacterSelected(name);
-            GameController.singleton.ServerNextPlayer();
+        }
+    }
+
+    [Command]
+    public void CmdSetTactic(string name)
+    {
+        if (isYourTurn)
+        {
+            GameController.singleton.ServerOnTacticSelected(name);
         }
     }
 
@@ -129,6 +114,7 @@ public class PlayerControl : NetworkBehaviour
     [Client]
     void OnPlayerIdChanged(int newId)
     {
+        Debug.Log("Player Id Changed");
         playerId = newId;
 
         string playerNameString = "Player " + newId;
@@ -136,7 +122,11 @@ public class PlayerControl : NetworkBehaviour
             playerNameString += " (L)";
 
         gameObject.name = playerNameString;
-        playerNameText.text = playerNameString;
+
+        // This hook is called by the Lobby hook that sets a player's initial ID
+        // At that point the GameController object won't be active in a build
+        if(GameController.singleton != null)
+            GameController.singleton.playerView.SetPlayerName(playerId, playerNameString);
     }
 
     [Client]
@@ -145,6 +135,9 @@ public class PlayerControl : NetworkBehaviour
         colour = newColour;
 
         characterView.SetMaterialColour(newColour);
+
+        if (GameController.singleton != null)
+            GameController.singleton.playerView.SetPlayerColour(playerId, colour);
     }
 
 #endregion

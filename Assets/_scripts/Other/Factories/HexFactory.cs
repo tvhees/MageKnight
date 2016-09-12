@@ -12,12 +12,13 @@ namespace Other.Factory
         public GameObject CreateSceneObject(HexTile.Type type, HexTile.FeatureType feature)
         {
             GameObject hex = Instantiate(hexPrefabs.prefabs[(int)type]);
-            hex.name = hex.name.Replace("(Clone)", "");
             NetworkServer.Spawn(hex);
+            hex.name = hex.name.Replace("(Clone)", "");
             if (feature != HexTile.FeatureType.Empty)
             {
                 var feat = hex.transform.InstantiateChild(featurePrefabs.prefabs[(int)feature]);
                 NetworkServer.Spawn(feat);
+                hex.GetComponent<NetworkHeirarchySync>().ServerSyncChild(feat);
             }
 
             return hex;

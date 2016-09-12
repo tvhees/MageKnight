@@ -7,6 +7,9 @@ public class StateController : NetworkBehaviour {
     public GameObject characterSelect;
     public GameObject boardSetup;
     public GameObject tacticSelect;
+    public GameObject startOfRound;
+    public GameObject startOfTurn;
+    public GameObject movement;
 
     [SyncVar(hook = "OnStateIndexChanged")]
     public int stateIndex;
@@ -15,7 +18,7 @@ public class StateController : NetworkBehaviour {
     public override void OnStartClient()
     {
         base.OnStartClient();
-        OnStateIndexChanged(stateIndex);
+        //OnStateIndexChanged(stateIndex);
     }
 
     [Server]
@@ -35,14 +38,14 @@ public class StateController : NetworkBehaviour {
 
         gameState = newState;
         gameState.SetActive(true);
+
+        EventManager.stateChanged.Invoke(gameState);
     }
 
     [Client]
     public void OnStateIndexChanged(int newIndex)
     {
         stateIndex = newIndex;
-
-        EventManager.debugMessage.Invoke(stateIndex.ToString());
 
         ChangeState(transform.GetChild(stateIndex).gameObject);
     }

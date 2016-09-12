@@ -17,19 +17,24 @@ public class BoardSetup : NetworkBehaviour {
     [ServerCallback]
     void OnEnable()
     {
-        CreateBoard(GameController.singleton.scenario);
+        ServerCreateBoard(GameController.singleton.scenario);
     }
 
-    public void CreateBoard(Scenario scenario)
+    [Server]
+    public void ServerCreateBoard(Scenario scenario)
     {
-        DataForPlayerCount data = scenario.playerCounts[Network.connections.Length + 1 - scenario.minPlayers];
+        int index = GameController.singleton.players.Count - scenario.minPlayers;
+        DataForPlayerCount data = scenario.playerCounts[index];
 
-        CreateTilesForScenario(data);
-        CreateStartingBoard(data);
+        ServerCreateTilesForScenario(data);
+        ServerCreateStartingBoard(data);
+
+        stateController.ServerChangeState(stateController.tacticSelect);
     }
 
     #region Private
-    private void CreateTilesForScenario(DataForPlayerCount data)
+    [Server]
+    private void ServerCreateTilesForScenario(DataForPlayerCount data)
     {
         GameObject tileStack = Instantiate(holderPrefab);
         tileStack.name = "Tile Stack";
@@ -38,42 +43,49 @@ public class BoardSetup : NetworkBehaviour {
         List<GameObject> countrysideTiles = boardFactory.CreateCountrysideStack(data);
         List<GameObject> coreTiles = boardFactory.CreateCoreAndCityStack(data);
 
-        AddTilesToStack(countrysideTiles, tileStack);
-        AddTilesToStack(coreTiles, tileStack);
+        ServerAddTilesToStack(countrysideTiles, tileStack);
+        ServerAddTilesToStack(coreTiles, tileStack);
 
         tileStack.transform.position = new Vector3(-30f, 30f, 0f);
         board.tileStack = tileStack;
     }
 
-    private void AddTilesToStack(List<GameObject> tileList, GameObject tileStack)
+    [Server]
+    private void ServerAddTilesToStack(List<GameObject> tileList, GameObject tileStack)
     {
         foreach (GameObject tile in tileList)
             tile.transform.SetParent(tileStack.transform);
+
+        //tileStack.GetComponent<NetworkHeirarchySync>().SyncChildren();
     }
 
-    private void CreateStartingBoard(DataForPlayerCount playerCountData)
+    [Server]
+    private void ServerCreateStartingBoard(DataForPlayerCount playerCountData)
     {
         var mapShape = MapShapeDatabase.GetScriptableObject(playerCountData.shape.ToString());
         board.tilePositions = new List<HexVector>(mapShape.listOfTilePositions);
 
-        AddPortalTileToBoard(mapShape);
-        AddStartingCountryside(mapShape);
+        ServerAddPortalTileToBoard(mapShape);
+        ServerAddStartingCountryside(mapShape);
     }
 
-    private void AddPortalTileToBoard(MapShape mapShape)
+    [Server]
+    private void ServerAddPortalTileToBoard(MapShape mapShape)
     {
         GameObject portalTile = boardFactory.CreateStartTile(mapShape);
-        portalTile.transform.SetParent(board.transform);
+        portalTile.transform.GetChild(3).tag = "PortalTile";
         board.tilePositions.RemoveAt(0);
 
-        portalTile.transform.GetChild(3).tag = "PortalTile";
+        portalTile.transform.SetParent(board.transform);
+        board.boardHeirarchy.ServerSyncChild(portalTile);
     }
 
-    private void AddStartingCountryside(MapShape mapShape)
+    [Server]
+    private void ServerAddStartingCountryside(MapShape mapShape)
     {
         for (int i = 1; i < mapShape.startingCountryside; i++)
         {
-            board.PlaceNewTile();
+            board.ServerPlaceNewTile();
         }
     }
     #endregion

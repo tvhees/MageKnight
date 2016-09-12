@@ -24,9 +24,16 @@ public class GameController : NetworkBehaviour
     public PlayerControl localPlayer;
     public List<PlayerControl> players = new List<PlayerControl>();
 
+    public int connectedClients = 0;
+
+    [SyncVar]
     public int startPlayerIndex;
+    [SyncVar]
     public int currentPlayerIndex = -1;
+    [SyncVar]
     public int expectedPlayers;
+    [SyncVar]
+    public int numberOfPlayers;
     public PlayerControl currentPlayer;
 
     public int playerSelectionCounter = 0;
@@ -48,6 +55,7 @@ public class GameController : NetworkBehaviour
     void AddEventListeners()
     {
         EventManager.characterSelected.AddListener(UiSelectCharacter);
+        EventManager.tacticSelected.AddListener(UiSelectTactic);
         EventManager.endTurn.AddListener(UiEndTurn);
     }
 
@@ -55,10 +63,32 @@ public class GameController : NetworkBehaviour
     public override void OnStartServer()
     {
         base.OnStartServer();
+
+        expectedPlayers = ServerCalculateExpectedPlayers();
+        EventManager.debugMessage.Invoke("Expected players: " + expectedPlayers);
+
+        StartCoroutine(ServerWaitForConnections());
     }
 
     [Server]
-    void ServerCalculateExpectedPlayers()
+    IEnumerator ServerWaitForConnections()
+    {
+        //EventManager.debugMessage.Invoke("Waiting For Connections");
+        while (players.Count < expectedPlayers)
+            yield return null;
+
+        ServerOnAllConnected();
+    }
+
+    [Server]
+    void ServerOnAllConnected()
+    {
+        ServerStartGame();
+        stateController.ServerChangeState(stateController.characterSelect);
+    }
+
+    [Server]
+    int ServerCalculateExpectedPlayers()
     {
         int i = 0;
         foreach (NetworkLobbyPlayer player in LobbyManager.s_Singleton.lobbySlots)
@@ -66,22 +96,17 @@ public class GameController : NetworkBehaviour
             if(player != null)
                 i++;
         }
-        expectedPlayers = i;
+        return i;
     }
 #endregion
 
-#region Server methods
+    #region Server methods
     [Server]
     public void ServerAddPlayer(PlayerControl player)
     {
         players.Add(player);
-        ServerCalculateExpectedPlayers();
-
-        if (players.Count == expectedPlayers)
-        {
-            ServerStartGame();
-            stateController.ServerChangeState(stateController.characterSelect);
-        }
+        numberOfPlayers = players.Count;
+        EventManager.debugMessage.Invoke("Players connected: " + players.Count);
     }
 
     [Server]
@@ -94,10 +119,23 @@ public class GameController : NetworkBehaviour
     [Server]
     public void ServerOnCharacterSelected(string name)
     {
-        playerView.RpcDisableCharacterButton(name);
+        playerView.RpcDisableButton(name);
         playerSelectionCounter++;
         if (playerSelectionCounter >= players.Count)
             stateController.ServerChangeState(stateController.boardSetup);
+        else
+            ServerNextPlayer();
+    }
+
+    [Server]
+    public void ServerOnTacticSelected(string name)
+    {
+        playerView.RpcDisableButton(name);
+        playerSelectionCounter++;
+        if (playerSelectionCounter >= players.Count)
+            stateController.ServerChangeState(stateController.startOfRound);
+        else
+            ServerNextPlayer();
     }
 
     [Server]
@@ -118,12 +156,17 @@ public class GameController : NetworkBehaviour
     #endregion
 
     #region UI methods
-    public void UiSelectCharacter(string name)
+    void UiSelectCharacter(string name)
     {
         localPlayer.CmdSetCharacter(name);
     }
 
-    public void UiEndTurn()
+    void UiSelectTactic(string name)
+    {
+        localPlayer.CmdSetTactic(name);
+    }
+
+    void UiEndTurn()
     {
         localPlayer.CmdEndTurn();
     }

@@ -15,6 +15,8 @@ public class DebugPanel : MonoBehaviour
 
     public void LogDebugMessage(string message)
     {
+        Debug.Log(message);
+
         GameObject msg = transform.InstantiateChild(messagePrefab);
         msg.transform.SetSiblingIndex(0);
         msg.transform.localScale = Vector3.one;

@@ -80,6 +80,7 @@
     <Compile Include="Assets\_scripts\Commands\CommandResult.cs" />
     <Compile Include="Assets\_scripts\Commands\CommandStack.cs" />
     <Compile Include="Assets\_scripts\Common\ExtensionMethods.cs" />
+    <Compile Include="Assets\_scripts\Common\NetworkHeirarchySync.cs" />
     <Compile Include="Assets\_scripts\Common\ObjectPool.cs" />
     <Compile Include="Assets\_scripts\Common\Singleton.cs" />
     <Compile Include="Assets\_scripts\Controller\GameController.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="Assets\_scripts\Other\Factories\DeckFactory.cs" />
     <Compile Include="Assets\_scripts\Other\Factories\HexFactory.cs" />
     <Compile Include="Assets\_scripts\Other\Factories\TileFactory.cs" />
+    <Compile Include="Assets\_scripts\Other\SelectionPhase.cs" />
     <Compile Include="Assets\_scripts\Other\Utility\AwakeBehaviour.cs" />
     <Compile Include="Assets\_scripts\Other\Utility\CharacterDatabase.cs" />
     <Compile Include="Assets\_scripts\Other\Utility\DeckDatabase.cs" />
