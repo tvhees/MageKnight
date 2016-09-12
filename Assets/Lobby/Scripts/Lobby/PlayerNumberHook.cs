@@ -9,7 +9,11 @@ namespace Prototype.NetworkLobby
     {
         public override void OnLobbyServerSceneLoadedForPlayer(NetworkManager manager, GameObject lobbyPlayer, GameObject gamePlayer)
         {
-            gamePlayer.GetComponent<PlayerControl>().playerId = lobbyPlayer.GetComponent<LobbyPlayer>().playerId;
+            var player = gamePlayer.GetComponent<PlayerControl>();
+            var lobby = lobbyPlayer.GetComponent<LobbyPlayer>();
+            player.playerId = lobby.playerId;
+            player.colour = lobby.playerColor;
+            player.playerName = lobby.playerName;
         }
     }
 }

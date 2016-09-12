@@ -14,7 +14,8 @@ public class PlayerControl : NetworkBehaviour
 {
     [SyncVar(hook = "OnPlayerIdChanged")]
     public int playerId;
-
+    [SyncVar(hook = "OnPlayerNameChanged")]
+    public string playerName;
     [SyncVar(hook = "OnColourChanged")]
     public Color colour;
 
@@ -40,6 +41,7 @@ public class PlayerControl : NetworkBehaviour
     void OnSceneLoaded()
     {
         OnPlayerIdChanged(playerId);
+        OnPlayerNameChanged(playerName);
         OnColourChanged(colour);
     }
 
@@ -129,19 +131,16 @@ public class PlayerControl : NetworkBehaviour
     [Client]
     void OnPlayerIdChanged(int newId)
     {
-        Debug.Log("Player Id Changed");
         playerId = newId;
+    }
 
-        string playerNameString = "Player " + newId;
-        if (isLocalPlayer)
-            playerNameString += " (L)";
-
-        gameObject.name = playerNameString;
-
-        // This hook is called by the Lobby hook that sets a player's initial ID
-        // At that point the GameController object won't be active in a build
-        if(GameController.singleton != null)
-            GameController.singleton.playerView.SetPlayerName(playerId, playerNameString);
+    [Client]
+    void OnPlayerNameChanged(string playerName)
+    {
+        gameObject.name = playerName;
+        // On initial load the GameController object won't be active in a build when this hook is called
+        if (GameController.singleton != null)
+            GameController.singleton.playerView.SetPlayerName(playerId, playerName);
     }
 
     [Client]
