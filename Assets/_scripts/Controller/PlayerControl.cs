@@ -26,6 +26,21 @@ public class PlayerControl : NetworkBehaviour
     public override void OnStartClient()
     {
         base.OnStartClient();
+        StartCoroutine(WaitForSceneLoad());
+    }
+
+    IEnumerator WaitForSceneLoad()
+    {
+        while (GameController.singleton == null)
+            yield return null;
+
+        OnSceneLoaded();
+    }
+
+    void OnSceneLoaded()
+    {
+        OnPlayerIdChanged(playerId);
+        OnColourChanged(colour);
     }
 
     // This fires BEFORE other NetworkIdentity objects are activated in the scene, but only in standalone builds
