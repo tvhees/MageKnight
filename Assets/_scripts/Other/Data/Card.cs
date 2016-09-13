@@ -15,7 +15,8 @@ namespace Other.Data
             Artifact,
             CommonUnit,
             EliteUnit,
-            Wound
+            Wound,
+            Tactic
         }
 
         public Type type;
@@ -30,5 +31,7 @@ namespace Other.Data
         }
 
         public Colour colour;
+
+        public int number;
 	}
 }

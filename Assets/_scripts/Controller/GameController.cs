@@ -23,7 +23,7 @@ public class GameController : NetworkBehaviour
     #region References
     public PlayerControl localPlayer;
     public List<PlayerControl> players = new List<PlayerControl>();
-    public PlayerControl[] newPlayerTurnOrder;
+    public PlayerControl[] nextTurnOrder;
 
     public int connectedClients = 0;
 
@@ -119,6 +119,10 @@ public class GameController : NetworkBehaviour
     {
         playerView.RpcDisableButton(name);
         playerSelectionCounter++;
+        
+        // Tactics selection phase proceeds in reverse order of character selection
+        nextTurnOrder[numberOfPlayers - playerSelectionCounter] = currentPlayer;
+
         if (playerSelectionCounter >= players.Count)
             stateController.ServerChangeState(stateController.boardSetup);
         else
@@ -130,10 +134,28 @@ public class GameController : NetworkBehaviour
     {
         playerView.RpcDisableButton(name);
         playerSelectionCounter++;
+
+        // Tactics are numbered 1-6 but our array is 0-5
+        int tacticNumber = CardDatabase.GetScriptableObject(name).number - 1;
+        nextTurnOrder[tacticNumber] = currentPlayer;
+
         if (playerSelectionCounter >= players.Count)
             stateController.ServerChangeState(stateController.startOfRound);
         else
             ServerNextPlayer();
+    }
+
+    [Server]
+    public void ServerSetNewTurnOrder()
+    {
+        players.Clear();
+        for (int i = nextTurnOrder.Length - 1; i >= 0; i--)
+        {
+            if (nextTurnOrder[i] == null)
+                continue;
+
+            nextTurnOrder[i].RpcMoveToFrontOfTurnOrder();
+        }
     }
 
     [Server]

@@ -12,5 +12,12 @@ public class SelectionPhase : NetworkBehaviour {
     void OnEnable()
     {
         GameController.singleton.playerSelectionCounter = 0;
+        GameController.singleton.nextTurnOrder = new PlayerControl[6];
+    }
+
+    [ServerCallback]
+    void OnDisable()
+    {
+        GameController.singleton.ServerSetNewTurnOrder();
     }
 }

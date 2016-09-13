@@ -181,5 +181,11 @@ public class PlayerControl : NetworkBehaviour
         return true;
     }
 
+    [ClientRpc]
+    public void RpcMoveToFrontOfTurnOrder()
+    {
+        turnOrderDisplay.transform.SetSiblingIndex(0);
+    }
+
 #endregion
 }
