@@ -16,11 +16,14 @@ public class PlayerControl : NetworkBehaviour
     public int playerId;
     [SyncVar(hook = "OnPlayerNameChanged")]
     public string playerName;
+    [SyncVar(hook = "OnCharacterNameChanged")]
+    public string characterName;
     [SyncVar(hook = "OnColourChanged")]
     public Color colour;
 
     public bool isYourTurn { get { return GameController.singleton.currentPlayer == this; } }
 
+    public TurnOrderDisplay turnOrderDisplay;
     public CharacterView characterView;
 
     #region Initialisation
@@ -90,6 +93,7 @@ public class PlayerControl : NetworkBehaviour
         if (isYourTurn)
         {
             var character = CharacterDatabase.GetScriptableObject(name);
+            characterName = name;
             colour = character.colour;
 
             GameController.singleton.ServerOnCharacterSelected(name);
@@ -135,12 +139,22 @@ public class PlayerControl : NetworkBehaviour
     }
 
     [Client]
-    void OnPlayerNameChanged(string playerName)
+    void OnPlayerNameChanged(string newName)
     {
+        playerName = newName;
         gameObject.name = playerName;
-        // On initial load the GameController object won't be active in a build when this hook is called
-        if (GameController.singleton != null)
-            GameController.singleton.playerView.SetPlayerName(playerId, playerName);
+
+        if (HasTurnOrderDisplay())
+            turnOrderDisplay.SetPlayerName(playerName);
+    }
+
+    [Client]
+    void OnCharacterNameChanged(string newName)
+    {
+        characterName = newName;
+
+        if (HasTurnOrderDisplay())
+            turnOrderDisplay.SetCharacterName(characterName);
     }
 
     [Client]
@@ -150,8 +164,21 @@ public class PlayerControl : NetworkBehaviour
 
         characterView.SetMaterialColour(newColour);
 
-        if (GameController.singleton != null)
-            GameController.singleton.playerView.SetPlayerColour(playerId, colour);
+        if (HasTurnOrderDisplay())
+            turnOrderDisplay.SetPlayerColour(colour);
+    }
+
+    [Client]
+    bool HasTurnOrderDisplay()
+    {
+        // On initial load the GameController object won't be active in a build when this hook is called
+        if (GameController.singleton == null)
+            return false;
+
+        if (turnOrderDisplay == null)
+            turnOrderDisplay = GameController.singleton.playerView.GetTurnOrderDisplay(playerId);
+
+        return true;
     }
 
 #endregion

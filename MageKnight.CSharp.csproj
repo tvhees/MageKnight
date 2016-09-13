@@ -116,6 +116,7 @@
     <Compile Include="Assets\_scripts\View\CharacterView.cs" />
     <Compile Include="Assets\_scripts\View\DebugPanel.cs" />
     <Compile Include="Assets\_scripts\View\PlayerView.cs" />
+    <Compile Include="Assets\_scripts\View\TurnOrderDisplay.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Fonts\OpenSans\License!.txt" />

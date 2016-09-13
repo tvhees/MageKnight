@@ -23,6 +23,7 @@ public class GameController : NetworkBehaviour
     #region References
     public PlayerControl localPlayer;
     public List<PlayerControl> players = new List<PlayerControl>();
+    public PlayerControl[] newPlayerTurnOrder;
 
     public int connectedClients = 0;
 
@@ -65,15 +66,12 @@ public class GameController : NetworkBehaviour
         base.OnStartServer();
 
         expectedPlayers = ServerCalculateExpectedPlayers();
-        EventManager.debugMessage.Invoke("Expected players: " + expectedPlayers);
-
         StartCoroutine(ServerWaitForConnections());
     }
 
     [Server]
     IEnumerator ServerWaitForConnections()
     {
-        //EventManager.debugMessage.Invoke("Waiting For Connections");
         while (players.Count < expectedPlayers)
             yield return null;
 

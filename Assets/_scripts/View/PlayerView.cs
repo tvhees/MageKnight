@@ -9,10 +9,11 @@ namespace View
 {
     public class PlayerView : NetworkBehaviour
     {
-        public GameObject[] playerNames;
+        public TurnOrderDisplay[] turnOrderDisplays;
         public Text currentPhase;
-        public Button[] buttons;        
+        public Button[] buttons;
 
+        #region Initialise
         void Awake()
         {
             EventManager.stateChanged.AddListener(OnStateChanged);
@@ -22,6 +23,7 @@ namespace View
         {
             currentPhase.text = newState.name;
         }
+        #endregion
 
         #region UiMethods
         public void UiSelectCharacter()
@@ -42,16 +44,14 @@ namespace View
         }
         #endregion
 
-        public void SetPlayerName(int playerId, string playerName)
+        public TurnOrderDisplay GetTurnOrderDisplay(int playerId)
         {
-            playerNames[playerId].GetComponentInChildren<Text>().text = playerName;
+            return turnOrderDisplays[playerId];
         }
 
-        public void SetPlayerColour(int playerId, Color colour)
+        public void SetPlayerName(int playerId, string playerName)
         {
-            var img = playerNames[playerId].GetComponent<Image>();
-            float alpha = img.color.a;
-            img.color = new Color(colour.r, colour.g, colour.b, alpha);
+            turnOrderDisplays[playerId].GetComponentInChildren<Text>().text = playerName;
         }
 
         [ClientRpc]
