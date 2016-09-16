@@ -1,10 +1,16 @@
 fileFormatVersion: 2
-guid: 5fa4f4637949b094a8c030a4c7ad145f
-timeCreated: 1472983588
+guid: b08eb887aea9ba245aa9a0cb46094515
+timeCreated: 1474000504
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - holderPrefab: {fileID: 1000011367023304, guid: f17c767576d427a4db2257ca07a23047,
+      type: 2}
+  - deck: {instanceID: 0}
+  - hand: {instanceID: 0}
+  - discard: {instanceID: 0}
+  - units: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

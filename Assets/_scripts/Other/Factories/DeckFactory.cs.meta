@@ -1,10 +1,12 @@
 fileFormatVersion: 2
 guid: 6e90b134bac62484ca74bb5b1c03c733
-timeCreated: 1471232533
+timeCreated: 1473859867
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - cardFactory: {instanceID: 0}
+  - holderPrefab: {fileID: 165744, guid: f66bd338ad488fb4d830713c063cb211, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

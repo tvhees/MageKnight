@@ -23,6 +23,12 @@ public class PlayerControl : NetworkBehaviour
 
     public bool isYourTurn { get { return GameController.singleton.currentPlayer == this; } }
 
+    public GameObject playerViewPrefab;
+
+    public PlayerView view;
+    public Character character;
+
+    public Camera playerCamera;
     public TurnOrderDisplay turnOrderDisplay;
     public CharacterView characterView;
 
@@ -67,14 +73,14 @@ public class PlayerControl : NetworkBehaviour
     [Client]
     void OnLocalSceneLoaded()
     {
-        EventManager.debugMessage.Invoke("Local Scene Loaded");
         GameController.singleton.localPlayer = this;
         CmdSetPlayerId(playerId);
         CmdAddToPlayerList();
+        CmdSpawnPlayerView();
     }
-#endregion
+    #endregion
 
-#region Commands to server
+    #region Commands to server
     [Command]
     void CmdSetPlayerId(int newId)
     {
@@ -92,12 +98,20 @@ public class PlayerControl : NetworkBehaviour
     {
         if (isYourTurn)
         {
-            var character = CharacterDatabase.GetScriptableObject(name);
             characterName = name;
             colour = character.colour;
 
             GameController.singleton.ServerOnCharacterSelected(name);
         }
+    }
+
+    [Command]
+    void CmdSpawnPlayerView()
+    {
+        GameObject pView = Instantiate(playerViewPrefab);
+        NetworkServer.Spawn(pView);
+        view = pView.GetComponent<PlayerView>();
+        view.ServerSpawnCardHolders();
     }
 
     [Command]
@@ -151,10 +165,10 @@ public class PlayerControl : NetworkBehaviour
     [Client]
     void OnCharacterNameChanged(string newName)
     {
-        characterName = newName;
+        character = CharacterDatabase.GetScriptableObject(newName);
 
         if (HasTurnOrderDisplay())
-            turnOrderDisplay.SetCharacterName(characterName);
+            turnOrderDisplay.SetCharacterName(newName);
     }
 
     [Client]
@@ -182,10 +196,18 @@ public class PlayerControl : NetworkBehaviour
     }
 
     [ClientRpc]
-    public void RpcMoveToFrontOfTurnOrder()
+    public void RpcMoveToIndexInTurnOrder(int index)
     {
-        turnOrderDisplay.transform.SetSiblingIndex(0);
+        turnOrderDisplay.transform.SetSiblingIndex(index);
     }
 
-#endregion
+    #endregion
+
+    #region Card Management
+    [Server]
+    public void ServerMoveCardToDeck(GameObject card)
+    {
+        card.GetComponent<CardView>().MoveToNewParent(view.deck.transform);
+    }
+    #endregion
 }

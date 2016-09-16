@@ -6,6 +6,7 @@ public class StateController : NetworkBehaviour {
 
     public GameObject characterSelect;
     public GameObject boardSetup;
+    public GameObject cardSetup;
     public GameObject tacticSelect;
     public GameObject startOfRound;
     public GameObject startOfTurn;

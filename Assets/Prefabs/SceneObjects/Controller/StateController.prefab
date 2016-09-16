@@ -40,7 +40,7 @@ GameObject:
   - 114: {fileID: 114000013793713522}
   - 114: {fileID: 114000012464595908}
   m_Layer: 5
-  m_Name: ManaSteal
+  m_Name: Mana Steal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -93,7 +93,7 @@ GameObject:
   - 114: {fileID: 114000012207686116}
   - 114: {fileID: 114000014128316252}
   m_Layer: 5
-  m_Name: EarlyBird
+  m_Name: Early Bird
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -108,9 +108,9 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000012667776092}
   - 114: {fileID: 114000013833154310}
-  - 114: {fileID: 114000012667029232}
+  - 114: {fileID: 114000013655858482}
   m_Layer: 0
-  m_Name: Game Setup
+  m_Name: CardSetup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -128,7 +128,7 @@ GameObject:
   - 114: {fileID: 114000011774645410}
   - 114: {fileID: 114000010260431048}
   m_Layer: 5
-  m_Name: GreatStart
+  m_Name: Great Start
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -163,7 +163,7 @@ GameObject:
   - 114: {fileID: 114000014206886506}
   - 114: {fileID: 114000013837218602}
   m_Layer: 5
-  m_Name: TheRightMoment
+  m_Name: The Right Moment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -289,6 +289,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1000012870003484
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 4000012358349774}
+  - 114: {fileID: 114000013371582864}
+  - 114: {fileID: 114000012667029232}
+  m_Layer: 0
+  m_Name: BoardSetup
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
 --- !u!1 &1000012929103368
 GameObject:
   m_ObjectHideFlags: 1
@@ -580,6 +597,7 @@ Transform:
   m_Children:
   - {fileID: 4000011726492512}
   - {fileID: 4000011789921486}
+  - {fileID: 4000012358349774}
   - {fileID: 4000012667776092}
   - {fileID: 4000013159346864}
   - {fileID: 4000012507880386}
@@ -626,7 +644,20 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000011408086498}
-  m_RootOrder: 6
+  m_RootOrder: 7
+--- !u!4 &4000012358349774
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012870003484}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 4000011408086498}
+  m_RootOrder: 2
 --- !u!4 &4000012507880386
 Transform:
   m_ObjectHideFlags: 1
@@ -639,20 +670,20 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000011408086498}
-  m_RootOrder: 4
+  m_RootOrder: 5
 --- !u!4 &4000012667776092
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011439955206}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000011408086498}
-  m_RootOrder: 2
+  m_RootOrder: 3
 --- !u!4 &4000013159346864
 Transform:
   m_ObjectHideFlags: 1
@@ -666,7 +697,7 @@ Transform:
   m_Children:
   - {fileID: 224000012767189312}
   m_Father: {fileID: 4000011408086498}
-  m_RootOrder: 3
+  m_RootOrder: 4
 --- !u!4 &4000013660695160
 Transform:
   m_ObjectHideFlags: 1
@@ -679,7 +710,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000011408086498}
-  m_RootOrder: 5
+  m_RootOrder: 6
 --- !u!114 &114000010018354680
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1648,7 +1679,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterSelect: {fileID: 1000012498444194}
-  boardSetup: {fileID: 1000011439955206}
+  boardSetup: {fileID: 1000012870003484}
+  cardSetup: {fileID: 1000011439955206}
   tacticSelect: {fileID: 1000011827917858}
   startOfRound: {fileID: 1000013977693548}
   startOfTurn: {fileID: 1000012430597024}
@@ -1660,7 +1692,7 @@ MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000011439955206}
+  m_GameObject: {fileID: 1000012870003484}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 164d4762e8b8914409011ba13b6bd3c1, type: 3}
@@ -1857,6 +1889,38 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114000013371582864
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012870003484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 220
+    i1: 209
+    i2: 84
+    i3: 238
+    i4: 203
+    i5: 200
+    i6: 103
+    i7: 4
+    i8: 170
+    i9: 97
+    i10: 43
+    i11: 109
+    i12: 31
+    i13: 198
+    i14: 209
+    i15: 7
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
 --- !u!114 &114000013383221260
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2002,6 +2066,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114000013655858482
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011439955206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88ad593f2692e1e43a1a4b9f4b85b534, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateController: {fileID: 114000012570955294}
+  deckFactory: {fileID: 0}
+  holderPrefab: {fileID: 165744, guid: f66bd338ad488fb4d830713c063cb211, type: 2}
 --- !u!114 &114000013793713522
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -23,22 +23,24 @@ namespace View
 
         public void MoveToNewParent(Transform parent, bool showFront = true)
         {
-            transform.SetParent(parent.transform);
+            parent.ServerSetChild(transform);
             ResetTransform();
 
             if (showFront)
-                ShowFront();
+                RpcShow();
             else
-                HideFront();
+                RpcHide();
         }
 
-        public void ShowFront()
+        [ClientRpc]
+        public void RpcShow()
         {
             cardImage.sprite = cardFront;
             AllowZooming(true);
         }
 
-        public void HideFront()
+        [ClientRpc]
+        public void RpcHide()
         {
             cardImage.sprite = cardBack;
             AllowZooming(false);

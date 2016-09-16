@@ -18,15 +18,14 @@ namespace Other.Factory
         public GameObject CreateSceneObject(ScriptableObject data)
         {
             GameObject hexTile = Instantiate(holderPrefab);
-            NetworkServer.Spawn(hexTile);
             hexTile.name = data.name;
+            NetworkServer.Spawn(hexTile);
 
             var tileData = data as HexTile;
             for(var i = 0; i < tileData.hexes.Length; i++)
             {
                 GameObject hex = hexFactory.CreateSceneObject(tileData.hexes[i], tileData.features[i]);
-                hex.transform.SetParent(hexTile.transform);
-                hexTile.GetComponent<NetworkHeirarchySync>().ServerSyncChild(hex);
+                hexTile.transform.ServerSetChild(hex.transform);
                 hex.transform.localPosition = tileData.localCoordinates[i].worldVector;
             }
 

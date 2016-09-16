@@ -12,8 +12,8 @@ GameObject:
   - 23: {fileID: 2330610}
   - 64: {fileID: 6478760}
   - 114: {fileID: 11443060}
-  - 114: {fileID: 11414154}
   - 114: {fileID: 114000011586834942}
+  - 114: {fileID: 114000013036486830}
   m_Layer: 8
   m_Name: Wasteland
   m_TagString: Untagged
@@ -82,26 +82,6 @@ MeshCollider:
   serializedVersion: 2
   m_Convex: 0
   m_Mesh: {fileID: 4300000, guid: a2c2976d0dceb9348868d53c5b32fc3a, type: 3}
---- !u!114 &11414154
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 115056}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1768714887, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_TransformSyncMode: 1
-  m_SendInterval: 0.1
-  m_SyncRotationAxis: 7
-  m_RotationSyncCompression: 0
-  m_SyncSpin: 0
-  m_MovementTheshold: 0.001
-  m_SnapThreshold: 5
-  m_InterpolateRotation: 1
-  m_InterpolateMovement: 1
 --- !u!114 &11443060
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -156,3 +136,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 956844c2ccd401146958d58f604118ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114000013036486830
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 115056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 0
+  m_SendInterval: 0.1
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1

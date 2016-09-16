@@ -8,7 +8,6 @@ using Other.Utility;
 public class Board : NetworkBehaviour
 {
     public List<HexVector> tilePositions;
-    public NetworkHeirarchySync boardHeirarchy;
 
     public GameObject tileStack;
 
@@ -17,7 +16,6 @@ public class Board : NetworkBehaviour
     {
         GameObject tile = tileStack.transform.GetChild(0).gameObject;
         tile.transform.SetParent(transform);
-        boardHeirarchy.ServerSyncChild(tile);
         tile.transform.localPosition = tilePositions[0].worldVector;
         tilePositions.RemoveAt(0);
     }

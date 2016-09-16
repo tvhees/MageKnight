@@ -13,4 +13,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: Army general
   colour: {r: 1, g: 1, b: 1, a: 1}
-  deck: {fileID: 0}
+  deck: {fileID: 11400000, guid: d2a041c5cf8e780418a4a5a07f24ef34, type: 2}

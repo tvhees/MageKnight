@@ -204,7 +204,6 @@ GameObject:
   - 4: {fileID: 482951776}
   - 114: {fileID: 482951775}
   - 114: {fileID: 482951774}
-  - 114: {fileID: 482951777}
   m_Layer: 0
   m_Name: Board
   m_TagString: Untagged
@@ -224,7 +223,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilePositions: []
-  boardHeirarchy: {fileID: 482951777}
   tileStack: {fileID: 0}
 --- !u!114 &482951775
 MonoBehaviour:
@@ -271,17 +269,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
---- !u!114 &482951777
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 482951773}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 956844c2ccd401146958d58f604118ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &606016800 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114000014128316252, guid: dcd154eecbc86704aa612b6d1fc6d107,
@@ -364,16 +351,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70f31aed935b97244bd43ef163de00c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  seed: 0
   localPlayer: {fileID: 0}
   players: []
   nextTurnOrder: []
   connectedClients: 0
   startPlayerIndex: 0
-  currentPlayerIndex: -1
+  nextPlayerIndex: 0
   expectedPlayers: 0
   numberOfPlayers: 0
   currentPlayer: {fileID: 0}
-  playerSelectionCounter: 0
   stateController: {fileID: 1667884106}
   commandStack: {fileID: 0}
   playerView: {fileID: 10177261}
@@ -435,6 +422,8 @@ GameObject:
   - 114: {fileID: 1054642144}
   - 114: {fileID: 1054642143}
   - 114: {fileID: 1054642142}
+  - 114: {fileID: 1054642148}
+  - 114: {fileID: 1054642147}
   m_Layer: 0
   m_Name: Factories
   m_TagString: Untagged
@@ -524,6 +513,31 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 6
+--- !u!114 &1054642147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1054642141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c7d2362180bc5f49b5a3646e23d4e09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardBack: {fileID: 21300000, guid: 629f6bb1fd1a53440a4b8069672158cc, type: 3}
+  cardPrefab: {fileID: 135054, guid: ccea5204b3f72d045a0e883df2cf63e4, type: 2}
+--- !u!114 &1054642148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1054642141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e90b134bac62484ca74bb5b1c03c733, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardFactory: {fileID: 1054642147}
 --- !u!1 &1119818744
 GameObject:
   m_ObjectHideFlags: 0
@@ -649,6 +663,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 114000013655858482, guid: dcd154eecbc86704aa612b6d1fc6d107,
+        type: 2}
+      propertyPath: deckFactory
+      value: 
+      objectReference: {fileID: 1054642148}
     - target: {fileID: 114000012667029232, guid: dcd154eecbc86704aa612b6d1fc6d107,
         type: 2}
       propertyPath: boardFactory
@@ -709,38 +728,6 @@ Prefab:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 10177261}
-    - target: {fileID: 4000011726492512, guid: dcd154eecbc86704aa612b6d1fc6d107, type: 2}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000011789921486, guid: dcd154eecbc86704aa612b6d1fc6d107, type: 2}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000013159346864, guid: dcd154eecbc86704aa612b6d1fc6d107, type: 2}
-      propertyPath: m_RootOrder
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4000012667776092, guid: dcd154eecbc86704aa612b6d1fc6d107, type: 2}
-      propertyPath: m_RootOrder
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1000011271572552, guid: dcd154eecbc86704aa612b6d1fc6d107, type: 2}
-      propertyPath: m_Name
-      value: Early Bird
-      objectReference: {fileID: 0}
-    - target: {fileID: 1000010718000334, guid: dcd154eecbc86704aa612b6d1fc6d107, type: 2}
-      propertyPath: m_Name
-      value: Mana Steal
-      objectReference: {fileID: 0}
-    - target: {fileID: 1000011780987000, guid: dcd154eecbc86704aa612b6d1fc6d107, type: 2}
-      propertyPath: m_Name
-      value: Great Start
-      objectReference: {fileID: 0}
-    - target: {fileID: 1000011876238402, guid: dcd154eecbc86704aa612b6d1fc6d107, type: 2}
-      propertyPath: m_Name
-      value: The Right Moment
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dcd154eecbc86704aa612b6d1fc6d107, type: 2}
   m_IsPrefabParent: 0

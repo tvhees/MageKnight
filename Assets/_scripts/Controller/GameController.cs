@@ -13,6 +13,8 @@ public class GameController : NetworkBehaviour
 {
     public static GameController singleton;
 
+    public int seed;
+
     public Scenario scenario { get {
             if (players.Count <= 1)
                 return ScenarioDatabase.GetScriptableObject("Solo Conquest");
@@ -30,20 +32,18 @@ public class GameController : NetworkBehaviour
     [SyncVar]
     public int startPlayerIndex;
     [SyncVar]
-    public int currentPlayerIndex = -1;
+    public int nextPlayerIndex = 0;
     [SyncVar]
     public int expectedPlayers;
     [SyncVar]
     public int numberOfPlayers;
     public PlayerControl currentPlayer;
 
-    public int playerSelectionCounter = 0;
-
     public StateController stateController;
     public CommandStack commandStack;
     #endregion
 
-    public PlayerView playerView;
+    public SharedView playerView;
     public DebugPanel debugPanel;
 
     void Awake()
@@ -104,26 +104,31 @@ public class GameController : NetworkBehaviour
     {
         players.Add(player);
         numberOfPlayers = players.Count;
-        EventManager.debugMessage.Invoke("Players connected: " + players.Count);
     }
 
     [Server]
     public void ServerStartGame()
     {
-        currentPlayerIndex = Random.Range(0, players.Count);
-        ServerNextPlayer();
+        ServerRandomiseTurnOrder();
+    }
+
+    [Server]
+    public void ServerRandomiseTurnOrder()
+    {
+        nextTurnOrder = players.ToArray();
+        nextTurnOrder.Randomise();
+        ServerSetNewTurnOrder();
     }
 
     [Server]
     public void ServerOnCharacterSelected(string name)
     {
         playerView.RpcDisableButton(name);
-        playerSelectionCounter++;
         
         // Tactics selection phase proceeds in reverse order of character selection
-        nextTurnOrder[numberOfPlayers - playerSelectionCounter] = currentPlayer;
+        nextTurnOrder[players.Count - nextPlayerIndex] = currentPlayer;
 
-        if (playerSelectionCounter >= players.Count)
+        if (nextPlayerIndex >= players.Count)
             stateController.ServerChangeState(stateController.boardSetup);
         else
             ServerNextPlayer();
@@ -133,13 +138,12 @@ public class GameController : NetworkBehaviour
     public void ServerOnTacticSelected(string name)
     {
         playerView.RpcDisableButton(name);
-        playerSelectionCounter++;
 
         // Tactics are numbered 1-6 but our array is 0-5
         int tacticNumber = CardDatabase.GetScriptableObject(name).number - 1;
         nextTurnOrder[tacticNumber] = currentPlayer;
 
-        if (playerSelectionCounter >= players.Count)
+        if (nextPlayerIndex >= players.Count)
             stateController.ServerChangeState(stateController.startOfRound);
         else
             ServerNextPlayer();
@@ -149,13 +153,17 @@ public class GameController : NetworkBehaviour
     public void ServerSetNewTurnOrder()
     {
         players.Clear();
-        for (int i = nextTurnOrder.Length - 1; i >= 0; i--)
+        for (int i = 0; i < nextTurnOrder.Length; i++)
         {
             if (nextTurnOrder[i] == null)
                 continue;
 
-            nextTurnOrder[i].RpcMoveToFrontOfTurnOrder();
+            nextTurnOrder[i].RpcMoveToIndexInTurnOrder(players.Count);
+            players.Add(nextTurnOrder[i]);
         }
+
+        nextPlayerIndex = 0;
+        ServerNextPlayer();
     }
 
     [Server]
@@ -164,14 +172,13 @@ public class GameController : NetworkBehaviour
         if (currentPlayer != null)
             currentPlayer.RpcYourTurn(false);
 
-        // Wrap currentPlayerIndex to 0 Mathf.Repeat because it doesn't take integers
-        currentPlayerIndex++;
-        if (currentPlayerIndex >= players.Count)
-            currentPlayerIndex = 0;
-
-        currentPlayer = players[currentPlayerIndex];
-
+        if (nextPlayerIndex >= players.Count)
+            nextPlayerIndex = 0;
+        currentPlayer = players[nextPlayerIndex];
         currentPlayer.RpcYourTurn(true);
+
+        // Wrap currentPlayerIndex to 0 because Mathf.Repeat doesn't take integers
+        nextPlayerIndex++;
     }
     #endregion
 

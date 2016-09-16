@@ -3234,6 +3234,8 @@ MonoBehaviour:
   - {fileID: 133678, guid: c74df66d56519bf4e9f4faa3503b21f3, type: 2}
   - {fileID: 133678, guid: 938ab5abb12341a439d7ad7eb2c061ca, type: 2}
   - {fileID: 1000010668186566, guid: 32a1acd862df2c044a1f7db360434994, type: 2}
+  - {fileID: 1000011373973676, guid: a370d3ec2395a98459536392b02ddfaf, type: 2}
+  - {fileID: 1000011442759860, guid: f17c767576d427a4db2257ca07a23047, type: 2}
   m_CustomConfig: 0
   m_MaxConnections: 4
   m_ConnectionConfig:
@@ -3284,7 +3286,7 @@ MonoBehaviour:
     type: 2}
   m_GamePlayerPrefab: {fileID: 112476, guid: c5e49327f3094004d8c583bf261a4e24, type: 2}
   m_LobbyScene: Lobby
-  m_PlayScene: Game
+  m_PlayScene: PlayScene
   lobbySlots: []
   prematchCountdown: 1
   topPanel: {fileID: 11424994}

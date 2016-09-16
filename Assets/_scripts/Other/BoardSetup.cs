@@ -17,7 +17,13 @@ public class BoardSetup : NetworkBehaviour {
     [ServerCallback]
     void OnEnable()
     {
+        if (GameController.singleton.seed == 0)
+            GameController.singleton.seed = System.Environment.TickCount;
+        Random.InitState(GameController.singleton.seed);
+
         ServerCreateBoard(GameController.singleton.scenario);
+
+        stateController.ServerChangeState(stateController.cardSetup);
     }
 
     [Server]
@@ -28,8 +34,6 @@ public class BoardSetup : NetworkBehaviour {
 
         ServerCreateTilesForScenario(data);
         ServerCreateStartingBoard(data);
-
-        stateController.ServerChangeState(stateController.tacticSelect);
     }
 
     #region Private
@@ -54,9 +58,7 @@ public class BoardSetup : NetworkBehaviour {
     private void ServerAddTilesToStack(List<GameObject> tileList, GameObject tileStack)
     {
         foreach (GameObject tile in tileList)
-            tile.transform.SetParent(tileStack.transform);
-
-        //tileStack.GetComponent<NetworkHeirarchySync>().SyncChildren();
+            tileStack.transform.ServerSetChild(tile.transform);
     }
 
     [Server]
@@ -73,11 +75,9 @@ public class BoardSetup : NetworkBehaviour {
     private void ServerAddPortalTileToBoard(MapShape mapShape)
     {
         GameObject portalTile = boardFactory.CreateStartTile(mapShape);
+        portalTile.transform.SetParent(board.transform);
         portalTile.transform.GetChild(3).tag = "PortalTile";
         board.tilePositions.RemoveAt(0);
-
-        portalTile.transform.SetParent(board.transform);
-        board.boardHeirarchy.ServerSyncChild(portalTile);
     }
 
     [Server]

@@ -5,12 +5,12 @@ using View;
 
 namespace Other.Factory
 {
-    [RequireComponent(typeof(DeckFactory))]
     public class CardFactory : NetworkBehaviour
     {
         public Sprite cardBack;
         public GameObject cardPrefab;
 
+        [Server]
         public GameObject CreateCard(Card cardData)
         {
             GameObject card = Instantiate(cardPrefab);
@@ -21,7 +21,7 @@ namespace Other.Factory
             cardView.cardBack = cardBack;
 
             card.name = cardData.name;
-            cardView.ShowFront();
+            cardView.RpcShow();
 
             return card;
         }

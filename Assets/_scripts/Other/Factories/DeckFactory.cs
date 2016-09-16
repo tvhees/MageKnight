@@ -25,12 +25,10 @@ namespace Other.Factory
     public class DeckFactory: NetworkBehaviour 
 	{
         public CardFactory cardFactory;
-        public GameObject holderPrefab;
 
-        public void CreateDeck(DeckType type)
+        [Server]
+        public List<GameObject> ServerCreateDeck(Deck deckData)
         {
-            Deck deckData = DeckDatabase.GetScriptableObject(type.ToString());
-
             List<GameObject> listOfCards = new List<GameObject>();
             for (int i = 0; i < deckData.cards.Length; i++)
             {
@@ -40,14 +38,11 @@ namespace Other.Factory
                 for (int j = 0; j < numberOfCopies; j++)
                 {
                     GameObject card = cardFactory.CreateCard(cardData);
-                    card.GetComponent<CardView>().MoveToNewParent(gameObject.transform);
                     listOfCards.Add(card);
                 }
             }
-
-            listOfCards.Randomise();
-
-            //return listOfCards;
+            
+            return listOfCards;
         }
 	}
 }
