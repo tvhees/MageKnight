@@ -5,10 +5,57 @@ using System.Collections;
 
 public class NetworkHeirarchyTransform : NetworkBehaviour
 {
+    [SyncVar(hook = "SetParentId")]
+    public NetworkInstanceId parentId;
+    [SyncVar(hook = "SetLocalScale")]
+    public Vector3 localScale;
+    [SyncVar(hook = "SetLocalPosition")]
+    public Vector3 localPosition;
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        SetParentId(parentId);
+        SetLocalScale(localScale);
+        SetLocalPosition(localPosition);
+    }
+
+    public void SetLocalPosition(Vector3 newPosition)
+    {
+        localPosition = newPosition;
+        var rectTransform = GetComponent<RectTransform>();
+        if (rectTransform != null)
+        {
+            rectTransform.offsetMax = newPosition;
+            rectTransform.offsetMin = newPosition;
+            rectTransform.Reset();
+        }
+        else
+            transform.localPosition = localPosition;
+    }
+
+    public void SetLocalScale(Vector3 newScale)
+    {
+        localScale = newScale;
+        var rectTransform = GetComponent<RectTransform>();
+        if (rectTransform != null)
+            rectTransform.localScale = localScale;
+        else
+            transform.localScale = localScale;
+    }
+
+    void SetParentId(NetworkInstanceId newParentId)
+    {
+        parentId = newParentId;
+        GameObject parentObject = ClientScene.FindLocalObject(parentId);
+        if(parentObject != null)
+            transform.SetParent(parentObject.transform);
+    }
+
     [Server]
     public void ServerSyncParent(Transform parent)
     {
-        RpcSyncParent(parent.GetComponent<NetworkIdentity>().netId);
+        parentId = parent.GetComponent<NetworkIdentity>().netId;
     }
 
     [ClientRpc]

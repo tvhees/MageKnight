@@ -7,27 +7,12 @@ using View;
 
 namespace Other.Factory
 {
-    public enum DeckType
-    {
-        AdvancedActions,
-        Spells,
-        Artifacts,
-        CommonUnits,
-        EliteUnits,
-        Wounds,
-        Goldyx,
-        Tovak,
-        Arythea,
-        Norowas
-    }
-
     [RequireComponent(typeof(CardFactory))]
-    public class DeckFactory: NetworkBehaviour 
+    public class DeckFactory: MonoBehaviour 
 	{
         public CardFactory cardFactory;
 
-        [Server]
-        public List<GameObject> ServerCreateDeck(Deck deckData)
+        public List<GameObject> CreateDeck(Deck deckData)
         {
             List<GameObject> listOfCards = new List<GameObject>();
             for (int i = 0; i < deckData.cards.Length; i++)
@@ -37,7 +22,7 @@ namespace Other.Factory
 
                 for (int j = 0; j < numberOfCopies; j++)
                 {
-                    GameObject card = cardFactory.CreateCard(cardData);
+                    GameObject card = cardFactory.CreateCard(new CardId(cardData.name));
                     listOfCards.Add(card);
                 }
             }

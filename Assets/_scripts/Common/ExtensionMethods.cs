@@ -8,7 +8,7 @@ public static class ExtensionMethods
     /// <summary>
     /// Randomises and array
     /// </summary>
-    public static T[] Randomise<T>(this T[] param)
+    public static T[] Shuffle<T>(this T[] param)
     {
         for (int i = 0; i < param.Length; i++)
         {
@@ -23,7 +23,7 @@ public static class ExtensionMethods
     /// <summary>
     /// Randomises a list
     /// </summary>
-    public static List<T> Randomise<T>(this List<T> param, bool createCopy = true)
+    public static List<T> Shuffle<T>(this List<T> param, bool createCopy = true)
     {
         for (int i = 0; i < param.Count; i++)
         {
@@ -48,12 +48,14 @@ public static class ExtensionMethods
             param.Add(i);
     }
 
-    public static T GetLast<T>(this List<T> param)
+    public static T GetLast<T>(this List<T> param, bool remove = false)
     {
         T lastItem;
         try
         {
             lastItem = param[param.Count - 1];
+            if (remove)
+                param.Remove(lastItem);
             return lastItem;
         }
         catch (System.Exception e)
@@ -63,17 +65,20 @@ public static class ExtensionMethods
         }
     }
 
-    public static void RemoveLast<T>(this List<T> param)
+    public static T GetFirst<T>(this List<T> param, bool remove = false)
     {
-        int i;
+        T firstItem;
         try
         {
-            i = param.Count - 1;
-            param.RemoveAt(i);
+            firstItem = param[0];
+            if (remove)
+                param.Remove(firstItem);
+            return firstItem;
         }
         catch (System.Exception e)
         {
-            Debug.LogWarning("Error removing last item: " + e);
+            Debug.LogWarning("Error getting first item: " + e);
+            return default(T);
         }
     }
 
@@ -155,6 +160,7 @@ public static class ExtensionMethods
     {
         param.offsetMax = Vector2.zero;
         param.offsetMin = Vector2.zero;
+        param.localPosition = Vector3.zero;
         param.localScale = Vector3.one;
     }
 }

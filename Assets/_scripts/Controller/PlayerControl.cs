@@ -5,7 +5,6 @@ using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
 using Other.Factory;
-using Model;
 using View;
 using Other.Data;
 using Other.Utility;
@@ -23,14 +22,14 @@ public class PlayerControl : NetworkBehaviour
 
     public bool isYourTurn { get { return GameController.singleton.currentPlayer == this; } }
 
-    public GameObject playerViewPrefab;
-
+    public Player model;
     public PlayerView view;
     public Character character;
 
     public Camera playerCamera;
     public TurnOrderDisplay turnOrderDisplay;
     public CharacterView characterView;
+    public NetworkIdentity networkIdentity;
 
     #region Initialisation
     public override void OnStartClient()
@@ -58,6 +57,7 @@ public class PlayerControl : NetworkBehaviour
     // We use a coroutine to wait until scene objects are loaded, otherwise standalone builds are not initialised properly.
     public override void OnStartLocalPlayer()
     {
+        base.OnStartLocalPlayer();
         StartCoroutine(WaitForLocalSceneLoad());
     }
 
@@ -74,9 +74,9 @@ public class PlayerControl : NetworkBehaviour
     void OnLocalSceneLoaded()
     {
         GameController.singleton.localPlayer = this;
+        playerCamera.enabled = true;
         CmdSetPlayerId(playerId);
         CmdAddToPlayerList();
-        CmdSpawnPlayerView();
     }
     #endregion
 
@@ -103,15 +103,6 @@ public class PlayerControl : NetworkBehaviour
 
             GameController.singleton.ServerOnCharacterSelected(name);
         }
-    }
-
-    [Command]
-    void CmdSpawnPlayerView()
-    {
-        GameObject pView = Instantiate(playerViewPrefab);
-        NetworkServer.Spawn(pView);
-        view = pView.GetComponent<PlayerView>();
-        view.ServerSpawnCardHolders();
     }
 
     [Command]
@@ -205,9 +196,30 @@ public class PlayerControl : NetworkBehaviour
 
     #region Card Management
     [Server]
+    public void CreateModel(Cards cards)
+    {
+        model = new Player(character, cards);
+        foreach (var cardId in model.deck)
+            view.RpcAddCardToDeck(cardId);
+    }
+
+    [Server]
+    public void DrawCards(int numberToDraw)
+    {
+        model.DrawCards(numberToDraw);
+        view.RpcDrawCards(numberToDraw);
+    }
+
+    [Server]
     public void ServerMoveCardToDeck(GameObject card)
     {
         card.GetComponent<CardView>().MoveToNewParent(view.deck.transform);
+    }
+
+    [Server]
+    public void AssignChosenTactic(Cards cards, Card tactic)
+    {
+        view.RpcOnTacticChosen(cards.GetTacticId(tactic.number));
     }
     #endregion
 }

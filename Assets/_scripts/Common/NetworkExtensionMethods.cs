@@ -14,4 +14,14 @@ public static class NetworkExtensionMethods {
         newChild.SetParent(param);
         param.GetComponent<NetworkHeirarchyTransform>().ServerSyncChild(newChild);
     }
+
+    public static void ServerSetLocalPosition(this Transform param, Vector3 newLocalPosition)
+    {
+        param.GetComponent<NetworkHeirarchyTransform>().SetLocalPosition(newLocalPosition);
+    }
+
+    public static void ServerSetLocalScale(this Transform param, Vector3 newLocalScale)
+    {
+        param.GetComponent<NetworkHeirarchyTransform>().SetLocalScale(newLocalScale);
+    }
 }

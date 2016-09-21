@@ -13,7 +13,9 @@ public class GameController : NetworkBehaviour
 {
     public static GameController singleton;
 
-    public int seed;
+    public int randomSeed;
+    public Board board;
+    public Cards cards;
 
     public Scenario scenario { get {
             if (players.Count <= 1)
@@ -22,29 +24,35 @@ public class GameController : NetworkBehaviour
                 return ScenarioDatabase.GetScriptableObject("Full Conquest");
         } }
 
-    #region References
-    public PlayerControl localPlayer;
-    public List<PlayerControl> players = new List<PlayerControl>();
-    public PlayerControl[] nextTurnOrder;
-
-    public int connectedClients = 0;
-
+    #region Syncvars
     [SyncVar]
     public int startPlayerIndex;
     [SyncVar]
-    public int nextPlayerIndex = 0;
+    public int nextPlayerIndex;
     [SyncVar]
     public int expectedPlayers;
     [SyncVar]
     public int numberOfPlayers;
+    #endregion
+
+    #region References
+    public PlayerControl localPlayer;
+    public List<PlayerControl> players = new List<PlayerControl>();
+    public PlayerControl[] nextTurnOrder;
     public PlayerControl currentPlayer;
+
+    public BoardView boardView;
+    public ToolTip toolTip;
+
+    public int connectedClients = 0;
 
     public StateController stateController;
     public CommandStack commandStack;
-    #endregion
+    public CardFactory cardFactory;
 
     public SharedView playerView;
     public DebugPanel debugPanel;
+    #endregion
 
     void Awake()
     {
@@ -96,7 +104,7 @@ public class GameController : NetworkBehaviour
         }
         return i;
     }
-#endregion
+    #endregion
 
     #region Server methods
     [Server]
@@ -116,7 +124,7 @@ public class GameController : NetworkBehaviour
     public void ServerRandomiseTurnOrder()
     {
         nextTurnOrder = players.ToArray();
-        nextTurnOrder.Randomise();
+        nextTurnOrder.Shuffle();
         ServerSetNewTurnOrder();
     }
 
@@ -135,13 +143,24 @@ public class GameController : NetworkBehaviour
     }
 
     [Server]
+    public void ServerCreateBoardFromRandomSeed()
+    {
+        // If we haven't specified a seed its value will be 0 and we should create a new one
+        if (randomSeed == 0)
+            randomSeed = System.Environment.TickCount;
+        Random.InitState(randomSeed);
+        board = new Board(scenario, numberOfPlayers, boardView);
+        cards = new Cards(scenario, players.ToArray());
+    }
+
+    [Server]
     public void ServerOnTacticSelected(string name)
     {
         playerView.RpcDisableButton(name);
 
-        // Tactics are numbered 1-6 but our array is 0-5
-        int tacticNumber = CardDatabase.GetScriptableObject(name).number - 1;
-        nextTurnOrder[tacticNumber] = currentPlayer;
+        var tactic = CardDatabase.GetScriptableObject(name);
+        nextTurnOrder[tactic.number] = currentPlayer;
+        currentPlayer.AssignChosenTactic(cards, tactic);
 
         if (nextPlayerIndex >= players.Count)
             stateController.ServerChangeState(stateController.startOfRound);

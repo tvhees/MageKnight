@@ -78,10 +78,13 @@
     <Compile Include="Assets\Lobby\Scripts\Lobby\LobbyServerList.cs" />
     <Compile Include="Assets\Lobby\Scripts\Lobby\LobbyTopPanel.cs" />
     <Compile Include="Assets\Lobby\Scripts\Lobby\PlayerNumberHook.cs" />
+    <Compile Include="Assets\_scripts\Clickable.cs" />
     <Compile Include="Assets\_scripts\Commands\Command.cs" />
     <Compile Include="Assets\_scripts\Commands\CommandResult.cs" />
     <Compile Include="Assets\_scripts\Commands\CommandStack.cs" />
+    <Compile Include="Assets\_scripts\Common\DisplayableFeature.cs" />
     <Compile Include="Assets\_scripts\Common\ExtensionMethods.cs" />
+    <Compile Include="Assets\_scripts\Common\GameConstants.cs" />
     <Compile Include="Assets\_scripts\Common\NetworkExtensionMethods.cs" />
     <Compile Include="Assets\_scripts\Common\NetworkHeirarchyTransform.cs" />
     <Compile Include="Assets\_scripts\Common\ObjectPool.cs" />
@@ -90,15 +93,21 @@
     <Compile Include="Assets\_scripts\Controller\PlayerControl.cs" />
     <Compile Include="Assets\_scripts\Controller\StateController.cs" />
     <Compile Include="Assets\_scripts\Controller\TurnController.cs" />
+    <Compile Include="Assets\_scripts\InteractibleFeature.cs" />
     <Compile Include="Assets\_scripts\Model\Board.cs" />
+    <Compile Include="Assets\_scripts\Model\CardId.cs" />
+    <Compile Include="Assets\_scripts\Model\Cards.cs" />
     <Compile Include="Assets\_scripts\Model\Game.cs" />
+    <Compile Include="Assets\_scripts\Model\HexId.cs" />
+    <Compile Include="Assets\_scripts\Model\Player.cs" />
+    <Compile Include="Assets\_scripts\Model\TileId.cs" />
     <Compile Include="Assets\_scripts\Other\BoardSetup.cs" />
-    <Compile Include="Assets\_scripts\Other\CardSetup.cs" />
     <Compile Include="Assets\_scripts\Other\Data\Card.cs" />
     <Compile Include="Assets\_scripts\Other\Data\Character.cs" />
     <Compile Include="Assets\_scripts\Other\Data\Deck.cs" />
     <Compile Include="Assets\_scripts\Other\Data\HexTile.cs" />
     <Compile Include="Assets\_scripts\Other\Data\MapShape.cs" />
+    <Compile Include="Assets\_scripts\Other\Data\ObjectDescription.cs" />
     <Compile Include="Assets\_scripts\Other\Data\PrefabArray.cs" />
     <Compile Include="Assets\_scripts\Other\Data\Scenario.cs" />
     <Compile Include="Assets\_scripts\Other\EventManager.cs" />
@@ -113,15 +122,19 @@
     <Compile Include="Assets\_scripts\Other\Utility\CardDatabase.cs" />
     <Compile Include="Assets\_scripts\Other\Utility\CharacterDatabase.cs" />
     <Compile Include="Assets\_scripts\Other\Utility\DeckDatabase.cs" />
-    <Compile Include="Assets\_scripts\Other\Utility\HexTileDatabase.cs" />
     <Compile Include="Assets\_scripts\Other\Utility\HexVector.cs" />
     <Compile Include="Assets\_scripts\Other\Utility\MapShapeDatabase.cs" />
     <Compile Include="Assets\_scripts\Other\Utility\ScenarioDatabase.cs" />
+    <Compile Include="Assets\_scripts\Other\Utility\TileDatabase.cs" />
+    <Compile Include="Assets\_scripts\View\BoardView.cs" />
     <Compile Include="Assets\_scripts\View\CardView.cs" />
     <Compile Include="Assets\_scripts\View\CharacterView.cs" />
     <Compile Include="Assets\_scripts\View\DebugPanel.cs" />
+    <Compile Include="Assets\_scripts\View\HexInteraction.cs" />
     <Compile Include="Assets\_scripts\View\PlayerView.cs" />
     <Compile Include="Assets\_scripts\View\SharedView.cs" />
+    <Compile Include="Assets\_scripts\View\ToolTip.cs" />
+    <Compile Include="Assets\_scripts\View\ToolTipPanel.cs" />
     <Compile Include="Assets\_scripts\View\TurnOrderDisplay.cs" />
   </ItemGroup>
   <ItemGroup>

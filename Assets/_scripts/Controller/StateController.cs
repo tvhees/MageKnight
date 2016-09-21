@@ -6,7 +6,6 @@ public class StateController : NetworkBehaviour {
 
     public GameObject characterSelect;
     public GameObject boardSetup;
-    public GameObject cardSetup;
     public GameObject tacticSelect;
     public GameObject startOfRound;
     public GameObject startOfTurn;
@@ -15,12 +14,6 @@ public class StateController : NetworkBehaviour {
     [SyncVar(hook = "OnStateIndexChanged")]
     public int stateIndex;
     public GameObject gameState;
-
-    public override void OnStartClient()
-    {
-        base.OnStartClient();
-        //OnStateIndexChanged(stateIndex);
-    }
 
     [Server]
     public void ServerChangeState(GameObject newState)

@@ -3,7 +3,7 @@ using Other.Utility;
 
 public class Game 
 {
-    private Board board;
+    private BoardView board;
 
     #region Constructor
     public Game()

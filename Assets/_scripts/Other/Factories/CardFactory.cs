@@ -5,23 +5,19 @@ using View;
 
 namespace Other.Factory
 {
-    public class CardFactory : NetworkBehaviour
+    public class CardFactory : MonoBehaviour
     {
         public Sprite cardBack;
         public GameObject cardPrefab;
 
-        [Server]
-        public GameObject CreateCard(Card cardData)
+        public GameObject CreateCard(CardId cardId)
         {
             GameObject card = Instantiate(cardPrefab);
-            NetworkServer.Spawn(card);
+            card.name = cardId.name;
 
             var cardView = card.GetComponent<CardView>();
-            cardView.cardFront = GetCardFront(cardData.name);
-            cardView.cardBack = cardBack;
-
-            card.name = cardData.name;
-            cardView.RpcShow();
+            cardView.SetCardImages(card.name);
+            cardView.Show();
 
             return card;
         }

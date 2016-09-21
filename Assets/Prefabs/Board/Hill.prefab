@@ -13,7 +13,8 @@ GameObject:
   - 64: {fileID: 6438416}
   - 114: {fileID: 11424662}
   - 114: {fileID: 114000014082515332}
-  - 114: {fileID: 114000010067536018}
+  - 114: {fileID: 114000011611104306}
+  - 114: {fileID: 114000012379637940}
   m_Layer: 8
   m_Name: Hill
   m_TagString: Untagged
@@ -125,7 +126,7 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 153546}
   m_IsPrefabParent: 1
---- !u!114 &114000010067536018
+--- !u!114 &114000011611104306
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -133,18 +134,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 153546}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1768714887, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Script: {fileID: 11500000, guid: eefab605d3ae3b14cb78dc8ac3fb42ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TransformSyncMode: 0
-  m_SendInterval: 0.1
-  m_SyncRotationAxis: 7
-  m_RotationSyncCompression: 0
-  m_SyncSpin: 0
-  m_MovementTheshold: 0.001
-  m_SnapThreshold: 5
-  m_InterpolateRotation: 1
-  m_InterpolateMovement: 1
+  descriptionData: {fileID: 11400000, guid: eb65b8055df4be7438935d3137c99633, type: 2}
+--- !u!114 &114000012379637940
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 153546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f014ea1c168c56940a05299ffcdbe2df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114000014082515332
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -156,3 +160,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 956844c2ccd401146958d58f604118ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  localScale: {x: 1, y: 1, z: 1}
+  localPosition: {x: 0, y: 0, z: 0}

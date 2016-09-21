@@ -25,8 +25,9 @@ namespace Other.Factory
             for(var i = 0; i < tileData.hexes.Length; i++)
             {
                 GameObject hex = hexFactory.CreateSceneObject(tileData.hexes[i], tileData.features[i]);
-                hexTile.transform.ServerSetChild(hex.transform);
-                hex.transform.localPosition = tileData.localCoordinates[i].worldVector;
+                //hexTile.transform.ServerSetChild(hex.transform);
+                hex.transform.ServerSetParent(hexTile.transform);
+                hex.transform.ServerSetLocalPosition(tileData.localCoordinates[i].worldVector);
             }
 
             return hexTile;
