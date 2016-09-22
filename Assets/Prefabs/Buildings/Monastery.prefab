@@ -11,7 +11,8 @@ GameObject:
   - 33: {fileID: 3310732}
   - 23: {fileID: 2365118}
   - 114: {fileID: 11482792}
-  - 114: {fileID: 11488026}
+  - 114: {fileID: 114000013578519480}
+  - 114: {fileID: 114000010704472742}
   m_Layer: 14
   m_Name: Monastery
   m_TagString: Untagged
@@ -100,26 +101,6 @@ MonoBehaviour:
     i15: 212
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
---- !u!114 &11488026
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 113510}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1768714887, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_TransformSyncMode: 0
-  m_SendInterval: 0.1
-  m_SyncRotationAxis: 7
-  m_RotationSyncCompression: 0
-  m_SyncSpin: 0
-  m_MovementTheshold: 0.001
-  m_SnapThreshold: 5
-  m_InterpolateRotation: 1
-  m_InterpolateMovement: 1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -131,3 +112,28 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 113510}
   m_IsPrefabParent: 1
+--- !u!114 &114000010704472742
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 113510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eefab605d3ae3b14cb78dc8ac3fb42ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  descriptionData: {fileID: 11400000, guid: 70812d69029519f4bb00631211b6ef37, type: 2}
+--- !u!114 &114000013578519480
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 113510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 956844c2ccd401146958d58f604118ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localScale: {x: 1, y: 1, z: 1}
+  localPosition: {x: 0, y: 0, z: 0}

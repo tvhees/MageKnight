@@ -13,6 +13,10 @@ public class GameController : NetworkBehaviour
 {
     public static GameController singleton;
 
+    public int randomSeed;
+    public Board board;
+    public Cards cards;
+
     public Scenario scenario { get {
             if (players.Count <= 1)
                 return ScenarioDatabase.GetScriptableObject("Solo Conquest");
@@ -20,31 +24,36 @@ public class GameController : NetworkBehaviour
                 return ScenarioDatabase.GetScriptableObject("Full Conquest");
         } }
 
-    #region References
-    public PlayerControl localPlayer;
-    public List<PlayerControl> players = new List<PlayerControl>();
-    public PlayerControl[] newPlayerTurnOrder;
-
-    public int connectedClients = 0;
-
+    #region Syncvars
     [SyncVar]
     public int startPlayerIndex;
     [SyncVar]
-    public int currentPlayerIndex = -1;
+    public int nextPlayerIndex;
     [SyncVar]
     public int expectedPlayers;
     [SyncVar]
     public int numberOfPlayers;
+    #endregion
+
+    #region References
+    public PlayerControl localPlayer;
+    public List<PlayerControl> players = new List<PlayerControl>();
+    public PlayerControl[] nextTurnOrder;
     public PlayerControl currentPlayer;
 
-    public int playerSelectionCounter = 0;
+    public BoardView boardView;
+    public ToolTip toolTip;
+
+    public int connectedClients = 0;
 
     public StateController stateController;
     public CommandStack commandStack;
-    #endregion
+    public CardFactory cardFactory;
 
-    public PlayerView playerView;
+    public SharedView playerView;
+    public GameObject displayPanel;
     public DebugPanel debugPanel;
+    #endregion
 
     void Awake()
     {
@@ -96,7 +105,7 @@ public class GameController : NetworkBehaviour
         }
         return i;
     }
-#endregion
+    #endregion
 
     #region Server methods
     [Server]
@@ -104,36 +113,77 @@ public class GameController : NetworkBehaviour
     {
         players.Add(player);
         numberOfPlayers = players.Count;
-        EventManager.debugMessage.Invoke("Players connected: " + players.Count);
     }
 
     [Server]
     public void ServerStartGame()
     {
-        currentPlayerIndex = Random.Range(0, players.Count);
-        ServerNextPlayer();
+        ServerRandomiseTurnOrder();
+    }
+
+    [Server]
+    public void ServerRandomiseTurnOrder()
+    {
+        nextTurnOrder = players.ToArray();
+        nextTurnOrder.Shuffle();
+        ServerSetNewTurnOrder();
     }
 
     [Server]
     public void ServerOnCharacterSelected(string name)
     {
         playerView.RpcDisableButton(name);
-        playerSelectionCounter++;
-        if (playerSelectionCounter >= players.Count)
+        
+        // Tactics selection phase proceeds in reverse order of character selection
+        nextTurnOrder[players.Count - nextPlayerIndex] = currentPlayer;
+
+        if (nextPlayerIndex >= players.Count)
             stateController.ServerChangeState(stateController.boardSetup);
         else
             ServerNextPlayer();
     }
 
     [Server]
+    public void ServerCreateBoardFromRandomSeed()
+    {
+        // If we haven't specified a seed its value will be 0 and we should create a new one
+        if (randomSeed == 0)
+            randomSeed = System.Environment.TickCount;
+        Random.InitState(randomSeed);
+        board = new Board(scenario, numberOfPlayers, boardView);
+        cards = new Cards(scenario, players.ToArray());
+    }
+
+    [Server]
     public void ServerOnTacticSelected(string name)
     {
         playerView.RpcDisableButton(name);
-        playerSelectionCounter++;
-        if (playerSelectionCounter >= players.Count)
+
+        var tactic = CardDatabase.GetScriptableObject(name);
+        nextTurnOrder[tactic.number] = currentPlayer;
+        currentPlayer.AssignChosenTactic(cards, tactic);
+
+        if (nextPlayerIndex >= players.Count)
             stateController.ServerChangeState(stateController.startOfRound);
         else
             ServerNextPlayer();
+    }
+
+    [Server]
+    public void ServerSetNewTurnOrder()
+    {
+        players.Clear();
+        for (int i = 0; i < nextTurnOrder.Length; i++)
+        {
+            if (nextTurnOrder[i] == null)
+                continue;
+
+            nextTurnOrder[i].RpcMoveToIndexInTurnOrder(players.Count);
+            players.Add(nextTurnOrder[i]);
+        }
+
+        nextPlayerIndex = 0;
+        ServerNextPlayer();
     }
 
     [Server]
@@ -142,14 +192,13 @@ public class GameController : NetworkBehaviour
         if (currentPlayer != null)
             currentPlayer.RpcYourTurn(false);
 
-        // Wrap currentPlayerIndex to 0 Mathf.Repeat because it doesn't take integers
-        currentPlayerIndex++;
-        if (currentPlayerIndex >= players.Count)
-            currentPlayerIndex = 0;
-
-        currentPlayer = players[currentPlayerIndex];
-
+        if (nextPlayerIndex >= players.Count)
+            nextPlayerIndex = 0;
+        currentPlayer = players[nextPlayerIndex];
         currentPlayer.RpcYourTurn(true);
+
+        // Wrap currentPlayerIndex to 0 because Mathf.Repeat doesn't take integers
+        nextPlayerIndex++;
     }
     #endregion
 

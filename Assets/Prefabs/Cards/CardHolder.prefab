@@ -9,8 +9,9 @@ GameObject:
   m_Component:
   - 224: {fileID: 22433812}
   - 114: {fileID: 11489156}
-  - 114: {fileID: 11444438}
   - 114: {fileID: 11412606}
+  - 114: {fileID: 114000012797309416}
+  - 114: {fileID: 114000013410208314}
   m_Layer: 10
   m_Name: CardHolder
   m_TagString: Untagged
@@ -29,6 +30,7 @@ GameObject:
   - 222: {fileID: 22220552}
   - 114: {fileID: 11455432}
   - 225: {fileID: 22584304}
+  - 114: {fileID: 114000014140053728}
   m_Layer: 10
   m_Name: CardImage
   m_TagString: Untagged
@@ -49,26 +51,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardFront: {fileID: 0}
   cardBack: {fileID: 0}
---- !u!114 &11444438
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 135054}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1768714887, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_TransformSyncMode: 1
-  m_SendInterval: 0.1
-  m_SyncRotationAxis: 7
-  m_RotationSyncCompression: 0
-  m_SyncSpin: 0
-  m_MovementTheshold: 0.001
-  m_SnapThreshold: 5
-  m_InterpolateRotation: 1
-  m_InterpolateMovement: 1
 --- !u!114 &11455432
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -193,3 +175,51 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 135054}
   m_IsPrefabParent: 1
+--- !u!114 &114000012797309416
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 135054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 956844c2ccd401146958d58f604118ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localScale: {x: 1, y: 1, z: 1}
+  localPosition: {x: 0, y: 0, z: 0}
+--- !u!114 &114000013410208314
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 135054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1768714887, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TransformSyncMode: 0
+  m_SendInterval: 0.1
+  m_SyncRotationAxis: 7
+  m_RotationSyncCompression: 0
+  m_SyncSpin: 0
+  m_MovementTheshold: 0.001
+  m_SnapThreshold: 5
+  m_InterpolateRotation: 1
+  m_InterpolateMovement: 1
+--- !u!114 &114000014140053728
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 139264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 884290a67c98c3e47b8df2ef7f3beabd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 22584304}
+  startParent: {fileID: 11412606}
+  minorZoomLevel: 1.2
+  majorZoomLevel: 2

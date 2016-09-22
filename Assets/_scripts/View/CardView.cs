@@ -14,51 +14,69 @@ namespace View
 
         private Image cardImage;
 
-        private static float scalingFactor = 1.0f;
-
         void Awake()
         {
             cardImage = GetComponentInChildren<Image>();
         }
 
-        public void MoveToNewParent(Transform parent, bool showFront = true)
+        public void SetCardImages(string cardName)
         {
-            transform.SetParent(parent.transform);
-            ResetTransform();
-
-            if (showFront)
-                ShowFront();
-            else
-                HideFront();
+            gameObject.name = cardName;
+            cardFront = GetCardImage(cardName);
+            cardBack = GetCardImage("cardback");
         }
 
-        public void ShowFront()
+        Sprite GetCardImage(string name)
+        {
+            name = name.ToLower().Replace(" ", "");
+            Sprite cardFront = Resources.Load<Sprite>("CardImages/" + name);
+
+            if (cardFront == null)
+                Debug.Log(name);
+
+            return cardFront;
+        }
+
+        public void MoveToNewParent(Transform parent, bool showFront = true)
+        {
+            transform.SetParent(parent);
+            (transform as RectTransform).Reset();
+
+            if (showFront)
+                Show();
+            else
+                Hide();
+        }
+
+        public void Show()
         {
             cardImage.sprite = cardFront;
             AllowZooming(true);
         }
 
-        public void HideFront()
+        public void Hide()
         {
             cardImage.sprite = cardBack;
             AllowZooming(false);
         }
 
-
-        #region Private methods
-        void ResetTransform()
+        public void OnDrag()
         {
-            transform.localPosition = Vector3.zero;
-            transform.localScale = Vector3.one * scalingFactor;
+
         }
 
+        public void EndDrag()
+        {
+
+        }
+
+
+        #region Private methods
         void AllowZooming(bool allow)
         {
-            /*
             Moveable zoomScript = GetComponentInChildren<Moveable>();
             if (zoomScript != null)
                 zoomScript.enabled = allow;
-                */
         }
         #endregion
     }

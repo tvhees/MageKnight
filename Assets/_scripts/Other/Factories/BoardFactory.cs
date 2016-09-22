@@ -10,7 +10,7 @@ namespace Other.Factory
     [RequireComponent(typeof(TileFactory))]
     public class BoardFactory : NetworkBehaviour
 	{
-        public Board board;
+        public BoardView board;
 
         private TileFactory tileFactory;
         private HexTile[] allTiles;
@@ -24,8 +24,8 @@ namespace Other.Factory
 
         public void LoadTileData()
         {
-            allTiles = HexTileDatabase.GetAllObjects();
-            allTiles.Randomise();
+            allTiles = TileDatabase.GetAllObjects();
+            allTiles.Shuffle();
         }
 
         public List<GameObject> CreateCountrysideStack(DataForPlayerCount data)
@@ -37,7 +37,7 @@ namespace Other.Factory
         {
             List<GameObject> coreTiles = CreateTileStack("Core", data.numberOfCoreNonCityTiles);
             coreTiles.AddRange(CreateTileStack("City", data.numberOfCoreCityTiles));
-            coreTiles.Randomise();
+            coreTiles.Shuffle();
             return coreTiles;
         }
 

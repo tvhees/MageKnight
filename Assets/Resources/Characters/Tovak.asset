@@ -13,4 +13,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: Defensive brawler
   colour: {r: 0, g: 0, b: 1, a: 1}
-  deck: {fileID: 0}
+  deck: {fileID: 11400000, guid: 99194442bd8aa0441a5ecdca983f8feb, type: 2}

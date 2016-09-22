@@ -4,21 +4,24 @@ using Other.Data;
 
 namespace Other.Factory
 {
-    public class HexFactory: NetworkBehaviour 
+    public class HexFactory : NetworkBehaviour 
 	{
         public PrefabArray hexPrefabs;
         public PrefabArray featurePrefabs;
 
+        public GameObject CreateSceneObject(HexId hexId)
+        {
+            return CreateSceneObject(hexId.terrain, hexId.feature);
+        }
+
         public GameObject CreateSceneObject(HexTile.Type type, HexTile.FeatureType feature)
         {
             GameObject hex = Instantiate(hexPrefabs.prefabs[(int)type]);
-            NetworkServer.Spawn(hex);
             hex.name = hex.name.Replace("(Clone)", "");
             if (feature != HexTile.FeatureType.Empty)
             {
-                var feat = hex.transform.InstantiateChild(featurePrefabs.prefabs[(int)feature]);
-                NetworkServer.Spawn(feat);
-                hex.GetComponent<NetworkHeirarchySync>().ServerSyncChild(feat);
+                var feat = Instantiate(featurePrefabs.prefabs[(int)feature]);
+                feat.transform.SetParent(hex.transform);
             }
 
             return hex;

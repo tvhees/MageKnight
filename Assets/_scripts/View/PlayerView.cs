@@ -1,67 +1,65 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using UnityEngine.Networking;
-using System.Collections;
-using Other.Data;
+using Other.Factory;
 
 namespace View
 {
     public class PlayerView : NetworkBehaviour
-    {
-        public TurnOrderDisplay[] turnOrderDisplays;
-        public Text currentPhase;
-        public Button[] buttons;
+	{
+        public NetworkInstanceId ownerId;
+        public GameObject deck;
+        public GameObject hand;
+        public GameObject discard;
+        public GameObject units;
+        public GameObject tactic;
+        public Canvas canvas;
 
-        #region Initialise
-        void Awake()
+        public void Show()
         {
-            EventManager.stateChanged.AddListener(OnStateChanged);
+            canvas.enabled = true;
         }
 
-        void OnStateChanged(GameObject newState)
+        public void Hide()
         {
-            currentPhase.text = newState.name;
-        }
-        #endregion
-
-        #region UiMethods
-        public void UiSelectCharacter()
-        {
-            string name = EventSystem.current.currentSelectedGameObject.name;
-            EventManager.characterSelected.Invoke(name);
-        }
-
-        public void UiSelectTactic()
-        {
-            string name = EventSystem.current.currentSelectedGameObject.name;
-            EventManager.tacticSelected.Invoke(name);
-        }
-
-        public void UiEndTurn()
-        {
-            EventManager.endTurn.Invoke();
-        }
-        #endregion
-
-        public TurnOrderDisplay GetTurnOrderDisplay(int playerId)
-        {
-            return turnOrderDisplays[playerId];
-        }
-
-        public void SetPlayerName(int playerId, string playerName)
-        {
-            turnOrderDisplays[playerId].GetComponentInChildren<Text>().text = playerName;
+            canvas.enabled = false;
         }
 
         [ClientRpc]
-        public void RpcDisableButton(string name)
+        public void RpcShow()
         {
-            foreach (Button button in buttons)
+            Show();
+        }
+
+        [ClientRpc]
+        public void RpcHide()
+        {
+            Hide();
+        }
+
+        [ClientRpc]
+        public void RpcAddCardToDeck(CardId cardId)
+        {
+            GameObject card = GameController.singleton.cardFactory.CreateCard(cardId);
+            card.GetComponent<CardView>().MoveToNewParent(deck.transform, false);
+        }
+
+        [ClientRpc]
+        public void RpcDrawCards(int numberToDraw)
+        {
+            for (int i = 0; i < numberToDraw; i++)
             {
-                if (button.name == name)
-                    button.interactable = false;
+                if (deck.transform.childCount <= 0)
+                    break;
+
+                deck.transform.GetChild(0).GetComponent<CardView>().MoveToNewParent(hand.transform);
             }
+        }
+
+        [ClientRpc]
+        public void RpcOnTacticChosen(CardId cardId)
+        {
+            GameObject card = GameController.singleton.cardFactory.CreateCard(cardId);
+            card.GetComponent<CardView>().MoveToNewParent(tactic.transform);
         }
     }
 }

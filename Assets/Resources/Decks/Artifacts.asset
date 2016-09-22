@@ -11,5 +11,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e28965b233686a4c85165c5beae7a23, type: 3}
   m_Name: Artifacts
   m_EditorClassIdentifier: 
-  cards: []
-  extraCopies: 
+  cards:
+  - {fileID: 11400000, guid: 4767a8682216a1849b530ffe431283b4, type: 2}
+  - {fileID: 11400000, guid: 174a30fa3b774a34bb0530f078cbd61d, type: 2}
+  - {fileID: 11400000, guid: a8e9c0b1ee4a55e478bcd85a094b660e, type: 2}
+  - {fileID: 11400000, guid: 0efa7ead927ea8b4ea12011cb9367be2, type: 2}
+  extraCopies: 00000000000000000000000000000000

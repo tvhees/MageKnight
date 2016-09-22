@@ -15,12 +15,6 @@ public class StateController : NetworkBehaviour {
     public int stateIndex;
     public GameObject gameState;
 
-    public override void OnStartClient()
-    {
-        base.OnStartClient();
-        //OnStateIndexChanged(stateIndex);
-    }
-
     [Server]
     public void ServerChangeState(GameObject newState)
     {

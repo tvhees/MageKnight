@@ -13,4 +13,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: Half-dragon wizard
   colour: {r: 0, g: 1, b: 0, a: 1}
-  deck: {fileID: 0}
+  deck: {fileID: 11400000, guid: af9474fa960c78446a4558538b4b47bf, type: 2}

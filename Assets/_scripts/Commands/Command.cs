@@ -74,8 +74,7 @@ public abstract class Command
     {
         for (int i = completedOptionals.Count; i > 0; i--)
         {
-            completedOptionals.GetLast().Undo();
-            completedOptionals.RemoveLast();
+            completedOptionals.GetLast(remove: true).Undo();
         }
     }
 
@@ -83,8 +82,7 @@ public abstract class Command
     {
         for (int i = completedRequirements.Count; i > 0; i--)
         {
-            completedRequirements.GetLast().Undo();
-            completedRequirements.RemoveLast();
+            completedRequirements.GetLast(remove: true).Undo();
         }
     }
 }

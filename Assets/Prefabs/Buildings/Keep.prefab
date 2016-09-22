@@ -11,7 +11,8 @@ GameObject:
   - 33: {fileID: 3363580}
   - 23: {fileID: 2323370}
   - 114: {fileID: 11487604}
-  - 114: {fileID: 11405790}
+  - 114: {fileID: 114000011417060322}
+  - 114: {fileID: 114000013234628484}
   m_Layer: 14
   m_Name: Keep
   m_TagString: Untagged
@@ -68,26 +69,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 170028}
   m_Mesh: {fileID: 4300018, guid: e1c8f2d27f9f91a48be2a4353be26b1d, type: 3}
---- !u!114 &11405790
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 170028}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1768714887, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_TransformSyncMode: 1
-  m_SendInterval: 0.1
-  m_SyncRotationAxis: 7
-  m_RotationSyncCompression: 0
-  m_SyncSpin: 0
-  m_MovementTheshold: 0.001
-  m_SnapThreshold: 5
-  m_InterpolateRotation: 1
-  m_InterpolateMovement: 1
 --- !u!114 &11487604
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -131,3 +112,28 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 170028}
   m_IsPrefabParent: 1
+--- !u!114 &114000011417060322
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 170028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 956844c2ccd401146958d58f604118ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  localScale: {x: 1, y: 1, z: 1}
+  localPosition: {x: 0, y: 0, z: 0}
+--- !u!114 &114000013234628484
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 170028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eefab605d3ae3b14cb78dc8ac3fb42ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  descriptionData: {fileID: 11400000, guid: 1a33ac0550a667a44ae6f0cc9245256e, type: 2}

@@ -13,4 +13,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   description: Blood mage
   colour: {r: 1, g: 0, b: 0, a: 1}
-  deck: {fileID: 0}
+  deck: {fileID: 11400000, guid: 67092b4b82d755247bd91111f6e8a761, type: 2}
