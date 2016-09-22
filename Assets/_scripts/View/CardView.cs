@@ -60,15 +60,23 @@ namespace View
             AllowZooming(false);
         }
 
+        public void OnDrag()
+        {
+
+        }
+
+        public void EndDrag()
+        {
+
+        }
+
 
         #region Private methods
         void AllowZooming(bool allow)
         {
-            /*
             Moveable zoomScript = GetComponentInChildren<Moveable>();
             if (zoomScript != null)
                 zoomScript.enabled = allow;
-                */
         }
         #endregion
     }

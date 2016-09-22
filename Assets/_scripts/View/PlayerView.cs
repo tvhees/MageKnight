@@ -12,6 +12,29 @@ namespace View
         public GameObject discard;
         public GameObject units;
         public GameObject tactic;
+        public Canvas canvas;
+
+        public void Show()
+        {
+            canvas.enabled = true;
+        }
+
+        public void Hide()
+        {
+            canvas.enabled = false;
+        }
+
+        [ClientRpc]
+        public void RpcShow()
+        {
+            Show();
+        }
+
+        [ClientRpc]
+        public void RpcHide()
+        {
+            Hide();
+        }
 
         [ClientRpc]
         public void RpcAddCardToDeck(CardId cardId)

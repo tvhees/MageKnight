@@ -51,6 +51,7 @@ public class GameController : NetworkBehaviour
     public CardFactory cardFactory;
 
     public SharedView playerView;
+    public GameObject displayPanel;
     public DebugPanel debugPanel;
     #endregion
 

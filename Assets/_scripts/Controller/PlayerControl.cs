@@ -75,6 +75,7 @@ public class PlayerControl : NetworkBehaviour
     {
         GameController.singleton.localPlayer = this;
         playerCamera.enabled = true;
+        view.Show();
         CmdSetPlayerId(playerId);
         CmdAddToPlayerList();
     }

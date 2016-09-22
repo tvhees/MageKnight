@@ -390,6 +390,7 @@ MonoBehaviour:
   discard: {fileID: 1000011645764662}
   units: {fileID: 1000012461257682}
   tactic: {fileID: 1000012449375962}
+  canvas: {fileID: 223000011564428098}
 --- !u!114 &114000011987508042
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -429,10 +430,10 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 4
+  m_ChildAlignment: 7
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 360, y: 360}
+  m_CellSize: {x: 240, y: 240}
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 1
   m_ConstraintCount: 1
@@ -578,7 +579,7 @@ Canvas:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012716612604}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_RenderMode: 1
   m_Camera: {fileID: 2062830}
