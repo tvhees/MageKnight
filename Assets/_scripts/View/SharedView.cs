@@ -49,11 +49,6 @@ namespace View
             return turnOrderDisplays[playerId];
         }
 
-        public void SetPlayerName(int playerId, string playerName)
-        {
-            turnOrderDisplays[playerId].GetComponentInChildren<Text>().text = playerName;
-        }
-
         [ClientRpc]
         public void RpcDisableButton(string name)
         {

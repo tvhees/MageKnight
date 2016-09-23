@@ -75,7 +75,7 @@ public class PlayerControl : NetworkBehaviour
     {
         GameController.singleton.localPlayer = this;
         playerCamera.enabled = true;
-        view.Show();
+        turnOrderDisplay.toggle.isOn = true;
         CmdSetPlayerId(playerId);
         CmdAddToPlayerList();
     }
@@ -182,9 +182,26 @@ public class PlayerControl : NetworkBehaviour
             return false;
 
         if (turnOrderDisplay == null)
+        {
             turnOrderDisplay = GameController.singleton.playerView.GetTurnOrderDisplay(playerId);
+            turnOrderDisplay.AssignToPlayer(this);
+        }
 
         return true;
+    }
+
+    [Client]
+    public void Show()
+    {
+        playerCamera.enabled = true;
+        view.Show();
+    }
+
+    [Client]
+    public void Hide()
+    {
+        playerCamera.enabled = false;
+        view.Hide();
     }
 
     [ClientRpc]
@@ -192,7 +209,6 @@ public class PlayerControl : NetworkBehaviour
     {
         turnOrderDisplay.transform.SetSiblingIndex(index);
     }
-
     #endregion
 
     #region Card Management

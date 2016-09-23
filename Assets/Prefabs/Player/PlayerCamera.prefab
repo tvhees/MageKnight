@@ -385,6 +385,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b08eb887aea9ba245aa9a0cb46094515, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  owner: {fileID: 11433812}
   deck: {fileID: 1000011421297040}
   hand: {fileID: 1000010582396370}
   discard: {fileID: 1000011645764662}
@@ -473,7 +474,7 @@ MonoBehaviour:
   m_StartCorner: 0
   m_StartAxis: 0
   m_CellSize: {x: 360, y: 360}
-  m_Spacing: {x: -150, y: 0}
+  m_Spacing: {x: -170, y: 0}
   m_Constraint: 2
   m_ConstraintCount: 1
 --- !u!114 &114000012849257660
@@ -605,8 +606,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 224000010395247750}
   m_RootOrder: 1
-  m_AnchorMin: {x: 0.2, y: 0}
-  m_AnchorMax: {x: 1, y: 0.3}
+  m_AnchorMin: {x: 0.2, y: -0.1}
+  m_AnchorMax: {x: 1, y: 0.2}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -682,8 +683,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 224000010395247750}
   m_RootOrder: 0
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.2, y: 0.3}
+  m_AnchorMin: {x: 0, y: -0.1}
+  m_AnchorMax: {x: 0.2, y: 0.2}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
