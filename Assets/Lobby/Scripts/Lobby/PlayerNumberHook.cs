@@ -12,7 +12,6 @@ namespace Prototype.NetworkLobby
             var player = gamePlayer.GetComponent<PlayerControl>();
             var lobby = lobbyPlayer.GetComponent<LobbyPlayer>();
             player.playerId = lobby.playerId;
-            player.colour = lobby.playerColor;
             player.playerName = lobby.playerName;
         }
     }

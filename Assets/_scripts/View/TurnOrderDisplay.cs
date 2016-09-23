@@ -5,7 +5,8 @@ using System.Collections;
 public class TurnOrderDisplay : MonoBehaviour {
 
     public PlayerControl playerControl;
-    public Toggle toggle;
+    public Button button;
+    public GameObject currentlyViewingIndicator;
     public Text nameText;
     public Text characterText;
     public Image img;
@@ -32,11 +33,35 @@ public class TurnOrderDisplay : MonoBehaviour {
         img.color = new Color(colour.r, colour.g, colour.b, alpha);
     }
 
-    public void OnToggleChanged(bool on)
+    public void Select(bool isOn)
     {
-        if (on)
+        currentlyViewingIndicator.SetActive(isOn);
+
+        if (isOn)
+        {
             playerControl.Show();
+            button.interactable = false;
+        }
         else
+        {
             playerControl.Hide();
+            button.interactable = true;
+        }
+    }
+
+    public void SetHighlights(Color highlightColour, GameObject highlightIndicator = null)
+    {
+        SetTextColour(highlightColour);
+        if (highlightIndicator != null)
+        {
+            highlightIndicator.transform.SetParent(transform);
+            (highlightIndicator.transform as RectTransform).Reset();
+        }
+    }
+
+    public void SetTextColour(Color colour)
+    {
+        nameText.color = colour;
+        characterText.color = colour;
     }
 }

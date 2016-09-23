@@ -75,7 +75,7 @@ public class PlayerControl : NetworkBehaviour
     {
         GameController.singleton.localPlayer = this;
         playerCamera.enabled = true;
-        turnOrderDisplay.toggle.isOn = true;
+        turnOrderDisplay.Select(true);
         CmdSetPlayerId(playerId);
         CmdAddToPlayerList();
     }
@@ -183,7 +183,7 @@ public class PlayerControl : NetworkBehaviour
 
         if (turnOrderDisplay == null)
         {
-            turnOrderDisplay = GameController.singleton.playerView.GetTurnOrderDisplay(playerId);
+            turnOrderDisplay = GameController.singleton.sharedView.GetTurnOrderDisplay(playerId);
             turnOrderDisplay.AssignToPlayer(this);
         }
 

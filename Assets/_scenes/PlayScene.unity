@@ -134,7 +134,7 @@ Transform:
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114000010990958880, guid: a924e7a1fc284804d83f22f932f03008,
     type: 2}
-  m_PrefabInternal: {fileID: 1851154336}
+  m_PrefabInternal: {fileID: 1820883321}
   m_Script: {fileID: 11500000, guid: 5fa4f4637949b094a8c030a4c7ad145f, type: 3}
 --- !u!114 &40833620 stripped
 MonoBehaviour:
@@ -186,7 +186,7 @@ Transform:
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114000013519430568, guid: a924e7a1fc284804d83f22f932f03008,
     type: 2}
-  m_PrefabInternal: {fileID: 1851154336}
+  m_PrefabInternal: {fileID: 1820883321}
   m_Script: {fileID: 11500000, guid: a694cdace23c60847a464ebb36b2a9d5, type: 3}
 --- !u!114 &359068523 stripped
 MonoBehaviour:
@@ -372,7 +372,7 @@ MonoBehaviour:
   stateController: {fileID: 1667884106}
   commandStack: {fileID: 0}
   cardFactory: {fileID: 1054642147}
-  playerView: {fileID: 10177261}
+  sharedView: {fileID: 10177261}
   displayPanel: {fileID: 1551101254}
   debugPanel: {fileID: 295791267}
 --- !u!4 &932607955
@@ -857,7 +857,7 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 1336772423}
   m_Script: {fileID: 1392445389, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
---- !u!1001 &1851154336
+--- !u!1001 &1820883321
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -953,6 +953,10 @@ Prefab:
         type: 2}
       propertyPath: m_Pivot.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000012082305552, guid: a924e7a1fc284804d83f22f932f03008, type: 2}
+      propertyPath: m_Name
+      value: SharedViewCanvas
       objectReference: {fileID: 0}
     - target: {fileID: 114000010990958880, guid: a924e7a1fc284804d83f22f932f03008,
         type: 2}

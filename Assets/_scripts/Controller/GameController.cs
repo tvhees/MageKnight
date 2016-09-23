@@ -50,7 +50,7 @@ public class GameController : NetworkBehaviour
     public CommandStack commandStack;
     public CardFactory cardFactory;
 
-    public SharedView playerView;
+    public SharedView sharedView;
     public GameObject displayPanel;
     public DebugPanel debugPanel;
     #endregion
@@ -132,7 +132,7 @@ public class GameController : NetworkBehaviour
     [Server]
     public void ServerOnCharacterSelected(string name)
     {
-        playerView.RpcDisableButton(name);
+        sharedView.RpcDisableButton(name);
         
         // Tactics selection phase proceeds in reverse order of character selection
         nextTurnOrder[players.Count - nextPlayerIndex] = currentPlayer;
@@ -157,7 +157,7 @@ public class GameController : NetworkBehaviour
     [Server]
     public void ServerOnTacticSelected(string name)
     {
-        playerView.RpcDisableButton(name);
+        sharedView.RpcDisableButton(name);
 
         var tactic = CardDatabase.GetScriptableObject(name);
         nextTurnOrder[tactic.number] = currentPlayer;
@@ -190,12 +190,19 @@ public class GameController : NetworkBehaviour
     public void ServerNextPlayer()
     {
         if (currentPlayer != null)
+        {
             currentPlayer.RpcYourTurn(false);
+            sharedView.RpcStopHighlightingPlayer(currentPlayer.playerId);
+        }
 
         if (nextPlayerIndex >= players.Count)
             nextPlayerIndex = 0;
         currentPlayer = players[nextPlayerIndex];
         currentPlayer.RpcYourTurn(true);
+        if (sharedView != null)
+        {
+            sharedView.RpcHighlightPlayer(currentPlayer.playerId);
+        }
 
         // Wrap currentPlayerIndex to 0 because Mathf.Repeat doesn't take integers
         nextPlayerIndex++;
