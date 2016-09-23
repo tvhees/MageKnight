@@ -7,6 +7,8 @@ namespace View
     public class PlayerView : NetworkBehaviour
 	{
         public NetworkInstanceId ownerId;
+        public PlayerControl owner;
+
         public GameObject deck;
         public GameObject hand;
         public GameObject discard;
@@ -51,7 +53,7 @@ namespace View
                 if (deck.transform.childCount <= 0)
                     break;
 
-                deck.transform.GetChild(0).GetComponent<CardView>().MoveToNewParent(hand.transform);
+                deck.transform.GetChild(0).GetComponent<CardView>().MoveToNewParent(hand.transform, showFront: owner.isLocalPlayer);
             }
         }
 

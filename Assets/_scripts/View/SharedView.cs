@@ -10,8 +10,10 @@ namespace View
     public class SharedView : NetworkBehaviour
     {
         public TurnOrderDisplay[] turnOrderDisplays;
+        public GameObject currentPlayerIndicator;
         public Text currentPhase;
         public Button[] buttons;
+        public Color highlightColour;
 
         #region Initialise
         void Awake()
@@ -38,6 +40,18 @@ namespace View
             EventManager.tacticSelected.Invoke(name);
         }
 
+        public void UiSelectView(TurnOrderDisplay selectedDisplay)
+        {
+            foreach (var display in turnOrderDisplays)
+            {
+                if (display != selectedDisplay)
+                    if(display.gameObject.activeSelf == true)
+                        display.Select(false);
+            }
+
+            selectedDisplay.Select(true);
+        }
+
         public void UiEndTurn()
         {
             EventManager.endTurn.Invoke();
@@ -49,11 +63,6 @@ namespace View
             return turnOrderDisplays[playerId];
         }
 
-        public void SetPlayerName(int playerId, string playerName)
-        {
-            turnOrderDisplays[playerId].GetComponentInChildren<Text>().text = playerName;
-        }
-
         [ClientRpc]
         public void RpcDisableButton(string name)
         {
@@ -62,6 +71,20 @@ namespace View
                 if (button.name == name)
                     button.interactable = false;
             }
+        }
+
+        [ClientRpc]
+        public void RpcStopHighlightingPlayer(int playerId)
+        {
+            var display = GetTurnOrderDisplay(playerId);
+            display.SetHighlights(Color.black);
+        }
+
+        [ClientRpc]
+        public void RpcHighlightPlayer(int playerId)
+        {
+            var display = GetTurnOrderDisplay(playerId);
+            display.SetHighlights(highlightColour, currentPlayerIndicator);
         }
     }
 }
