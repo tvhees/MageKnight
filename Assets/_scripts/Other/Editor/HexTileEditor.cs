@@ -12,15 +12,6 @@ public class HexTileEditor : Editor
     bool fold = true;
     bool hexFold = true;
 
-    SerializedProperty hexes;
-    SerializedProperty features;
-
-    void OnEnable()
-    {
-        hexes = serializedObject.FindProperty("hexes");
-        features = serializedObject.FindProperty("features");
-    }
-
     public override void OnInspectorGUI()
     {
         foreach (var hexTile in targets)
@@ -58,8 +49,8 @@ public class HexTileEditor : Editor
                     else
                     {
                         EditorGUILayout.BeginVertical();
-                        hT.hexes[i] = (HexTile.Type)EditorGUILayout.EnumPopup(hT.hexes[i], GUILayout.Width(100f), GUILayout.Height(EditorGUIUtility.singleLineHeight));
-                        hT.features[i] = (HexTile.FeatureType)EditorGUILayout.EnumPopup(hT.features[i], GUILayout.Width(100f), GUILayout.Height(EditorGUIUtility.singleLineHeight));
+                        hT.hexes[i] = (GameConstants.TerrainType)EditorGUILayout.EnumPopup(hT.hexes[i], GUILayout.Width(100f), GUILayout.Height(EditorGUIUtility.singleLineHeight));
+                        hT.features[i] = (GameConstants.FeatureType)EditorGUILayout.EnumPopup(hT.features[i], GUILayout.Width(100f), GUILayout.Height(EditorGUIUtility.singleLineHeight));
                         EditorGUILayout.EndVertical();
                         i++;
                     }

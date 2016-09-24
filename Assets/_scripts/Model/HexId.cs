@@ -6,8 +6,8 @@ using Other.Utility;
 public struct HexId
 {
     public Vector3 localPosition;
-    public HexTile.Type terrain;
-    public HexTile.FeatureType feature;
+    public GameConstants.TerrainType terrain;
+    public GameConstants.FeatureType feature;
 
     public HexId(HexTile hexTile, int hexIndex)
     {

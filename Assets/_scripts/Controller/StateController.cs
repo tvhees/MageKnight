@@ -14,6 +14,7 @@ public class StateController : NetworkBehaviour {
     [SyncVar(hook = "OnStateIndexChanged")]
     public int stateIndex;
     public GameObject gameState;
+    public GameObject lastState;
 
     [Server]
     public void ServerChangeState(GameObject newState)

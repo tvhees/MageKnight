@@ -15,6 +15,7 @@ GameObject:
   - 114: {fileID: 114000014082515332}
   - 114: {fileID: 114000011611104306}
   - 114: {fileID: 114000012379637940}
+  - 114: {fileID: 114000011011894522}
   m_Layer: 8
   m_Name: Hill
   m_TagString: Untagged
@@ -126,6 +127,17 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 153546}
   m_IsPrefabParent: 1
+--- !u!114 &114000011011894522
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 153546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47d133a55aa4846489fa56ef08ab66f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114000011611104306
 MonoBehaviour:
   m_ObjectHideFlags: 1

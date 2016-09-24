@@ -1,4 +1,5 @@
-﻿using System;
+﻿using UnityEngine;
+using System;
 using System.Collections.Generic;
 using Other.Data;
 
@@ -8,6 +9,10 @@ public class Player
     public List<CardId> deck;
     public List<CardId> discard;
     public List<CardId> units;
+
+    public GameObject currentTile;
+
+    public int movement;
 
     public Player(Character character, Cards cards)
     {

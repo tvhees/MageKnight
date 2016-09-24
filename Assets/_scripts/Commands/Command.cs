@@ -3,86 +3,89 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-public abstract class Command
+namespace Commands
 {
-    protected List<Command> requirements = new List<Command>();
-    protected List<Command> completedRequirements = new List<Command>();
-
-    protected List<Command> optionals = new List<Command>();
-    protected List<Command> completedOptionals = new List<Command>();
-
-    protected abstract CommandResult ExecuteThisCommand();
-
-    protected abstract void UndoThisCommand();
-
-    public CommandResult Execute()
+    public abstract class Command
     {
-        CommandResult result = ExecuteRequiredCommands();
+        protected List<Command> requirements = new List<Command>();
+        protected List<Command> completedRequirements = new List<Command>();
 
-        if (result.succeeded)
+        protected List<Command> optionals = new List<Command>();
+        protected List<Command> completedOptionals = new List<Command>();
+
+        protected abstract CommandResult ExecuteThisCommand();
+
+        protected abstract void UndoThisCommand();
+
+        public CommandResult Execute()
         {
-            result = ExecuteThisCommand();
+            CommandResult result = ExecuteRequiredCommands();
+
             if (result.succeeded)
-                ExecuteOptionalCommands();
+            {
+                result = ExecuteThisCommand();
+                if (result.succeeded)
+                    ExecuteOptionalCommands();
+            }
+
+            if (!result.succeeded)
+                UndoCompletedRequirements();
+
+            return result;
         }
 
-        if (!result.succeeded)
-            UndoCompletedRequirements();
-
-        return result;
-    }
-
-    protected CommandResult ExecuteRequiredCommands()
-    {
-        CommandResult result = CommandResult.success;
-        for (int i = 0; i < requirements.Count; i++)
+        protected CommandResult ExecuteRequiredCommands()
         {
-            result = ExecuteSubCommand(requirements[i], completedRequirements);
-            if (!result.succeeded)
+            CommandResult result = CommandResult.success;
+            for (int i = 0; i < requirements.Count; i++)
             {
-                UndoCompletedRequirements();
-                break;
+                result = ExecuteSubCommand(requirements[i], completedRequirements);
+                if (!result.succeeded)
+                {
+                    UndoCompletedRequirements();
+                    break;
+                }
+            }
+            return result;
+        }
+
+        protected void ExecuteOptionalCommands()
+        {
+            for (int i = 0; i < optionals.Count; i++)
+            {
+                ExecuteSubCommand(optionals[i], completedOptionals);
             }
         }
-        return result;
-    }
 
-    protected void ExecuteOptionalCommands()
-    {
-        for (int i = 0; i < optionals.Count; i++)
+        protected CommandResult ExecuteSubCommand(Command subCommand, List<Command> completedSubCommandList)
         {
-            ExecuteSubCommand(optionals[i], completedOptionals);
+            CommandResult result = subCommand.Execute();
+            if (result.succeeded)
+                completedSubCommandList.Add(subCommand);
+            return result;
         }
-    }
 
-    protected CommandResult ExecuteSubCommand(Command subCommand, List<Command> completedSubCommandList)
-    {
-        CommandResult result = subCommand.Execute();
-        if (result.succeeded)
-            completedSubCommandList.Add(subCommand);
-        return result;
-    }
-
-    public void Undo()
-    {
-        UndoCompletedOptionals();
-        UndoThisCommand();
-        UndoCompletedRequirements();
-    }
-
-    protected void UndoCompletedOptionals()
-    {
-        for (int i = completedOptionals.Count; i > 0; i--)
+        public void Undo()
         {
-            completedOptionals.GetLast(remove: true).Undo();
+            UndoCompletedOptionals();
+            UndoThisCommand();
+            UndoCompletedRequirements();
         }
-    }
 
-    protected void UndoCompletedRequirements()
-    {
-        for (int i = completedRequirements.Count; i > 0; i--)
+        protected void UndoCompletedOptionals()
         {
-            completedRequirements.GetLast(remove: true).Undo();
+            for (int i = completedOptionals.Count; i > 0; i--)
+            {
+                completedOptionals.GetLast(remove: true).Undo();
+            }
+        }
+
+        protected void UndoCompletedRequirements()
+        {
+            for (int i = completedRequirements.Count; i > 0; i--)
+            {
+                completedRequirements.GetLast(remove: true).Undo();
+            }
         }
     }
 }

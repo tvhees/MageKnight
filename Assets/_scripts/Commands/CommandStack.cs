@@ -2,39 +2,42 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class CommandStack : ScriptableObject
+namespace Commands
 {
-    public List<Command> oldCommands = new List<Command>();
-
-    public CommandResult RunCommand(Command command)
+    public class CommandStack : ScriptableObject
     {
-        CommandResult result = command.Execute();
+        public List<Command> oldCommands = new List<Command>();
 
-        if (result.succeeded && result.allowUndo)
+        public CommandResult RunCommand(Command command)
         {
-            oldCommands.Add(command);
+            CommandResult result = command.Execute();
+
+            if (result.succeeded && result.allowUndo)
+            {
+                oldCommands.Add(command);
+            }
+            else if (result.alternative != null)
+                result = RunCommand(result.alternative);
+
+            return result;
         }
-        else if (result.alternative != null)
-            result = RunCommand(result.alternative);
 
-        return result;
-    }
-
-    public void UndoLastCommand()
-    {
-        if (oldCommands.Count > 0)
+        public void UndoLastCommand()
         {
-            Command commandToUndo = oldCommands.GetLast();
-            oldCommands.Remove(commandToUndo);
-            commandToUndo.Undo();
+            if (oldCommands.Count > 0)
+            {
+                Command commandToUndo = oldCommands.GetLast();
+                oldCommands.Remove(commandToUndo);
+                commandToUndo.Undo();
+            }
+            else
+                Debug.Log("No commands to Undo");
         }
-        else
-            Debug.Log("No commands to Undo");
-    }
 
-    public void ClearCommandList()
-    {
-        Debug.Log("Hidden information revealed - Clearing command list");
-        oldCommands.Clear();
+        public void ClearCommandList()
+        {
+            Debug.Log("Hidden information revealed - Clearing command list");
+            oldCommands.Clear();
+        }
     }
 }

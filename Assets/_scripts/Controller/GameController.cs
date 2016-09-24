@@ -7,6 +7,7 @@ using View;
 using Other.Data;
 using Other.Utility;
 using Other.Factory;
+using Commands;
 using Prototype.NetworkLobby;
 
 public class GameController : NetworkBehaviour
@@ -23,6 +24,10 @@ public class GameController : NetworkBehaviour
             else
                 return ScenarioDatabase.GetScriptableObject("Full Conquest");
         } }
+
+    #region Model variables
+    public GameConstants.TerrainCosts movementCosts;
+    #endregion
 
     #region Syncvars
     [SyncVar]

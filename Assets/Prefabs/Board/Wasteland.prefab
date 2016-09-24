@@ -15,6 +15,7 @@ GameObject:
   - 114: {fileID: 114000011586834942}
   - 114: {fileID: 114000013357303670}
   - 114: {fileID: 114000013487657372}
+  - 114: {fileID: 114000010964561112}
   m_Layer: 8
   m_Name: Wasteland
   m_TagString: Untagged
@@ -126,6 +127,17 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 115056}
   m_IsPrefabParent: 1
+--- !u!114 &114000010964561112
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 115056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47d133a55aa4846489fa56ef08ab66f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114000011586834942
 MonoBehaviour:
   m_ObjectHideFlags: 1

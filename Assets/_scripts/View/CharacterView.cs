@@ -18,5 +18,10 @@ namespace View
             Color c = characterRenderer.material.color;
             characterRenderer.material.color = new Color(c.r, c.g, c.b, alpha);
         }
+
+        public void MoveToTile(GameObject newTile)
+        {
+            gameObject.transform.position = newTile.transform.position;
+        }
 	}
 }

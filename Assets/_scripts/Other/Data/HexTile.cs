@@ -9,45 +9,8 @@ namespace Other.Data
     [System.Serializable]
     public class HexTile : ScriptableObject
     {
-        public enum Type
-        {
-            Plains,
-            Hill,
-            Forest,
-            Wasteland,
-            Desert,
-            Swamp,
-            Lake,
-            Mountain,
-            City,
-            Sea
-        }
-
-        public enum FeatureType
-        {
-            Portal,
-            RampagingOrc,
-            RampagingDraconum,
-            Keep,
-            MageTower,
-            City,
-            Village,
-            MagicalGlade,
-            RedMine,
-            BlueMine,
-            WhiteMine,
-            GreenMine,
-            Monastery,
-            MonsterDen,
-            Dungeon,
-            SpawningGround,
-            Tomb,
-            Ruins,
-            Empty
-        }
-
-        public Type[] hexes = new Type[7];
-        public FeatureType[] features = new FeatureType[7];
+        public GameConstants.TerrainType[] hexes = new GameConstants.TerrainType[7];
+        public GameConstants.FeatureType[] features = new GameConstants.FeatureType[7];
 
         public HexVector[] localCoordinates {
             get {

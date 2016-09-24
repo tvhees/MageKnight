@@ -31,6 +31,9 @@ public class PlayerControl : NetworkBehaviour
     public CharacterView characterView;
     public NetworkIdentity networkIdentity;
 
+    [SyncVar(hook = "OnTileIdChanged")]
+    public NetworkInstanceId currentTileId;
+
     #region Initialisation
     public override void OnStartClient()
     {
@@ -78,6 +81,21 @@ public class PlayerControl : NetworkBehaviour
         turnOrderDisplay.Select(true);
         CmdSetPlayerId(playerId);
         CmdAddToPlayerList();
+    }
+    #endregion
+
+    #region Server methods
+    [Server]
+    public void ServerAddMovement(int movement)
+    {
+        model.movement += movement;
+    }
+
+    [Server]
+    public void ServerSetTile(GameObject newTile)
+    {
+        model.currentTile = newTile;
+        currentTileId = newTile.GetComponent<NetworkIdentity>().netId;
     }
     #endregion
 
@@ -135,6 +153,42 @@ public class PlayerControl : NetworkBehaviour
 
         characterView.SetMaterialAlpha(alpha);
     }
+
+    [Client]
+    bool HasTurnOrderDisplay()
+    {
+        // On initial load the GameController object won't be active in a build when this hook is called
+        if (GameController.singleton == null)
+            return false;
+
+        if (turnOrderDisplay == null)
+        {
+            turnOrderDisplay = GameController.singleton.sharedView.GetTurnOrderDisplay(playerId);
+            turnOrderDisplay.AssignToPlayer(this);
+        }
+
+        return true;
+    }
+
+    [Client]
+    public void Show()
+    {
+        playerCamera.enabled = true;
+        view.Show();
+    }
+
+    [Client]
+    public void Hide()
+    {
+        playerCamera.enabled = false;
+        view.Hide();
+    }
+
+    [ClientRpc]
+    public void RpcMoveToIndexInTurnOrder(int index)
+    {
+        turnOrderDisplay.transform.SetSiblingIndex(index);
+    }
     #endregion
 
     #region Hook methods
@@ -175,39 +229,11 @@ public class PlayerControl : NetworkBehaviour
     }
 
     [Client]
-    bool HasTurnOrderDisplay()
+    void OnTileIdChanged(NetworkInstanceId tileId)
     {
-        // On initial load the GameController object won't be active in a build when this hook is called
-        if (GameController.singleton == null)
-            return false;
-
-        if (turnOrderDisplay == null)
-        {
-            turnOrderDisplay = GameController.singleton.sharedView.GetTurnOrderDisplay(playerId);
-            turnOrderDisplay.AssignToPlayer(this);
-        }
-
-        return true;
-    }
-
-    [Client]
-    public void Show()
-    {
-        playerCamera.enabled = true;
-        view.Show();
-    }
-
-    [Client]
-    public void Hide()
-    {
-        playerCamera.enabled = false;
-        view.Hide();
-    }
-
-    [ClientRpc]
-    public void RpcMoveToIndexInTurnOrder(int index)
-    {
-        turnOrderDisplay.transform.SetSiblingIndex(index);
+        currentTileId = tileId;
+        model.currentTile = ClientScene.FindLocalObject(tileId);
+        characterView.MoveToTile(model.currentTile);
     }
     #endregion
 
@@ -237,6 +263,19 @@ public class PlayerControl : NetworkBehaviour
     public void AssignChosenTactic(Cards cards, Card tactic)
     {
         view.RpcOnTacticChosen(cards.GetTacticId(tactic.number));
+    }
+    #endregion
+
+    #region Movement
+    public bool CanMoveToTile(GameObject newTile)
+    {
+        return Vector3.SqrMagnitude(model.currentTile.transform.position - newTile.transform.position) < GameConstants.tileDistance;
+    }
+
+    public void ServerMoveToTile(GameObject newTile)
+    {
+        currentTileId = newTile.GetComponent<NetworkIdentity>().netId;
+        model.currentTile = newTile;
     }
     #endregion
 }
