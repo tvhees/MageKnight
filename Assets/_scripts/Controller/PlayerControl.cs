@@ -19,6 +19,8 @@ public class PlayerControl : NetworkBehaviour
     public string characterName;
     [SyncVar(hook = "OnColourChanged")]
     public Color colour;
+    [SyncVar]
+    public HexId currentHex;
 
     public bool isYourTurn { get { return GameController.singleton.currentPlayer == this; } }
 
@@ -30,9 +32,6 @@ public class PlayerControl : NetworkBehaviour
     public TurnOrderDisplay turnOrderDisplay;
     public CharacterView characterView;
     public NetworkIdentity networkIdentity;
-
-    [SyncVar(hook = "OnTileIdChanged")]
-    public NetworkInstanceId currentTileId;
 
     #region Initialisation
     public override void OnStartClient()
@@ -92,10 +91,9 @@ public class PlayerControl : NetworkBehaviour
     }
 
     [Server]
-    public void ServerSetTile(GameObject newTile)
+    public void ServerSetHex(HexId newHex)
     {
-        model.currentTile = newTile;
-        currentTileId = newTile.GetComponent<NetworkIdentity>().netId;
+        currentHex = newHex;
     }
     #endregion
 
@@ -227,14 +225,6 @@ public class PlayerControl : NetworkBehaviour
         if (HasTurnOrderDisplay())
             turnOrderDisplay.SetPlayerColour(colour);
     }
-
-    [Client]
-    void OnTileIdChanged(NetworkInstanceId tileId)
-    {
-        currentTileId = tileId;
-        model.currentTile = ClientScene.FindLocalObject(tileId);
-        characterView.MoveToTile(model.currentTile);
-    }
     #endregion
 
     #region Card Management
@@ -267,15 +257,24 @@ public class PlayerControl : NetworkBehaviour
     #endregion
 
     #region Movement
-    public bool CanMoveToTile(GameObject newTile)
+    public bool CanMoveToHex(HexId newHex)
     {
-        return Vector3.SqrMagnitude(model.currentTile.transform.position - newTile.transform.position) < GameConstants.tileDistance;
+        if(Vector3.SqrMagnitude(currentHex.position - newHex.position) > GameConstants.tileDistance)
+            return false;
+
+        if (!newHex.isTraversable)
+            return false;
+
+        if (model.movement < newHex.movementCost)
+            return false;
+
+        return true;
     }
 
-    public void ServerMoveToTile(GameObject newTile)
+    public void ServerMoveToHex(HexId newHex)
     {
-        currentTileId = newTile.GetComponent<NetworkIdentity>().netId;
-        model.currentTile = newTile;
+        currentHex = newHex;
+        characterView.MoveToTile(newHex);
     }
     #endregion
 }

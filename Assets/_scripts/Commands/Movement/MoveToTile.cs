@@ -8,17 +8,17 @@ namespace Commands
     public class MoveToTile : Command
     {
         private PlayerControl player;
-        private GameObject oldTile;
-        private GameObject newTile;
+        private HexId oldHex;
+        private HexId newHex;
         private int cost;
 
-        public MoveToTile(GameObject newTile)
+        public MoveToTile(HexId newHex)
         {
             StateController stateController = GameController.singleton.stateController;
             player = GameController.singleton.currentPlayer;
-            oldTile = player.model.currentTile;
-            this.newTile = newTile;
-            cost = newTile.GetComponent<Hex>().movementCost;
+            oldHex = player.currentHex;
+            this.newHex = newHex;
+            cost = newHex.movementCost;
 
             if (stateController.gameState != stateController.movement)
                 requirements.Add(new ChangeTurnState(stateController.movement));
@@ -26,9 +26,9 @@ namespace Commands
 
         protected override CommandResult ExecuteThisCommand()
         {
-            if (player.CanMoveToTile(newTile))
+            if (player.CanMoveToHex(newHex))
             {
-                player.ServerMoveToTile(newTile);
+                player.ServerMoveToHex(newHex);
                 player.ServerAddMovement(-cost);
 
                 return CommandResult.success;
@@ -39,7 +39,7 @@ namespace Commands
 
         protected override void UndoThisCommand()
         {
-            player.ServerMoveToTile(oldTile);
+            player.ServerMoveToHex(oldHex);
             player.ServerAddMovement(cost);
         }
     }

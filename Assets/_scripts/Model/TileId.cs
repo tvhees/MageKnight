@@ -13,4 +13,11 @@ public struct TileId
         this.hexes = hexes;
         this.position = position;
     }
+
+    public void SetTilePosition(Vector3 position)
+    {
+        this.position = position;
+        foreach (var hex in hexes)
+            hex.SetNewPosition(position);
+    }
 }

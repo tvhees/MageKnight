@@ -92,7 +92,7 @@ public class Board
             return;
 
         TileId tile = tilesInStack.GetFirst(remove: true);
-        tile.position = position;
+        tile.SetTilePosition(position);
         tilesInPlay.Add(tile);
     }
 }

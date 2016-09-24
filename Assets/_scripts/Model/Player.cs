@@ -10,8 +10,6 @@ public class Player
     public List<CardId> discard;
     public List<CardId> units;
 
-    public GameObject currentTile;
-
     public int movement;
 
     public Player(Character character, Cards cards)

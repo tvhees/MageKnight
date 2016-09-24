@@ -22,16 +22,7 @@ public class BoardView : NetworkBehaviour
         {
             GameObject hex = hexFactory.CreateSceneObject(hexId);
             hex.transform.SetParent(tile.transform);
-            hex.transform.localPosition = hexId.localPosition;
+            hex.transform.position = hexId.position;
         }
-    }
-
-    [Server]
-    public void ServerPlaceNewTile()
-    {
-        GameObject tile = tileStack.transform.GetChild(0).gameObject;
-        tile.transform.ServerSetParent(transform);
-        tile.transform.ServerSetLocalPosition(tilePositions[0].worldVector);
-        tilePositions.RemoveAt(0);
     }
 }
