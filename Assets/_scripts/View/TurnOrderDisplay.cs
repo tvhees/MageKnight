@@ -39,12 +39,12 @@ public class TurnOrderDisplay : MonoBehaviour {
 
         if (isOn)
         {
-            playerControl.Show();
+            playerControl.ShowUi();
             button.interactable = false;
         }
         else
         {
-            playerControl.Hide();
+            playerControl.HideUi();
             button.interactable = true;
         }
     }

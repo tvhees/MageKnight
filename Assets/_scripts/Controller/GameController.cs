@@ -229,5 +229,10 @@ public class GameController : NetworkBehaviour
     {
         localPlayer.CmdEndTurn();
     }
+
+    public void UiPlayEffect()
+    {
+        localPlayer.CmdPlayEffect();
+    }
 #endregion
 }

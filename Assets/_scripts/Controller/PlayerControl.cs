@@ -137,9 +137,15 @@ public class PlayerControl : NetworkBehaviour
         if(isYourTurn)
             GameController.singleton.ServerNextPlayer();
     }
+
+    [Command]
+    public void CmdPlayEffect()
+    {
+
+    }
     #endregion
 
-    #region Client methods
+    #region Turn order and UI view
     [ClientRpc]
     public void RpcYourTurn(bool becameYourTurn)
     {
@@ -169,14 +175,14 @@ public class PlayerControl : NetworkBehaviour
     }
 
     [Client]
-    public void Show()
+    public void ShowUi()
     {
         playerCamera.enabled = true;
         view.Show();
     }
 
     [Client]
-    public void Hide()
+    public void HideUi()
     {
         playerCamera.enabled = false;
         view.Hide();

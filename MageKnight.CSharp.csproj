@@ -98,7 +98,6 @@
     <Compile Include="Assets\_scripts\Model\Board.cs" />
     <Compile Include="Assets\_scripts\Model\CardId.cs" />
     <Compile Include="Assets\_scripts\Model\Cards.cs" />
-    <Compile Include="Assets\_scripts\Model\Hex.cs" />
     <Compile Include="Assets\_scripts\Model\HexId.cs" />
     <Compile Include="Assets\_scripts\Model\Player.cs" />
     <Compile Include="Assets\_scripts\Model\TileId.cs" />
