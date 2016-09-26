@@ -154,7 +154,7 @@ public class GameController : NetworkBehaviour
         // If we haven't specified a seed its value will be 0 and we should create a new one
         if (randomSeed == 0)
             randomSeed = System.Environment.TickCount;
-        Random.seed = randomSeed;
+        Random.InitState(randomSeed);
         board = new Board(scenario, numberOfPlayers, boardView);
         cards = new Cards(scenario, players.ToArray());
     }
