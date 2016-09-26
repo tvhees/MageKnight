@@ -75,6 +75,7 @@
     <Compile Include="Assets\Lobby\Scripts\Lobby\LobbyServerEntry.cs" />
     <Compile Include="Assets\Lobby\Scripts\Lobby\LobbyServerList.cs" />
     <Compile Include="Assets\Lobby\Scripts\Lobby\LobbyTopPanel.cs" />
+    <Compile Include="Assets\Lobby\Scripts\Lobby\PlayerNumberHook.cs" />
     <Compile Include="Assets\_scripts\Clickable.cs" />
     <Compile Include="Assets\_scripts\Commands\ChangeTurnState.cs" />
     <Compile Include="Assets\_scripts\Commands\Command.cs" />
