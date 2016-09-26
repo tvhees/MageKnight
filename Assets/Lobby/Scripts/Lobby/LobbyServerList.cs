@@ -34,10 +34,9 @@ namespace Prototype.NetworkLobby
             RequestPage(0);
         }
 
-        /*
-		public void OnGUIMatchList(ListMatchResponse matchResponse)
+		public void OnGUIMatchList(bool success, string extendedInfo, List<MatchInfoSnapshot> matches)
 		{
-			if (matchResponse.matches.Count == 0)
+			if (matches.Count == 0)
 			{
                 if (currentPage == 0)
                 {
@@ -48,22 +47,20 @@ namespace Prototype.NetworkLobby
                
                 return;
             }
-            
 
             noServerFound.SetActive(false);
             foreach (Transform t in serverListRect)
                 Destroy(t.gameObject);
 
-			for (int i = 0; i < matchResponse.matches.Count; ++i)
+			for (int i = 0; i < matches.Count; ++i)
 			{
                 GameObject o = Instantiate(serverEntryPrefab) as GameObject;
 
-				o.GetComponent<LobbyServerEntry>().Populate(matchResponse.matches[i], lobbyManager, (i % 2 == 0) ? OddServerColor : EvenServerColor);
+				o.GetComponent<LobbyServerEntry>().Populate(matches[i], lobbyManager, (i % 2 == 0) ? OddServerColor : EvenServerColor);
 
 				o.transform.SetParent(serverListRect, false);
             }
         }
-        */
 
         public void ChangePage(int dir)
         {
@@ -80,7 +77,7 @@ namespace Prototype.NetworkLobby
         {
             previousPage = currentPage;
             currentPage = page;
-			//lobbyManager.matchMaker.ListMatches(page, 6, "", OnGUIMatchList);
+			lobbyManager.matchMaker.ListMatches(page, 6, "", true, 0, 0, OnGUIMatchList);
 		}
     }
 }

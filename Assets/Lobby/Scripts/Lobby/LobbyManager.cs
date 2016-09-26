@@ -185,7 +185,7 @@ namespace Prototype.NetworkLobby
         {
             if (_isMatchmaking)
             {
-				//matchMaker.DestroyMatch((NetworkID)_currentMatchID, OnDestroyMatch);
+				matchMaker.DestroyMatch((NetworkID)_currentMatchID, 0, OnDestroyMatch);
 				_disconnectServer = true;
             }
             else
@@ -241,23 +241,21 @@ namespace Prototype.NetworkLobby
             SetServerInfo("Hosting", networkAddress);
         }
 
-        /*
-        public override void OnMatchCreate(CreateMatchResponse matchInfo)
-        {
-            base.OnMatchCreate(matchInfo);
-            _currentMatchID = (System.UInt64)matchInfo.networkId;
-        }
-        
-
-		public void OnDestroyMatch(BasicResponse response)
+		public override void OnMatchCreate(bool success, string extendedInfo, MatchInfo matchInfo)
 		{
+			base.OnMatchCreate(success, extendedInfo, matchInfo);
+            _currentMatchID = (System.UInt64)matchInfo.networkId;
+		}
+
+		public override void OnDestroyMatch(bool success, string extendedInfo)
+		{
+			base.OnDestroyMatch(success, extendedInfo);
 			if (_disconnectServer)
             {
                 StopMatchMaker();
                 StopHost();
             }
         }
-        */
 
         //allow to handle the (+) button to add/remove player
         public void OnPlayersNumberModified(int count)

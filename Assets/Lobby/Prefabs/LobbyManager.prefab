@@ -3248,7 +3248,7 @@ MonoBehaviour:
   m_LobbyScene: Lobby
   m_PlayScene: PlayScene
   lobbySlots: []
-  prematchCountdown: 3
+  prematchCountdown: 0
   topPanel: {fileID: 11424994}
   mainMenuPanel: {fileID: 22442386}
   lobbyPanel: {fileID: 22443498}

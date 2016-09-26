@@ -54,7 +54,6 @@ namespace Prototype.NetworkLobby
             lobbyManager.SetServerInfo("Dedicated Server", lobbyManager.networkAddress);
         }
 
-        /*
         public void OnClickCreateMatchmakingGame()
         {
             lobbyManager.StartMatchMaker();
@@ -62,7 +61,7 @@ namespace Prototype.NetworkLobby
                 matchNameInput.text,
                 (uint)lobbyManager.maxPlayers,
                 true,
-				"",
+				"", "", "", 0, 0,
 				lobbyManager.OnMatchCreate);
 
             lobbyManager.backDelegate = lobbyManager.StopHost;
@@ -71,7 +70,6 @@ namespace Prototype.NetworkLobby
 
             lobbyManager.SetServerInfo("Matchmaker Host", lobbyManager.matchHost);
         }
-        */
 
         public void OnClickOpenServerList()
         {
@@ -88,12 +86,11 @@ namespace Prototype.NetworkLobby
             }
         }
 
-
         void onEndEditGameName(string text)
         {
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                //OnClickCreateMatchmakingGame();
+                OnClickCreateMatchmakingGame();
             }
         }
 
