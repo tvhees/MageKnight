@@ -604,7 +604,6 @@ GameObject:
   - 114: {fileID: 11466428}
   - 114: {fileID: 11475086}
   - 114: {fileID: 11415508}
-  - 114: {fileID: 11472314}
   m_Layer: 5
   m_Name: LobbyManager
   m_TagString: Untagged
@@ -1157,7 +1156,7 @@ MonoBehaviour:
     m_Alignment: 6
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 1
+    m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 0
   m_Text: NETWORK LOBBY EXAMPLE
@@ -1886,7 +1885,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0.5
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -3059,17 +3058,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &11472314
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 155310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ccffd9af21c2ae145b1862c0b79b7722, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &11474082
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3204,38 +3192,10 @@ MonoBehaviour:
   m_LogLevel: 2
   m_PlayerPrefab: {fileID: 0}
   m_AutoCreatePlayer: 1
-  m_PlayerSpawnMethod: 1
+  m_PlayerSpawnMethod: 0
   m_OfflineScene: Lobby
   m_OnlineScene: 
-  m_SpawnPrefabs:
-  - {fileID: 165744, guid: f66bd338ad488fb4d830713c063cb211, type: 2}
-  - {fileID: 171376, guid: d439139617e80074492b0996b9b1d409, type: 2}
-  - {fileID: 153546, guid: 149970654d43a3d4384867d568ff2d67, type: 2}
-  - {fileID: 165970, guid: 1a580e54d383955418bf8a317e8adca3, type: 2}
-  - {fileID: 115056, guid: 20ea7bf897f220040b7b5d00b527233f, type: 2}
-  - {fileID: 124216, guid: b44b00805aaba37428d0ea291bd00c52, type: 2}
-  - {fileID: 186176, guid: fc89a60e00678214c894029cc8d71244, type: 2}
-  - {fileID: 171376, guid: f5d173e8d8b49d64c87225c3cfe46cb4, type: 2}
-  - {fileID: 104140, guid: 1d9a0725f6d51c346b4b801c86c510da, type: 2}
-  - {fileID: 160576, guid: 6369b02a58f12684895996509cb3cc5d, type: 2}
-  - {fileID: 160576, guid: e066b6c4dc9391247a40c047bc08f127, type: 2}
-  - {fileID: 113510, guid: 2b911eafeb8375e439ad2cd60d9018de, type: 2}
-  - {fileID: 170028, guid: e07200ba5dab93e4095eb1a54c524d74, type: 2}
-  - {fileID: 141978, guid: 9bb760ac544d00748a3c212c8b6eb8c7, type: 2}
-  - {fileID: 113510, guid: d6ee88ed18a0dbc43872dd3e1d1ba0d4, type: 2}
-  - {fileID: 135834, guid: a8630a27c457f5c40a69afcc9b039458, type: 2}
-  - {fileID: 153638, guid: f1c34e2bf862f7742a4e99039634488a, type: 2}
-  - {fileID: 133678, guid: 4d4205ed7ad1d154c971c6fbf690de8d, type: 2}
-  - {fileID: 140022, guid: 91f4b4764ee36f44f8c3dc0c1f151284, type: 2}
-  - {fileID: 121444, guid: 5f64f01c6b81c1b4eb2e2e696be65ac2, type: 2}
-  - {fileID: 122054, guid: 38b0b3e67f18ece4ba4e7e69b2eeca89, type: 2}
-  - {fileID: 135054, guid: ccea5204b3f72d045a0e883df2cf63e4, type: 2}
-  - {fileID: 133678, guid: 5382792655cc3b5469a211f8b4467456, type: 2}
-  - {fileID: 133678, guid: c74df66d56519bf4e9f4faa3503b21f3, type: 2}
-  - {fileID: 133678, guid: 938ab5abb12341a439d7ad7eb2c061ca, type: 2}
-  - {fileID: 1000010668186566, guid: 32a1acd862df2c044a1f7db360434994, type: 2}
-  - {fileID: 1000011373973676, guid: a370d3ec2395a98459536392b02ddfaf, type: 2}
-  - {fileID: 1000011442759860, guid: f17c767576d427a4db2257ca07a23047, type: 2}
+  m_SpawnPrefabs: []
   m_CustomConfig: 0
   m_MaxConnections: 4
   m_ConnectionConfig:
@@ -3288,7 +3248,7 @@ MonoBehaviour:
   m_LobbyScene: Lobby
   m_PlayScene: PlayScene
   lobbySlots: []
-  prematchCountdown: 1
+  prematchCountdown: 3
   topPanel: {fileID: 11424994}
   mainMenuPanel: {fileID: 22442386}
   lobbyPanel: {fileID: 22443498}
@@ -4563,8 +4523,8 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 113, y: -40}
-  m_SizeDelta: {x: 840.5, y: 39}
+  m_AnchoredPosition: {x: 113, y: -0.00005340576}
+  m_SizeDelta: {x: -113, y: 91}
   m_Pivot: {x: 0, y: 1}
 --- !u!224 &22409996
 RectTransform:

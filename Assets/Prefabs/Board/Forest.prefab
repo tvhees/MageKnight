@@ -12,7 +12,6 @@ GameObject:
   - 23: {fileID: 2356048}
   - 64: {fileID: 6419290}
   - 114: {fileID: 11453004}
-  - 114: {fileID: 114000010605035174}
   - 114: {fileID: 114000012155776186}
   - 114: {fileID: 114000011866763564}
   - 114: {fileID: 114000011162123990}
@@ -127,19 +126,6 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 165970}
   m_IsPrefabParent: 1
---- !u!114 &114000010605035174
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 165970}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 956844c2ccd401146958d58f604118ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  localScale: {x: 1, y: 1, z: 1}
-  localPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &114000011162123990
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -148,7 +134,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 165970}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47d133a55aa4846489fa56ef08ab66f5, type: 3}
+  m_Script: {fileID: 11500000, guid: 8b2bd15d0d82ae04f80dfb88cc5bc5bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114000011866763564

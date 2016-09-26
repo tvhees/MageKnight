@@ -12,7 +12,6 @@ GameObject:
   - 23: {fileID: 2336940}
   - 64: {fileID: 6430100}
   - 114: {fileID: 11456906}
-  - 114: {fileID: 114000012724889060}
   - 114: {fileID: 114000012486484370}
   - 114: {fileID: 114000011010428182}
   - 114: {fileID: 114000012058802614}
@@ -146,7 +145,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 124216}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47d133a55aa4846489fa56ef08ab66f5, type: 3}
+  m_Script: {fileID: 11500000, guid: 8b2bd15d0d82ae04f80dfb88cc5bc5bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &114000012486484370
@@ -161,16 +160,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   descriptionData: {fileID: 11400000, guid: 2e78133208cfc5e46ba4710bce391285, type: 2}
---- !u!114 &114000012724889060
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 124216}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 956844c2ccd401146958d58f604118ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  localScale: {x: 1, y: 1, z: 1}
-  localPosition: {x: 0, y: 0, z: 0}
