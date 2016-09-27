@@ -82,7 +82,7 @@
     <Compile Include="Assets\_scripts\Commands\CommandResult.cs" />
     <Compile Include="Assets\_scripts\Commands\CommandStack.cs" />
     <Compile Include="Assets\_scripts\Commands\Movement\AddMovementToPlayer.cs" />
-    <Compile Include="Assets\_scripts\Commands\Movement\MoveToTile.cs" />
+    <Compile Include="Assets\_scripts\Commands\Movement\MoveToHex.cs" />
     <Compile Include="Assets\_scripts\Common\DisplayableFeature.cs" />
     <Compile Include="Assets\_scripts\Common\ExtensionMethods.cs" />
     <Compile Include="Assets\_scripts\Common\GameConstants.cs" />
@@ -106,6 +106,7 @@
     <Compile Include="Assets\_scripts\Other\Data\Card.cs" />
     <Compile Include="Assets\_scripts\Other\Data\Character.cs" />
     <Compile Include="Assets\_scripts\Other\Data\Deck.cs" />
+    <Compile Include="Assets\_scripts\Other\Data\Effect.cs" />
     <Compile Include="Assets\_scripts\Other\Data\HexTile.cs" />
     <Compile Include="Assets\_scripts\Other\Data\MapShape.cs" />
     <Compile Include="Assets\_scripts\Other\Data\ObjectDescription.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="Assets\_scripts\Other\Utility\AwakeBehaviour.cs" />
     <Compile Include="Assets\_scripts\Other\Utility\CardDatabase.cs" />
     <Compile Include="Assets\_scripts\Other\Utility\CharacterDatabase.cs" />
+    <Compile Include="Assets\_scripts\Other\Utility\CommandDatabase.cs" />
     <Compile Include="Assets\_scripts\Other\Utility\DeckDatabase.cs" />
     <Compile Include="Assets\_scripts\Other\Utility\HexVector.cs" />
     <Compile Include="Assets\_scripts\Other\Utility\MapShapeDatabase.cs" />
@@ -136,6 +138,7 @@
     <Compile Include="Assets\_scripts\View\Moveable.cs" />
     <Compile Include="Assets\_scripts\View\PlayerView.cs" />
     <Compile Include="Assets\_scripts\View\SharedView.cs" />
+    <Compile Include="Assets\_scripts\View\StatusDisplay.cs" />
     <Compile Include="Assets\_scripts\View\ToolTip.cs" />
     <Compile Include="Assets\_scripts\View\ToolTipPanel.cs" />
     <Compile Include="Assets\_scripts\View\TurnOrderDisplay.cs" />

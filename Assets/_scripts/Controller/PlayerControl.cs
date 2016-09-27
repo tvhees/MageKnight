@@ -8,6 +8,7 @@ using Other.Factory;
 using View;
 using Other.Data;
 using Other.Utility;
+using Commands;
 
 public class PlayerControl : NetworkBehaviour
 {
@@ -19,7 +20,7 @@ public class PlayerControl : NetworkBehaviour
     public string characterName;
     [SyncVar(hook = "OnColourChanged")]
     public Color colour;
-    [SyncVar]
+    [SyncVar(hook = "OnHexChanged")]
     public HexId currentHex;
 
     public bool isYourTurn { get { return GameController.singleton.currentPlayer == this; } }
@@ -53,6 +54,7 @@ public class PlayerControl : NetworkBehaviour
         OnPlayerIdChanged(playerId);
         OnPlayerNameChanged(playerName);
         OnColourChanged(colour);
+        OnHexChanged(currentHex);
     }
 
     // This fires BEFORE other NetworkIdentity objects are activated in the scene, but only in standalone builds
@@ -84,17 +86,7 @@ public class PlayerControl : NetworkBehaviour
     #endregion
 
     #region Server methods
-    [Server]
-    public void ServerAddMovement(int movement)
-    {
-        model.movement += movement;
-    }
 
-    [Server]
-    public void ServerSetHex(HexId newHex)
-    {
-        currentHex = newHex;
-    }
     #endregion
 
     #region Commands to server
@@ -139,9 +131,18 @@ public class PlayerControl : NetworkBehaviour
     }
 
     [Command]
-    public void CmdPlayEffect()
+    public void CmdPlayEffect(string effectName)
     {
+        Command effect = CommandDatabase.GetScriptableObject(effectName);
+        GameController.singleton.commandStack.RunCommand(effect, this);
+    }
 
+    [Command]
+    public void CmdMoveToHex(HexId newHex)
+    {
+        var moveToHex = ScriptableObject.CreateInstance<MoveToHex>();
+        moveToHex.SetInformation(newHex);
+        GameController.singleton.commandStack.RunCommand(moveToHex, this);
     }
     #endregion
 
@@ -263,24 +264,40 @@ public class PlayerControl : NetworkBehaviour
     #endregion
 
     #region Movement
+    [Server]
+    public void ServerAddMovement(int movement)
+    {
+        model.movement += movement;
+        view.RpcUpdateMovement(model.movement);
+    }
+
     public bool CanMoveToHex(HexId newHex)
     {
-        if(Vector3.SqrMagnitude(currentHex.position - newHex.position) > GameConstants.tileDistance)
+        if (Vector3.SqrMagnitude(currentHex.position - newHex.position) > GameConstants.sqrTileDistance)
+        {
+            Debug.Log("Too far away");
             return false;
+        }
 
         if (!newHex.isTraversable)
+        {
+            Debug.Log("Impassable terrain");
             return false;
+        }
 
         if (model.movement < newHex.movementCost)
+        {
+            Debug.Log(model.movement + " movement, need " + newHex.movementCost);
             return false;
+        }
 
         return true;
     }
 
-    public void ServerMoveToHex(HexId newHex)
+    public void OnHexChanged(HexId newHex)
     {
         currentHex = newHex;
-        characterView.MoveToTile(newHex);
+        characterView.MoveToHex(newHex);
     }
     #endregion
 }

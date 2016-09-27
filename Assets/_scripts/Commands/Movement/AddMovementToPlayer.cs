@@ -5,16 +5,10 @@ using System;
 
 namespace Commands
 {
+    [CreateAssetMenu(menuName = "Command/Add Movement")]
     public class AddMovementToPlayer : Command
     {
-        PlayerControl player;
-        int movement;
-
-        public AddMovementToPlayer(PlayerControl player, int movement)
-        {
-            this.player = player;
-            this.movement = movement;
-        }
+        public int movement;
 
         protected override CommandResult ExecuteThisCommand()
         {

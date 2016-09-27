@@ -5,8 +5,10 @@ using System.Collections.Generic;
 
 namespace Commands
 {
-    public abstract class Command
+    public abstract class Command : ScriptableObject
     {
+        protected PlayerControl player;
+
         protected List<Command> requirements = new List<Command>();
         protected List<Command> completedRequirements = new List<Command>();
 
@@ -17,8 +19,12 @@ namespace Commands
 
         protected abstract void UndoThisCommand();
 
-        public CommandResult Execute()
+        public CommandResult Execute(PlayerControl player)
         {
+            this.player = player;
+
+            int i = 0;
+
             CommandResult result = ExecuteRequiredCommands();
 
             if (result.succeeded)
@@ -59,7 +65,7 @@ namespace Commands
 
         protected CommandResult ExecuteSubCommand(Command subCommand, List<Command> completedSubCommandList)
         {
-            CommandResult result = subCommand.Execute();
+            CommandResult result = subCommand.Execute(player);
             if (result.succeeded)
                 completedSubCommandList.Add(subCommand);
             return result;

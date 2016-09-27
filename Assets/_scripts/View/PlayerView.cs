@@ -8,13 +8,19 @@ namespace View
 	{
         public NetworkInstanceId ownerId;
         public PlayerControl owner;
+        public Canvas canvas;
 
         public GameObject deck;
         public GameObject hand;
         public GameObject discard;
         public GameObject units;
         public GameObject tactic;
-        public Canvas canvas;
+
+        public StatusDisplay level;
+        public StatusDisplay handSize;
+        public StatusDisplay armour;
+        public StatusDisplay movement;
+        public StatusDisplay influence;
 
         public void Show()
         {
@@ -63,5 +69,13 @@ namespace View
             GameObject card = GameController.singleton.cardFactory.CreateCard(cardId);
             card.GetComponent<CardView>().MoveToNewParent(tactic.transform);
         }
+
+        #region Status Bar Updates
+        [ClientRpc]
+        public void RpcUpdateMovement(int newMovement)
+        {
+            movement.SetNumber(newMovement);
+        }
+        #endregion
     }
 }

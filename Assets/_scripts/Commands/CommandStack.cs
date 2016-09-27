@@ -4,20 +4,20 @@ using System.Collections.Generic;
 
 namespace Commands
 {
-    public class CommandStack : ScriptableObject
+    public class CommandStack : MonoBehaviour
     {
         public List<Command> oldCommands = new List<Command>();
 
-        public CommandResult RunCommand(Command command)
+        public CommandResult RunCommand(Command command, PlayerControl player)
         {
-            CommandResult result = command.Execute();
+            CommandResult result = command.Execute(player);
 
             if (result.succeeded && result.allowUndo)
             {
                 oldCommands.Add(command);
             }
             else if (result.alternative != null)
-                result = RunCommand(result.alternative);
+                result = RunCommand(result.alternative, player);
 
             return result;
         }

@@ -370,7 +370,7 @@ MonoBehaviour:
   toolTip: {fileID: 1887589122}
   connectedClients: 0
   stateController: {fileID: 1667884106}
-  commandStack: {fileID: 0}
+  commandStack: {fileID: 1688202615}
   cardFactory: {fileID: 1054642147}
   sharedView: {fileID: 10177261}
   displayPanel: {fileID: 1551101254}
@@ -738,6 +738,47 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 1836090736}
   m_Script: {fileID: 1392445389, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+--- !u!1 &1688202614
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1688202616}
+  - 114: {fileID: 1688202615}
+  m_Layer: 0
+  m_Name: CommandStack
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1688202615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1688202614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49052ee4b6c4d03448068cf40ae4d813, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oldCommands: []
+--- !u!4 &1688202616
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1688202614}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1080, y: 1030, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
 --- !u!114 &1786047584 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114000010794413172, guid: dcd154eecbc86704aa612b6d1fc6d107,

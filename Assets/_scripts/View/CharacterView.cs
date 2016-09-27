@@ -19,9 +19,9 @@ namespace View
             characterRenderer.material.color = new Color(c.r, c.g, c.b, alpha);
         }
 
-        public void MoveToTile(HexId newTile)
+        public void MoveToHex(HexId targetHex)
         {
-            Vector3 newPosition = newTile.position;
+            Vector3 newPosition = targetHex.position;
             gameObject.transform.position = newPosition;
         }
 	}

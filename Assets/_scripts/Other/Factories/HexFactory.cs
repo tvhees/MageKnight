@@ -12,7 +12,7 @@ namespace Other.Factory
         public GameObject CreateSceneObject(HexId hexId)
         {
             GameObject hex = CreateSceneObject(hexId.terrain, hexId.feature);
-            hex.GetComponent<Hex>().id = hexId;
+            hex.GetComponent<HexInteraction>().id = hexId;
             return hex;
         }
 

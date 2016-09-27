@@ -11,7 +11,7 @@ namespace Commands
         private GameObject oldState;
         private GameObject newState;
 
-        public ChangeTurnState(GameObject newState)
+        public void SetInformation(GameObject newState)
         {
             stateController = GameController.singleton.stateController;
             this.newState = newState;

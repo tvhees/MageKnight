@@ -26,7 +26,8 @@ public class GameController : NetworkBehaviour
         } }
 
     #region Model variables
-    public GameConstants.TerrainCosts movementCosts;
+    public GameConstants.TerrainCosts movementCosts = new GameConstants.TerrainCosts(true);
+    public HexId portalHex;
     #endregion
 
     #region Syncvars
@@ -63,7 +64,7 @@ public class GameController : NetworkBehaviour
     void Awake()
     {
         singleton = this;
-        commandStack = ScriptableObject.CreateInstance<CommandStack>();
+        //commandStack = ScriptableObject.CreateInstance<CommandStack>();
         AddEventListeners();
     }
 
@@ -160,6 +161,15 @@ public class GameController : NetworkBehaviour
     }
 
     [Server]
+    public void ServerSetPlayerPositions()
+    {
+        for (int i = 0; i < players.Count; i++)
+        {
+            players[i].OnHexChanged(portalHex);
+        }
+    }
+
+    [Server]
     public void ServerOnTacticSelected(string name)
     {
         sharedView.RpcDisableButton(name);
@@ -230,9 +240,9 @@ public class GameController : NetworkBehaviour
         localPlayer.CmdEndTurn();
     }
 
-    public void UiPlayEffect()
+    public void UiPlayEffect(string effectName)
     {
-        localPlayer.CmdPlayEffect();
+        localPlayer.CmdPlayEffect(effectName);
     }
 #endregion
 }

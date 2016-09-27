@@ -18,6 +18,7 @@ public class BoardSetup : NetworkBehaviour {
     void OnEnable()
     {
         GameController.singleton.ServerCreateBoardFromRandomSeed();
+        GameController.singleton.ServerSetPlayerPositions();
         stateController.ServerChangeState(stateController.tacticSelect);
     }
 }

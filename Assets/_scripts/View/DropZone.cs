@@ -33,30 +33,28 @@ public class DropZone : MonoBehaviour, IDropHandler
         if (droppedObject == null)
             return;
 
+        Command cost = null;
+        Command acquireCommand = null;
+        switch (target)
         {
-            Command cost = null;
-            Command acquireCommand = null;
-            switch (target)
-            {
-                case Target.Play:
-                    GameController.singleton.UiPlayEffect();
-                    break;
-                case Target.Deck:
-                    //acquireCommand = new AcquireCardToDeck(acquirable, cost);
-                    break;
-                case Target.Discard:
-                    //acquireCommand = new AcquireCardToDiscard(acquirable, cost);
-                    break;
-                case Target.Hand:
-                    //acquireCommand = new AcquireCardToHand(acquirable, cost);
-                    break;
-                case Target.Units:
-                    //acquireCommand = new AcquireUnit(acquirable, cost);
-                    break;
-            }
-
-            //GameController.singleton.commandStack.RunCommand(acquireCommand);
+            case Target.Play:
+                GameController.singleton.UiPlayEffect("MarchWeak");
+                break;
+            case Target.Deck:
+                //acquireCommand = new AcquireCardToDeck(acquirable, cost);
+                break;
+            case Target.Discard:
+                //acquireCommand = new AcquireCardToDiscard(acquirable, cost);
+                break;
+            case Target.Hand:
+                //acquireCommand = new AcquireCardToHand(acquirable, cost);
+                break;
+            case Target.Units:
+                //acquireCommand = new AcquireUnit(acquirable, cost);
+                break;
         }
+
+        //GameController.singleton.commandStack.RunCommand(acquireCommand);
     }
 
     public void PlayEffect()

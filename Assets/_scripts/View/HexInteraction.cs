@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 public class HexInteraction : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
+    public HexId id;
+
     private float holdTimer = 0f;
     private bool pointerDown = false;
 
@@ -35,6 +37,6 @@ public class HexInteraction : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
     public void Clicked()
     {
-        //Main.rules.Interact(new EffectData(gameObjectValue: gameObject));
+        GameController.singleton.localPlayer.CmdMoveToHex(id);
     }
 }

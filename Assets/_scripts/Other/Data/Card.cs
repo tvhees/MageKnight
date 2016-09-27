@@ -33,5 +33,7 @@ namespace Other.Data
         public Colour colour;
 
         public int number;
+
+        public Commands.Command command;
 	}
 }

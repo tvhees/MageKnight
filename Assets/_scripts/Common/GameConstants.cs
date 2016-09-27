@@ -5,7 +5,7 @@ public class GameConstants
 {
     #region Numbers
     public const int hexesPerTile = 7;
-    public const float tileDistance = 2.5f;
+    public const float sqrTileDistance = 4f;
     #endregion
 
     #region Types
