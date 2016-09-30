@@ -17,6 +17,7 @@ public class Cards
 
     public Cards(Scenario scenario, PlayerControl[] players)
     {
+        GameConstants.GenerateCardNumbers();
         CreateCommonDecks(scenario);
         CreatePlayerDecks(players);
     }
@@ -40,7 +41,9 @@ public class Cards
         for (int i = 0; i < deckData.cards.Length; i++)
         {
             for (int j = 0; j <= deckData.extraCopies[i]; j++)
-                deck.Add(new CardId(deckData.cards[i].name));
+            {
+                deck.Add(new CardId(deckData.cards[i].name, GameConstants.cardNumbers.GetLast(remove: true)));
+            }
         }
 
         if(shuffle)

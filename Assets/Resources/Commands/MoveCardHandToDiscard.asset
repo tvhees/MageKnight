@@ -8,7 +8,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1864b6a6dd82e9348ae25576b0fcbd85, type: 3}
-  m_Name: MarchWeak
+  m_Script: {fileID: 11500000, guid: d42da48e155bae344b623fc86b3761af, type: 3}
+  m_Name: MoveCardHandToDiscard
   m_EditorClassIdentifier: 
-  movement: 2
+  requirements: []
+  optionals: []
+  fromCollection: 0
+  toCollection: 2

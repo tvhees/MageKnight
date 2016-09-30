@@ -17,13 +17,18 @@ public class StateController : NetworkBehaviour {
     public GameObject lastState;
 
     [Server]
-    public void ServerChangeState(GameObject newState)
+    public void ServerChangeToState(GameObject newState)
     {
-        ChangeState(newState);
+        ChangeToState(newState);
         stateIndex = gameState.transform.GetSiblingIndex();
     }
 
-    void ChangeState(GameObject newState)
+    public void ServerChangeToState(GameConstants.GameState newState)
+    {
+        ServerChangeToState(transform.GetChild((int)newState).gameObject);
+    }
+
+    void ChangeToState(GameObject newState)
     {
         if (gameState == newState)
             return;
@@ -42,7 +47,7 @@ public class StateController : NetworkBehaviour {
     {
         stateIndex = newIndex;
 
-        ChangeState(transform.GetChild(stateIndex).gameObject);
+        ChangeToState(transform.GetChild(stateIndex).gameObject);
     }
 
     [Server]

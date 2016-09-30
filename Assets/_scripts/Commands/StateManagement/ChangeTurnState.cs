@@ -5,16 +5,17 @@ using System;
 
 namespace Commands
 {
+    [CreateAssetMenu(menuName = "Command/Change Turn State")]
     public class ChangeTurnState : Command
     {
         private StateController stateController;
         private GameObject oldState;
-        private GameObject newState;
+        public GameConstants.GameState newState;
 
-        public void SetInformation(GameObject newState)
+        public override void SetInformation(GameData input)
         {
+            base.SetInformation(input);
             stateController = GameController.singleton.stateController;
-            this.newState = newState;
 
             if (stateController.lastState == null)
                 stateController.lastState = stateController.gameState;
@@ -23,13 +24,13 @@ namespace Commands
 
         protected override CommandResult ExecuteThisCommand()
         {
-            stateController.ServerChangeState(newState);
+            stateController.ServerChangeToState(newState);
             return CommandResult.success;
         }
 
         protected override void UndoThisCommand()
         {
-            stateController.ServerChangeState(oldState);
+            stateController.ServerChangeToState(oldState);
         }
     }
 }

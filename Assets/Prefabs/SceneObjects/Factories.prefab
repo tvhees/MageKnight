@@ -13,7 +13,6 @@ GameObject:
   - 114: {fileID: 11401224}
   - 114: {fileID: 11455106}
   - 114: {fileID: 11433760}
-  - 114: {fileID: 11444468}
   m_Layer: 0
   m_Name: Factories
   m_TagString: Untagged
@@ -71,19 +70,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardBack: {fileID: 21300000, guid: 629f6bb1fd1a53440a4b8069672158cc, type: 3}
   cardPrefab: {fileID: 135054, guid: ccea5204b3f72d045a0e883df2cf63e4, type: 2}
---- !u!114 &11444468
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 163694}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e90b134bac62484ca74bb5b1c03c733, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cardFactory: {fileID: 11433760}
-  holderPrefab: {fileID: 165744, guid: f66bd338ad488fb4d830713c063cb211, type: 2}
 --- !u!114 &11454314
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -9,31 +9,21 @@ namespace Commands
     public class MoveToHex : Command
     {
         private HexId originalHex;
-        private HexId targetHex;
-        private int cost;
 
-        public void SetInformation(HexId targetHex)
+        public override void SetInformation(GameData input)
         {
-            int i = 0;
+            base.SetInformation(input);
             StateController stateController = GameController.singleton.stateController;
-            this.targetHex = targetHex;
-            cost = targetHex.movementCost;
-            
-            if (stateController.gameState != stateController.movement)
-            {
-                var changeState = ScriptableObject.CreateInstance<ChangeTurnState>();
-                changeState.SetInformation(stateController.movement);
-                requirements.Add(changeState);
-            }
         }
 
         protected override CommandResult ExecuteThisCommand()
         {
-            if (player.CanMoveToHex(targetHex))
+            PlayerControl player = gameData.player;
+            if (player.CanMoveToHex(gameData.hexId))
             {
                 originalHex = player.currentHex;
-                player.OnHexChanged(targetHex);
-                player.ServerAddMovement(-cost);
+                player.OnHexChanged(gameData.hexId);
+                player.ServerAddMovement(-gameData.hexId.movementCost);
 
                 return CommandResult.success;
             }
@@ -43,8 +33,8 @@ namespace Commands
 
         protected override void UndoThisCommand()
         {
-            player.OnHexChanged(originalHex);
-            player.ServerAddMovement(cost);
+            gameData.player.OnHexChanged(originalHex);
+            gameData.player.ServerAddMovement(gameData.hexId.movementCost);
         }
     }
 }

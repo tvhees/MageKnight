@@ -14,6 +14,7 @@ namespace View
         public Text currentPhase;
         public Button[] buttons;
         public Color highlightColour;
+        public ManaView[] manaDice;
 
         #region Initialise
         void Awake()
@@ -85,6 +86,21 @@ namespace View
         {
             var display = GetTurnOrderDisplay(playerId);
             display.SetHighlights(highlightColour, currentPlayerIndicator);
+        }
+
+        [ClientRpc]
+        public void RpcEnableDice(int numberOfDice)
+        {
+            for (int i = 0; i < numberOfDice; i++)
+            {
+                manaDice[i].gameObject.SetActive(true);
+            }
+        }
+
+        [ClientRpc]
+        public void RpcSetDiceColour(ManaId id)
+        {
+            manaDice[id.index].SetColour(id.colour);
         }
     }
 }

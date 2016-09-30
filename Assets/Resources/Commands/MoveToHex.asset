@@ -11,3 +11,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cfdae1bbd24bfb4f8bf82063f874ddd, type: 3}
   m_Name: MoveToHex
   m_EditorClassIdentifier: 
+  requirements:
+  - {fileID: 11400000, guid: 80cfe953c926d3d47811d32cae527192, type: 2}
+  optionals: []

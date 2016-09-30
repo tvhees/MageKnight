@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.4.1f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -77,12 +79,14 @@
     <Compile Include="Assets\Lobby\Scripts\Lobby\LobbyTopPanel.cs" />
     <Compile Include="Assets\Lobby\Scripts\Lobby\PlayerNumberHook.cs" />
     <Compile Include="Assets\_scripts\Clickable.cs" />
-    <Compile Include="Assets\_scripts\Commands\ChangeTurnState.cs" />
+    <Compile Include="Assets\_scripts\Commands\CardManagement\MoveCard.cs" />
     <Compile Include="Assets\_scripts\Commands\Command.cs" />
     <Compile Include="Assets\_scripts\Commands\CommandResult.cs" />
     <Compile Include="Assets\_scripts\Commands\CommandStack.cs" />
-    <Compile Include="Assets\_scripts\Commands\Movement\AddMovementToPlayer.cs" />
+    <Compile Include="Assets\_scripts\Commands\GameData.cs" />
+    <Compile Include="Assets\_scripts\Commands\Movement\AddValueToPlayer.cs" />
     <Compile Include="Assets\_scripts\Commands\Movement\MoveToHex.cs" />
+    <Compile Include="Assets\_scripts\Commands\StateManagement\ChangeTurnState.cs" />
     <Compile Include="Assets\_scripts\Common\DisplayableFeature.cs" />
     <Compile Include="Assets\_scripts\Common\ExtensionMethods.cs" />
     <Compile Include="Assets\_scripts\Common\GameConstants.cs" />
@@ -100,6 +104,8 @@
     <Compile Include="Assets\_scripts\Model\Cards.cs" />
     <Compile Include="Assets\_scripts\Model\Hex.cs" />
     <Compile Include="Assets\_scripts\Model\HexId.cs" />
+    <Compile Include="Assets\_scripts\Model\ManaId.cs" />
+    <Compile Include="Assets\_scripts\Model\ManaPool.cs" />
     <Compile Include="Assets\_scripts\Model\Player.cs" />
     <Compile Include="Assets\_scripts\Model\TileId.cs" />
     <Compile Include="Assets\_scripts\Other\BoardSetup.cs" />
@@ -115,7 +121,6 @@
     <Compile Include="Assets\_scripts\Other\EventManager.cs" />
     <Compile Include="Assets\_scripts\Other\Factories\BoardFactory.cs" />
     <Compile Include="Assets\_scripts\Other\Factories\CardFactory.cs" />
-    <Compile Include="Assets\_scripts\Other\Factories\DeckFactory.cs" />
     <Compile Include="Assets\_scripts\Other\Factories\HexFactory.cs" />
     <Compile Include="Assets\_scripts\Other\Factories\TileFactory.cs" />
     <Compile Include="Assets\_scripts\Other\SelectionPhase.cs" />
@@ -135,6 +140,7 @@
     <Compile Include="Assets\_scripts\View\DebugPanel.cs" />
     <Compile Include="Assets\_scripts\View\DropZone.cs" />
     <Compile Include="Assets\_scripts\View\HexInteraction.cs" />
+    <Compile Include="Assets\_scripts\View\ManaView.cs" />
     <Compile Include="Assets\_scripts\View\Moveable.cs" />
     <Compile Include="Assets\_scripts\View\PlayerView.cs" />
     <Compile Include="Assets\_scripts\View\SharedView.cs" />

@@ -8,16 +8,17 @@ namespace Commands
     {
         public List<Command> oldCommands = new List<Command>();
 
-        public CommandResult RunCommand(Command command, PlayerControl player)
+        public CommandResult RunCommand(Command command)
         {
-            CommandResult result = command.Execute(player);
+            CommandResult result = command.Execute();
 
             if (result.succeeded && result.allowUndo)
             {
                 oldCommands.Add(command);
+                GameController.singleton.UiEnableUndo(true);
             }
             else if (result.alternative != null)
-                result = RunCommand(result.alternative, player);
+                result = RunCommand(result.alternative);
 
             return result;
         }
@@ -32,12 +33,16 @@ namespace Commands
             }
             else
                 Debug.Log("No commands to Undo");
+
+            if (oldCommands.Count <= 0)
+                GameController.singleton.UiEnableUndo(false);
         }
 
         public void ClearCommandList()
         {
             Debug.Log("Hidden information revealed - Clearing command list");
             oldCommands.Clear();
+            GameController.singleton.UiEnableUndo(false);
         }
     }
 }

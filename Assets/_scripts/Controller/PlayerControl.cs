@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using UnityEngine.Events;
+using UnityEngine.Assertions;
 using System.Collections;
 using System.Collections.Generic;
 using Other.Factory;
@@ -131,18 +132,32 @@ public class PlayerControl : NetworkBehaviour
     }
 
     [Command]
-    public void CmdPlayEffect(string effectName)
+    public void CmdUndo()
     {
-        Command effect = CommandDatabase.GetScriptableObject(effectName);
-        GameController.singleton.commandStack.RunCommand(effect, this);
+        if (GameController.singleton.currentPlayer == this)
+            GameController.singleton.commandStack.UndoLastCommand();
+    }
+
+    [Command]
+    public void CmdPlayEffect(CardId cardId)
+    {
+        Assert.IsTrue(model.ListContainsCard(cardId, model.hand), "Card played is not in hand on the server");
+
+        Command effect = CardDatabase.GetScriptableObject(cardId.name).command;
+        if (effect == null)
+            return;
+        effect = Instantiate(effect);
+        effect.SetInformation(new GameData(player: this, cardId: cardId));
+        GameController.singleton.commandStack.RunCommand(effect);
     }
 
     [Command]
     public void CmdMoveToHex(HexId newHex)
     {
-        var moveToHex = ScriptableObject.CreateInstance<MoveToHex>();
-        moveToHex.SetInformation(newHex);
-        GameController.singleton.commandStack.RunCommand(moveToHex, this);
+        var moveToHex = Instantiate(CommandDatabase.GetScriptableObject("MoveToHex"));
+            //ScriptableObject.CreateInstance<MoveToHex>();
+        moveToHex.SetInformation(new GameData(player: this, hexId: newHex));
+        GameController.singleton.commandStack.RunCommand(moveToHex);
     }
     #endregion
 
@@ -234,13 +249,42 @@ public class PlayerControl : NetworkBehaviour
     }
     #endregion
 
+    #region Mana
+    [Command]
+    public void CmdAddMana(GameConstants.ManaType manaType)
+    {
+        model.mana[(int)manaType]++;
+    }
+
+    [Command]
+    public void CmdRemoveMana(GameConstants.ManaType manaType)
+    {
+        model.mana[(int)manaType]--;
+    }
+
+    [Command]
+    public void CmdAddCrystal(GameConstants.ManaType manaType)
+    {
+        model.crystals[(int)manaType]++;
+    }
+
+    [Command]
+    public void CmdRemoveCrystal(GameConstants.ManaType manaType)
+    {
+        model.crystals[(int)manaType]--;
+    }
+    #endregion
+
     #region Card Management
     [Server]
     public void CreateModel(Cards cards)
     {
         model = new Player(character, cards);
-        foreach (var cardId in model.deck)
-            view.RpcAddCardToDeck(cardId);
+        for (int i = 0; i < model.deck.Count; i++)
+        {
+            CardId card = model.deck[i];
+            view.RpcAddCardToDeck(card);
+        }
     }
 
     [Server]
@@ -251,9 +295,49 @@ public class PlayerControl : NetworkBehaviour
     }
 
     [Server]
-    public void ServerMoveCardToDeck(GameObject card)
+    public void ServerMoveCard(CardId card, GameConstants.Collection to)
     {
-        card.GetComponent<CardView>().MoveToNewParent(view.deck.transform);
+        switch (to)
+        {
+            case GameConstants.Collection.Hand:
+                ServerMoveCardToHand(card);
+                break;
+            case GameConstants.Collection.Deck:
+                break;
+            case GameConstants.Collection.Discard:
+                ServerMoveCardToDiscard(card);
+                break;
+            case GameConstants.Collection.Units:
+                break;
+        }
+    }
+
+    [Server]
+    public void ServerMoveCardToHand(CardId card)
+    {
+        model.MoveCardToHand(card);
+        view.RpcMoveCardToHand(card);
+    }
+
+    [Server]
+    public void ServerMoveCardToDiscard(CardId card)
+    {
+        model.MoveCardToDiscard(card);
+        view.RpcMoveCardToDiscard(card);
+    }
+
+    [Server]
+    public void ServerMoveCardToDeck(CardId card)
+    {
+        model.MoveCardToDeck(card);
+        view.RpcMoveCardToDeck(card);
+    }
+
+    [Server]
+    public void ServerMoveCardToUnits(CardId card)
+    {
+        model.MoveCardToUnits(card);
+        view.RpcMoveCardToUnits(card);
     }
 
     [Server]
@@ -265,10 +349,17 @@ public class PlayerControl : NetworkBehaviour
 
     #region Movement
     [Server]
-    public void ServerAddMovement(int movement)
+    public void ServerAddMovement(int value)
     {
-        model.movement += movement;
+        model.movement += value;
         view.RpcUpdateMovement(model.movement);
+    }
+
+    [Server]
+    public void ServerAddInfluence(int value)
+    {
+        model.influence += value;
+        view.RpcUpdateInfluence(model.influence);
     }
 
     public bool CanMoveToHex(HexId newHex)
@@ -300,4 +391,13 @@ public class PlayerControl : NetworkBehaviour
         characterView.MoveToHex(newHex);
     }
     #endregion
+
+    void Update()
+    {
+        if (!isLocalPlayer)
+            return;
+
+        if (Input.GetKeyDown(KeyCode.U) || Input.GetKeyDown(KeyCode.Mouse1))
+            CmdUndo();
+    }
 }

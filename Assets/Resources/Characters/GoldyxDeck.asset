@@ -13,4 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cards:
   - {fileID: 11400000, guid: 214121d8a1579a747bf263ee01d7d378, type: 2}
-  extraCopies: 09000000
+  - {fileID: 11400000, guid: 1f993a9a2e5291c42913a718c1d82da6, type: 2}
+  - {fileID: 11400000, guid: 3552a1d89d20df14683e1944ed8b8008, type: 2}
+  - {fileID: 11400000, guid: 01b48aad26694a64c90121aa28560cdc, type: 2}
+  extraCopies: 01000000010000000100000000000000

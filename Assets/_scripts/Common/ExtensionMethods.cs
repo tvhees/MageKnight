@@ -23,7 +23,7 @@ public static class ExtensionMethods
     /// <summary>
     /// Randomises a list
     /// </summary>
-    public static List<T> Shuffle<T>(this List<T> param, bool createCopy = true)
+    public static List<T> Shuffle<T>(this List<T> param)
     {
         for (int i = 0; i < param.Count; i++)
         {

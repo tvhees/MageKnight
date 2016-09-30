@@ -17,6 +17,7 @@ public class GameController : NetworkBehaviour
     public int randomSeed;
     public Board board;
     public Cards cards;
+    public ManaPool mana;
 
     public Scenario scenario { get {
             if (players.Count <= 1)
@@ -97,7 +98,7 @@ public class GameController : NetworkBehaviour
     void ServerOnAllConnected()
     {
         ServerStartGame();
-        stateController.ServerChangeState(stateController.characterSelect);
+        stateController.ServerChangeToState(stateController.characterSelect);
     }
 
     [Server]
@@ -144,7 +145,7 @@ public class GameController : NetworkBehaviour
         nextTurnOrder[players.Count - nextPlayerIndex] = currentPlayer;
 
         if (nextPlayerIndex >= players.Count)
-            stateController.ServerChangeState(stateController.boardSetup);
+            stateController.ServerChangeToState(stateController.boardSetup);
         else
             ServerNextPlayer();
     }
@@ -158,6 +159,9 @@ public class GameController : NetworkBehaviour
         Random.InitState(randomSeed);
         board = new Board(scenario, numberOfPlayers, boardView);
         cards = new Cards(scenario, players.ToArray());
+        mana = new ManaPool(players.Count);
+        sharedView.RpcEnableDice(mana.dice.Length);
+        ServerRollAllDice();
     }
 
     [Server]
@@ -179,7 +183,7 @@ public class GameController : NetworkBehaviour
         currentPlayer.AssignChosenTactic(cards, tactic);
 
         if (nextPlayerIndex >= players.Count)
-            stateController.ServerChangeState(stateController.startOfRound);
+            stateController.ServerChangeToState(stateController.startOfRound);
         else
             ServerNextPlayer();
     }
@@ -222,6 +226,23 @@ public class GameController : NetworkBehaviour
         // Wrap currentPlayerIndex to 0 because Mathf.Repeat doesn't take integers
         nextPlayerIndex++;
     }
+
+    [Server]
+    public void ServerRollAllDice()
+    {
+        for (int i = 0; i < mana.dice.Length; i++)
+        {
+            ServerRollDie(i);
+        }
+    }
+
+    [Server]
+    public void ServerRollDie(int i)
+    {
+        GameConstants.ManaType manaColour = GameConstants.manaColours[Random.Range(0, GameConstants.manaColours.Length)];
+        mana.dice[i] = manaColour;
+        sharedView.RpcSetDiceColour(new ManaId(i, manaColour));
+    }
     #endregion
 
     #region UI methods
@@ -240,9 +261,26 @@ public class GameController : NetworkBehaviour
         localPlayer.CmdEndTurn();
     }
 
-    public void UiPlayEffect(string effectName)
+    public void UiEnableUndo(bool enable)
     {
-        localPlayer.CmdPlayEffect(effectName);
+        currentPlayer.view.RpcEnableUndo(enable);
+    }
+
+    public void UiPlayEffect(CardId cardId)
+    {
+        localPlayer.CmdPlayEffect(cardId);
+    }
+
+    public void UiManaToggled(bool selected, GameConstants.ManaType manaType)
+    {
+        if (selected)
+        {
+            localPlayer.CmdAddMana(manaType);
+        }
+        else
+        {
+            localPlayer.CmdRemoveMana(manaType);
+        }
     }
 #endregion
 }
