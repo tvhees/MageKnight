@@ -13,3 +13,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   colour: 0
+  number: 0
+  command: {fileID: 0}

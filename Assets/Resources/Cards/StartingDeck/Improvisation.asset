@@ -9,7 +9,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 88613879a33c2654e8f117870d633744, type: 3}
-  m_Name: Determination
+  m_Name: Improvisation
   m_EditorClassIdentifier: 
   type: 0
-  colour: 1
+  colour: 3
+  number: 0
+  command: {fileID: 0}
