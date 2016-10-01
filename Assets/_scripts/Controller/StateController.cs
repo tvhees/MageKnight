@@ -43,13 +43,19 @@ public class StateController : NetworkBehaviour {
 
         gameState = newState;
         gameState.SetActive(true);
+
+        EventManager.stateChanged.Invoke(gameState);
     }
 
     [Client]
     public void OnStateIndexChanged(int newIndex)
     {
-        stateIndex = newIndex;
-        EventManager.stateChanged.Invoke(gameStates[newIndex]);
+        if (!isServer)
+        {
+            stateIndex = newIndex;
+
+            ChangeToState(gameStates[newIndex]);
+        }
     }
 
     [Server]
