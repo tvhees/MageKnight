@@ -11,6 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88613879a33c2654e8f117870d633744, type: 3}
   m_Name: Planning
   m_EditorClassIdentifier: 
-  type: 0
+  type: 6
   colour: 4
   number: 3
+  commands: []

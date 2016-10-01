@@ -142,10 +142,11 @@ public class PlayerControl : NetworkBehaviour
     public void CmdPlayEffect(CardId cardId)
     {
         Assert.IsTrue(model.ListContainsCard(cardId, model.hand), "Card played is not in hand on the server");
-
-        Command effect = CardDatabase.GetScriptableObject(cardId.name).command;
+        Card card = CardDatabase.GetScriptableObject(cardId.name);
+        Command effect = card.ChooseEffect(model);
         if (effect == null)
             return;
+
         effect = Instantiate(effect);
         effect.SetInformation(new GameData(player: this, cardId: cardId));
         GameController.singleton.commandStack.RunCommand(effect);

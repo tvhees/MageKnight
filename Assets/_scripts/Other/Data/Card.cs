@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Commands;
 
 namespace Other.Data
 {
@@ -30,10 +31,35 @@ namespace Other.Data
             None
         }
 
-        public Colour colour;
+        public GameConstants.ManaType colour;
 
         public int number;
 
-        public Commands.Command command;
+        public Command[] commands;
+
+        public Command ChooseEffect(Player player)
+        {
+            switch (type)
+            {
+                case Type.Action:
+                    if (player.HasMana(colour))
+                        return commands[1];
+                    else
+                        return commands[0];
+                case Type.Spell:
+                    if (player.HasMana(colour))
+                    {
+                        if (player.HasBlack)
+                            return commands[1];
+                        else
+                            return commands[0];
+                    }
+                    break;
+                case Type.Artifact:
+                    return commands[0];
+            }
+
+            return null;
+        }
 	}
 }

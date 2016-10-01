@@ -17,6 +17,9 @@ public class Player
     public int diceAllowed;
     public int[] mana;
     public int[] crystals;
+
+    public bool HasGold { get { return mana[4] > 0; } }
+    public bool HasBlack { get { return mana[5] > 0; } }
     #endregion
 
     public Player(Character character, Cards cards)
@@ -31,6 +34,14 @@ public class Player
     {
         mana = new int[6] { 0, 0, 0, 0, 0, 0 };
         diceAllowed = 1;
+    }
+
+    public bool HasMana(GameConstants.ManaType colour)
+    {
+        if (colour == GameConstants.ManaType.Black)
+            return HasBlack;
+        else
+            return mana[(int)colour] > 0 || HasGold;
     }
 
     public void DrawCards(int numberToDraw)
