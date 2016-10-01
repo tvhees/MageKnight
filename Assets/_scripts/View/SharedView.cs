@@ -14,6 +14,7 @@ namespace View
         public Text currentPhase;
         public Button[] buttons;
         public Color highlightColour;
+        public DieView[] manaDice;
 
         #region Initialise
         void Awake()
@@ -52,6 +53,11 @@ namespace View
             selectedDisplay.Select(true);
         }
 
+        public void UiDieToggled(DieView dieView)
+        {
+            dieView.UiButtonPressed();
+        }
+
         public void UiEndTurn()
         {
             EventManager.endTurn.Invoke();
@@ -85,6 +91,30 @@ namespace View
         {
             var display = GetTurnOrderDisplay(playerId);
             display.SetHighlights(highlightColour, currentPlayerIndicator);
+        }
+
+        [ClientRpc]
+        public void RpcEnableDice(int numberOfDice)
+        {
+            for (int i = 0; i < numberOfDice; i++)
+            {
+                manaDice[i].gameObject.SetActive(true);
+            }
+        }
+
+        [ClientRpc]
+        public void RpcSetDiceColour(ManaId id)
+        {
+            manaDice[id.index].SetColour(id.colour);
+        }
+
+        public void ToggleDice(bool interactible)
+        {
+            foreach (var die in manaDice)
+            {
+                if (!die.selected)
+                    die.button.interactable = interactible;
+            }
         }
     }
 }

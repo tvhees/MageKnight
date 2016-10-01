@@ -4,15 +4,17 @@ using UnityEngine.EventSystems;
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using Commands;
 
 public class DropZone : MonoBehaviour, IDropHandler
 {
     public enum Target
     {
+        Play,
         Deck,
         Discard,
         Hand,
-        Units
+        Units,
     }
 
     public Target target;
@@ -26,30 +28,42 @@ public class DropZone : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        /*
-        var acquirable = eventData.pointerDrag.GetComponent<Cards.Acquirable>();
+        var droppedObject = eventData.pointerDrag.GetComponent<Moveable>();
 
-        if (acquirable != null)
+        if (droppedObject == null)
+            return;
+
+        Command cost = null;
+        Command acquireCommand = null;
+        switch (target)
         {
-            Command cost = null;
-            Command acquireCommand = null;
-            switch (target)
-            {
-                case Target.Deck:
-                    //acquireCommand = new AcquireCardToDeck(acquirable, cost);
-                    break;
-                case Target.Discard:
-                    //acquireCommand = new AcquireCardToDiscard(acquirable, cost);
-                    break;
-                case Target.Hand:
-                    //acquireCommand = new AcquireCardToHand(acquirable, cost);
-                    break;
-                case Target.Units:
-                    //acquireCommand = new AcquireUnit(acquirable, cost);
-                    break;
-            }
+            case Target.Play:
+                GameController.singleton.UiPlayEffect(droppedObject.startParent.cardId);
+                break;
+            case Target.Deck:
+                //acquireCommand = new AcquireCardToDeck(acquirable, cost);
+                break;
+            case Target.Discard:
+                //acquireCommand = new AcquireCardToDiscard(acquirable, cost);
+                break;
+            case Target.Hand:
+                //acquireCommand = new AcquireCardToHand(acquirable, cost);
+                break;
+            case Target.Units:
+                //acquireCommand = new AcquireUnit(acquirable, cost);
+                break;
+        }
 
-            GameController.singleton.commandStack.RunCommand(acquireCommand);
-        }*/
+        //GameController.singleton.commandStack.RunCommand(acquireCommand);
+    }
+
+    public void PlayEffect()
+    {
+
+    }
+
+    public void AcquireObject()
+    {
+
     }
 }

@@ -13,4 +13,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cards:
   - {fileID: 11400000, guid: 3552a1d89d20df14683e1944ed8b8008, type: 2}
-  extraCopies: 09000000
+  - {fileID: 11400000, guid: 7eca372a186c3c24794004d8c6caee7b, type: 2}
+  - {fileID: 11400000, guid: 8b6a327a3f4705646a0af7a4c1cae6f3, type: 2}
+  - {fileID: 11400000, guid: 214121d8a1579a747bf263ee01d7d378, type: 2}
+  - {fileID: 11400000, guid: 1f993a9a2e5291c42913a718c1d82da6, type: 2}
+  - {fileID: 11400000, guid: 7c5571f099b4cec4d9db9ddf0085cd30, type: 2}
+  - {fileID: 11400000, guid: 01b48aad26694a64c90121aa28560cdc, type: 2}
+  - {fileID: 11400000, guid: 08abb57734e814e45b02b6357729e155, type: 2}
+  - {fileID: 11400000, guid: 45b84202f6c64164b92e48dc547399b1, type: 2}
+  - {fileID: 11400000, guid: 4be944a274573ae4c951061dea617c10, type: 2}
+  - {fileID: 11400000, guid: 1e251117374b4c54290c6d97a76fa3ce, type: 2}
+  - {fileID: 11400000, guid: d57e60e46d0cdf74b959a68c3f304ba6, type: 2}
+  extraCopies: 010000000000000001000000010000000100000000000000000000000000000000000000000000000000000000000000

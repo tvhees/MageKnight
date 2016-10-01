@@ -11,14 +11,16 @@ namespace Other.Factory
 
         public GameObject CreateSceneObject(HexId hexId)
         {
-            return CreateSceneObject(hexId.terrain, hexId.feature);
+            GameObject hex = CreateSceneObject(hexId.terrain, hexId.feature);
+            hex.GetComponent<HexInteraction>().id = hexId;
+            return hex;
         }
 
-        public GameObject CreateSceneObject(HexTile.Type type, HexTile.FeatureType feature)
+        public GameObject CreateSceneObject(GameConstants.TerrainType type, GameConstants.FeatureType feature)
         {
             GameObject hex = Instantiate(hexPrefabs.prefabs[(int)type]);
             hex.name = hex.name.Replace("(Clone)", "");
-            if (feature != HexTile.FeatureType.Empty)
+            if (feature != GameConstants.FeatureType.Empty)
             {
                 var feat = Instantiate(featurePrefabs.prefabs[(int)feature]);
                 feat.transform.SetParent(hex.transform);

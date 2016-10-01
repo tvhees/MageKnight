@@ -9,6 +9,8 @@ namespace View
 {
     public class CardView : NetworkBehaviour
 	{
+        public CardId cardId;
+
         public Sprite cardFront;
         public Sprite cardBack;
 
@@ -19,10 +21,10 @@ namespace View
             cardImage = GetComponentInChildren<Image>();
         }
 
-        public void SetCardImages(string cardName)
+        public void SetCardImages()
         {
-            gameObject.name = cardName;
-            cardFront = GetCardImage(cardName);
+            gameObject.name = cardId.name;
+            cardFront = GetCardImage(cardId.name);
             cardBack = GetCardImage("cardback");
         }
 

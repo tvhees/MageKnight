@@ -13,10 +13,9 @@ namespace Other.Factory
         public GameObject CreateCard(CardId cardId)
         {
             GameObject card = Instantiate(cardPrefab);
-            card.name = cardId.name;
-
             var cardView = card.GetComponent<CardView>();
-            cardView.SetCardImages(card.name);
+            cardView.cardId = cardId;
+            cardView.SetCardImages();
             cardView.Show();
 
             return card;

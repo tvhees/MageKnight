@@ -38,6 +38,7 @@ public class Board
         dataForMapShape = MapShapeDatabase.GetScriptableObject(dataForPlayerCount.shape.ToString());
 
         startTile = new TileId(GetHexIdsFromTile(dataForMapShape.startTile), Vector3.zero);
+        GameController.singleton.portalHex = startTile.hexes[3];
         countrysideTiles.AddRange(CreateTileIds("Countryside", dataForPlayerCount.numberOfCountrysideTiles));
         coreAndCityTiles.AddRange(CreateTileIds("Core", dataForPlayerCount.numberOfCoreNonCityTiles));
         coreAndCityTiles.AddRange(CreateTileIds("City", dataForPlayerCount.numberOfCoreCityTiles));
@@ -92,7 +93,7 @@ public class Board
             return;
 
         TileId tile = tilesInStack.GetFirst(remove: true);
-        tile.position = position;
+        tile.SetTilePosition(position);
         tilesInPlay.Add(tile);
     }
 }

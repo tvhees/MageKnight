@@ -7,22 +7,33 @@ public class StateController : NetworkBehaviour {
     public GameObject characterSelect;
     public GameObject boardSetup;
     public GameObject tacticSelect;
-    public GameObject startOfRound;
+    public GameObject roundSetup;
+    public GameObject turnSetup;
     public GameObject startOfTurn;
     public GameObject movement;
+
+    public GameObject[] gameStates;
 
     [SyncVar(hook = "OnStateIndexChanged")]
     public int stateIndex;
     public GameObject gameState;
+    public GameObject lastState;
 
     [Server]
-    public void ServerChangeState(GameObject newState)
+    public void ServerChangeToState(GameConstants.GameState newState)
     {
-        ChangeState(newState);
-        stateIndex = gameState.transform.GetSiblingIndex();
+        stateIndex = (int)newState;
+        ServerChangeToState(gameStates[(int)newState]);
     }
 
-    void ChangeState(GameObject newState)
+    [Server]
+    public void ServerChangeToState(GameObject newState)
+    {
+        stateIndex = newState.transform.GetSiblingIndex();
+        ChangeToState(newState);
+    }
+
+    void ChangeToState(GameObject newState)
     {
         if (gameState == newState)
             return;
@@ -39,9 +50,12 @@ public class StateController : NetworkBehaviour {
     [Client]
     public void OnStateIndexChanged(int newIndex)
     {
-        stateIndex = newIndex;
+        if (!isServer)
+        {
+            stateIndex = newIndex;
 
-        ChangeState(transform.GetChild(stateIndex).gameObject);
+            ChangeToState(gameStates[newIndex]);
+        }
     }
 
     [Server]
