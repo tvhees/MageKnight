@@ -11,14 +11,14 @@ public class BoardSetup : NetworkBehaviour {
     public GameObject holderPrefab;
 
     public StateController stateController;
-    public BoardFactory boardFactory;
     public BoardView boardView;
 
     [ServerCallback]
     void OnEnable()
     {
+        Debug.Log(gameObject.name);
         GameController.singleton.ServerCreateBoardFromRandomSeed();
         GameController.singleton.ServerSetPlayerPositions();
-        stateController.ServerChangeToState(stateController.tacticSelect);
+        stateController.ServerChangeToState(GameConstants.GameState.RoundSetup);
     }
 }

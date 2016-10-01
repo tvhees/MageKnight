@@ -8,15 +8,11 @@ using Other.Utility;
 
 public class SelectionPhase : NetworkBehaviour {
 
+    // Selection phases are ended by the GameController, so we don't call the next gamestate here
     [ServerCallback]
     void OnEnable()
     {
+        Debug.Log(gameObject.name);
         GameController.singleton.nextTurnOrder = new PlayerControl[6];
-    }
-
-    [ServerCallback]
-    void OnDisable()
-    {
-        GameController.singleton.ServerSetNewTurnOrder();
     }
 }

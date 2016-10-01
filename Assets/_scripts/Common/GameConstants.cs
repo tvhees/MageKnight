@@ -23,7 +23,7 @@ public class GameConstants
 
     #region Types
     public enum GameState
-    { GameLoading, CharacterSelect, BoardSetup, TacticSelect, StartOfRound, StartOfTurn, Movement }
+    { GameLoading, CharacterSelect, BoardSetup, RoundSetup, TacticSelect, TurnSetup, StartOfTurn, Movement }
 
     public enum Collection
     { Hand, Deck, Discard, Units }

@@ -251,6 +251,27 @@ public class PlayerControl : NetworkBehaviour
 
     #region Mana
     [Command]
+    public void CmdDieToggled(bool selected)
+    {
+        if (selected)
+            model.diceAllowed--;
+        else
+            model.diceAllowed++;
+
+        if (model.diceAllowed <= 0)
+            RpcToggleDiceInteractivity(false);
+        else
+            RpcToggleDiceInteractivity(true);
+    }
+
+    [ClientRpc]
+    public void RpcToggleDiceInteractivity(bool interactible)
+    {
+        if(isLocalPlayer)
+            GameController.singleton.sharedView.ToggleDice(interactible);
+    }
+
+    [Command]
     public void CmdAddMana(GameConstants.ManaType manaType)
     {
         model.mana[(int)manaType]++;

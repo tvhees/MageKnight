@@ -2,14 +2,13 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class ManaView : MonoBehaviour {
+public class DieView : MonoBehaviour {
 
     public Image face;
-
+    public Image selectionRing;
+    public Button button;
     public Color[] manaColours = new Color[] { Color.red, Color.blue, Color.white, Color.green, Color.yellow, Color.black };
-
     public GameConstants.ManaType manaType;
-
     public bool selected;
 
     public void SetColour(GameConstants.ManaType manaType)
@@ -22,12 +21,13 @@ public class ManaView : MonoBehaviour {
     {
         selected = !selected;
 
-        UiManaToggled(selected);
+        UiDieToggled(selected);
     }
 
-    public void UiManaToggled(bool selected)
+    public void UiDieToggled(bool selected)
     {
-        GameController.singleton.UiManaToggled(selected, manaType);
+        selectionRing.enabled = selected;
+        GameController.singleton.UiDieToggled(selected, manaType);
     }
 
 }

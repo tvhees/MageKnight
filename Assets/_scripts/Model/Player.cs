@@ -14,6 +14,7 @@ public class Player
     public int influence;
 
     #region Mana
+    public int diceAllowed;
     public int[] mana;
     public int[] crystals;
     #endregion
@@ -24,6 +25,12 @@ public class Player
         hand = new List<CardId>();
         discard = new List<CardId>();
         units = new List<CardId>();
+    }
+
+    public void ResetMana()
+    {
+        mana = new int[6] { 0, 0, 0, 0, 0, 0 };
+        diceAllowed = 1;
     }
 
     public void DrawCards(int numberToDraw)

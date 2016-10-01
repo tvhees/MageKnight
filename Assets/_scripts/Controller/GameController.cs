@@ -91,14 +91,7 @@ public class GameController : NetworkBehaviour
         while (players.Count < expectedPlayers)
             yield return null;
 
-        ServerOnAllConnected();
-    }
-
-    [Server]
-    void ServerOnAllConnected()
-    {
         ServerStartGame();
-        stateController.ServerChangeToState(stateController.characterSelect);
     }
 
     [Server]
@@ -126,6 +119,7 @@ public class GameController : NetworkBehaviour
     public void ServerStartGame()
     {
         ServerRandomiseTurnOrder();
+        stateController.ServerChangeToState(GameConstants.GameState.CharacterSelect);
     }
 
     [Server]
@@ -140,69 +134,18 @@ public class GameController : NetworkBehaviour
     public void ServerOnCharacterSelected(string name)
     {
         sharedView.RpcDisableButton(name);
-        
+
         // Tactics selection phase proceeds in reverse order of character selection
+        int newIndex = players.Count - nextPlayerIndex;
         nextTurnOrder[players.Count - nextPlayerIndex] = currentPlayer;
 
         if (nextPlayerIndex >= players.Count)
-            stateController.ServerChangeToState(stateController.boardSetup);
+        {
+            ServerSetNewTurnOrder();
+            stateController.ServerChangeToState(GameConstants.GameState.BoardSetup);
+        }
         else
             ServerNextPlayer();
-    }
-
-    [Server]
-    public void ServerCreateBoardFromRandomSeed()
-    {
-        // If we haven't specified a seed its value will be 0 and we should create a new one
-        if (randomSeed == 0)
-            randomSeed = System.Environment.TickCount;
-        Random.InitState(randomSeed);
-        board = new Board(scenario, numberOfPlayers, boardView);
-        cards = new Cards(scenario, players.ToArray());
-        mana = new ManaPool(players.Count);
-        sharedView.RpcEnableDice(mana.dice.Length);
-        ServerRollAllDice();
-    }
-
-    [Server]
-    public void ServerSetPlayerPositions()
-    {
-        for (int i = 0; i < players.Count; i++)
-        {
-            players[i].OnHexChanged(portalHex);
-        }
-    }
-
-    [Server]
-    public void ServerOnTacticSelected(string name)
-    {
-        sharedView.RpcDisableButton(name);
-
-        var tactic = CardDatabase.GetScriptableObject(name);
-        nextTurnOrder[tactic.number] = currentPlayer;
-        currentPlayer.AssignChosenTactic(cards, tactic);
-
-        if (nextPlayerIndex >= players.Count)
-            stateController.ServerChangeToState(stateController.startOfRound);
-        else
-            ServerNextPlayer();
-    }
-
-    [Server]
-    public void ServerSetNewTurnOrder()
-    {
-        players.Clear();
-        for (int i = 0; i < nextTurnOrder.Length; i++)
-        {
-            if (nextTurnOrder[i] == null)
-                continue;
-
-            nextTurnOrder[i].RpcMoveToIndexInTurnOrder(players.Count);
-            players.Add(nextTurnOrder[i]);
-        }
-
-        nextPlayerIndex = 0;
-        ServerNextPlayer();
     }
 
     [Server]
@@ -225,6 +168,63 @@ public class GameController : NetworkBehaviour
 
         // Wrap currentPlayerIndex to 0 because Mathf.Repeat doesn't take integers
         nextPlayerIndex++;
+    }
+
+    [Server]
+    public void ServerCreateBoardFromRandomSeed()
+    {
+        // If we haven't specified a seed its value will be 0 and we should create a new one
+        if (randomSeed == 0)
+            randomSeed = System.Environment.TickCount;
+        Random.InitState(randomSeed);
+        board = new Board(scenario, numberOfPlayers, boardView);
+        cards = new Cards(scenario, players.ToArray());
+        mana = new ManaPool(players.Count);
+        sharedView.RpcEnableDice(mana.dice.Length);
+    }
+
+    [Server]
+    public void ServerSetPlayerPositions()
+    {
+        for (int i = 0; i < players.Count; i++)
+        {
+            players[i].OnHexChanged(portalHex);
+        }
+    }
+
+    [Server]
+    public void ServerOnTacticSelected(string name)
+    {
+        sharedView.RpcDisableButton(name);
+
+        var tactic = CardDatabase.GetScriptableObject(name);
+        nextTurnOrder[tactic.number] = currentPlayer;
+        currentPlayer.AssignChosenTactic(cards, tactic);
+
+        if (nextPlayerIndex >= players.Count)
+        {
+            ServerSetNewTurnOrder();
+            stateController.ServerChangeToState(GameConstants.GameState.TurnSetup);
+        }
+        else
+            ServerNextPlayer();
+    }
+
+    [Server]
+    public void ServerSetNewTurnOrder()
+    {
+        players.Clear();
+        for (int i = 0; i < nextTurnOrder.Length; i++)
+        {
+            if (nextTurnOrder[i] == null)
+                continue;
+
+            nextTurnOrder[i].RpcMoveToIndexInTurnOrder(players.Count);
+            players.Add(nextTurnOrder[i]);
+        }
+
+        nextPlayerIndex = 0;
+        ServerNextPlayer();
     }
 
     [Server]
@@ -271,16 +271,14 @@ public class GameController : NetworkBehaviour
         localPlayer.CmdPlayEffect(cardId);
     }
 
-    public void UiManaToggled(bool selected, GameConstants.ManaType manaType)
+    public void UiDieToggled(bool selected, GameConstants.ManaType manaType)
     {
+        localPlayer.CmdDieToggled(selected);
+
         if (selected)
-        {
             localPlayer.CmdAddMana(manaType);
-        }
         else
-        {
             localPlayer.CmdRemoveMana(manaType);
-        }
     }
 #endregion
 }

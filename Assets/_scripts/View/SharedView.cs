@@ -14,7 +14,7 @@ namespace View
         public Text currentPhase;
         public Button[] buttons;
         public Color highlightColour;
-        public ManaView[] manaDice;
+        public DieView[] manaDice;
 
         #region Initialise
         void Awake()
@@ -51,6 +51,11 @@ namespace View
             }
 
             selectedDisplay.Select(true);
+        }
+
+        public void UiDieToggled(DieView dieView)
+        {
+            dieView.UiButtonPressed();
         }
 
         public void UiEndTurn()
@@ -101,6 +106,15 @@ namespace View
         public void RpcSetDiceColour(ManaId id)
         {
             manaDice[id.index].SetColour(id.colour);
+        }
+
+        public void ToggleDice(bool interactible)
+        {
+            foreach (var die in manaDice)
+            {
+                if (!die.selected)
+                    die.button.interactable = interactible;
+            }
         }
     }
 }
