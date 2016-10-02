@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Commands;
+using Other.Utility;
 
 namespace Other.Data
 {
@@ -22,44 +23,54 @@ namespace Other.Data
 
         public Type type;
 
-        public enum Colour
-        {
-            Red,
-            Blue,
-            White,
-            Green,
-            None
-        }
-
         public GameConstants.ManaType colour;
 
         public int number;
 
         public Command[] commands;
 
-        public Command ChooseEffect(Player player)
+        public Command ChooseEffect(Player playerModel)
         {
+            Command effect = null;
             switch (type)
             {
                 case Type.Action:
-                    if (player.HasMana(colour))
-                        return commands[1];
-                    else
-                        return commands[0];
-                case Type.Spell:
-                    if (player.HasMana(colour))
+                    if (playerModel.HasMana(colour) || playerModel.HasGold)
                     {
-                        if (player.HasBlack)
-                            return commands[1];
+                        effect = Instantiate(commands[1]);
+                        effect.requirements.Add(GetColourCost());
+                    }
+                    else
+                        effect = Instantiate(commands[0]);
+                    break;
+                case Type.Spell:
+                    if (playerModel.HasMana(colour) || playerModel.HasGold)
+                    {
+                        if (playerModel.HasBlack)
+                        {
+                            effect = Instantiate(commands[1]);
+                            var blackCost = CommandDatabase.GetScriptableObject("PayBlack");
+                            effect.requirements.Add(Instantiate(blackCost));
+                        }
                         else
-                            return commands[0];
+                            effect = Instantiate(commands[0]);
+
+                        effect.requirements.Add(GetColourCost());
                     }
                     break;
                 case Type.Artifact:
-                    return commands[0];
+                    effect = Instantiate(commands[0]);
+                    break;
             }
 
-            return null;
+            return effect;
+        }
+
+        public Command GetColourCost()
+        {
+            var costName = "Pay" + colour.ToString();
+            var cost = CommandDatabase.GetScriptableObject(costName);
+            return Instantiate(cost);
         }
 	}
 }

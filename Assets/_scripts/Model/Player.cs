@@ -38,10 +38,15 @@ public class Player
 
     public bool HasMana(GameConstants.ManaType colour)
     {
-        if (colour == GameConstants.ManaType.Black)
-            return HasBlack;
+        return mana[(int)colour] > 0;
+    }
+
+    public void AddMana(GameConstants.ManaType colour, bool subtract = false)
+    {
+        if (subtract)
+            mana[(int)colour]--;
         else
-            return mana[(int)colour] > 0 || HasGold;
+            mana[(int)colour]++;
     }
 
     public void DrawCards(int numberToDraw)

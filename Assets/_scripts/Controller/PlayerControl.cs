@@ -275,13 +275,13 @@ public class PlayerControl : NetworkBehaviour
     [Command]
     public void CmdAddMana(GameConstants.ManaType manaType)
     {
-        model.mana[(int)manaType]++;
+        model.AddMana(manaType);
     }
 
     [Command]
     public void CmdRemoveMana(GameConstants.ManaType manaType)
     {
-        model.mana[(int)manaType]--;
+        model.AddMana(manaType, subtract: true);
     }
 
     [Command]

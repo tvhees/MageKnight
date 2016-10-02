@@ -11,11 +11,11 @@ namespace Commands
         protected GameData gameData;
 
 
-        public Command[] requirements;
+        public List<Command> requirements;
         protected List<Command> instantiatedRequirements = new List<Command>();
         protected List<Command> completedRequirements = new List<Command>();
 
-        public Command[] optionals;
+        public List<Command> optionals;
         protected List<Command> instantiatedOptionals = new List<Command>();
         protected List<Command> completedOptionals = new List<Command>();
 
@@ -27,14 +27,14 @@ namespace Commands
         {
             gameData = input;
 
-            for (int i = 0; i < requirements.Length; i++)
+            for (int i = 0; i < requirements.Count; i++)
             {
                 Command command = Instantiate(requirements[i]);
                 command.SetInformation(input);
                 instantiatedRequirements.Add(command);
             }
 
-            for (int i = 0; i < optionals.Length; i++)
+            for (int i = 0; i < optionals.Count; i++)
             {
                 Command command = Instantiate(optionals[i]);
                 command.SetInformation(input);
