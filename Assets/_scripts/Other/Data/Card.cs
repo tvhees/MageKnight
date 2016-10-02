@@ -27,50 +27,19 @@ namespace Other.Data
 
         public int number;
 
-        public Command[] commands;
+        public Command strongEffect;
 
-        public Command ChooseEffect(Player playerModel)
+        public Command GetAutomaticEffect()
         {
-            Command effect = null;
             switch (type)
             {
                 case Type.Action:
-                    if (playerModel.HasMana(colour) || playerModel.HasGold)
-                    {
-                        effect = Instantiate(commands[1]);
-                        effect.requirements.Add(GetColourCost());
-                    }
-                    else
-                        effect = Instantiate(commands[0]);
-                    break;
                 case Type.Spell:
-                    if (playerModel.HasMana(colour) || playerModel.HasGold)
-                    {
-                        if (playerModel.HasBlack)
-                        {
-                            effect = Instantiate(commands[1]);
-                            var blackCost = CommandDatabase.GetScriptableObject("PayBlack");
-                            effect.requirements.Add(Instantiate(blackCost));
-                        }
-                        else
-                            effect = Instantiate(commands[0]);
-
-                        effect.requirements.Add(GetColourCost());
-                    }
-                    break;
+                    return Instantiate(strongEffect);
                 case Type.Artifact:
-                    effect = Instantiate(commands[0]);
-                    break;
+                    return Instantiate(strongEffect.alternate);
             }
-
-            return effect;
-        }
-
-        public Command GetColourCost()
-        {
-            var costName = "Pay" + colour.ToString();
-            var cost = CommandDatabase.GetScriptableObject(costName);
-            return Instantiate(cost);
+            return null;
         }
 	}
 }

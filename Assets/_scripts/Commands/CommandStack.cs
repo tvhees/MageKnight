@@ -17,8 +17,8 @@ namespace Commands
                 oldCommands.Add(command);
                 GameController.singleton.UiEnableUndo(true);
             }
-            else if (result.alternative != null)
-                result = RunCommand(result.alternative);
+            else if (result.alternate != null)
+                result = RunCommand(result.alternate);
 
             return result;
         }

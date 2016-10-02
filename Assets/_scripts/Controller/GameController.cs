@@ -234,6 +234,9 @@ public class GameController : NetworkBehaviour
         {
             ServerRollDie(i);
         }
+
+        if (!mana.HasEnoughBasicMana())
+            ServerRollAllDice();
     }
 
     [Server]

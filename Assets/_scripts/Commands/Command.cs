@@ -19,6 +19,9 @@ namespace Commands
         protected List<Command> instantiatedOptionals = new List<Command>();
         protected List<Command> completedOptionals = new List<Command>();
 
+        public Command alternate = null;
+        private Command instantiatedAlternate = null;
+
         protected abstract CommandResult ExecuteThisCommand();
 
         protected abstract void UndoThisCommand();
@@ -40,6 +43,12 @@ namespace Commands
                 command.SetInformation(input);
                 instantiatedOptionals.Add(command);
             }
+
+            if (alternate != null)
+            {
+                instantiatedAlternate = Instantiate(alternate);
+                instantiatedAlternate.SetInformation(input);
+            }
         }
 
         public CommandResult Execute()
@@ -54,7 +63,11 @@ namespace Commands
             }
 
             if (!result.succeeded)
+            {
                 UndoCompletedRequirements();
+                result = CommandResult.failure;
+                result.alternate = instantiatedAlternate;
+            }
 
             return result;
         }

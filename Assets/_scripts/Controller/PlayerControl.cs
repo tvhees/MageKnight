@@ -142,8 +142,9 @@ public class PlayerControl : NetworkBehaviour
     public void CmdPlayEffect(CardId cardId)
     {
         Assert.IsTrue(model.ListContainsCard(cardId, model.hand), "Card played is not in hand on the server");
+
         Card card = CardDatabase.GetScriptableObject(cardId.name);
-        Command effect = card.ChooseEffect(model);
+        Command effect = card.GetAutomaticEffect();
         if (effect == null)
             return;
 
@@ -156,7 +157,6 @@ public class PlayerControl : NetworkBehaviour
     public void CmdMoveToHex(HexId newHex)
     {
         var moveToHex = Instantiate(CommandDatabase.GetScriptableObject("MoveToHex"));
-            //ScriptableObject.CreateInstance<MoveToHex>();
         moveToHex.SetInformation(new GameData(player: this, hexId: newHex));
         GameController.singleton.commandStack.RunCommand(moveToHex);
     }
