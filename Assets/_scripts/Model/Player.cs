@@ -9,6 +9,7 @@ public class Player
     public List<CardId> deck;
     public List<CardId> discard;
     public List<CardId> units;
+    public List<CardId> play;
 
     public int movement;
     public int influence;
@@ -28,6 +29,7 @@ public class Player
         hand = new List<CardId>();
         discard = new List<CardId>();
         units = new List<CardId>();
+        play = new List<CardId>();
     }
 
     public void ResetMana()
@@ -81,6 +83,9 @@ public class Player
         if (ListContainsCard(card, hand, remove: true))
             return;
 
+        if (ListContainsCard(card, play, remove: true))
+            return;
+
         if (ListContainsCard(card, deck, remove: true))
             return;
 
@@ -95,6 +100,12 @@ public class Player
     {
         RemoveCardFromLists(card);
         hand.Add(card);
+    }
+
+    public void MoveCardToPlay(CardId card)
+    {
+        RemoveCardFromLists(card);
+        play.Add(card);
     }
 
     public void MoveCardToDiscard(CardId card)

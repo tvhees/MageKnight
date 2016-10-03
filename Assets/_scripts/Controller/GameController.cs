@@ -243,7 +243,7 @@ public class GameController : NetworkBehaviour
     public void ServerRollDie(int i)
     {
         GameConstants.ManaType manaColour = GameConstants.manaColours[Random.Range(0, GameConstants.manaColours.Length)];
-        mana.dice[i] = manaColour;
+        mana.dice[i].colour = manaColour;
         sharedView.RpcSetDiceColour(new ManaId(i, manaColour));
     }
     #endregion
@@ -274,14 +274,14 @@ public class GameController : NetworkBehaviour
         localPlayer.CmdPlayEffect(cardId);
     }
 
-    public void UiDieToggled(bool selected, GameConstants.ManaType manaType)
+    public void UiDieToggled(ManaId manaId)
     {
-        localPlayer.CmdDieToggled(selected);
+        localPlayer.CmdDieToggled(manaId.selected);
 
-        if (selected)
-            localPlayer.CmdAddMana(manaType);
+        if (manaId.selected)
+            localPlayer.CmdAddMana(manaId.colour);
         else
-            localPlayer.CmdRemoveMana(manaType);
+            localPlayer.CmdRemoveMana(manaId.colour);
     }
 #endregion
 }

@@ -18,6 +18,7 @@ namespace View
         public GameObject discard;
         public GameObject units;
         public GameObject tactic;
+        public GameObject play;
 
         public StatusDisplay level;
         public StatusDisplay handSize;
@@ -96,6 +97,12 @@ namespace View
                 GetCardFromCollections(card).MoveToNewParent(hand.transform, showFront: true);
             else
                 GetCardFromCollections(card).MoveToNewParent(hand.transform, showFront: false);
+        }
+
+        [ClientRpc]
+        public void RpcMoveCardToPlay(CardId card)
+        {
+            GetCardFromCollections(card).MoveToNewParent(play.transform, showFront: true);
         }
 
         [ClientRpc]

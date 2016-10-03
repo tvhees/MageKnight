@@ -9,9 +9,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d42da48e155bae344b623fc86b3761af, type: 3}
-  m_Name: MoveCardHandToDiscard
+  m_Name: MoveCardHandToPlay
   m_EditorClassIdentifier: 
   requirements: []
   optionals: []
+  alternate: {fileID: 0}
   fromCollection: 0
-  toCollection: 2
+  toCollection: 4

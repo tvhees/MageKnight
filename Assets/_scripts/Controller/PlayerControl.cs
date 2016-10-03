@@ -331,6 +331,9 @@ public class PlayerControl : NetworkBehaviour
                 break;
             case GameConstants.Collection.Units:
                 break;
+            case GameConstants.Collection.Play:
+                ServerMoveCardToPlay(card);
+                break;
         }
     }
 
@@ -339,6 +342,13 @@ public class PlayerControl : NetworkBehaviour
     {
         model.MoveCardToHand(card);
         view.RpcMoveCardToHand(card);
+    }
+
+    [Server]
+    public void ServerMoveCardToPlay(CardId card)
+    {
+        model.MoveCardToPlay(card);
+        view.RpcMoveCardToPlay(card);
     }
 
     [Server]
