@@ -8,17 +8,13 @@ using Other.Utility;
 
 public class BoardSetup : NetworkBehaviour {
 
-    public GameObject holderPrefab;
-
     public StateController stateController;
-    public BoardView boardView;
 
     [ServerCallback]
     void OnEnable()
     {
         Debug.Log(gameObject.name);
-        GameController.singleton.ServerCreateBoardFromRandomSeed();
-        GameController.singleton.ServerSetPlayerPositions();
-        stateController.ServerChangeToState(GameConstants.GameState.RoundSetup);
+        GameController.singleton.CreateGameFromRandomSeed();
+        stateController.ChangeToState(GameConstants.GameState.RoundSetup);
     }
 }

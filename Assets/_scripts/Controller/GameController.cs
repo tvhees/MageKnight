@@ -14,58 +14,50 @@ public class GameController : NetworkBehaviour
 {
     public static GameController singleton;
 
-    public int randomSeed;
+    #region Model
     public Board board;
     public Cards cards;
     public ManaPool mana;
+    public StateController stateController;
+    public CommandStack commandStack;
+    #endregion
 
+    #region View
+    public BoardView boardView;
+    public SharedView sharedView;
+    public ToolTip toolTip;
+    public GameObject zoomDisplayPanel;
+    #endregion
+
+    #region Settings
+    public int randomSeed;
     public Scenario scenario { get {
             if (players.Count <= 1)
                 return ScenarioDatabase.GetScriptableObject("Solo Conquest");
             else
                 return ScenarioDatabase.GetScriptableObject("Full Conquest");
         } }
+    #endregion
 
-    #region Model variables
+    #region Player variables
     public GameConstants.TerrainCosts movementCosts = new GameConstants.TerrainCosts(true);
-    public HexId portalHex;
-    #endregion
-
-    #region Syncvars
-    [SyncVar]
-    public int startPlayerIndex;
-    [SyncVar]
     public int nextPlayerIndex;
-    [SyncVar]
     public int expectedPlayers;
-    [SyncVar]
-    public int numberOfPlayers;
-    #endregion
+    public int connectedClients = 0;
 
-    #region References
     public PlayerControl localPlayer;
     public List<PlayerControl> players = new List<PlayerControl>();
     public PlayerControl[] nextTurnOrder;
     public PlayerControl currentPlayer;
-
-    public BoardView boardView;
-    public ToolTip toolTip;
-
-    public int connectedClients = 0;
-
-    public StateController stateController;
-    public CommandStack commandStack;
-    public CardFactory cardFactory;
-
-    public SharedView sharedView;
-    public GameObject displayPanel;
-    public DebugPanel debugPanel;
     #endregion
 
+    public CardFactory cardFactory;
+    public DebugPanel debugPanel;
+
+    #region Initialisation
     void Awake()
     {
         singleton = this;
-        //commandStack = ScriptableObject.CreateInstance<CommandStack>();
         AddEventListeners();
     }
 
@@ -76,7 +68,6 @@ public class GameController : NetworkBehaviour
         EventManager.endTurn.AddListener(UiEndTurn);
     }
 
-    #region UnetCallbacks
     public override void OnStartServer()
     {
         base.OnStartServer();
@@ -91,7 +82,13 @@ public class GameController : NetworkBehaviour
         while (players.Count < expectedPlayers)
             yield return null;
 
-        ServerStartGame();
+        StartGame();
+    }
+
+    [Server]
+    public void AddPlayerToGame(PlayerControl player)
+    {
+        players.Add(player);
     }
 
     [Server]
@@ -105,33 +102,39 @@ public class GameController : NetworkBehaviour
         }
         return i;
     }
+
+    [Server]
+    public void StartGame()
+    {
+        RandomiseTurnOrder();
+        stateController.ChangeToState(GameConstants.GameState.CharacterSelect);
+    }
     #endregion
 
-    #region Server methods
+    #region Game setup
     [Server]
-    public void ServerAddPlayer(PlayerControl player)
+    public void CreateGameFromRandomSeed()
     {
-        players.Add(player);
-        numberOfPlayers = players.Count;
+        // If we haven't specified a seed its value will be 0 and we should create a new one
+        if (randomSeed == 0)
+            randomSeed = System.Environment.TickCount;
+        Random.InitState(randomSeed);
+
+        board = new Board(scenario, players.ToArray(), boardView);
+        cards = new Cards(scenario, players.ToArray());
+        mana = new ManaPool(players.Count);
+        sharedView.RpcEnableDice(mana.dice.Length);
+    }
+    #endregion
+
+    #region SelectionPhases
+    void UiSelectCharacter(string name)
+    {
+        localPlayer.CmdSetCharacter(name);
     }
 
     [Server]
-    public void ServerStartGame()
-    {
-        ServerRandomiseTurnOrder();
-        stateController.ServerChangeToState(GameConstants.GameState.CharacterSelect);
-    }
-
-    [Server]
-    public void ServerRandomiseTurnOrder()
-    {
-        nextTurnOrder = players.ToArray();
-        nextTurnOrder.Shuffle();
-        ServerSetNewTurnOrder();
-    }
-
-    [Server]
-    public void ServerOnCharacterSelected(string name)
+    public void OnCharacterSelected(string name)
     {
         sharedView.RpcDisableButton(name);
 
@@ -142,14 +145,47 @@ public class GameController : NetworkBehaviour
         if (nextPlayerIndex >= players.Count)
         {
             ServerSetNewTurnOrder();
-            stateController.ServerChangeToState(GameConstants.GameState.BoardSetup);
+            stateController.ChangeToState(GameConstants.GameState.BoardSetup);
         }
         else
-            ServerNextPlayer();
+            NextPlayer();
+    }
+
+    void UiSelectTactic(string name)
+    {
+        localPlayer.CmdSetTactic(name);
     }
 
     [Server]
-    public void ServerNextPlayer()
+    public void ServerOnTacticSelected(string name)
+    {
+        sharedView.RpcDisableButton(name);
+
+        var tactic = CardDatabase.GetScriptableObject(name);
+        nextTurnOrder[tactic.number] = currentPlayer;
+        currentPlayer.AssignChosenTactic(cards, tactic);
+
+        if (nextPlayerIndex >= players.Count)
+        {
+            ServerSetNewTurnOrder();
+            stateController.ChangeToState(GameConstants.GameState.TurnSetup);
+        }
+        else
+            NextPlayer();
+    }
+    #endregion
+
+    #region Player management
+    [Server]
+    public void RandomiseTurnOrder()
+    {
+        nextTurnOrder = players.ToArray();
+        nextTurnOrder.Shuffle();
+        ServerSetNewTurnOrder();
+    }
+
+    [Server]
+    public void NextPlayer()
     {
         if (currentPlayer != null)
         {
@@ -171,46 +207,6 @@ public class GameController : NetworkBehaviour
     }
 
     [Server]
-    public void ServerCreateBoardFromRandomSeed()
-    {
-        // If we haven't specified a seed its value will be 0 and we should create a new one
-        if (randomSeed == 0)
-            randomSeed = System.Environment.TickCount;
-        Random.InitState(randomSeed);
-        board = new Board(scenario, numberOfPlayers, boardView);
-        cards = new Cards(scenario, players.ToArray());
-        mana = new ManaPool(players.Count);
-        sharedView.RpcEnableDice(mana.dice.Length);
-    }
-
-    [Server]
-    public void ServerSetPlayerPositions()
-    {
-        for (int i = 0; i < players.Count; i++)
-        {
-            players[i].OnHexChanged(portalHex);
-        }
-    }
-
-    [Server]
-    public void ServerOnTacticSelected(string name)
-    {
-        sharedView.RpcDisableButton(name);
-
-        var tactic = CardDatabase.GetScriptableObject(name);
-        nextTurnOrder[tactic.number] = currentPlayer;
-        currentPlayer.AssignChosenTactic(cards, tactic);
-
-        if (nextPlayerIndex >= players.Count)
-        {
-            ServerSetNewTurnOrder();
-            stateController.ServerChangeToState(GameConstants.GameState.TurnSetup);
-        }
-        else
-            ServerNextPlayer();
-    }
-
-    [Server]
     public void ServerSetNewTurnOrder()
     {
         players.Clear();
@@ -224,54 +220,34 @@ public class GameController : NetworkBehaviour
         }
 
         nextPlayerIndex = 0;
-        ServerNextPlayer();
-    }
-
-    [Server]
-    public void ServerRollAllDice()
-    {
-        for (int i = 0; i < mana.dice.Length; i++)
-        {
-            ServerRollDie(i);
-        }
-
-        if (!mana.HasEnoughBasicMana())
-            ServerRollAllDice();
-    }
-
-    [Server]
-    public void ServerRollDie(int i)
-    {
-        GameConstants.ManaType manaColour = GameConstants.manaColours[Random.Range(0, GameConstants.manaColours.Length)];
-        mana.dice[i].colour = manaColour;
-        sharedView.RpcSetDiceColour(new ManaId(i, manaColour));
-    }
-    #endregion
-
-    #region UI methods
-    void UiSelectCharacter(string name)
-    {
-        localPlayer.CmdSetCharacter(name);
-    }
-
-    void UiSelectTactic(string name)
-    {
-        localPlayer.CmdSetTactic(name);
+        NextPlayer();
     }
 
     void UiEndTurn()
     {
         localPlayer.CmdEndTurn();
     }
+    #endregion
 
-    public void UiEnableUndo(bool enable)
+    #region Dice and mana management
+    [Server]
+    public void RollAllDice()
     {
-        currentPlayer.view.RpcEnableUndo(enable);
+        for (int i = 0; i < mana.dice.Length; i++)
+        {
+            RollDie(i);
+        }
+
+        if (!mana.HasEnoughBasicMana())
+            RollAllDice();
     }
 
-    public void UiPlayEffect(CardId cardId)
+    [Server]
+    public void RollDie(int i)
     {
-        localPlayer.CmdPlayEffect(cardId);
+        GameConstants.ManaType manaColour = GameConstants.manaColours[Random.Range(0, GameConstants.manaColours.Length)];
+        mana.dice[i].colour = manaColour;
+        sharedView.RpcSetDiceColour(new ManaId(i, manaColour));
     }
 
     public void UiDieToggled(ManaId manaId)
@@ -283,5 +259,18 @@ public class GameController : NetworkBehaviour
         else
             localPlayer.CmdRemoveMana(manaId.colour);
     }
-#endregion
+    #endregion
+
+    #region Command and effect management
+    [Server]
+    public void EnableUndo(bool enable)
+    {
+        currentPlayer.view.RpcEnableUndo(enable);
+    }
+
+    public void UiPlayEffect(CardId cardId)
+    {
+        localPlayer.CmdPlayEffect(cardId);
+    }
+    #endregion
 }

@@ -8,40 +8,42 @@ public class Board
 {
     public List<TileId> tilesInPlay = new List<TileId>();
     public List<TileId> tilesInStack = new List<TileId>();
+    public HexId portalHex;
 
-    private DataForPlayerCount dataForPlayerCount;
-    private MapShape dataForMapShape;
-    private HexTile[] tileDataArray;
+    private DataForPlayerCount scenarioData;
+    private MapShape mapShape;
     private BoardView boardView;
 
-    public Board(Scenario scenario, int numberOfPlayers, BoardView boardView)
+    public Board(Scenario scenario, PlayerControl[] players, BoardView boardView)
     {
         this.boardView = boardView;
-        dataForPlayerCount = scenario.playerCounts[numberOfPlayers - scenario.minPlayers];
-        LoadRandomisedTileData();
-        AddTileIdsToStack();
+        var scenarioData = scenario.playerCounts[players.Length - scenario.minPlayers];
+        var tileData = LoadRandomisedTileData();
+        AddTileIdsToStack(tileData, scenarioData);
         PlaceStartingTiles();
+        SetPlayerPositions(players);
     }
 
-    void LoadRandomisedTileData()
+    HexTile[] LoadRandomisedTileData()
     {
-        tileDataArray = TileDatabase.GetAllObjects();
+        var tileDataArray = TileDatabase.GetAllObjects();
         tileDataArray.Shuffle();
+        return tileDataArray;
     }
 
-    void AddTileIdsToStack()
+    void AddTileIdsToStack(HexTile[] tileData, DataForPlayerCount scenarioData)
     {
         var startTile = new TileId();
         var countrysideTiles = new List<TileId>();
         var coreAndCityTiles = new List<TileId>();
 
-        dataForMapShape = MapShapeDatabase.GetScriptableObject(dataForPlayerCount.shape.ToString());
+        mapShape = MapShapeDatabase.GetScriptableObject(scenarioData.shape.ToString());
 
-        startTile = new TileId(GetHexIdsFromTile(dataForMapShape.startTile), Vector3.zero);
-        GameController.singleton.portalHex = startTile.hexes[3];
-        countrysideTiles.AddRange(CreateTileIds("Countryside", dataForPlayerCount.numberOfCountrysideTiles));
-        coreAndCityTiles.AddRange(CreateTileIds("Core", dataForPlayerCount.numberOfCoreNonCityTiles));
-        coreAndCityTiles.AddRange(CreateTileIds("City", dataForPlayerCount.numberOfCoreCityTiles));
+        startTile = new TileId(GetHexIdsFromTile(mapShape.startTile), Vector3.zero);
+        portalHex = startTile.hexes[3];
+        countrysideTiles.AddRange(CreateTileIds("Countryside", scenarioData.numberOfCountrysideTiles, tileData));
+        coreAndCityTiles.AddRange(CreateTileIds("Core", scenarioData.numberOfCoreNonCityTiles, tileData));
+        coreAndCityTiles.AddRange(CreateTileIds("City", scenarioData.numberOfCoreCityTiles, tileData));
         coreAndCityTiles.Shuffle();
 
         tilesInStack.Add(startTile);
@@ -49,16 +51,16 @@ public class Board
         tilesInStack.AddRange(coreAndCityTiles);
     }
 
-    List<TileId> CreateTileIds(string type, int numberOfTilesNeeded)
+    List<TileId> CreateTileIds(string type, int numberOfTilesNeeded, HexTile[] tileData)
     {
         var tileIds = new List<TileId>();
 
-        for (int i = 0; i < tileDataArray.Length; i++)
+        for (int i = 0; i < tileData.Length; i++)
         {
-            if (!tileDataArray[i].name.Contains(type))
+            if (!tileData[i].name.Contains(type))
                 continue;
 
-            tileIds.Add(new TileId(GetHexIdsFromTile(tileDataArray[i]), Vector3.zero));
+            tileIds.Add(new TileId(GetHexIdsFromTile(tileData[i]), Vector3.zero));
             if (tileIds.Count >= numberOfTilesNeeded)
                 break;
         }
@@ -78,9 +80,9 @@ public class Board
 
     void PlaceStartingTiles()
     {
-        for (int i = 0; i < dataForMapShape.startingCountryside; i++)
+        for (int i = 0; i < mapShape.startingCountryside; i++)
         {
-            PlaceNextTile(dataForMapShape.listOfTilePositions[i].worldVector);
+            PlaceNextTile(mapShape.listOfTilePositions[i].worldVector);
         }
 
         foreach (var tileId in tilesInPlay)
@@ -95,5 +97,13 @@ public class Board
         TileId tile = tilesInStack.GetFirst(remove: true);
         tile.SetTilePosition(position);
         tilesInPlay.Add(tile);
+    }
+
+    public void SetPlayerPositions(PlayerControl[] players)
+    {
+        for (int i = 0; i < players.Length; i++)
+        {
+            players[i].OnHexChanged(portalHex);
+        }
     }
 }

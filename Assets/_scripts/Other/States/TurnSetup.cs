@@ -14,6 +14,6 @@ public class TurnSetup : NetworkBehaviour {
     void OnEnable()
     {
         GameController.singleton.currentPlayer.model.ResetMana();
-        stateController.ServerChangeToState(stateController.startOfTurn);
+        stateController.ChangeToState(stateController.startOfTurn);
     }
 }

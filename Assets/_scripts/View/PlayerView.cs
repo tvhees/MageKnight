@@ -56,7 +56,7 @@ namespace View
         [ClientRpc]
         public void RpcAddCardToDeck(CardId cardId)
         {
-            GameObject card = GameController.singleton.cardFactory.CreateCard(cardId);
+            var card = GameController.singleton.cardFactory.CreateCard(cardId);
             card.GetComponent<CardView>().MoveToNewParent(deck.transform, false);
         }
 

@@ -80,7 +80,7 @@ public class Moveable : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
     public void MajorZoom(PointerEventData eventData)
     {
         zoomedIn = true;
-        transform.SetParent(GameController.singleton.displayPanel.transform);
+        transform.SetParent(GameController.singleton.zoomDisplayPanel.transform);
         rectTransform.anchoredPosition = Vector2.zero;
         rectTransform.localScale = majorZoomLevel * Vector3.one;
     }
@@ -95,8 +95,8 @@ public class Moveable : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
     {
         Vector2 screenPos = eventData.enterEventCamera.WorldToScreenPoint(transform.position);
         Vector2 displayPos;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(GameController.singleton.displayPanel.transform as RectTransform, screenPos, null, out displayPos);
-        transform.SetParent(GameController.singleton.displayPanel.transform);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(GameController.singleton.zoomDisplayPanel.transform as RectTransform, screenPos, null, out displayPos);
+        transform.SetParent(GameController.singleton.zoomDisplayPanel.transform);
         rectTransform.anchoredPosition = new Vector2(displayPos.x, displayPos.y);
         rectTransform.localScale = minorZoomLevel * Vector3.one;
     }

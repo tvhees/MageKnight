@@ -24,13 +24,13 @@ namespace Commands
 
         protected override CommandResult ExecuteThisCommand()
         {
-            stateController.ServerChangeToState(newState);
+            stateController.ChangeToState(newState);
             return CommandResult.success;
         }
 
         protected override void UndoThisCommand()
         {
-            stateController.ServerChangeToState(oldState);
+            stateController.ChangeToState(oldState);
         }
     }
 }

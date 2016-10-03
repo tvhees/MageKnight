@@ -100,7 +100,7 @@ public class PlayerControl : NetworkBehaviour
     [Command]
     void CmdAddToPlayerList()
     {
-        GameController.singleton.ServerAddPlayer(this);
+        GameController.singleton.AddPlayerToGame(this);
     }
 
     [Command]
@@ -111,7 +111,7 @@ public class PlayerControl : NetworkBehaviour
             characterName = name;
             colour = character.colour;
 
-            GameController.singleton.ServerOnCharacterSelected(name);
+            GameController.singleton.OnCharacterSelected(name);
         }
     }
 
@@ -128,13 +128,13 @@ public class PlayerControl : NetworkBehaviour
     public void CmdEndTurn()
     {
         if(isYourTurn)
-            GameController.singleton.ServerNextPlayer();
+            GameController.singleton.NextPlayer();
     }
 
     [Command]
     public void CmdUndo()
     {
-        if (GameController.singleton.currentPlayer == this)
+        if (isYourTurn)
             GameController.singleton.commandStack.UndoLastCommand();
     }
 

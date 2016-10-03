@@ -358,7 +358,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   randomSeed: 0
-  startPlayerIndex: 0
   nextPlayerIndex: 0
   expectedPlayers: 0
   numberOfPlayers: 0
@@ -366,14 +365,14 @@ MonoBehaviour:
   players: []
   nextTurnOrder: []
   currentPlayer: {fileID: 0}
-  boardView: {fileID: 482951774}
-  toolTip: {fileID: 1887589122}
   connectedClients: 0
+  boardView: {fileID: 482951774}
+  sharedView: {fileID: 10177261}
+  toolTip: {fileID: 1887589122}
+  zoomDisplayPanel: {fileID: 1551101254}
   stateController: {fileID: 1667884106}
   commandStack: {fileID: 1688202615}
   cardFactory: {fileID: 1054642147}
-  sharedView: {fileID: 10177261}
-  displayPanel: {fileID: 1551101254}
   debugPanel: {fileID: 295791267}
 --- !u!4 &932607955
 Transform:
