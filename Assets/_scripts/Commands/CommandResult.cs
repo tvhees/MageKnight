@@ -12,19 +12,13 @@ namespace Commands
 
         public bool succeeded;
         public bool allowUndo;
-        public Command alternative;
-
-        public CommandResult(Command alternative)
-        {
-            succeeded = false;
-            this.alternative = alternative;
-        }
+        public Command alternate;
 
         public CommandResult(bool succeeded, bool allowUndo = true)
         {
             this.succeeded = succeeded;
             this.allowUndo = allowUndo;
-            alternative = null;
+            alternate = null;
         }
     }
 }

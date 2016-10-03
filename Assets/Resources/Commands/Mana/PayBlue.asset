@@ -8,12 +8,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1864b6a6dd82e9348ae25576b0fcbd85, type: 3}
-  m_Name: Promise
+  m_Script: {fileID: 11500000, guid: 78854a9d5fadc4c478a7dea2086024e3, type: 3}
+  m_Name: PayBlue
   m_EditorClassIdentifier: 
   requirements: []
-  optionals:
-  - {fileID: 11400000, guid: eecbe70f832fd87419fc9b199ad022f0, type: 2}
-  valueType: 1
-  valueSize: 2
-  element: 0
+  optionals: []
+  colour: 1

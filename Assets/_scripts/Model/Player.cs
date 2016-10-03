@@ -9,6 +9,7 @@ public class Player
     public List<CardId> deck;
     public List<CardId> discard;
     public List<CardId> units;
+    public List<CardId> play;
 
     public int movement;
     public int influence;
@@ -17,6 +18,9 @@ public class Player
     public int diceAllowed;
     public int[] mana;
     public int[] crystals;
+
+    public bool HasGold { get { return mana[4] > 0; } }
+    public bool HasBlack { get { return mana[5] > 0; } }
     #endregion
 
     public Player(Character character, Cards cards)
@@ -25,12 +29,26 @@ public class Player
         hand = new List<CardId>();
         discard = new List<CardId>();
         units = new List<CardId>();
+        play = new List<CardId>();
     }
 
     public void ResetMana()
     {
         mana = new int[6] { 0, 0, 0, 0, 0, 0 };
         diceAllowed = 1;
+    }
+
+    public bool HasMana(GameConstants.ManaType colour)
+    {
+        return mana[(int)colour] > 0;
+    }
+
+    public void AddMana(GameConstants.ManaType colour, bool subtract = false)
+    {
+        if (subtract)
+            mana[(int)colour]--;
+        else
+            mana[(int)colour]++;
     }
 
     public void DrawCards(int numberToDraw)
@@ -65,6 +83,9 @@ public class Player
         if (ListContainsCard(card, hand, remove: true))
             return;
 
+        if (ListContainsCard(card, play, remove: true))
+            return;
+
         if (ListContainsCard(card, deck, remove: true))
             return;
 
@@ -79,6 +100,12 @@ public class Player
     {
         RemoveCardFromLists(card);
         hand.Add(card);
+    }
+
+    public void MoveCardToPlay(CardId card)
+    {
+        RemoveCardFromLists(card);
+        play.Add(card);
     }
 
     public void MoveCardToDiscard(CardId card)

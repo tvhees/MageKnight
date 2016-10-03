@@ -14,4 +14,6 @@ MonoBehaviour:
   type: 0
   colour: 2
   number: 0
-  command: {fileID: 0}
+  commands:
+  - {fileID: 0}
+  - {fileID: 0}

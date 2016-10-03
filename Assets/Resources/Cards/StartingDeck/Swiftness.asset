@@ -14,4 +14,6 @@ MonoBehaviour:
   type: 0
   colour: 2
   number: 0
-  command: {fileID: 11400000, guid: 9c5b3670a5b9b4144bcdc0d105c66ffd, type: 2}
+  commands:
+  - {fileID: 11400000, guid: 9c5b3670a5b9b4144bcdc0d105c66ffd, type: 2}
+  - {fileID: 0}

@@ -82,6 +82,7 @@
     <Compile Include="Assets\_scripts\Commands\CommandResult.cs" />
     <Compile Include="Assets\_scripts\Commands\CommandStack.cs" />
     <Compile Include="Assets\_scripts\Commands\GameData.cs" />
+    <Compile Include="Assets\_scripts\Commands\Mana\PayMana.cs" />
     <Compile Include="Assets\_scripts\Commands\Movement\AddValueToPlayer.cs" />
     <Compile Include="Assets\_scripts\Commands\Movement\MoveToHex.cs" />
     <Compile Include="Assets\_scripts\Commands\StateManagement\ChangeTurnState.cs" />

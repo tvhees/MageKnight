@@ -26,7 +26,7 @@ public class GameConstants
     { GameLoading, CharacterSelect, BoardSetup, RoundSetup, TacticSelect, TurnSetup, StartOfTurn, Movement }
 
     public enum Collection
-    { Hand, Deck, Discard, Units }
+    { Hand, Deck, Discard, Units, Play }
 
     public enum CardType
     { Action, Spell, Artifact, Unit, Wound, Tactic }

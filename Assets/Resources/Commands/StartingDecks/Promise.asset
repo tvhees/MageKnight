@@ -9,11 +9,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1864b6a6dd82e9348ae25576b0fcbd85, type: 3}
-  m_Name: March
+  m_Name: Promise
   m_EditorClassIdentifier: 
-  requirements: []
+  requirements:
+  - {fileID: 11400000, guid: 3d2edd4cfac0b964b8eff172dd930a65, type: 2}
   optionals:
   - {fileID: 11400000, guid: eecbe70f832fd87419fc9b199ad022f0, type: 2}
-  valueType: 0
-  valueSize: 2
+  alternate: {fileID: 11400000, guid: 3606a2b7cfa2d22429b84358d1355d9a, type: 2}
+  valueType: 1
+  valueSize: 4
   element: 0

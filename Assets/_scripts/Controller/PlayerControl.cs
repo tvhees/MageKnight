@@ -143,9 +143,11 @@ public class PlayerControl : NetworkBehaviour
     {
         Assert.IsTrue(model.ListContainsCard(cardId, model.hand), "Card played is not in hand on the server");
 
-        Command effect = CardDatabase.GetScriptableObject(cardId.name).command;
+        Card card = CardDatabase.GetScriptableObject(cardId.name);
+        Command effect = card.GetAutomaticEffect();
         if (effect == null)
             return;
+
         effect = Instantiate(effect);
         effect.SetInformation(new GameData(player: this, cardId: cardId));
         GameController.singleton.commandStack.RunCommand(effect);
@@ -155,7 +157,6 @@ public class PlayerControl : NetworkBehaviour
     public void CmdMoveToHex(HexId newHex)
     {
         var moveToHex = Instantiate(CommandDatabase.GetScriptableObject("MoveToHex"));
-            //ScriptableObject.CreateInstance<MoveToHex>();
         moveToHex.SetInformation(new GameData(player: this, hexId: newHex));
         GameController.singleton.commandStack.RunCommand(moveToHex);
     }
@@ -274,13 +275,13 @@ public class PlayerControl : NetworkBehaviour
     [Command]
     public void CmdAddMana(GameConstants.ManaType manaType)
     {
-        model.mana[(int)manaType]++;
+        model.AddMana(manaType);
     }
 
     [Command]
     public void CmdRemoveMana(GameConstants.ManaType manaType)
     {
-        model.mana[(int)manaType]--;
+        model.AddMana(manaType, subtract: true);
     }
 
     [Command]
@@ -330,6 +331,9 @@ public class PlayerControl : NetworkBehaviour
                 break;
             case GameConstants.Collection.Units:
                 break;
+            case GameConstants.Collection.Play:
+                ServerMoveCardToPlay(card);
+                break;
         }
     }
 
@@ -338,6 +342,13 @@ public class PlayerControl : NetworkBehaviour
     {
         model.MoveCardToHand(card);
         view.RpcMoveCardToHand(card);
+    }
+
+    [Server]
+    public void ServerMoveCardToPlay(CardId card)
+    {
+        model.MoveCardToPlay(card);
+        view.RpcMoveCardToPlay(card);
     }
 
     [Server]

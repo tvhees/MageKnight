@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Commands;
+using Other.Utility;
 
 namespace Other.Data
 {
@@ -21,19 +23,23 @@ namespace Other.Data
 
         public Type type;
 
-        public enum Colour
-        {
-            Red,
-            Blue,
-            White,
-            Green,
-            None
-        }
-
-        public Colour colour;
+        public GameConstants.ManaType colour;
 
         public int number;
 
-        public Commands.Command command;
+        public Command strongEffect;
+
+        public Command GetAutomaticEffect()
+        {
+            switch (type)
+            {
+                case Type.Action:
+                case Type.Spell:
+                    return Instantiate(strongEffect);
+                case Type.Artifact:
+                    return Instantiate(strongEffect.alternate);
+            }
+            return null;
+        }
 	}
 }
