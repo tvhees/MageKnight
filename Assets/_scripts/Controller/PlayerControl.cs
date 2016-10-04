@@ -257,12 +257,18 @@ public class PlayerControl : NetworkBehaviour
 
     #region Mana
     [Command]
-    public void CmdDieToggled(bool selected)
+    public void CmdDieToggled(ManaId manaId)
     {
-        if (selected)
+        if (manaId.selected)
+        {
             model.diceAllowed--;
+            model.AddMana(manaId.colour);
+        }
         else
+        {
             model.diceAllowed++;
+            model.AddMana(manaId.colour, subtract: true);
+        }
 
         if (model.diceAllowed <= 0)
             RpcToggleDiceInteractivity(false);

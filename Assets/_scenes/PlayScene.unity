@@ -340,6 +340,7 @@ GameObject:
   - 114: {fileID: 932607954}
   - 114: {fileID: 932607957}
   - 114: {fileID: 932607956}
+  - 114: {fileID: 932607958}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -358,7 +359,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70f31aed935b97244bd43ef163de00c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  players: {fileID: 932607956}
   stateController: {fileID: 1667884106}
   commandStack: {fileID: 1688202615}
   boardView: {fileID: 482951774}
@@ -392,11 +392,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b08898cf66d6c84e896d63306a11d13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextIndex: 0
-  local: {fileID: 0}
-  list: []
-  nextOrder: []
-  current: {fileID: 0}
 --- !u!114 &932607957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -429,6 +424,17 @@ MonoBehaviour:
     i15: 0
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
+--- !u!114 &932607958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 932607953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b376ca750d5f3c547bb637e7e002b419, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1054642141
 GameObject:
   m_ObjectHideFlags: 0
@@ -938,36 +944,6 @@ Prefab:
       propertyPath: buttons.Array.data[9]
       value: 
       objectReference: {fileID: 1683509714}
-    - target: {fileID: 114000011555965834, guid: a924e7a1fc284804d83f22f932f03008,
-        type: 2}
-      propertyPath: rollTimer
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114000010076657806, guid: a924e7a1fc284804d83f22f932f03008,
-        type: 2}
-      propertyPath: rollTimer
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114000011021734068, guid: a924e7a1fc284804d83f22f932f03008,
-        type: 2}
-      propertyPath: rollTimer
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114000014037751310, guid: a924e7a1fc284804d83f22f932f03008,
-        type: 2}
-      propertyPath: rollTimer
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114000013874883572, guid: a924e7a1fc284804d83f22f932f03008,
-        type: 2}
-      propertyPath: rollTimer
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114000013738941680, guid: a924e7a1fc284804d83f22f932f03008,
-        type: 2}
-      propertyPath: rollTimer
-      value: 1.5
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a924e7a1fc284804d83f22f932f03008, type: 2}
   m_IsPrefabParent: 0

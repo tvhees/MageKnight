@@ -5,8 +5,13 @@ public class ManaPool {
 
     public ManaId[] dice;
 
-    public int diceAvailable;
+    #region Properties
+    public int DiceTotal {
+        get { return dice.Length; }
+    }
+    #endregion
 
+    #region Constructor
     public ManaPool(GamePlayers players)
     {
         int numberOfDice = players.Total + 2;
@@ -15,6 +20,15 @@ public class ManaPool {
         {
             dice[i] = new ManaId(i);
         }
+    }
+    #endregion
+
+    public ManaId RollDie(int i)
+    {
+        var manaColour = GameConstants.manaColours[Random.Range(0, GameConstants.manaColours.Length)];
+        dice[i].colour = manaColour;
+
+        return new ManaId(i, manaColour);
     }
 
     public bool HasEnoughBasicMana()
@@ -31,13 +45,13 @@ public class ManaPool {
 
     public ManaId GetSelectedDie(GameConstants.ManaType colour)
     {
-        for (int i = 0; i < dice.Length; i++)
+        for (int i = 0; i < DiceTotal; i++)
         {
+            Debug.Log(dice[i].colour + " " + dice[i].selected);
             if (dice[i].selected)
                 if (dice[i].colour == colour)
                     return dice[i];
         }
-
         return new ManaId(-1);
     }
 }

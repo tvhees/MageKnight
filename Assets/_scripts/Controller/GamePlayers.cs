@@ -123,6 +123,11 @@ public class GamePlayers : NetworkBehaviour
 
         nextIndex++;
     }
+
+    public void UiEndTurn()
+    {
+        local.CmdEndTurn();
+    }
     #endregion
 
     #region Characters and Tactics

@@ -14,6 +14,7 @@ namespace View
         public Text currentPhase;
         public Button[] buttons;
         public Color highlightColour;
+        public GameObject manaPanel;
         public DieView[] manaDice;
 
         #region Initialise
@@ -51,11 +52,6 @@ namespace View
             }
 
             selectedDisplay.Select(true);
-        }
-
-        public void UiDieToggled(DieView dieView)
-        {
-            dieView.UiButtonPressed();
         }
 
         public void UiEndTurn()
@@ -103,6 +99,12 @@ namespace View
             manaDice[id.index].SetColour(id.colour);
         }
 
+        [ClientRpc]
+        public void RpcRollDiceColour(ManaId id)
+        {
+            manaDice[id.index].SetColour(id.colour, animate: true);
+        }
+
         public void ToggleDice(bool interactible)
         {
             foreach (var die in manaDice)
@@ -110,6 +112,23 @@ namespace View
                 if (!die.selected)
                     die.button.interactable = interactible;
             }
+        }
+
+        [ClientRpc]
+        public void RpcMoveDieToPlay(ManaId manaId)
+        {
+            var die = manaDice[manaId.index];
+            die.Enable(false);
+            die.MoveToNewParent(GameController.singleton.players.current.view.play.transform);
+        }
+
+        [ClientRpc]
+        public void RpcMoveDieToPool(ManaId manaId)
+        {
+            var die = manaDice[manaId.index];
+            die.Enable(true);
+            die.MoveToNewParent(manaPanel.transform);
+            die.transform.SetSiblingIndex(manaId.index);
         }
     }
 }

@@ -14,7 +14,7 @@ public class RoundSetup : NetworkBehaviour {
     void OnEnable()
     {
         Debug.Log(gameObject.name);
-        GameController.singleton.RollAllDice();
+        GameController.singleton.dice.RollAll();
         stateController.ChangeToState(GameConstants.GameState.TacticSelect);
     }
 }

@@ -10,7 +10,6 @@ public class Board
     public List<TileId> tilesInStack = new List<TileId>();
     public HexId portalHex;
 
-    private DataForPlayerCount scenarioData;
     private MapShape mapShape;
     private BoardView boardView;
 

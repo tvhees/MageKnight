@@ -15,13 +15,13 @@ public class GameController : NetworkBehaviour
     public static GameController singleton;
 
     #region Controller
-    public GamePlayers players;
+    public GamePlayers players { get; private set; }
+    public GameDice dice { get; private set; }
     #endregion
 
     #region Model
     public Board board;
     public Cards cards;
-    public ManaPool mana;
     public StateController stateController;
     public CommandStack commandStack;
     #endregion
@@ -52,6 +52,8 @@ public class GameController : NetworkBehaviour
     void Awake()
     {
         singleton = this;
+        players = GetComponent<GamePlayers>();
+        dice = GetComponent<GameDice>();
         AddEventListeners();
     }
 
@@ -59,7 +61,7 @@ public class GameController : NetworkBehaviour
     {
         EventManager.characterSelected.AddListener(UiSelectCharacter);
         EventManager.tacticSelected.AddListener(UiSelectTactic);
-        EventManager.endTurn.AddListener(UiEndTurn);
+        EventManager.endTurn.AddListener(players.UiEndTurn);
     }
 
     public override void OnStartServer()
@@ -108,8 +110,9 @@ public class GameController : NetworkBehaviour
 
         board = new Board(scenario, players, boardView);
         cards = new Cards(scenario, players);
-        mana = new ManaPool(players);
-        sharedView.RpcEnableDice(mana.dice.Length);
+        var mana = new ManaPool(players);
+
+        dice.Enable(mana, sharedView);
     }
     #endregion
 
@@ -145,43 +148,35 @@ public class GameController : NetworkBehaviour
     }
     #endregion
 
-    #region Player management
-    void UiEndTurn()
-    {
-        players.local.CmdEndTurn();
-    }
-    #endregion
-
-    #region Dice and mana management
-    [Server]
-    public void RollAllDice()
-    {
-        for (int i = 0; i < mana.dice.Length; i++)
-        {
-            RollDie(i);
-        }
-
-        if (!mana.HasEnoughBasicMana())
-            RollAllDice();
-    }
-
-    [Server]
-    public void RollDie(int i)
-    {
-        GameConstants.ManaType manaColour = GameConstants.manaColours[Random.Range(0, GameConstants.manaColours.Length)];
-        mana.dice[i].colour = manaColour;
-        sharedView.RpcSetDiceColour(new ManaId(i, manaColour));
-    }
-
+    #region Mana
+    [Client]
     public void UiDieToggled(ManaId manaId)
     {
-        players.local.CmdDieToggled(manaId.selected);
-
-        if (manaId.selected)
-            players.local.CmdAddMana(manaId.colour);
-        else
-            players.local.CmdRemoveMana(manaId.colour);
+        players.local.CmdDieToggled(manaId);
+        dice.CmdSetDieValue(manaId);
     }
+
+    [Server]
+    public ManaId PlayManaSource(GameConstants.ManaType colour)
+    {
+        ManaId source;
+        source = dice.GetSelected(colour);
+        if (source.index < 0)
+        {
+            Debug.Log("No selected die of colour " + colour.ToString());
+            return source;
+        }
+
+        sharedView.RpcMoveDieToPlay(source);
+        return source;
+    }
+
+    [Server]
+    public void ReturnManaSource(ManaId source)
+    {
+        sharedView.RpcMoveDieToPool(source);
+    }
+
     #endregion
 
     #region Command and effect management

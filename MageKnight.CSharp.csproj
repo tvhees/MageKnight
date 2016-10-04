@@ -97,9 +97,9 @@
     <Compile Include="Assets\_scripts\Common\Singleton.cs" />
     <Compile Include="Assets\_scripts\Controller\GameController.cs" />
     <Compile Include="Assets\_scripts\Controller\GamePlayers.cs" />
+    <Compile Include="Assets\_scripts\Controller\GameDice.cs" />
     <Compile Include="Assets\_scripts\Controller\PlayerControl.cs" />
     <Compile Include="Assets\_scripts\Controller\StateController.cs" />
-    <Compile Include="Assets\_scripts\Controller\TurnController.cs" />
     <Compile Include="Assets\_scripts\InteractibleFeature.cs" />
     <Compile Include="Assets\_scripts\Model\Board.cs" />
     <Compile Include="Assets\_scripts\Model\CardId.cs" />

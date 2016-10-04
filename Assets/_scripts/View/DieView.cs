@@ -12,10 +12,24 @@ public class DieView : MonoBehaviour {
     public bool selected;
     public float rollTimer;
 
-    public void SetColour(GameConstants.ManaType manaType)
+    void Awake()
+    {
+        button.onClick.AddListener(UiButtonPressed);
+    }
+
+    public void SetColour(GameConstants.ManaType manaType, bool animate = false)
     {
         this.manaType = manaType;
-        StartCoroutine(AnimateDiceRolling());
+        if(animate)
+            StartCoroutine(AnimateDiceRolling());
+        else
+            face.color = manaColours[(int)manaType];
+    }
+
+    public void MoveToNewParent(Transform parent)
+    {
+        transform.SetParent(parent);
+        (transform as RectTransform).Reset();
     }
 
     IEnumerator AnimateDiceRolling()
@@ -33,17 +47,16 @@ public class DieView : MonoBehaviour {
         face.color = manaColours[(int)manaType];
     }
 
-    public void UiButtonPressed()
+    void UiButtonPressed()
     {
         selected = !selected;
-
-        UiDieToggled(selected);
-    }
-
-    public void UiDieToggled(bool selected)
-    {
         selectionRing.enabled = selected;
         GameController.singleton.UiDieToggled(new ManaId(transform.GetSiblingIndex(), manaType, selected));
     }
 
+    public void Enable(bool enable)
+    {
+        button.interactable = enable;
+        selectionRing.enabled = enable;
+    }
 }
