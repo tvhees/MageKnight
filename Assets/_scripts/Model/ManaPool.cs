@@ -7,9 +7,9 @@ public class ManaPool {
 
     public int diceAvailable;
 
-    public ManaPool(int numberOfPlayers)
+    public ManaPool(GamePlayers players)
     {
-        int numberOfDice = numberOfPlayers + 2;
+        int numberOfDice = players.Total + 2;
         dice = new ManaId[numberOfDice];
         for (int i = 0; i < numberOfDice; i++)
         {

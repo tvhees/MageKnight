@@ -14,6 +14,10 @@ public class GameController : NetworkBehaviour
 {
     public static GameController singleton;
 
+    #region Controller
+    public GamePlayers players;
+    #endregion
+
     #region Model
     public Board board;
     public Cards cards;
@@ -31,26 +35,16 @@ public class GameController : NetworkBehaviour
 
     #region Settings
     public int randomSeed;
-    public Scenario scenario { get {
-            if (players.Count <= 1)
+    public Scenario scenario {
+        get {
+            if (players.Total <= 1)
                 return ScenarioDatabase.GetScriptableObject("Solo Conquest");
             else
-                return ScenarioDatabase.GetScriptableObject("Full Conquest");
-        } }
+                return ScenarioDatabase.GetScriptableObject("Full Conquest"); }
+    }
     #endregion
 
-    #region Player variables
     public GameConstants.TerrainCosts movementCosts = new GameConstants.TerrainCosts(true);
-    public int nextPlayerIndex;
-    public int expectedPlayers;
-    public int connectedClients = 0;
-
-    public PlayerControl localPlayer;
-    public List<PlayerControl> players = new List<PlayerControl>();
-    public PlayerControl[] nextTurnOrder;
-    public PlayerControl currentPlayer;
-    #endregion
-
     public CardFactory cardFactory;
     public DebugPanel debugPanel;
 
@@ -71,28 +65,20 @@ public class GameController : NetworkBehaviour
     public override void OnStartServer()
     {
         base.OnStartServer();
-
-        expectedPlayers = ServerCalculateExpectedPlayers();
         StartCoroutine(ServerWaitForConnections());
     }
 
     [Server]
     IEnumerator ServerWaitForConnections()
     {
-        while (players.Count < expectedPlayers)
+        while (!players.AllConnected)
             yield return null;
 
         StartGame();
     }
 
     [Server]
-    public void AddPlayerToGame(PlayerControl player)
-    {
-        players.Add(player);
-    }
-
-    [Server]
-    int ServerCalculateExpectedPlayers()
+    int CalculateExpectedPlayers()
     {
         int i = 0;
         foreach (NetworkLobbyPlayer player in LobbyManager.s_Singleton.lobbySlots)
@@ -106,7 +92,7 @@ public class GameController : NetworkBehaviour
     [Server]
     public void StartGame()
     {
-        RandomiseTurnOrder();
+        players.RandomiseOrder();
         stateController.ChangeToState(GameConstants.GameState.CharacterSelect);
     }
     #endregion
@@ -120,9 +106,9 @@ public class GameController : NetworkBehaviour
             randomSeed = System.Environment.TickCount;
         Random.InitState(randomSeed);
 
-        board = new Board(scenario, players.ToArray(), boardView);
-        cards = new Cards(scenario, players.ToArray());
-        mana = new ManaPool(players.Count);
+        board = new Board(scenario, players, boardView);
+        cards = new Cards(scenario, players);
+        mana = new ManaPool(players);
         sharedView.RpcEnableDice(mana.dice.Length);
     }
     #endregion
@@ -130,102 +116,39 @@ public class GameController : NetworkBehaviour
     #region SelectionPhases
     void UiSelectCharacter(string name)
     {
-        localPlayer.CmdSetCharacter(name);
+        players.local.CmdSetCharacter(name);
     }
 
     [Server]
     public void OnCharacterSelected(string name)
     {
         sharedView.RpcDisableButton(name);
-
-        // Tactics selection phase proceeds in reverse order of character selection
-        int newIndex = players.Count - nextPlayerIndex;
-        nextTurnOrder[players.Count - nextPlayerIndex] = currentPlayer;
-
-        if (nextPlayerIndex >= players.Count)
-        {
-            ServerSetNewTurnOrder();
+        players.AssignCharacter();
+        if (players.OnLastForRound)
             stateController.ChangeToState(GameConstants.GameState.BoardSetup);
-        }
-        else
-            NextPlayer();
     }
 
     void UiSelectTactic(string name)
     {
-        localPlayer.CmdSetTactic(name);
+        players.local.CmdSetTactic(name);
     }
 
     [Server]
-    public void ServerOnTacticSelected(string name)
+    public void OnTacticSelected(string name)
     {
         sharedView.RpcDisableButton(name);
-
         var tactic = CardDatabase.GetScriptableObject(name);
-        nextTurnOrder[tactic.number] = currentPlayer;
-        currentPlayer.AssignChosenTactic(cards, tactic);
+        players.AssignTactic(cards, tactic);
 
-        if (nextPlayerIndex >= players.Count)
-        {
-            ServerSetNewTurnOrder();
+        if (players.OnLastForRound)
             stateController.ChangeToState(GameConstants.GameState.TurnSetup);
-        }
-        else
-            NextPlayer();
     }
     #endregion
 
     #region Player management
-    [Server]
-    public void RandomiseTurnOrder()
-    {
-        nextTurnOrder = players.ToArray();
-        nextTurnOrder.Shuffle();
-        ServerSetNewTurnOrder();
-    }
-
-    [Server]
-    public void NextPlayer()
-    {
-        if (currentPlayer != null)
-        {
-            currentPlayer.RpcYourTurn(false);
-            sharedView.RpcStopHighlightingPlayer(currentPlayer.playerId);
-        }
-
-        if (nextPlayerIndex >= players.Count)
-            nextPlayerIndex = 0;
-        currentPlayer = players[nextPlayerIndex];
-        currentPlayer.RpcYourTurn(true);
-        if (sharedView != null)
-        {
-            sharedView.RpcHighlightPlayer(currentPlayer.playerId);
-        }
-
-        // Wrap currentPlayerIndex to 0 because Mathf.Repeat doesn't take integers
-        nextPlayerIndex++;
-    }
-
-    [Server]
-    public void ServerSetNewTurnOrder()
-    {
-        players.Clear();
-        for (int i = 0; i < nextTurnOrder.Length; i++)
-        {
-            if (nextTurnOrder[i] == null)
-                continue;
-
-            nextTurnOrder[i].RpcMoveToIndexInTurnOrder(players.Count);
-            players.Add(nextTurnOrder[i]);
-        }
-
-        nextPlayerIndex = 0;
-        NextPlayer();
-    }
-
     void UiEndTurn()
     {
-        localPlayer.CmdEndTurn();
+        players.local.CmdEndTurn();
     }
     #endregion
 
@@ -252,12 +175,12 @@ public class GameController : NetworkBehaviour
 
     public void UiDieToggled(ManaId manaId)
     {
-        localPlayer.CmdDieToggled(manaId.selected);
+        players.local.CmdDieToggled(manaId.selected);
 
         if (manaId.selected)
-            localPlayer.CmdAddMana(manaId.colour);
+            players.local.CmdAddMana(manaId.colour);
         else
-            localPlayer.CmdRemoveMana(manaId.colour);
+            players.local.CmdRemoveMana(manaId.colour);
     }
     #endregion
 
@@ -265,12 +188,12 @@ public class GameController : NetworkBehaviour
     [Server]
     public void EnableUndo(bool enable)
     {
-        currentPlayer.view.RpcEnableUndo(enable);
+        players.current.view.RpcEnableUndo(enable);
     }
 
     public void UiPlayEffect(CardId cardId)
     {
-        localPlayer.CmdPlayEffect(cardId);
+        players.local.CmdPlayEffect(cardId);
     }
     #endregion
 }

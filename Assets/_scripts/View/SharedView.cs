@@ -79,18 +79,13 @@ namespace View
             }
         }
 
-        [ClientRpc]
-        public void RpcStopHighlightingPlayer(int playerId)
+        public void HighlightPlayer(int playerId, bool on)
         {
             var display = GetTurnOrderDisplay(playerId);
-            display.SetHighlights(Color.black);
-        }
-
-        [ClientRpc]
-        public void RpcHighlightPlayer(int playerId)
-        {
-            var display = GetTurnOrderDisplay(playerId);
-            display.SetHighlights(highlightColour, currentPlayerIndicator);
+            if(on)
+                display.SetHighlights(highlightColour, currentPlayerIndicator);
+            else
+                display.SetHighlights(Color.black);
         }
 
         [ClientRpc]

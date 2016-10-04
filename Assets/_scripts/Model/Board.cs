@@ -14,10 +14,10 @@ public class Board
     private MapShape mapShape;
     private BoardView boardView;
 
-    public Board(Scenario scenario, PlayerControl[] players, BoardView boardView)
+    public Board(Scenario scenario, GamePlayers players, BoardView boardView)
     {
         this.boardView = boardView;
-        var scenarioData = scenario.playerCounts[players.Length - scenario.minPlayers];
+        var scenarioData = scenario.playerCounts[players.Total - scenario.minPlayers];
         var tileData = LoadRandomisedTileData();
         AddTileIdsToStack(tileData, scenarioData);
         PlaceStartingTiles();
@@ -99,11 +99,11 @@ public class Board
         tilesInPlay.Add(tile);
     }
 
-    public void SetPlayerPositions(PlayerControl[] players)
+    public void SetPlayerPositions(GamePlayers players)
     {
-        for (int i = 0; i < players.Length; i++)
+        for (int i = 0; i < players.Total; i++)
         {
-            players[i].OnHexChanged(portalHex);
+            players.List[i].OnHexChanged(portalHex);
         }
     }
 }

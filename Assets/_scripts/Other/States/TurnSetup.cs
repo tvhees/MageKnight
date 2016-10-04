@@ -13,7 +13,7 @@ public class TurnSetup : NetworkBehaviour {
     [ServerCallback]
     void OnEnable()
     {
-        GameController.singleton.currentPlayer.model.ResetMana();
+        GameController.singleton.players.current.model.ResetMana();
         stateController.ChangeToState(stateController.startOfTurn);
     }
 }

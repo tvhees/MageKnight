@@ -339,6 +339,7 @@ GameObject:
   - 4: {fileID: 932607955}
   - 114: {fileID: 932607954}
   - 114: {fileID: 932607957}
+  - 114: {fileID: 932607956}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -357,21 +358,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70f31aed935b97244bd43ef163de00c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  randomSeed: 0
-  nextPlayerIndex: 0
-  expectedPlayers: 0
-  numberOfPlayers: 0
-  localPlayer: {fileID: 0}
-  players: []
-  nextTurnOrder: []
-  currentPlayer: {fileID: 0}
-  connectedClients: 0
+  players: {fileID: 932607956}
+  stateController: {fileID: 1667884106}
+  commandStack: {fileID: 1688202615}
   boardView: {fileID: 482951774}
   sharedView: {fileID: 10177261}
   toolTip: {fileID: 1887589122}
   zoomDisplayPanel: {fileID: 1551101254}
-  stateController: {fileID: 1667884106}
-  commandStack: {fileID: 1688202615}
+  randomSeed: 0
   cardFactory: {fileID: 1054642147}
   debugPanel: {fileID: 295791267}
 --- !u!4 &932607955
@@ -387,6 +381,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
+--- !u!114 &932607956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 932607953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b08898cf66d6c84e896d63306a11d13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextIndex: 0
+  local: {fileID: 0}
+  list: []
+  nextOrder: []
+  current: {fileID: 0}
 --- !u!114 &932607957
 MonoBehaviour:
   m_ObjectHideFlags: 0

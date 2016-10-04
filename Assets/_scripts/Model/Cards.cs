@@ -15,7 +15,7 @@ public class Cards
     public List<CardId> dayTactics;
     public List<CardId> nightTactics;
 
-    public Cards(Scenario scenario, PlayerControl[] players)
+    public Cards(Scenario scenario, GamePlayers players)
     {
         GameConstants.GenerateCardNumbers();
         CreateCommonDecks(scenario);
@@ -51,12 +51,12 @@ public class Cards
         return deck;
     }
 
-    void CreatePlayerDecks(PlayerControl[] players)
+    void CreatePlayerDecks(GamePlayers players)
     {
-        foreach (var playerControl in players)
+        for (int i = 0; i < players.Total; i++)
         {
-            playerControl.CreateModel(this);
-            playerControl.DrawCards(5);
+            players.List[i].CreateModel(this);
+            players.List[i].DrawCards(5);
         }
     }
 

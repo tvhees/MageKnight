@@ -24,7 +24,7 @@ public class PlayerControl : NetworkBehaviour
     [SyncVar(hook = "OnHexChanged")]
     public HexId currentHex;
 
-    public bool isYourTurn { get { return GameController.singleton.currentPlayer == this; } }
+    public bool isYourTurn { get { return GameController.singleton.players.current == this; } }
 
     public Player model;
     public PlayerView view;
@@ -78,7 +78,7 @@ public class PlayerControl : NetworkBehaviour
     [Client]
     void OnLocalSceneLoaded()
     {
-        GameController.singleton.localPlayer = this;
+        GameController.singleton.players.SetLocal(this);
         playerCamera.enabled = true;
         turnOrderDisplay.Select(true);
         CmdSetPlayerId(playerId);
@@ -100,7 +100,7 @@ public class PlayerControl : NetworkBehaviour
     [Command]
     void CmdAddToPlayerList()
     {
-        GameController.singleton.AddPlayerToGame(this);
+        GameController.singleton.players.Add(this);
     }
 
     [Command]
@@ -120,7 +120,7 @@ public class PlayerControl : NetworkBehaviour
     {
         if (isYourTurn)
         {
-            GameController.singleton.ServerOnTacticSelected(name);
+            GameController.singleton.OnTacticSelected(name);
         }
     }
 
@@ -128,7 +128,7 @@ public class PlayerControl : NetworkBehaviour
     public void CmdEndTurn()
     {
         if(isYourTurn)
-            GameController.singleton.NextPlayer();
+            GameController.singleton.players.MoveToNext();
     }
 
     [Command]
@@ -173,6 +173,11 @@ public class PlayerControl : NetworkBehaviour
         }
 
         characterView.SetMaterialAlpha(alpha);
+
+        if (GameController.singleton.sharedView != null)
+        {
+            GameController.singleton.sharedView.HighlightPlayer(playerId, becameYourTurn);
+        }
     }
 
     [Client]
