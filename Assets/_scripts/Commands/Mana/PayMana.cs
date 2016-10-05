@@ -10,6 +10,7 @@ namespace Commands
     {
         public GameConstants.ManaType colour;
         private GameConstants.ManaType paidColour;
+        private ManaId paidId;
         private Player playerModel;
 
         protected override CommandResult ExecuteThisCommand()
@@ -24,11 +25,13 @@ namespace Commands
                 return CommandResult.failure;
             
             playerModel.AddMana(paidColour, subtract: true);
+            paidId = GameController.singleton.PlayManaSource(paidColour);
             return CommandResult.success;
         }
 
         protected override void UndoThisCommand()
         {
+            GameController.singleton.ReturnManaSource(paidId);
             playerModel.AddMana(paidColour);
         }
     }

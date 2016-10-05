@@ -13,6 +13,6 @@ public class SelectionPhase : NetworkBehaviour {
     void OnEnable()
     {
         Debug.Log(gameObject.name);
-        GameController.singleton.nextTurnOrder = new PlayerControl[6];
+        GameController.singleton.players.ClearNextOrder();
     }
 }

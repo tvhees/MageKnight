@@ -24,7 +24,7 @@ public class PlayerControl : NetworkBehaviour
     [SyncVar(hook = "OnHexChanged")]
     public HexId currentHex;
 
-    public bool isYourTurn { get { return GameController.singleton.currentPlayer == this; } }
+    public bool isYourTurn { get { return GameController.singleton.players.current == this; } }
 
     public Player model;
     public PlayerView view;
@@ -78,7 +78,7 @@ public class PlayerControl : NetworkBehaviour
     [Client]
     void OnLocalSceneLoaded()
     {
-        GameController.singleton.localPlayer = this;
+        GameController.singleton.players.SetLocal(this);
         playerCamera.enabled = true;
         turnOrderDisplay.Select(true);
         CmdSetPlayerId(playerId);
@@ -100,7 +100,7 @@ public class PlayerControl : NetworkBehaviour
     [Command]
     void CmdAddToPlayerList()
     {
-        GameController.singleton.ServerAddPlayer(this);
+        GameController.singleton.players.Add(this);
     }
 
     [Command]
@@ -111,7 +111,7 @@ public class PlayerControl : NetworkBehaviour
             characterName = name;
             colour = character.colour;
 
-            GameController.singleton.ServerOnCharacterSelected(name);
+            GameController.singleton.OnCharacterSelected(name);
         }
     }
 
@@ -120,7 +120,7 @@ public class PlayerControl : NetworkBehaviour
     {
         if (isYourTurn)
         {
-            GameController.singleton.ServerOnTacticSelected(name);
+            GameController.singleton.OnTacticSelected(name);
         }
     }
 
@@ -128,13 +128,13 @@ public class PlayerControl : NetworkBehaviour
     public void CmdEndTurn()
     {
         if(isYourTurn)
-            GameController.singleton.ServerNextPlayer();
+            GameController.singleton.players.MoveToNext();
     }
 
     [Command]
     public void CmdUndo()
     {
-        if (GameController.singleton.currentPlayer == this)
+        if (isYourTurn)
             GameController.singleton.commandStack.UndoLastCommand();
     }
 
@@ -173,6 +173,11 @@ public class PlayerControl : NetworkBehaviour
         }
 
         characterView.SetMaterialAlpha(alpha);
+
+        if (GameController.singleton.sharedView != null)
+        {
+            GameController.singleton.sharedView.HighlightPlayer(playerId, becameYourTurn);
+        }
     }
 
     [Client]
@@ -252,12 +257,18 @@ public class PlayerControl : NetworkBehaviour
 
     #region Mana
     [Command]
-    public void CmdDieToggled(bool selected)
+    public void CmdDieToggled(ManaId manaId)
     {
-        if (selected)
+        if (manaId.selected)
+        {
             model.diceAllowed--;
+            model.AddMana(manaId.colour);
+        }
         else
+        {
             model.diceAllowed++;
+            model.AddMana(manaId.colour, subtract: true);
+        }
 
         if (model.diceAllowed <= 0)
             RpcToggleDiceInteractivity(false);

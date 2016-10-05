@@ -14,58 +14,46 @@ public class GameController : NetworkBehaviour
 {
     public static GameController singleton;
 
-    public int randomSeed;
+    #region Controller
+    public GamePlayers players { get; private set; }
+    public GameDice dice { get; private set; }
+    #endregion
+
+    #region Model
     public Board board;
     public Cards cards;
-    public ManaPool mana;
-
-    public Scenario scenario { get {
-            if (players.Count <= 1)
-                return ScenarioDatabase.GetScriptableObject("Solo Conquest");
-            else
-                return ScenarioDatabase.GetScriptableObject("Full Conquest");
-        } }
-
-    #region Model variables
-    public GameConstants.TerrainCosts movementCosts = new GameConstants.TerrainCosts(true);
-    public HexId portalHex;
-    #endregion
-
-    #region Syncvars
-    [SyncVar]
-    public int startPlayerIndex;
-    [SyncVar]
-    public int nextPlayerIndex;
-    [SyncVar]
-    public int expectedPlayers;
-    [SyncVar]
-    public int numberOfPlayers;
-    #endregion
-
-    #region References
-    public PlayerControl localPlayer;
-    public List<PlayerControl> players = new List<PlayerControl>();
-    public PlayerControl[] nextTurnOrder;
-    public PlayerControl currentPlayer;
-
-    public BoardView boardView;
-    public ToolTip toolTip;
-
-    public int connectedClients = 0;
-
     public StateController stateController;
     public CommandStack commandStack;
-    public CardFactory cardFactory;
-
-    public SharedView sharedView;
-    public GameObject displayPanel;
-    public DebugPanel debugPanel;
     #endregion
 
+    #region View
+    public BoardView boardView;
+    public SharedView sharedView;
+    public ToolTip toolTip;
+    public GameObject zoomDisplayPanel;
+    #endregion
+
+    #region Settings
+    public int randomSeed;
+    public Scenario scenario {
+        get {
+            if (players.Total <= 1)
+                return ScenarioDatabase.GetScriptableObject("Solo Conquest");
+            else
+                return ScenarioDatabase.GetScriptableObject("Full Conquest"); }
+    }
+    #endregion
+
+    public GameConstants.TerrainCosts movementCosts = new GameConstants.TerrainCosts(true);
+    public CardFactory cardFactory;
+    public DebugPanel debugPanel;
+
+    #region Initialisation
     void Awake()
     {
         singleton = this;
-        //commandStack = ScriptableObject.CreateInstance<CommandStack>();
+        players = GetComponent<GamePlayers>();
+        dice = GetComponent<GameDice>();
         AddEventListeners();
     }
 
@@ -73,29 +61,26 @@ public class GameController : NetworkBehaviour
     {
         EventManager.characterSelected.AddListener(UiSelectCharacter);
         EventManager.tacticSelected.AddListener(UiSelectTactic);
-        EventManager.endTurn.AddListener(UiEndTurn);
+        EventManager.endTurn.AddListener(players.UiEndTurn);
     }
 
-    #region UnetCallbacks
     public override void OnStartServer()
     {
         base.OnStartServer();
-
-        expectedPlayers = ServerCalculateExpectedPlayers();
         StartCoroutine(ServerWaitForConnections());
     }
 
     [Server]
     IEnumerator ServerWaitForConnections()
     {
-        while (players.Count < expectedPlayers)
+        while (!players.AllConnected)
             yield return null;
 
-        ServerStartGame();
+        StartGame();
     }
 
     [Server]
-    int ServerCalculateExpectedPlayers()
+    int CalculateExpectedPlayers()
     {
         int i = 0;
         foreach (NetworkLobbyPlayer player in LobbyManager.s_Singleton.lobbySlots)
@@ -105,183 +90,105 @@ public class GameController : NetworkBehaviour
         }
         return i;
     }
+
+    [Server]
+    public void StartGame()
+    {
+        players.RandomiseOrder();
+        stateController.ChangeToState(GameConstants.GameState.CharacterSelect);
+    }
     #endregion
 
-    #region Server methods
+    #region Game setup
     [Server]
-    public void ServerAddPlayer(PlayerControl player)
-    {
-        players.Add(player);
-        numberOfPlayers = players.Count;
-    }
-
-    [Server]
-    public void ServerStartGame()
-    {
-        ServerRandomiseTurnOrder();
-        stateController.ServerChangeToState(GameConstants.GameState.CharacterSelect);
-    }
-
-    [Server]
-    public void ServerRandomiseTurnOrder()
-    {
-        nextTurnOrder = players.ToArray();
-        nextTurnOrder.Shuffle();
-        ServerSetNewTurnOrder();
-    }
-
-    [Server]
-    public void ServerOnCharacterSelected(string name)
-    {
-        sharedView.RpcDisableButton(name);
-
-        // Tactics selection phase proceeds in reverse order of character selection
-        int newIndex = players.Count - nextPlayerIndex;
-        nextTurnOrder[players.Count - nextPlayerIndex] = currentPlayer;
-
-        if (nextPlayerIndex >= players.Count)
-        {
-            ServerSetNewTurnOrder();
-            stateController.ServerChangeToState(GameConstants.GameState.BoardSetup);
-        }
-        else
-            ServerNextPlayer();
-    }
-
-    [Server]
-    public void ServerNextPlayer()
-    {
-        if (currentPlayer != null)
-        {
-            currentPlayer.RpcYourTurn(false);
-            sharedView.RpcStopHighlightingPlayer(currentPlayer.playerId);
-        }
-
-        if (nextPlayerIndex >= players.Count)
-            nextPlayerIndex = 0;
-        currentPlayer = players[nextPlayerIndex];
-        currentPlayer.RpcYourTurn(true);
-        if (sharedView != null)
-        {
-            sharedView.RpcHighlightPlayer(currentPlayer.playerId);
-        }
-
-        // Wrap currentPlayerIndex to 0 because Mathf.Repeat doesn't take integers
-        nextPlayerIndex++;
-    }
-
-    [Server]
-    public void ServerCreateBoardFromRandomSeed()
+    public void CreateGameFromRandomSeed()
     {
         // If we haven't specified a seed its value will be 0 and we should create a new one
         if (randomSeed == 0)
             randomSeed = System.Environment.TickCount;
         Random.InitState(randomSeed);
-        board = new Board(scenario, numberOfPlayers, boardView);
-        cards = new Cards(scenario, players.ToArray());
-        mana = new ManaPool(players.Count);
-        sharedView.RpcEnableDice(mana.dice.Length);
-    }
 
-    [Server]
-    public void ServerSetPlayerPositions()
-    {
-        for (int i = 0; i < players.Count; i++)
-        {
-            players[i].OnHexChanged(portalHex);
-        }
-    }
+        board = new Board(scenario, players, boardView);
+        cards = new Cards(scenario, players);
+        var mana = new ManaPool(players);
 
-    [Server]
-    public void ServerOnTacticSelected(string name)
-    {
-        sharedView.RpcDisableButton(name);
-
-        var tactic = CardDatabase.GetScriptableObject(name);
-        nextTurnOrder[tactic.number] = currentPlayer;
-        currentPlayer.AssignChosenTactic(cards, tactic);
-
-        if (nextPlayerIndex >= players.Count)
-        {
-            ServerSetNewTurnOrder();
-            stateController.ServerChangeToState(GameConstants.GameState.TurnSetup);
-        }
-        else
-            ServerNextPlayer();
-    }
-
-    [Server]
-    public void ServerSetNewTurnOrder()
-    {
-        players.Clear();
-        for (int i = 0; i < nextTurnOrder.Length; i++)
-        {
-            if (nextTurnOrder[i] == null)
-                continue;
-
-            nextTurnOrder[i].RpcMoveToIndexInTurnOrder(players.Count);
-            players.Add(nextTurnOrder[i]);
-        }
-
-        nextPlayerIndex = 0;
-        ServerNextPlayer();
-    }
-
-    [Server]
-    public void ServerRollAllDice()
-    {
-        for (int i = 0; i < mana.dice.Length; i++)
-        {
-            ServerRollDie(i);
-        }
-
-        if (!mana.HasEnoughBasicMana())
-            ServerRollAllDice();
-    }
-
-    [Server]
-    public void ServerRollDie(int i)
-    {
-        GameConstants.ManaType manaColour = GameConstants.manaColours[Random.Range(0, GameConstants.manaColours.Length)];
-        mana.dice[i].colour = manaColour;
-        sharedView.RpcSetDiceColour(new ManaId(i, manaColour));
+        dice.Enable(mana, sharedView);
     }
     #endregion
 
-    #region UI methods
+    #region SelectionPhases
     void UiSelectCharacter(string name)
     {
-        localPlayer.CmdSetCharacter(name);
+        players.local.CmdSetCharacter(name);
+    }
+
+    [Server]
+    public void OnCharacterSelected(string name)
+    {
+        sharedView.RpcDisableButton(name);
+        players.AssignCharacter();
+        if (players.OnLastForRound)
+            stateController.ChangeToState(GameConstants.GameState.BoardSetup);
     }
 
     void UiSelectTactic(string name)
     {
-        localPlayer.CmdSetTactic(name);
+        players.local.CmdSetTactic(name);
     }
 
-    void UiEndTurn()
+    [Server]
+    public void OnTacticSelected(string name)
     {
-        localPlayer.CmdEndTurn();
+        sharedView.RpcDisableButton(name);
+        var tactic = CardDatabase.GetScriptableObject(name);
+        players.AssignTactic(cards, tactic);
+
+        if (players.OnLastForRound)
+            stateController.ChangeToState(GameConstants.GameState.TurnSetup);
+    }
+    #endregion
+
+    #region Mana
+    [Client]
+    public void UiDieToggled(ManaId manaId)
+    {
+        players.local.CmdDieToggled(manaId);
+        dice.CmdSetDieValue(manaId);
     }
 
-    public void UiEnableUndo(bool enable)
+    [Server]
+    public ManaId PlayManaSource(GameConstants.ManaType colour)
     {
-        currentPlayer.view.RpcEnableUndo(enable);
+        ManaId source;
+        source = dice.GetSelected(colour);
+        if (source.index < 0)
+        {
+            Debug.Log("No selected die of colour " + colour.ToString());
+            return source;
+        }
+
+        sharedView.RpcMoveDieToPlay(source);
+        return source;
+    }
+
+    [Server]
+    public void ReturnManaSource(ManaId source)
+    {
+        sharedView.RpcMoveDieToPool(source);
+    }
+
+    #endregion
+
+    #region Command and effect management
+    [Server]
+    public void EnableUndo(bool enable)
+    {
+        players.current.view.RpcEnableUndo(enable);
     }
 
     public void UiPlayEffect(CardId cardId)
     {
-        localPlayer.CmdPlayEffect(cardId);
+        players.local.CmdPlayEffect(cardId);
     }
-
-    public void UiDieToggled(ManaId manaId)
-    {
-        localPlayer.CmdDieToggled(manaId.selected);
-
-        if (manaId.selected)
-            localPlayer.CmdAddMana(manaId.colour);
-        else
-            localPlayer.CmdRemoveMana(manaId.colour);
-    }
-#endregion
+    #endregion
 }

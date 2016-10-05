@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.4.1f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -94,9 +96,10 @@
     <Compile Include="Assets\_scripts\Common\ObjectPool.cs" />
     <Compile Include="Assets\_scripts\Common\Singleton.cs" />
     <Compile Include="Assets\_scripts\Controller\GameController.cs" />
+    <Compile Include="Assets\_scripts\Controller\GamePlayers.cs" />
+    <Compile Include="Assets\_scripts\Controller\GameDice.cs" />
     <Compile Include="Assets\_scripts\Controller\PlayerControl.cs" />
     <Compile Include="Assets\_scripts\Controller\StateController.cs" />
-    <Compile Include="Assets\_scripts\Controller\TurnController.cs" />
     <Compile Include="Assets\_scripts\InteractibleFeature.cs" />
     <Compile Include="Assets\_scripts\Model\Board.cs" />
     <Compile Include="Assets\_scripts\Model\CardId.cs" />
