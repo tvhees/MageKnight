@@ -29,8 +29,8 @@ public class GameDice : NetworkBehaviour
             RollAll();
     }
 
-    [Command]
-    public void CmdSetDieValue(ManaId manaId)
+    [Server]
+    public void SetDieValue(ManaId manaId)
     {
         mana.dice[manaId.index] = manaId;
         sharedView.RpcSetDiceColour(manaId);

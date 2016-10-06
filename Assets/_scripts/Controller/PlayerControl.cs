@@ -125,13 +125,6 @@ public class PlayerControl : NetworkBehaviour
     }
 
     [Command]
-    public void CmdEndTurn()
-    {
-        if(isYourTurn)
-            GameController.singleton.players.MoveToNext();
-    }
-
-    [Command]
     public void CmdUndo()
     {
         if (isYourTurn)
@@ -170,6 +163,7 @@ public class PlayerControl : NetworkBehaviour
         if (becameYourTurn)
         {
             alpha = 1f;
+            GameController.singleton.players.SetCurrent(this);
         }
 
         characterView.SetMaterialAlpha(alpha);
@@ -215,6 +209,12 @@ public class PlayerControl : NetworkBehaviour
     {
         turnOrderDisplay.transform.SetSiblingIndex(index);
     }
+
+    [Command]
+    public void CmdEndTurn()
+    {
+        GameController.singleton.EndTurn();
+    }
     #endregion
 
     #region Hook methods
@@ -259,21 +259,13 @@ public class PlayerControl : NetworkBehaviour
     [Command]
     public void CmdDieToggled(ManaId manaId)
     {
-        if (manaId.selected)
-        {
-            model.diceAllowed--;
-            model.AddMana(manaId.colour);
-        }
-        else
-        {
-            model.diceAllowed++;
-            model.AddMana(manaId.colour, subtract: true);
-        }
+        model.DieToggled(manaId);
+        GameController.singleton.dice.SetDieValue(manaId);
 
-        if (model.diceAllowed <= 0)
-            RpcToggleDiceInteractivity(false);
-        else
+        if (model.CanUseDice)
             RpcToggleDiceInteractivity(true);
+        else
+            RpcToggleDiceInteractivity(false);
     }
 
     [ClientRpc]
@@ -325,6 +317,13 @@ public class PlayerControl : NetworkBehaviour
     {
         model.DrawCards(numberToDraw);
         view.RpcDrawCards(numberToDraw);
+    }
+
+    [Server]
+    public void RefillHand()
+    {
+        int numberToDraw = Mathf.Max(model.handSize - model.hand.Count);
+        DrawCards(numberToDraw);
     }
 
     [Server]

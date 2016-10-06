@@ -61,7 +61,6 @@ public class GameController : NetworkBehaviour
     {
         EventManager.characterSelected.AddListener(UiSelectCharacter);
         EventManager.tacticSelected.AddListener(UiSelectTactic);
-        EventManager.endTurn.AddListener(players.UiEndTurn);
     }
 
     public override void OnStartServer()
@@ -125,9 +124,14 @@ public class GameController : NetworkBehaviour
     [Server]
     public void OnCharacterSelected(string name)
     {
+        var endRound = false;
+        if (players.OnLastForRound)
+            endRound = true;
+
         sharedView.RpcDisableButton(name);
         players.AssignCharacter();
-        if (players.OnLastForRound)
+        
+        if(endRound)
             stateController.ChangeToState(GameConstants.GameState.BoardSetup);
     }
 
@@ -139,11 +143,15 @@ public class GameController : NetworkBehaviour
     [Server]
     public void OnTacticSelected(string name)
     {
+        var endRound = false;
+        if (players.OnLastForRound)
+            endRound = true;
+
         sharedView.RpcDisableButton(name);
         var tactic = CardDatabase.GetScriptableObject(name);
         players.AssignTactic(cards, tactic);
 
-        if (players.OnLastForRound)
+        if (endRound)
             stateController.ChangeToState(GameConstants.GameState.TurnSetup);
     }
     #endregion
@@ -153,7 +161,6 @@ public class GameController : NetworkBehaviour
     public void UiDieToggled(ManaId manaId)
     {
         players.local.CmdDieToggled(manaId);
-        dice.CmdSetDieValue(manaId);
     }
 
     [Server]
@@ -176,8 +183,14 @@ public class GameController : NetworkBehaviour
     {
         sharedView.RpcMoveDieToPool(source);
     }
-
     #endregion
+
+    public void EndTurn()
+    {
+        stateController.ChangeToState(stateController.endOfTurn);
+        players.EndTurn();
+        stateController.ChangeToState(stateController.turnSetup);
+    }
 
     #region Command and effect management
     [Server]

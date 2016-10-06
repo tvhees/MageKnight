@@ -10,6 +10,7 @@ public class Player
     public List<CardId> discard;
     public List<CardId> units;
     public List<CardId> play;
+    public int handSize;
 
     public int movement;
     public int influence;
@@ -23,13 +24,16 @@ public class Player
     public bool HasBlack { get { return mana[5] > 0; } }
     #endregion
 
-    public Player(Character character, Cards cards)
+    public bool CanUseDice { get { return diceAllowed > 0; } }
+
+    public Player(Character character, Cards cards, int handSize = 5)
     {
         deck = cards.CreateDeck(character.deck);
         hand = new List<CardId>();
         discard = new List<CardId>();
         units = new List<CardId>();
         play = new List<CardId>();
+        this.handSize = handSize;
     }
 
     public void ResetMana()
@@ -41,6 +45,20 @@ public class Player
     public bool HasMana(GameConstants.ManaType colour)
     {
         return mana[(int)colour] > 0;
+    }
+
+    public void DieToggled(ManaId manaId)
+    {
+        if (manaId.selected)
+        {
+            diceAllowed--;
+            AddMana(manaId.colour);
+        }
+        else
+        {
+            diceAllowed++;
+            AddMana(manaId.colour, subtract: true);
+        }
     }
 
     public void AddMana(GameConstants.ManaType colour, bool subtract = false)
@@ -59,6 +77,7 @@ public class Player
                 break;
 
             MoveCardToHand(deck.GetFirst());
+            GameController.singleton.commandStack.ClearCommandList();
         }
     }
 

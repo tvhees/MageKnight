@@ -12,6 +12,7 @@ namespace View
         public Canvas canvas;
 
         public Button undoButton;
+        public Button endTurnButton;
 
         public GameObject deck;
         public GameObject hand;
@@ -151,9 +152,20 @@ namespace View
             undoButton.interactable = enable;
         }
 
+        [ClientRpc]
+        public void RpcEnableEndTurn(bool enable)
+        {
+            endTurnButton.interactable = enable;
+        }
+
         public void UiUndo()
         {
             owner.CmdUndo();
+        }
+
+        public void UiEndTurn()
+        {
+            owner.CmdEndTurn();
         }
         #endregion
     }

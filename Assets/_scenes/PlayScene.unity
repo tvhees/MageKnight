@@ -986,11 +986,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 114000012667029232, guid: dcd154eecbc86704aa612b6d1fc6d107,
-        type: 2}
-      propertyPath: boardView
-      value: 
-      objectReference: {fileID: 482951774}
     - target: {fileID: 114000011756995214, guid: dcd154eecbc86704aa612b6d1fc6d107,
         type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target

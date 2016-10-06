@@ -23,7 +23,7 @@ namespace View
             EventManager.stateChanged.AddListener(OnStateChanged);
         }
 
-        void OnStateChanged(GameObject newState)
+        void OnStateChanged(GameState newState)
         {
             currentPhase.text = newState.name;
         }
@@ -119,6 +119,7 @@ namespace View
         {
             var die = manaDice[manaId.index];
             die.Enable(false);
+
             die.MoveToNewParent(GameController.singleton.players.current.view.play.transform);
         }
 

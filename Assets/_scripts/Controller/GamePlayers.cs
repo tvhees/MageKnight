@@ -78,8 +78,8 @@ public class GamePlayers : NetworkBehaviour
 
         if (OnLastForRound)
             SetNewOrder();
-        else
-            MoveToNext();
+            
+        MoveToNext();
     }
 
     [Server]
@@ -88,6 +88,7 @@ public class GamePlayers : NetworkBehaviour
         nextOrder = list.ToArray();
         nextOrder.Shuffle();
         SetNewOrder();
+        MoveToNext();
     }
     
     [Server]
@@ -104,7 +105,6 @@ public class GamePlayers : NetworkBehaviour
         }
 
         nextIndex = 0;
-        MoveToNext();
     }
 
     [Server]
@@ -113,6 +113,7 @@ public class GamePlayers : NetworkBehaviour
         if (current != null)
         {
             current.RpcYourTurn(false);
+            current.view.RpcEnableEndTurn(false);
         }
 
         // Wrap index to 0 because Mathf.Repeat doesn't take integers
@@ -120,13 +121,22 @@ public class GamePlayers : NetworkBehaviour
             nextIndex = 0;
         current = list[nextIndex];
         current.RpcYourTurn(true);
+        current.view.RpcEnableEndTurn(true);
 
         nextIndex++;
     }
 
-    public void UiEndTurn()
+    [Client]
+    public void SetCurrent(PlayerControl player)
     {
-        local.CmdEndTurn();
+        current = player;
+    }
+
+    [Server]
+    public void EndTurn()
+    {
+        current.RefillHand();
+        MoveToNext();
     }
     #endregion
 
