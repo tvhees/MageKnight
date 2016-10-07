@@ -125,13 +125,6 @@ public class PlayerControl : NetworkBehaviour
     }
 
     [Command]
-    public void CmdEndTurn()
-    {
-        if(isYourTurn)
-            GameController.singleton.players.MoveToNext();
-    }
-
-    [Command]
     public void CmdUndo()
     {
         if (isYourTurn)
@@ -139,16 +132,13 @@ public class PlayerControl : NetworkBehaviour
     }
 
     [Command]
-    public void CmdPlayEffect(CardId cardId)
+    public void CmdPlayCard(CardId cardId)
     {
-        Assert.IsTrue(model.ListContainsCard(cardId, model.hand), "Card played is not in hand on the server");
-
         Card card = CardDatabase.GetScriptableObject(cardId.name);
         Command effect = card.GetAutomaticEffect();
         if (effect == null)
             return;
 
-        effect = Instantiate(effect);
         effect.SetInformation(new GameData(player: this, cardId: cardId));
         GameController.singleton.commandStack.RunCommand(effect);
     }
@@ -170,6 +160,7 @@ public class PlayerControl : NetworkBehaviour
         if (becameYourTurn)
         {
             alpha = 1f;
+            GameController.singleton.players.SetCurrent(this);
         }
 
         characterView.SetMaterialAlpha(alpha);
@@ -215,6 +206,13 @@ public class PlayerControl : NetworkBehaviour
     {
         turnOrderDisplay.transform.SetSiblingIndex(index);
     }
+
+    [Command]
+    public void CmdEndTurn()
+    {
+        
+        GameController.singleton.EndTurn();
+    }
     #endregion
 
     #region Hook methods
@@ -259,21 +257,13 @@ public class PlayerControl : NetworkBehaviour
     [Command]
     public void CmdDieToggled(ManaId manaId)
     {
-        if (manaId.selected)
-        {
-            model.diceAllowed--;
-            model.AddMana(manaId.colour);
-        }
-        else
-        {
-            model.diceAllowed++;
-            model.AddMana(manaId.colour, subtract: true);
-        }
+        model.DieToggled(manaId);
+        GameController.singleton.dice.SetDieValue(manaId);
 
-        if (model.diceAllowed <= 0)
-            RpcToggleDiceInteractivity(false);
-        else
+        if (model.CanUseDice)
             RpcToggleDiceInteractivity(true);
+        else
+            RpcToggleDiceInteractivity(false);
     }
 
     [ClientRpc]
@@ -321,10 +311,23 @@ public class PlayerControl : NetworkBehaviour
     }
 
     [Server]
-    public void DrawCards(int numberToDraw)
+    public bool DrawCards(int numberToDraw)
     {
-        model.DrawCards(numberToDraw);
-        view.RpcDrawCards(numberToDraw);
+        if (model.CanDrawCards)
+        {
+            model.DrawCards(numberToDraw);
+            view.RpcDrawCards(numberToDraw);
+            return true;
+        }
+        else
+            return false;
+    }
+
+    [Server]
+    public void RefillHand()
+    {
+        int numberToDraw = Mathf.Max(model.handSize - model.hand.Count);
+        DrawCards(numberToDraw);
     }
 
     [Server]
@@ -386,7 +389,25 @@ public class PlayerControl : NetworkBehaviour
     [Server]
     public void AssignChosenTactic(Cards cards, Card tactic)
     {
-        view.RpcOnTacticChosen(cards.GetTacticId(tactic.number));
+        CardId tacticId = cards.GetTacticId(tactic.number);
+        model.tacticId = tacticId;
+        model.isTacticActive = true;
+        view.RpcOnTacticChosen(tacticId);
+    }
+
+    [Server]
+    public void TriggerTactic(Card tactic)
+    {
+        if (!model.isTacticActive)
+            return;
+
+        if (model.tacticId.name == tactic.name)
+        {
+            var tacticCommand = tactic.GetAutomaticEffect();
+            tacticCommand.SetInformation(new GameData(player: this));
+            GameController.singleton.commandStack.RunCommand(tacticCommand);
+            model.isTacticActive = tactic.isRepeatable;
+        }
     }
     #endregion
 

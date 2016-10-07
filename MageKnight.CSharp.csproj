@@ -80,6 +80,7 @@
     <Compile Include="Assets\Lobby\Scripts\Lobby\PlayerNumberHook.cs" />
     <Compile Include="Assets\_scripts\Clickable.cs" />
     <Compile Include="Assets\_scripts\Commands\CardManagement\MoveCard.cs" />
+    <Compile Include="Assets\_scripts\Commands\CardManagement\DrawCards.cs" />
     <Compile Include="Assets\_scripts\Commands\Command.cs" />
     <Compile Include="Assets\_scripts\Commands\CommandResult.cs" />
     <Compile Include="Assets\_scripts\Commands\CommandStack.cs" />
@@ -96,8 +97,8 @@
     <Compile Include="Assets\_scripts\Common\ObjectPool.cs" />
     <Compile Include="Assets\_scripts\Common\Singleton.cs" />
     <Compile Include="Assets\_scripts\Controller\GameController.cs" />
-    <Compile Include="Assets\_scripts\Controller\GamePlayers.cs" />
     <Compile Include="Assets\_scripts\Controller\GameDice.cs" />
+    <Compile Include="Assets\_scripts\Controller\GamePlayers.cs" />
     <Compile Include="Assets\_scripts\Controller\PlayerControl.cs" />
     <Compile Include="Assets\_scripts\Controller\StateController.cs" />
     <Compile Include="Assets\_scripts\InteractibleFeature.cs" />
@@ -109,6 +110,7 @@
     <Compile Include="Assets\_scripts\Model\ManaId.cs" />
     <Compile Include="Assets\_scripts\Model\ManaPool.cs" />
     <Compile Include="Assets\_scripts\Model\Player.cs" />
+    <Compile Include="Assets\_scripts\Model\Tactic.cs" />
     <Compile Include="Assets\_scripts\Model\TileId.cs" />
     <Compile Include="Assets\_scripts\Other\Data\Card.cs" />
     <Compile Include="Assets\_scripts\Other\Data\Character.cs" />
@@ -125,9 +127,14 @@
     <Compile Include="Assets\_scripts\Other\Factories\HexFactory.cs" />
     <Compile Include="Assets\_scripts\Other\Factories\TileFactory.cs" />
     <Compile Include="Assets\_scripts\Other\States\BoardSetup.cs" />
+    <Compile Include="Assets\_scripts\Other\States\GameLoading.cs" />
+    <Compile Include="Assets\_scripts\Other\States\GameState.cs" />
+    <Compile Include="Assets\_scripts\Other\States\Movement.cs" />
     <Compile Include="Assets\_scripts\Other\States\RoundSetup.cs" />
     <Compile Include="Assets\_scripts\Other\States\SelectionPhase.cs" />
+    <Compile Include="Assets\_scripts\Other\States\TurnEnd.cs" />
     <Compile Include="Assets\_scripts\Other\States\TurnSetup.cs" />
+    <Compile Include="Assets\_scripts\Other\States\TurnStart.cs" />
     <Compile Include="Assets\_scripts\Other\TokenSetup.cs" />
     <Compile Include="Assets\_scripts\Other\Utility\AwakeBehaviour.cs" />
     <Compile Include="Assets\_scripts\Other\Utility\CardDatabase.cs" />

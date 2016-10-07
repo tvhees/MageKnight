@@ -11,6 +11,7 @@ public class StateController : NetworkBehaviour {
     public GameObject turnSetup;
     public GameObject startOfTurn;
     public GameObject movement;
+    public GameObject endOfTurn;
 
     public GameObject[] gameStates;
 
@@ -44,7 +45,7 @@ public class StateController : NetworkBehaviour {
         gameState = newState;
         gameState.SetActive(true);
 
-        EventManager.stateChanged.Invoke(gameState);
+        EventManager.stateChanged.Invoke(gameState.GetComponent<GameState>());
     }
 
     [Client]

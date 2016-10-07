@@ -6,13 +6,13 @@ using Other.Data;
 using Other.Factory;
 using Other.Utility;
 
-public class SelectionPhase : NetworkBehaviour {
+public class SelectionPhase : GameState {
 
     // Selection phases are ended by the GameController, so we don't call the next gamestate here
     [ServerCallback]
-    void OnEnable()
+    protected override void OnEnable()
     {
-        Debug.Log(gameObject.name);
+        base.OnEnable();
         GameController.singleton.players.ClearNextOrder();
     }
 }

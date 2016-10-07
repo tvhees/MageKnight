@@ -6,14 +6,12 @@ using Other.Data;
 using Other.Factory;
 using Other.Utility;
 
-public class RoundSetup : NetworkBehaviour {
-
-    public StateController stateController;
+public class RoundSetup : GameState {
 
     [ServerCallback]
-    void OnEnable()
+    protected override void OnEnable()
     {
-        Debug.Log(gameObject.name);
+        base.OnEnable();
         GameController.singleton.dice.RollAll();
         stateController.ChangeToState(GameConstants.GameState.TacticSelect);
     }

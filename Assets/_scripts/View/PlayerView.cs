@@ -12,6 +12,7 @@ namespace View
         public Canvas canvas;
 
         public Button undoButton;
+        public Button endTurnButton;
 
         public GameObject deck;
         public GameObject hand;
@@ -19,6 +20,8 @@ namespace View
         public GameObject units;
         public GameObject tactic;
         public GameObject play;
+
+        public Tactic tacticModel;
 
         public StatusDisplay level;
         public StatusDisplay handSize;
@@ -126,8 +129,9 @@ namespace View
         [ClientRpc]
         public void RpcOnTacticChosen(CardId cardId)
         {
-            GameObject card = GameController.singleton.cardFactory.CreateCard(cardId);
-            card.GetComponent<CardView>().MoveToNewParent(tactic.transform);
+            var tacticView = GameController.singleton.cardFactory.CreateCard(cardId).GetComponent<CardView>();
+            tacticView.MoveToNewParent(tactic.transform);
+            tacticModel.SetTactic(tacticView);
         }
         #endregion
 
@@ -151,9 +155,20 @@ namespace View
             undoButton.interactable = enable;
         }
 
+        [ClientRpc]
+        public void RpcEnableEndTurn(bool enable)
+        {
+            endTurnButton.interactable = enable;
+        }
+
         public void UiUndo()
         {
             owner.CmdUndo();
+        }
+
+        public void UiEndTurn()
+        {
+            owner.CmdEndTurn();
         }
         #endregion
     }

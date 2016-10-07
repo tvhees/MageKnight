@@ -198,6 +198,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000013660695160}
   - 114: {fileID: 114000011723291974}
+  - 114: {fileID: 114000013385980078}
   m_Layer: 0
   m_Name: Turn Start
   m_TagString: Untagged
@@ -320,8 +321,9 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000011860513858}
   - 114: {fileID: 114000010753543748}
+  - 114: {fileID: 114000012616535350}
   m_Layer: 0
-  m_Name: Movement
+  m_Name: Turn End
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -372,6 +374,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 4000011726492512}
   - 114: {fileID: 114000011616522556}
+  - 114: {fileID: 114000014015596158}
   m_Layer: 0
   m_Name: Game Loading
   m_TagString: Untagged
@@ -415,6 +418,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1000013589061314
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 4000013340006222}
+  - 114: {fileID: 114000013197930888}
+  - 114: {fileID: 114000011248870676}
+  m_Layer: 0
+  m_Name: Movement
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
 --- !u!1 &1000013731179614
 GameObject:
   m_ObjectHideFlags: 1
@@ -505,6 +525,7 @@ Transform:
   - {fileID: 4000013159346864}
   - {fileID: 4000012507880386}
   - {fileID: 4000013660695160}
+  - {fileID: 4000013340006222}
   - {fileID: 4000011860513858}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -547,7 +568,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000011408086498}
-  m_RootOrder: 7
+  m_RootOrder: 8
 --- !u!4 &4000012358349774
 Transform:
   m_ObjectHideFlags: 1
@@ -601,6 +622,19 @@ Transform:
   - {fileID: 224000012767189312}
   m_Father: {fileID: 4000011408086498}
   m_RootOrder: 4
+--- !u!4 &4000013340006222
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013589061314}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 4000011408086498}
+  m_RootOrder: 7
 --- !u!4 &4000013660695160
 Transform:
   m_ObjectHideFlags: 1
@@ -900,6 +934,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04cefd49e1b1502499015c768e5e9888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allowEffects: 0
+  stateController: {fileID: 114000012570955294}
+  tacticsTriggered: []
 --- !u!114 &114000011239583632
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -911,7 +948,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06ab097e0638eb748ad22e97a0794c3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allowEffects: 0
   stateController: {fileID: 114000012570955294}
+  tacticsTriggered: []
 --- !u!114 &114000011248129142
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -926,6 +965,20 @@ MonoBehaviour:
   m_EffectColor: {r: 0.1544118, g: 0.1544118, b: 0.1544118, a: 1}
   m_EffectDistance: {x: 3, y: 3}
   m_UseGraphicAlpha: 1
+--- !u!114 &114000011248870676
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013589061314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42a31fcd972f65e40a7812827ef9d237, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allowEffects: 1
+  stateController: {fileID: 114000012570955294}
+  tacticsTriggered: []
 --- !u!114 &114000011324144454
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1034,6 +1087,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04cefd49e1b1502499015c768e5e9888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allowEffects: 0
+  stateController: {fileID: 114000012570955294}
+  tacticsTriggered: []
 --- !u!114 &114000011657279860
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1417,7 +1473,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de67180997042b0438d76cdcd9baafcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allowEffects: 0
   stateController: {fileID: 114000012570955294}
+  tacticsTriggered:
+  - {fileID: 11400000, guid: 293729edf87f64e419b0cf5c912fab2f, type: 2}
 --- !u!114 &114000012421870748
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1545,7 +1604,8 @@ MonoBehaviour:
   roundSetup: {fileID: 1000010907479160}
   turnSetup: {fileID: 1000013977693548}
   startOfTurn: {fileID: 1000012430597024}
-  movement: {fileID: 1000013126260338}
+  movement: {fileID: 1000013589061314}
+  endOfTurn: {fileID: 1000013126260338}
   gameStates:
   - {fileID: 1000013200085098}
   - {fileID: 1000012498444194}
@@ -1554,10 +1614,25 @@ MonoBehaviour:
   - {fileID: 1000011827917858}
   - {fileID: 1000013977693548}
   - {fileID: 1000012430597024}
+  - {fileID: 1000013589061314}
   - {fileID: 1000013126260338}
   stateIndex: 0
   gameState: {fileID: 1000013200085098}
   lastState: {fileID: 0}
+--- !u!114 &114000012616535350
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013126260338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b659c3634f02e142814811fbdeb4611, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allowEffects: 0
+  stateController: {fileID: 114000012570955294}
+  tacticsTriggered: []
 --- !u!114 &114000012667029232
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1569,9 +1644,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 164d4762e8b8914409011ba13b6bd3c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  holderPrefab: {fileID: 165744, guid: f66bd338ad488fb4d830713c063cb211, type: 2}
+  allowEffects: 0
   stateController: {fileID: 114000012570955294}
-  boardView: {fileID: 0}
+  tacticsTriggered: []
 --- !u!114 &114000012730106818
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1687,6 +1762,38 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012498444194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 220
+    i1: 209
+    i2: 84
+    i3: 238
+    i4: 203
+    i5: 200
+    i6: 103
+    i7: 4
+    i8: 170
+    i9: 97
+    i10: 43
+    i11: 109
+    i12: 31
+    i13: 198
+    i14: 209
+    i15: 7
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
+--- !u!114 &114000013197930888
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013589061314}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 372142912, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
@@ -1871,6 +1978,20 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114000013385980078
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012430597024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce8eeb0c9e1dc2244956ca8e1cc360ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allowEffects: 1
+  stateController: {fileID: 114000012570955294}
+  tacticsTriggered: []
 --- !u!114 &114000013483257466
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2043,6 +2164,20 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114000014015596158
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013200085098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 343fd49a90abbd94eb6af59f9642bcc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allowEffects: 0
+  stateController: {fileID: 114000012570955294}
+  tacticsTriggered: []
 --- !u!114 &114000014081662434
 MonoBehaviour:
   m_ObjectHideFlags: 1

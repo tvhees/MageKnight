@@ -21,13 +21,31 @@ public class DropZone : MonoBehaviour, IDropHandler
 
     public Image dropZone;
 
-    public void Show(bool show)
+    private bool allowDrop;
+
+    void Awake()
     {
+        EventManager.stateChanged.AddListener(Enable);
+    }
+
+    public void Enable(GameState newState)
+    {
+        allowDrop = newState.AllowEffects;
+    }
+
+    public void ShowInUi(bool show)
+    {
+        if (dropZone == null)
+            return;
+
         dropZone.enabled = show;
     }
 
     public void OnDrop(PointerEventData eventData)
     {
+        if (!allowDrop)
+            return;
+
         var droppedObject = eventData.pointerDrag.GetComponent<Moveable>();
 
         if (droppedObject == null)

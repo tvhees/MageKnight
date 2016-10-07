@@ -27,6 +27,8 @@ namespace Other.Data
 
         public int number;
 
+        public bool isRepeatable;
+
         public Command strongEffect;
 
         public Command GetAutomaticEffect()
@@ -35,6 +37,7 @@ namespace Other.Data
             {
                 case Type.Action:
                 case Type.Spell:
+                case Type.Tactic:
                     return Instantiate(strongEffect);
                 case Type.Artifact:
                     return Instantiate(strongEffect.alternate);

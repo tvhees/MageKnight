@@ -14,4 +14,4 @@ MonoBehaviour:
   type: 6
   colour: 4
   number: 4
-  commands: []
+  strongEffect: {fileID: 11400000, guid: 4433463c0d43049428abd9b615ee6964, type: 2}

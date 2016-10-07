@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using Other.Data;
+using Commands;
 
 public class Player
 {
@@ -10,6 +11,9 @@ public class Player
     public List<CardId> discard;
     public List<CardId> units;
     public List<CardId> play;
+    public int handSize;
+    public CardId tacticId;
+    public bool isTacticActive;
 
     public int movement;
     public int influence;
@@ -23,13 +27,18 @@ public class Player
     public bool HasBlack { get { return mana[5] > 0; } }
     #endregion
 
-    public Player(Character character, Cards cards)
+    public bool CanUseDice { get { return diceAllowed > 0; } }
+
+    public bool CanDrawCards { get { return deck.Count > 0; } }
+
+    public Player(Character character, Cards cards, int handSize = 5)
     {
         deck = cards.CreateDeck(character.deck);
         hand = new List<CardId>();
         discard = new List<CardId>();
         units = new List<CardId>();
         play = new List<CardId>();
+        this.handSize = handSize;
     }
 
     public void ResetMana()
@@ -41,6 +50,20 @@ public class Player
     public bool HasMana(GameConstants.ManaType colour)
     {
         return mana[(int)colour] > 0;
+    }
+
+    public void DieToggled(ManaId manaId)
+    {
+        if (manaId.selected)
+        {
+            diceAllowed--;
+            AddMana(manaId.colour);
+        }
+        else
+        {
+            diceAllowed++;
+            AddMana(manaId.colour, subtract: true);
+        }
     }
 
     public void AddMana(GameConstants.ManaType colour, bool subtract = false)
@@ -59,6 +82,7 @@ public class Player
                 break;
 
             MoveCardToHand(deck.GetFirst());
+            GameController.singleton.commandStack.ClearCommandList();
         }
     }
 
@@ -124,5 +148,14 @@ public class Player
     {
         RemoveCardFromLists(card);
         units.Add(card);
+    }
+
+    public void EndTurn(PlayerControl player)
+    {
+        var cardsInPlay = play.Count;
+        for (int i = 0; i < cardsInPlay; i++)
+        {
+            player.ServerMoveCard(play[0], GameConstants.Collection.Discard);
+        }
     }
 }

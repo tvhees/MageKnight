@@ -47,7 +47,6 @@ public class ManaPool {
     {
         for (int i = 0; i < DiceTotal; i++)
         {
-            Debug.Log(dice[i].colour + " " + dice[i].selected);
             if (dice[i].selected)
                 if (dice[i].colour == colour)
                     return dice[i];
