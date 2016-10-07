@@ -21,6 +21,8 @@ namespace View
         public GameObject tactic;
         public GameObject play;
 
+        public Tactic tacticModel;
+
         public StatusDisplay level;
         public StatusDisplay handSize;
         public StatusDisplay armour;
@@ -127,8 +129,9 @@ namespace View
         [ClientRpc]
         public void RpcOnTacticChosen(CardId cardId)
         {
-            GameObject card = GameController.singleton.cardFactory.CreateCard(cardId);
-            card.GetComponent<CardView>().MoveToNewParent(tactic.transform);
+            var tacticView = GameController.singleton.cardFactory.CreateCard(cardId).GetComponent<CardView>();
+            tacticView.MoveToNewParent(tactic.transform);
+            tacticModel.SetTactic(tacticView);
         }
         #endregion
 

@@ -11,6 +11,8 @@ public class Player
     public List<CardId> units;
     public List<CardId> play;
     public int handSize;
+    public CardId tacticId;
+    public bool isTacticActive;
 
     public int movement;
     public int influence;
@@ -25,6 +27,8 @@ public class Player
     #endregion
 
     public bool CanUseDice { get { return diceAllowed > 0; } }
+
+    public bool CanDrawCards { get { return deck.Count > 0; } }
 
     public Player(Character character, Cards cards, int handSize = 5)
     {

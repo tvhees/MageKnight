@@ -8,10 +8,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88613879a33c2654e8f117870d633744, type: 3}
-  m_Name: Great Start
+  m_Script: {fileID: 11500000, guid: 952dbaa86aa1e244a998346c309c39dc, type: 3}
+  m_Name: DrawOne
   m_EditorClassIdentifier: 
-  type: 6
-  colour: 4
-  number: 4
-  strongEffect: {fileID: 11400000, guid: 4433463c0d43049428abd9b615ee6964, type: 2}
+  requirements: []
+  optionals: []
+  alternate: {fileID: 0}
+  valueSize: 1

@@ -201,7 +201,7 @@ public class GameController : NetworkBehaviour
 
     public void UiPlayEffect(CardId cardId)
     {
-        players.local.CmdPlayEffect(cardId);
+        players.local.CmdPlayCard(cardId);
     }
     #endregion
 }

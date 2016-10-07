@@ -132,16 +132,13 @@ public class PlayerControl : NetworkBehaviour
     }
 
     [Command]
-    public void CmdPlayEffect(CardId cardId)
+    public void CmdPlayCard(CardId cardId)
     {
-        Assert.IsTrue(model.ListContainsCard(cardId, model.hand), "Card played is not in hand on the server");
-
         Card card = CardDatabase.GetScriptableObject(cardId.name);
         Command effect = card.GetAutomaticEffect();
         if (effect == null)
             return;
 
-        effect = Instantiate(effect);
         effect.SetInformation(new GameData(player: this, cardId: cardId));
         GameController.singleton.commandStack.RunCommand(effect);
     }
@@ -313,10 +310,16 @@ public class PlayerControl : NetworkBehaviour
     }
 
     [Server]
-    public void DrawCards(int numberToDraw)
+    public bool DrawCards(int numberToDraw)
     {
-        model.DrawCards(numberToDraw);
-        view.RpcDrawCards(numberToDraw);
+        if (model.CanDrawCards)
+        {
+            model.DrawCards(numberToDraw);
+            view.RpcDrawCards(numberToDraw);
+            return true;
+        }
+        else
+            return false;
     }
 
     [Server]
@@ -385,7 +388,25 @@ public class PlayerControl : NetworkBehaviour
     [Server]
     public void AssignChosenTactic(Cards cards, Card tactic)
     {
-        view.RpcOnTacticChosen(cards.GetTacticId(tactic.number));
+        CardId tacticId = cards.GetTacticId(tactic.number);
+        model.tacticId = tacticId;
+        model.isTacticActive = true;
+        view.RpcOnTacticChosen(tacticId);
+    }
+
+    [Server]
+    public void TriggerTactic(Card tactic)
+    {
+        if (!model.isTacticActive)
+            return;
+
+        if (model.tacticId.name == tactic.name)
+        {
+            var tacticCommand = tactic.GetAutomaticEffect();
+            tacticCommand.SetInformation(new GameData(player: this));
+            GameController.singleton.commandStack.RunCommand(tacticCommand);
+            model.isTacticActive = tactic.isRepeatable;
+        }
     }
     #endregion
 
