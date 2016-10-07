@@ -210,6 +210,7 @@ public class PlayerControl : NetworkBehaviour
     [Command]
     public void CmdEndTurn()
     {
+        
         GameController.singleton.EndTurn();
     }
     #endregion

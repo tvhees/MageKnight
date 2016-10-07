@@ -136,6 +136,7 @@ public class GamePlayers : NetworkBehaviour
     public void EndTurn()
     {
         current.RefillHand();
+        current.model.EndTurn(current);
         MoveToNext();
     }
     #endregion

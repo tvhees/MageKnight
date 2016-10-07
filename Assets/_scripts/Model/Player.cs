@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using Other.Data;
+using Commands;
 
 public class Player
 {
@@ -147,5 +148,14 @@ public class Player
     {
         RemoveCardFromLists(card);
         units.Add(card);
+    }
+
+    public void EndTurn(PlayerControl player)
+    {
+        var cardsInPlay = play.Count;
+        for (int i = 0; i < cardsInPlay; i++)
+        {
+            player.ServerMoveCard(play[0], GameConstants.Collection.Discard);
+        }
     }
 }

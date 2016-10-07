@@ -173,7 +173,7 @@ public class GameController : NetworkBehaviour
             Debug.Log("No selected die of colour " + colour.ToString());
             return source;
         }
-
+        dice.usedDice.Add(source);
         sharedView.RpcMoveDieToPlay(source);
         return source;
     }
@@ -183,12 +183,25 @@ public class GameController : NetworkBehaviour
     {
         sharedView.RpcMoveDieToPool(source);
     }
+
+    [Server]
+    public void ReturnAllDice()
+    {
+        for (int i = 0; i < dice.usedDice.Count; i++)
+        {
+            ReturnManaSource(dice.usedDice[i]);
+            dice.RollDie(dice.usedDice[i].index);
+        }
+
+        dice.usedDice.Clear();
+    }
     #endregion
 
     public void EndTurn()
     {
         stateController.ChangeToState(stateController.endOfTurn);
         players.EndTurn();
+        ReturnAllDice();
         stateController.ChangeToState(stateController.turnSetup);
     }
 
