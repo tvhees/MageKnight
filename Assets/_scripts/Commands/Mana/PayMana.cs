@@ -1,7 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using System;
 
 namespace Commands
 {
@@ -23,7 +20,7 @@ namespace Commands
                 paidColour = GameConstants.ManaType.Gold;
             else
                 return CommandResult.failure;
-            
+
             playerModel.AddMana(paidColour, subtract: true);
             paidId = GameController.singleton.PlayManaSource(paidColour);
             return CommandResult.success;

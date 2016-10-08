@@ -1,7 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using System;
 
 namespace Commands
 {
@@ -13,7 +10,6 @@ namespace Commands
         public override void SetInformation(GameData input)
         {
             base.SetInformation(input);
-            StateController stateController = GameController.singleton.stateController;
         }
 
         protected override CommandResult ExecuteThisCommand()
@@ -27,8 +23,8 @@ namespace Commands
 
                 return CommandResult.success;
             }
-            else
-                return CommandResult.failure;
+
+            return CommandResult.failure;
         }
 
         protected override void UndoThisCommand()

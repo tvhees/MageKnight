@@ -1,7 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
-using System.Collections.Generic;
 
 public class ToolTip : MonoBehaviour
 {
@@ -9,7 +6,7 @@ public class ToolTip : MonoBehaviour
     public Camera mainCamera;
     public ToolTipPanel[] toolTipPanels;
 
-    void Display(Vector3 position)
+    private void Display(Vector3 position)
     {
         canvas.enabled = true;
     }

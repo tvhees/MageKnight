@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
 namespace Prototype.NetworkLobby
 {
@@ -11,13 +10,12 @@ namespace Prototype.NetworkLobby
         protected bool isDisplayed = true;
         protected Image panelImage;
 
-        void Start()
+        private void Start()
         {
             panelImage = GetComponent<Image>();
         }
 
-
-        void Update()
+        private void Update()
         {
             if (!isInGame)
                 return;
@@ -26,7 +24,6 @@ namespace Prototype.NetworkLobby
             {
                 ToggleVisibility(!isDisplayed);
             }
-
         }
 
         public void ToggleVisibility(bool visible)

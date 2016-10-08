@@ -1,24 +1,24 @@
-﻿using UnityEngine;
+﻿using Other.Data;
+using UnityEngine;
 using UnityEngine.Networking;
-using Other.Data;
 
 namespace Other.Factory
 {
-    public class HexFactory : NetworkBehaviour 
-	{
+    public class HexFactory : NetworkBehaviour
+    {
         public PrefabArray hexPrefabs;
         public PrefabArray featurePrefabs;
 
         public GameObject CreateSceneObject(HexId hexId)
         {
-            GameObject hex = CreateSceneObject(hexId.terrain, hexId.feature);
+            var hex = CreateSceneObject(hexId.terrain, hexId.feature);
             hex.GetComponent<HexInteraction>().id = hexId;
             return hex;
         }
 
         public GameObject CreateSceneObject(GameConstants.TerrainType type, GameConstants.FeatureType feature)
         {
-            GameObject hex = Instantiate(hexPrefabs.prefabs[(int)type]);
+            var hex = Instantiate(hexPrefabs.prefabs[(int)type]);
             hex.name = hex.name.Replace("(Clone)", "");
             if (feature != GameConstants.FeatureType.Empty)
             {
@@ -27,6 +27,6 @@ namespace Other.Factory
             }
 
             return hex;
-        }        
-	}
+        }
+    }
 }

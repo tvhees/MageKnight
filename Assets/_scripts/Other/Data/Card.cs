@@ -1,15 +1,12 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using Commands;
-using Other.Utility;
+﻿using Commands;
+using UnityEngine;
 
 namespace Other.Data
 {
     [CreateAssetMenu(menuName = "Cards/Card", fileName = "Card", order = 1)]
     [System.Serializable]
     public class Card : ScriptableObject
-	{
+    {
         public enum Type
         {
             Action,
@@ -39,10 +36,11 @@ namespace Other.Data
                 case Type.Spell:
                 case Type.Tactic:
                     return Instantiate(strongEffect);
+
                 case Type.Artifact:
                     return Instantiate(strongEffect.alternate);
             }
             return null;
         }
-	}
+    }
 }

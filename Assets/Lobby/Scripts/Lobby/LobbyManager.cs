@@ -1,20 +1,19 @@
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using UnityEngine.Networking;
-using UnityEngine.Networking.Types;
-using UnityEngine.Networking.Match;
 using System.Collections;
-
+using UnityEngine;
+using UnityEngine.Networking;
+using UnityEngine.Networking.Match;
+using UnityEngine.Networking.Types;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Prototype.NetworkLobby
 {
-    public class LobbyManager : NetworkLobbyManager 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1405:ComVisibleTypeBaseTypesShouldBeComVisible")]
+    public class LobbyManager : NetworkLobbyManager
     {
-        static short MsgKicked = MsgType.Highest + 1;
+        private static short MsgKicked = MsgType.Highest + 1;
 
         static public LobbyManager s_Singleton;
-
 
         [Header("Unity UI Lobby")]
         [Tooltip("Time in second between all players ready & match start")]
@@ -41,19 +40,19 @@ namespace Prototype.NetworkLobby
         //Client numPlayers from NetworkManager is always 0, so we count (throught connect/destroy in LobbyPlayer) the number
         //of players, so that even client know how many player there is.
         [HideInInspector]
-        public int _playerNumber = 0;
+        public int _playerNumber;
 
         //used to disconnect a client properly when exiting the matchmaker
         [HideInInspector]
-        public bool _isMatchmaking = false;
+        public bool _isMatchmaking;
 
-        protected bool _disconnectServer = false;
-        
+        protected bool _disconnectServer;
+
         protected ulong _currentMatchID;
 
         protected LobbyHook _lobbyHooks;
 
-        void Start()
+        private void Start()
         {
             s_Singleton = this;
             _lobbyHooks = GetComponent<Prototype.NetworkLobby.LobbyHook>();
@@ -75,27 +74,9 @@ namespace Prototype.NetworkLobby
                 {
                     ChangeTo(lobbyPanel);
                     if (_isMatchmaking)
-                    {
-                        if (conn.playerControllers[0].unetView.isServer)
-                        {
-                            backDelegate = StopHostClbk;
-                        }
-                        else
-                        {
-                            backDelegate = StopClientClbk;
-                        }
-                    }
+                        backDelegate = conn.playerControllers[0].unetView.isServer ? (BackButtonDelegate)StopHostClbk : StopClientClbk;
                     else
-                    {
-                        if (conn.playerControllers[0].unetView.isClient)
-                        {
-                            backDelegate = StopHostClbk;
-                        }
-                        else
-                        {
-                            backDelegate = StopClientClbk;
-                        }
-                    }
+                        backDelegate = conn.playerControllers[0].unetView.isClient ? (BackButtonDelegate)StopHostClbk : StopClientClbk;
                 }
                 else
                 {
@@ -155,13 +136,14 @@ namespace Prototype.NetworkLobby
             hostInfo.text = host;
         }
 
-
         public delegate void BackButtonDelegate();
+
         public BackButtonDelegate backDelegate;
+
         public void GoBackButton()
         {
             backDelegate();
-			topPanel.isInGame = false;
+            topPanel.isInGame = false;
         }
 
         // ----------------- Server management
@@ -180,20 +162,19 @@ namespace Prototype.NetworkLobby
         {
             ChangeTo(mainMenuPanel);
         }
-                 
+
         public void StopHostClbk()
         {
             if (_isMatchmaking)
             {
-				matchMaker.DestroyMatch((NetworkID)_currentMatchID, 0, OnDestroyMatch);
-				_disconnectServer = true;
+                matchMaker.DestroyMatch((NetworkID)_currentMatchID, 0, OnDestroyMatch);
+                _disconnectServer = true;
             }
             else
             {
                 StopHost();
             }
 
-            
             ChangeTo(mainMenuPanel);
         }
 
@@ -215,14 +196,13 @@ namespace Prototype.NetworkLobby
             ChangeTo(mainMenuPanel);
         }
 
-        class KickMsg : MessageBase { }
+        private class KickMsg : MessageBase
+        { }
+
         public void KickPlayer(NetworkConnection conn)
         {
             conn.Send(MsgKicked, new KickMsg());
         }
-
-
-
 
         public void KickedMessageHandler(NetworkMessage netMsg)
         {
@@ -241,16 +221,16 @@ namespace Prototype.NetworkLobby
             SetServerInfo("Hosting", networkAddress);
         }
 
-		public override void OnMatchCreate(bool success, string extendedInfo, MatchInfo matchInfo)
-		{
-			base.OnMatchCreate(success, extendedInfo, matchInfo);
+        public override void OnMatchCreate(bool success, string extendedInfo, MatchInfo matchInfo)
+        {
+            base.OnMatchCreate(success, extendedInfo, matchInfo);
             _currentMatchID = (System.UInt64)matchInfo.networkId;
-		}
+        }
 
-		public override void OnDestroyMatch(bool success, string extendedInfo)
-		{
-			base.OnDestroyMatch(success, extendedInfo);
-			if (_disconnectServer)
+        public override void OnDestroyMatch(bool success, string extendedInfo)
+        {
+            base.OnDestroyMatch(success, extendedInfo);
+            if (_disconnectServer)
             {
                 StopMatchMaker();
                 StopHost();
@@ -275,15 +255,20 @@ namespace Prototype.NetworkLobby
         //But OnLobbyClientConnect isn't called on hosting player. So we override the lobbyPlayer creation
         public override GameObject OnLobbyServerCreateLobbyPlayer(NetworkConnection conn, short playerControllerId)
         {
+#pragma warning disable RECS0091 // Use 'var' keyword when possible
             GameObject obj = Instantiate(lobbyPlayerPrefab.gameObject) as GameObject;
+#pragma warning restore RECS0091 // Use 'var' keyword when possible
 
+#pragma warning disable RECS0091 // Use 'var' keyword when possible
             LobbyPlayer newPlayer = obj.GetComponent<LobbyPlayer>();
+#pragma warning restore RECS0091 // Use 'var' keyword when possible
             newPlayer.ToggleJoinButton(numPlayers + 1 >= minPlayers);
-
 
             for (int i = 0; i < lobbySlots.Length; ++i)
             {
+#pragma warning disable RECS0091 // Use 'var' keyword when possible
                 LobbyPlayer p = lobbySlots[i] as LobbyPlayer;
+#pragma warning restore RECS0091 // Use 'var' keyword when possible
 
                 if (p != null)
                 {
@@ -299,7 +284,9 @@ namespace Prototype.NetworkLobby
         {
             for (int i = 0; i < lobbySlots.Length; ++i)
             {
+#pragma warning disable RECS0091 // Use 'var' keyword when possible
                 LobbyPlayer p = lobbySlots[i] as LobbyPlayer;
+#pragma warning restore RECS0091 // Use 'var' keyword when possible
 
                 if (p != null)
                 {
@@ -313,7 +300,9 @@ namespace Prototype.NetworkLobby
         {
             for (int i = 0; i < lobbySlots.Length; ++i)
             {
+#pragma warning disable RECS0091 // Use 'var' keyword when possible
                 LobbyPlayer p = lobbySlots[i] as LobbyPlayer;
+#pragma warning restore RECS0091 // Use 'var' keyword when possible
 
                 if (p != null)
                 {
@@ -321,7 +310,6 @@ namespace Prototype.NetworkLobby
                     p.ToggleJoinButton(numPlayers >= minPlayers);
                 }
             }
-
         }
 
         public override bool OnLobbyServerSceneLoadedForPlayer(GameObject lobbyPlayer, GameObject gamePlayer)
@@ -339,28 +327,32 @@ namespace Prototype.NetworkLobby
 
         public override void OnLobbyServerPlayersReady()
         {
-			bool allready = true;
-			for(int i = 0; i < lobbySlots.Length; ++i)
-			{
-				if(lobbySlots[i] != null)
-					allready &= lobbySlots[i].readyToBegin;
-			}
+            bool allready = true;
+            for (int i = 0; i < lobbySlots.Length; ++i)
+            {
+                if (lobbySlots[i] != null)
+                    allready &= lobbySlots[i].readyToBegin;
+            }
 
-			if(allready)
-				StartCoroutine(ServerCountdownCoroutine());
+            if (allready)
+                StartCoroutine(ServerCountdownCoroutine());
         }
 
         public IEnumerator ServerCountdownCoroutine()
         {
             float remainingTime = prematchCountdown;
+#pragma warning disable RECS0091 // Use 'var' keyword when possible
             int floorTime = Mathf.FloorToInt(remainingTime);
+#pragma warning restore RECS0091 // Use 'var' keyword when possible
 
             while (remainingTime > 0)
             {
                 yield return null;
 
                 remainingTime -= Time.deltaTime;
+#pragma warning disable RECS0091 // Use 'var' keyword when possible
                 int newFloorTime = Mathf.FloorToInt(remainingTime);
+#pragma warning restore RECS0091 // Use 'var' keyword when possible
 
                 if (newFloorTime != floorTime)
                 {//to avoid flooding the network of message, we only send a notice to client when the number of plain seconds change.
@@ -404,7 +396,6 @@ namespace Prototype.NetworkLobby
                 SetServerInfo("Client", networkAddress);
             }
         }
-
 
         public override void OnClientDisconnect(NetworkConnection conn)
         {

@@ -1,11 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
 namespace View
 {
-    public class CharacterView : MonoBehaviour 
-	{
+    public class CharacterView : MonoBehaviour
+    {
         public MeshRenderer characterRenderer;
 
         public void SetMaterialColour(Color colour)
@@ -24,5 +22,5 @@ namespace View
             Vector3 newPosition = targetHex.position;
             gameObject.transform.position = newPosition;
         }
-	}
+    }
 }

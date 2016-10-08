@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Networking;
-using Other.Factory;
+using UnityEngine.UI;
 
 namespace View
 {
     public class PlayerView : NetworkBehaviour
-	{
+    {
         public NetworkInstanceId ownerId;
         public PlayerControl owner;
         public Canvas canvas;
@@ -32,6 +31,7 @@ namespace View
         public GameObject[] collections;
 
         #region General display toggles
+
         public void Show()
         {
             canvas.enabled = true;
@@ -53,9 +53,11 @@ namespace View
         {
             Hide();
         }
-        #endregion
+
+        #endregion General display toggles
 
         #region Card management
+
         [ClientRpc]
         public void RpcAddCardToDeck(CardId cardId)
         {
@@ -96,7 +98,7 @@ namespace View
         [ClientRpc]
         public void RpcMoveCardToHand(CardId card)
         {
-            if(owner.isLocalPlayer)
+            if (owner.isLocalPlayer)
                 GetCardFromCollections(card).MoveToNewParent(hand.transform, showFront: true);
             else
                 GetCardFromCollections(card).MoveToNewParent(hand.transform, showFront: false);
@@ -133,9 +135,11 @@ namespace View
             tacticView.MoveToNewParent(tactic.transform);
             tacticModel.SetTactic(tacticView);
         }
-        #endregion
+
+        #endregion Card management
 
         #region Status Bar Updates
+
         [ClientRpc]
         public void RpcUpdateMovement(int newValue)
         {
@@ -146,9 +150,11 @@ namespace View
         {
             influence.SetNumber(newValue);
         }
-        #endregion
+
+        #endregion Status Bar Updates
 
         #region Buttons and commands
+
         [ClientRpc]
         public void RpcEnableUndo(bool enable)
         {
@@ -170,6 +176,7 @@ namespace View
         {
             owner.CmdEndTurn();
         }
-        #endregion
+
+        #endregion Buttons and commands
     }
 }

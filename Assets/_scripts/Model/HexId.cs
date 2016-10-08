@@ -1,8 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
-using Other.Data;
-using Other.Utility;
+﻿using Other.Data;
+using UnityEngine;
 
+[System.Serializable]
 public struct HexId
 {
     public Vector3 position;

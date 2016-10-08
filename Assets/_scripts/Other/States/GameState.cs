@@ -1,5 +1,4 @@
 ﻿using Other.Data;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -7,6 +6,7 @@ public abstract class GameState : NetworkBehaviour
 {
     [SerializeField]
     protected bool allowEffects;
+
     [SerializeField]
     protected StateController stateController;
 
@@ -19,6 +19,6 @@ public abstract class GameState : NetworkBehaviour
         {
             GameController.singleton.players.current.TriggerTactic(tacticsTriggered[i]);
         }
-//        Debug.Log(gameObject.name);
+        //        Debug.Log(gameObject.name);
     }
 }

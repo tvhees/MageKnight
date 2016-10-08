@@ -1,8 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using Other.Data;
+﻿using Other.Data;
 using Other.Utility;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class Board
 {
@@ -23,14 +22,14 @@ public class Board
         SetPlayerPositions(players);
     }
 
-    HexTile[] LoadRandomisedTileData()
+    private HexTile[] LoadRandomisedTileData()
     {
         var tileDataArray = TileDatabase.GetAllObjects();
         tileDataArray.Shuffle();
         return tileDataArray;
     }
 
-    void AddTileIdsToStack(HexTile[] tileData, DataForPlayerCount scenarioData)
+    private void AddTileIdsToStack(HexTile[] tileData, DataForPlayerCount scenarioData)
     {
         var startTile = new TileId();
         var countrysideTiles = new List<TileId>();
@@ -50,7 +49,7 @@ public class Board
         tilesInStack.AddRange(coreAndCityTiles);
     }
 
-    List<TileId> CreateTileIds(string type, int numberOfTilesNeeded, HexTile[] tileData)
+    private List<TileId> CreateTileIds(string type, int numberOfTilesNeeded, HexTile[] tileData)
     {
         var tileIds = new List<TileId>();
 
@@ -67,7 +66,7 @@ public class Board
         return tileIds;
     }
 
-    HexId[] GetHexIdsFromTile(HexTile tile)
+    private HexId[] GetHexIdsFromTile(HexTile tile)
     {
         var hexIds = new HexId[tile.hexes.Length];
 
@@ -77,7 +76,7 @@ public class Board
         return hexIds;
     }
 
-    void PlaceStartingTiles()
+    private void PlaceStartingTiles()
     {
         for (int i = 0; i < mapShape.startingCountryside; i++)
         {
@@ -88,12 +87,12 @@ public class Board
             boardView.RpcCreateTile(tileId);
     }
 
-    void PlaceNextTile(Vector3 position)
+    private void PlaceNextTile(Vector3 position)
     {
         if (tilesInStack.Count <= 0)
             return;
 
-        TileId tile = tilesInStack.GetFirst(remove: true);
+        var tile = tilesInStack.GetFirst(true);
         tile.SetTilePosition(position);
         tilesInPlay.Add(tile);
     }

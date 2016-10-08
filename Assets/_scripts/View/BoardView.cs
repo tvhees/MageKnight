@@ -1,9 +1,8 @@
-﻿using UnityEngine;
-using UnityEngine.Networking;
-using System.Collections.Generic;
-using Other.Factory;
-using Other.Data;
+﻿using Other.Factory;
 using Other.Utility;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Networking;
 
 public class BoardView : NetworkBehaviour
 {
@@ -20,7 +19,7 @@ public class BoardView : NetworkBehaviour
         tile.transform.position = tileId.position;
         foreach (var hexId in tileId.hexes)
         {
-            GameObject hex = hexFactory.CreateSceneObject(hexId);
+            var hex = hexFactory.CreateSceneObject(hexId);
             hex.transform.SetParent(tile.transform);
             hex.transform.position = hexId.position;
         }

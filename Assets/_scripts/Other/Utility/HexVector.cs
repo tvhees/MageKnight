@@ -7,8 +7,8 @@ namespace Other.Utility
     // One unit of j --> one hex W (-'ve x direction)
     // One unit k --> one hex SE (-60 degrees from x axis)
     [System.Serializable]
-    public class HexVector 
-	{
+    public class HexVector
+    {
         public int i;
         public int j;
         public int k;

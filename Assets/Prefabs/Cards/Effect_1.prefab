@@ -11,7 +11,6 @@ GameObject:
   - 222: {fileID: 22245480}
   - 114: {fileID: 11489730}
   - 114: {fileID: 11419038}
-  - 114: {fileID: 11449594}
   m_Layer: 10
   m_Name: Effect_1
   m_TagString: Untagged
@@ -60,17 +59,6 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
---- !u!114 &11449594
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 178644}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c93f7554db1521043984ee39a0ee77dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &11489730
 MonoBehaviour:
   m_ObjectHideFlags: 1

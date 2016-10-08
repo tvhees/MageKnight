@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
-
-namespace Prototype.NetworkLobby 
+namespace Prototype.NetworkLobby
 {
     public class LobbyInfoPanel : MonoBehaviour
     {

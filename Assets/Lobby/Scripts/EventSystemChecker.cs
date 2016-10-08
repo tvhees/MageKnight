@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -10,7 +8,7 @@ namespace Prototype.NetworkLobby
         //public GameObject eventSystem;
 
         // Use this for initialization
-        void Awake()
+        private void Awake()
         {
             if (!FindObjectOfType<EventSystem>())
             {

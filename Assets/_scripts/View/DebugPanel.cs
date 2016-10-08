@@ -1,14 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Events;
-using System.Collections;
-using System.Collections.Generic;
 
 public class DebugPanel : MonoBehaviour
 {
     public GameObject messagePrefab;
 
-    void Awake()
+    private void Awake()
     {
         EventManager.debugMessage.AddListener(LogDebugMessage);
     }

@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.Networking;
-using System.Collections;
-using Other.Data;
+using UnityEngine.UI;
 
 namespace View
 {
@@ -18,18 +16,21 @@ namespace View
         public DieView[] manaDice;
 
         #region Initialise
-        void Awake()
+
+        private void Awake()
         {
             EventManager.stateChanged.AddListener(OnStateChanged);
         }
 
-        void OnStateChanged(GameState newState)
+        private void OnStateChanged(GameState newState)
         {
             currentPhase.text = newState.name;
         }
-        #endregion
+
+        #endregion Initialise
 
         #region UiMethods
+
         public void UiSelectCharacter()
         {
             string name = EventSystem.current.currentSelectedGameObject.name;
@@ -47,7 +48,7 @@ namespace View
             foreach (var display in turnOrderDisplays)
             {
                 if (display != selectedDisplay)
-                    if(display.gameObject.activeSelf == true)
+                    if (display.gameObject.activeSelf == true)
                         display.Select(false);
             }
 
@@ -58,7 +59,8 @@ namespace View
         {
             EventManager.endTurn.Invoke();
         }
-        #endregion
+
+        #endregion UiMethods
 
         public TurnOrderDisplay GetTurnOrderDisplay(int playerId)
         {
@@ -78,7 +80,7 @@ namespace View
         public void HighlightPlayer(int playerId, bool on)
         {
             var display = GetTurnOrderDisplay(playerId);
-            if(on)
+            if (on)
                 display.SetHighlights(highlightColour, currentPlayerIndicator);
             else
                 display.SetHighlights(Color.black);

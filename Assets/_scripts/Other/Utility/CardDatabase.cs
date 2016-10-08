@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using Other.Data;
 using System.Collections.Generic;
-using Other.Data;
+using UnityEngine;
 
 namespace Other.Utility
 {
@@ -9,35 +8,35 @@ namespace Other.Utility
     {
         public const string path = "Cards";
 
-        private static Dictionary<string, Card> scriptableObjects;
+        static Dictionary<string, Card> scriptableObjects;
 
-        private static bool databaseIsLoaded = false;
+        static bool databaseIsLoaded;
 
-        private static void ValidateDatabase()
+        static void ValidateDatabase()
         {
             if (scriptableObjects == null) scriptableObjects = new Dictionary<string, Card>();
             if (!databaseIsLoaded) LoadDatabase();
         }
 
-        private static void LoadDatabase()
+        static void LoadDatabase()
         {
             if (databaseIsLoaded) return;
             databaseIsLoaded = true;
             LoadDatabaseForce();
         }
 
-        private static void LoadDatabaseForce()
+        static void LoadDatabaseForce()
         {
-            scriptableObjects.Clear();
+            ClearDatabase();
             ValidateDatabase();
-            Card[] resources = Resources.LoadAll<Card>(@path);
+            var resources = Resources.LoadAll<Card>(@path);
             foreach (var sObject in resources)
             {
                 if (!scriptableObjects.ContainsValue(sObject)) scriptableObjects.Add(sObject.name, sObject);
             }
         }
 
-        private static void ClearDatabase()
+        static void ClearDatabase()
         {
             databaseIsLoaded = false;
             scriptableObjects.Clear();
@@ -46,16 +45,14 @@ namespace Other.Utility
         public static Card GetScriptableObject(string name)
         {
             ValidateDatabase();
-
             Card scriptableObject;
-            if (scriptableObjects.TryGetValue(name, out scriptableObject)) return ScriptableObject.Instantiate(scriptableObject) as Card;
-            else return default(Card);
+            return scriptableObject = scriptableObjects.TryGetValue(name, out scriptableObject) ? Object.Instantiate(scriptableObject) as Card : default(Card);
         }
 
         public static Card[] GetAllObjects()
         {
             ValidateDatabase();
-            Card[] valueArray = new Card[scriptableObjects.Count];
+            var valueArray = new Card[scriptableObjects.Count];
             scriptableObjects.Values.CopyTo(valueArray, 0);
             return valueArray;
         }

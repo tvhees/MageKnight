@@ -1,8 +1,5 @@
 using UnityEngine;
 using UnityEngine.Networking;
-using System.Collections;
-
-
 
 namespace Prototype.NetworkLobby
 {
@@ -10,7 +7,8 @@ namespace Prototype.NetworkLobby
     // then add it to the lobby prefab
     public abstract class LobbyHook : MonoBehaviour
     {
-        public virtual void OnLobbyServerSceneLoadedForPlayer(NetworkManager manager, GameObject lobbyPlayer, GameObject gamePlayer) { }
+        public virtual void OnLobbyServerSceneLoadedForPlayer(NetworkManager manager, GameObject lobbyPlayer, GameObject gamePlayer)
+        {
+        }
     }
-
 }

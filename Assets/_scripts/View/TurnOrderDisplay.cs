@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
-public class TurnOrderDisplay : MonoBehaviour {
-
+public class TurnOrderDisplay : MonoBehaviour
+{
     public PlayerControl playerControl;
     public Button button;
     public GameObject currentlyViewingIndicator;
@@ -14,7 +13,7 @@ public class TurnOrderDisplay : MonoBehaviour {
     public void AssignToPlayer(PlayerControl playerControl)
     {
         this.playerControl = playerControl;
-        gameObject.SetActive(true); 
+        gameObject.SetActive(true);
     }
 
     public void SetPlayerName(string name)

@@ -1,14 +1,11 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Networking;
-using UnityEngine.Events;
-using System.Collections;
-using System.Collections.Generic;
+using UnityEngine.UI;
 
 namespace View
 {
     public class CardView : NetworkBehaviour
-	{
+    {
         public CardId cardId;
 
         public Sprite cardFront;
@@ -16,7 +13,7 @@ namespace View
 
         private Image cardImage;
 
-        void Awake()
+        private void Awake()
         {
             cardImage = GetComponentInChildren<Image>();
         }
@@ -28,7 +25,7 @@ namespace View
             cardBack = GetCardImage("cardback");
         }
 
-        Sprite GetCardImage(string name)
+        private Sprite GetCardImage(string name)
         {
             name = name.ToLower().Replace(" ", "");
             Sprite cardFront = Resources.Load<Sprite>("CardImages/" + name);
@@ -64,22 +61,21 @@ namespace View
 
         public void OnDrag()
         {
-
         }
 
         public void EndDrag()
         {
-
         }
 
-
         #region Private methods
-        void AllowZooming(bool allow)
+
+        private void AllowZooming(bool allow)
         {
             Moveable zoomScript = GetComponentInChildren<Moveable>();
             if (zoomScript != null)
                 zoomScript.enabled = allow;
         }
-        #endregion
+
+        #endregion Private methods
     }
 }

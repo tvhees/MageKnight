@@ -1,8 +1,5 @@
-﻿using UnityEngine;
-using System;
+﻿using Other.Data;
 using System.Collections.Generic;
-using Other.Data;
-using Commands;
 
 public class Player
 {
@@ -19,13 +16,15 @@ public class Player
     public int influence;
 
     #region Mana
+
     public int diceAllowed;
     public int[] mana;
     public int[] crystals;
 
     public bool HasGold { get { return mana[4] > 0; } }
     public bool HasBlack { get { return mana[5] > 0; } }
-    #endregion
+
+    #endregion Mana
 
     public bool CanUseDice { get { return diceAllowed > 0; } }
 
@@ -43,7 +42,7 @@ public class Player
 
     public void ResetMana()
     {
-        mana = new int[6] { 0, 0, 0, 0, 0, 0 };
+        mana = new int[] { 0, 0, 0, 0, 0, 0 };
         diceAllowed = 1;
     }
 

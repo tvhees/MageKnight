@@ -1,8 +1,7 @@
-﻿using UnityEngine;
-using UnityEngine.Networking;
+﻿using UnityEngine.Networking;
 
-public class BoardSetup : GameState {
-
+public class BoardSetup : GameState
+{
     [ServerCallback]
     protected override void OnEnable()
     {

@@ -11,7 +11,6 @@ GameObject:
   - 33: {fileID: 3310732}
   - 23: {fileID: 2365118}
   - 114: {fileID: 11417394}
-  - 114: {fileID: 114000012836224082}
   - 114: {fileID: 114000010082198410}
   m_Layer: 14
   m_Name: Village
@@ -124,16 +123,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   descriptionData: {fileID: 11400000, guid: 7c79e5eca7d9822459dc22002a07a536, type: 2}
---- !u!114 &114000012836224082
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 113510}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 956844c2ccd401146958d58f604118ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  localScale: {x: 1, y: 1, z: 1}
-  localPosition: {x: 0, y: 0, z: 0}

@@ -1,10 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public static class ExtensionMethods
 {
-
     /// <summary>
     /// Randomises and array
     /// </summary>
@@ -34,7 +32,6 @@ public static class ExtensionMethods
         }
         return param;
     }
-
 
     /// <summary>
     /// Adds an integer range to a list.

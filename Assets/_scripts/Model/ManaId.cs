@@ -1,7 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-
-public struct ManaId {
+﻿public struct ManaId
+{
     public int index;
     public GameConstants.ManaType colour;
     public bool selected;

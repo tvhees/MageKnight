@@ -1,14 +1,10 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using System.Collections;
-using System.Collections.Generic;
-using System;
 using View;
 
 public class Moveable : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
-    static Moveable currentObject;
+    private static Moveable currentObject;
     public CanvasGroup canvasGroup;
     public CardView startParent;
     public float minorZoomLevel;
@@ -18,6 +14,7 @@ public class Moveable : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
     private RectTransform rectTransform { get { return transform as RectTransform; } }
 
     #region dragging
+
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (!zoomedIn)
@@ -48,9 +45,11 @@ public class Moveable : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
             ZoomOut();
         }
     }
-    #endregion
+
+    #endregion dragging
 
     #region zooming
+
     public void OnPointerClick(PointerEventData eventData)
     {
         if (currentObject == null)
@@ -101,12 +100,13 @@ public class Moveable : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
         rectTransform.localScale = minorZoomLevel * Vector3.one;
     }
 
-    void ZoomOut()
+    private void ZoomOut()
     {
         transform.SetParent(startParent.transform);
         rectTransform.Reset();
         transform.localPosition = Vector3.zero;
         zoomedIn = false;
     }
-    #endregion
+
+    #endregion zooming
 }

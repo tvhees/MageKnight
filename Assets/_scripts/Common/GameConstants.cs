@@ -1,10 +1,9 @@
-﻿using UnityEngine;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-public class GameConstants
+public static class GameConstants
 {
     #region Numbers
+
     public const int hexesPerTile = 7;
     public const float sqrTileDistance = 4f;
     public static List<int> cardNumbers;
@@ -19,9 +18,11 @@ public class GameConstants
 
         cardNumbers.Shuffle();
     }
-    #endregion
+
+    #endregion Numbers
 
     #region Types
+
     public enum GameState
     { GameLoading, CharacterSelect, BoardSetup, RoundSetup, TacticSelect, TurnSetup, StartOfTurn, Movement }
 
@@ -41,26 +42,27 @@ public class GameConstants
     { Plains, Hill, Forest, Wasteland, Desert, Swamp, Lake, Mountain, City, Sea }
 
     public enum FeatureType
-    { Portal, RampagingOrc, RampagingDraconum, Keep, MageTower, City, Village, MagicalGlade, RedMine, BlueMine,
-      WhiteMine, GreenMine, Monastery, MonsterDen, Dungeon, SpawningGround, Tomb, Ruins, Empty }
+    {
+        Portal, RampagingOrc, RampagingDraconum, Keep, MageTower, City, Village, MagicalGlade, RedMine, BlueMine,
+        WhiteMine, GreenMine, Monastery, MonsterDen, Dungeon, SpawningGround, Tomb, Ruins, Empty
+    }
 
     public enum ManaType
     { Red, Blue, White, Green, Gold, Black }
 
     public static ManaType[] manaColours = { ManaType.Red, ManaType.Blue, ManaType.White, ManaType.Green, ManaType.Gold, ManaType.Black };
-    #endregion
+
+    #endregion Types
 
     #region Costs
+
     public struct TerrainCosts
     {
         public int[] costs;
 
         public TerrainCosts(bool dayTime)
         {
-            if(dayTime)
-                costs = new int[] { 2, 3, 3, 4, 5, 5, 20, 20, 2, 20 };
-            else
-                costs = new int[] { 2, 3, 5, 4, 3, 5, 20, 20, 2, 20 };
+            costs = dayTime ? new int[] { 2, 3, 3, 4, 5, 5, 20, 20, 2, 20 } : new int[] { 2, 3, 5, 4, 3, 5, 20, 20, 2, 20 };
         }
 
         public TerrainCosts(int[] input)
@@ -88,5 +90,6 @@ public class GameConstants
             return new TerrainCosts(newCosts);
         }
     }
-    #endregion
+
+    #endregion Costs
 }

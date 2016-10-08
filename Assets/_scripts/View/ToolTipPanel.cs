@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
-using System.Collections.Generic;
 
 public class ToolTipPanel : MonoBehaviour
 {
@@ -14,7 +12,7 @@ public class ToolTipPanel : MonoBehaviour
         gameObject.SetActive(true);
     }
 
-    void BuildPanel(ObjectDescription description)
+    private void BuildPanel(ObjectDescription description)
     {
         string infoText = description.displayName;
         infoText += "\n" + description.description;

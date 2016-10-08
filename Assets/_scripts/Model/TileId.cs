@@ -1,7 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
-using Other.Data;
-using Other.Utility;
 
 public struct TileId
 {
@@ -17,7 +14,7 @@ public struct TileId
     public void SetTilePosition(Vector3 position)
     {
         this.position = position;
-        for(int i = 0; i < hexes.Length; i++)
+        for (int i = 0; i < hexes.Length; i++)
         {
             hexes[i].SetNewPosition(position);
         }

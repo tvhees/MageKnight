@@ -11,7 +11,6 @@ GameObject:
   - 33: {fileID: 3317624}
   - 23: {fileID: 2391344}
   - 114: {fileID: 11447716}
-  - 114: {fileID: 114000012940729098}
   - 114: {fileID: 114000011726580678}
   m_Layer: 14
   m_Name: City
@@ -124,16 +123,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   descriptionData: {fileID: 11400000, guid: 48f9ae2a8720fa441a8c2507e6858afe, type: 2}
---- !u!114 &114000012940729098
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 135834}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 956844c2ccd401146958d58f604118ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  localScale: {x: 1.5, y: 1, z: 1.5}
-  localPosition: {x: 0, y: 0, z: 0}

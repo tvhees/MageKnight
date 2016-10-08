@@ -1,22 +1,21 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 // This class contains methods for creating an object pool
 // we can then re-use objects from the pool instead of instantiating new clones
 // Multiple prefabs can be used, be aware that if the pool size is not divisible
-// by the number of different prefabs then some prefabs will have one less 
+// by the number of different prefabs then some prefabs will have one less
 
 namespace Boardgame
 {
     public class ObjectPool : MonoBehaviour
     {
-
         // This is the GameObject we want to make a pool of
         public GameObject[] prefabs;
 
         // Should the pool automatically be created on awake and how large should it be?
         public bool createOnAwake;
+
         public int defaultSize;
 
         // Position that objects are kept at while in the pool
@@ -24,6 +23,7 @@ namespace Boardgame
 
         // Lists to keep track of objects in the pool and objects in use
         protected List<GameObject> pool;
+
         protected List<GameObject> checkedOut;
 
         // We want to be able to find out the number of available objects from outside the class
@@ -32,13 +32,13 @@ namespace Boardgame
             get { return pool.Count; }
         }
 
-        void Awake()
+        private void Awake()
         {
             if (createOnAwake)
                 CreatePool(defaultSize);
         }
 
-        // Make a new pool. Objects are set as inactive children of the pool. 
+        // Make a new pool. Objects are set as inactive children of the pool.
         public void CreatePool(int size)
         {
             if (pool == null)
@@ -88,7 +88,6 @@ namespace Boardgame
 
             return null;
         }
-
 
         // Method overload; Get an object with a specific index
         public GameObject GetObject(int index)

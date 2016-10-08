@@ -1,8 +1,6 @@
-﻿using UnityEngine;
-using System;
-using System.Collections.Generic;
-using Other.Data;
+﻿using Other.Data;
 using Other.Utility;
+using System.Collections.Generic;
 
 public class Cards
 {
@@ -22,7 +20,7 @@ public class Cards
         CreatePlayerDecks(players);
     }
 
-    void CreateCommonDecks(Scenario scenario)
+    private void CreateCommonDecks(Scenario scenario)
     {
         actions = CreateDeck(DeckDatabase.GetScriptableObject("AdvancedActions"));
         spells = CreateDeck(DeckDatabase.GetScriptableObject("Spells"));
@@ -46,12 +44,12 @@ public class Cards
             }
         }
 
-        if(shuffle)
+        if (shuffle)
             deck.Shuffle();
         return deck;
     }
 
-    void CreatePlayerDecks(GamePlayers players)
+    private void CreatePlayerDecks(GamePlayers players)
     {
         for (int i = 0; i < players.Total; i++)
         {

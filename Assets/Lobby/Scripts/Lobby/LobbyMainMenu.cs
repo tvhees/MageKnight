@@ -1,11 +1,10 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
 namespace Prototype.NetworkLobby
 {
     //Main menu, mainly only a bunch of callback called by the UI (setup throught the Inspector)
-    public class LobbyMainMenu : MonoBehaviour 
+    public class LobbyMainMenu : MonoBehaviour
     {
         public LobbyManager lobbyManager;
 
@@ -61,8 +60,8 @@ namespace Prototype.NetworkLobby
                 matchNameInput.text,
                 (uint)lobbyManager.maxPlayers,
                 true,
-				"", "", "", 0, 0,
-				lobbyManager.OnMatchCreate);
+                "", "", "", 0, 0,
+                lobbyManager.OnMatchCreate);
 
             lobbyManager.backDelegate = lobbyManager.StopHost;
             lobbyManager._isMatchmaking = true;
@@ -78,7 +77,7 @@ namespace Prototype.NetworkLobby
             lobbyManager.ChangeTo(lobbyServerList);
         }
 
-        void onEndEditIP(string text)
+        private void onEndEditIP(string text)
         {
             if (Input.GetKeyDown(KeyCode.Return))
             {
@@ -86,13 +85,12 @@ namespace Prototype.NetworkLobby
             }
         }
 
-        void onEndEditGameName(string text)
+        private void onEndEditGameName(string text)
         {
             if (Input.GetKeyDown(KeyCode.Return))
             {
                 OnClickCreateMatchmakingGame();
             }
         }
-
     }
 }

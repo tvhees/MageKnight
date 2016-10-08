@@ -1,15 +1,12 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using Commands;
-
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Commands
 {
+    [System.Serializable]
     public abstract class Command : ScriptableObject
     {
         protected GameData gameData;
-
 
         public List<Command> requirements;
         protected List<Command> instantiatedRequirements = new List<Command>();
@@ -19,8 +16,8 @@ namespace Commands
         protected List<Command> instantiatedOptionals = new List<Command>();
         protected List<Command> completedOptionals = new List<Command>();
 
-        public Command alternate = null;
-        private Command instantiatedAlternate = null;
+        public Command alternate;
+        private Command instantiatedAlternate;
 
         protected abstract CommandResult ExecuteThisCommand();
 
@@ -32,14 +29,14 @@ namespace Commands
 
             for (int i = 0; i < requirements.Count; i++)
             {
-                Command command = Instantiate(requirements[i]);
+                var command = Instantiate(requirements[i]);
                 command.SetInformation(input);
                 instantiatedRequirements.Add(command);
             }
 
             for (int i = 0; i < optionals.Count; i++)
             {
-                Command command = Instantiate(optionals[i]);
+                var command = Instantiate(optionals[i]);
                 command.SetInformation(input);
                 instantiatedOptionals.Add(command);
             }
@@ -53,7 +50,7 @@ namespace Commands
 
         public CommandResult Execute()
         {
-            CommandResult result = ExecuteRequiredCommands();
+            var result = ExecuteRequiredCommands();
 
             if (result.succeeded)
             {
@@ -97,7 +94,7 @@ namespace Commands
 
         protected CommandResult ExecuteSubCommand(Command subCommand, List<Command> completedSubCommandList)
         {
-            CommandResult result = subCommand.Execute();
+            var result = subCommand.Execute();
             if (result.succeeded)
                 completedSubCommandList.Add(subCommand);
             return result;

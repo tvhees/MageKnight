@@ -1,8 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
-using System.Collections;
-using System.Collections.Generic;
-using System;
 
 namespace Commands
 {
@@ -22,13 +19,17 @@ namespace Commands
                 case GameConstants.ValueType.Movement:
                     serverMethod = gameData.player.ServerAddMovement;
                     break;
+
                 case GameConstants.ValueType.Influence:
                     serverMethod = gameData.player.ServerAddInfluence;
                     break;
+
                 case GameConstants.ValueType.Healing:
                     break;
+
                 case GameConstants.ValueType.Attack:
                     break;
+
                 case GameConstants.ValueType.Block:
                     break;
             }

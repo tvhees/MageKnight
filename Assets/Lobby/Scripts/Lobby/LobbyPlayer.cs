@@ -1,19 +1,23 @@
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.Networking;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using UnityEngine;
+using UnityEngine.Networking;
+using UnityEngine.UI;
 
 namespace Prototype.NetworkLobby
 {
     //Player entry in the lobby. Handle selecting color/setting name & getting ready for the game
     //Any LobbyHook can then grab it and pass those value to the game player prefab (see the Pong Example in the Samples Scenes)
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Interoperability", "CA1405:ComVisibleTypeBaseTypesShouldBeComVisible")]
     public class LobbyPlayer : NetworkLobbyPlayer
     {
-        static Color[] Colors = new Color[] { Color.magenta, Color.red, Color.cyan, Color.blue, Color.green, Color.yellow };
+#pragma warning disable RECS0092 // Convert field to readonly
+        private static Color[] Colors = { Color.magenta, Color.red, Color.cyan, Color.blue, Color.green, Color.yellow };
+#pragma warning restore RECS0092 // Convert field to readonly
+
         //used on server to avoid assigning the same color to two player
-        static List<int> _colorInUse = new List<int>();
+#pragma warning disable RECS0092 // Convert field to readonly
+        private static List<int> _colorInUse = new List<int>();
+#pragma warning restore RECS0092 // Convert field to readonly
 
         public Button colorButton;
         public InputField nameInput;
@@ -27,22 +31,23 @@ namespace Prototype.NetworkLobby
         //OnMyName function will be invoked on clients when server change the value of playerName
         [SyncVar(hook = "OnMyName")]
         public string playerName = "";
+
         [SyncVar(hook = "OnMyColor")]
         public Color playerColor = Color.white;
+
         [SyncVar]
         public int playerId;
 
         public Color OddRowColor = new Color(250.0f / 255.0f, 250.0f / 255.0f, 250.0f / 255.0f, 1.0f);
         public Color EvenRowColor = new Color(180.0f / 255.0f, 180.0f / 255.0f, 180.0f / 255.0f, 1.0f);
 
-        static Color JoinColor = new Color(255.0f/255.0f, 0.0f, 101.0f/255.0f,1.0f);
-        static Color NotReadyColor = new Color(34.0f / 255.0f, 44 / 255.0f, 55.0f / 255.0f, 1.0f);
-        static Color ReadyColor = new Color(0.0f, 204.0f / 255.0f, 204.0f / 255.0f, 1.0f);
-        static Color TransparentColor = new Color(0, 0, 0, 0);
+        private static Color JoinColor = new Color(255.0f / 255.0f, 0.0f, 101.0f / 255.0f, 1.0f);
+        private static Color NotReadyColor = new Color(34.0f / 255.0f, 44 / 255.0f, 55.0f / 255.0f, 1.0f);
+        private static Color ReadyColor = new Color(0.0f, 204.0f / 255.0f, 204.0f / 255.0f, 1.0f);
+        private static Color TransparentColor = new Color(0, 0, 0, 0);
 
         //static Color OddRowColor = new Color(250.0f / 255.0f, 250.0f / 255.0f, 250.0f / 255.0f, 1.0f);
         //static Color EvenRowColor = new Color(180.0f / 255.0f, 180.0f / 255.0f, 180.0f / 255.0f, 1.0f);
-
 
         public override void OnClientEnterLobby()
         {
@@ -75,10 +80,10 @@ namespace Prototype.NetworkLobby
             //if we return from a game, color of text can still be the one for "Ready"
             readyButton.transform.GetChild(0).GetComponent<Text>().color = Color.white;
 
-           SetupLocalPlayer();
+            SetupLocalPlayer();
         }
 
-        void ChangeReadyButtonColor(Color c)
+        private void ChangeReadyButtonColor(Color c)
         {
             ColorBlock b = readyButton.colors;
             b.normalColor = c;
@@ -88,7 +93,7 @@ namespace Prototype.NetworkLobby
             readyButton.colors = b;
         }
 
-        void SetupOtherPlayer()
+        private void SetupOtherPlayer()
         {
             nameInput.interactable = false;
             removePlayerButton.interactable = NetworkServer.active;
@@ -101,7 +106,7 @@ namespace Prototype.NetworkLobby
             OnClientReady(false);
         }
 
-        void SetupLocalPlayer()
+        private void SetupLocalPlayer()
         {
             nameInput.interactable = true;
             remoteIcone.gameObject.SetActive(false);
@@ -119,7 +124,7 @@ namespace Prototype.NetworkLobby
 
             //have to use child count of player prefab already setup as "this.slot" is not set yet
             if (playerName == "")
-                CmdNameChanged("Player" + (LobbyPlayerList._instance.playerListContentTransform.childCount-1));
+                CmdNameChanged("Player" + (LobbyPlayerList._instance.playerListContentTransform.childCount - 1));
 
             //we switch from simple name display to name input
             colorButton.interactable = true;
@@ -158,7 +163,9 @@ namespace Prototype.NetworkLobby
             {
                 ChangeReadyButtonColor(TransparentColor);
 
+#pragma warning disable RECS0091 // Use 'var' keyword when possible
                 Text textComponent = readyButton.transform.GetChild(0).GetComponent<Text>();
+#pragma warning restore RECS0091 // Use 'var' keyword when possible
                 textComponent.text = "READY";
                 textComponent.color = ReadyColor;
                 readyButton.interactable = false;
@@ -169,7 +176,9 @@ namespace Prototype.NetworkLobby
             {
                 ChangeReadyButtonColor(isLocalPlayer ? JoinColor : NotReadyColor);
 
+#pragma warning disable RECS0091 // Use 'var' keyword when possible
                 Text textComponent = readyButton.transform.GetChild(0).GetComponent<Text>();
+#pragma warning restore RECS0091 // Use 'var' keyword when possible
                 textComponent.text = isLocalPlayer ? "JOIN" : "...";
                 textComponent.color = Color.white;
                 readyButton.interactable = isLocalPlayer;
@@ -226,7 +235,6 @@ namespace Prototype.NetworkLobby
             }
             else if (isServer)
                 LobbyManager.s_Singleton.KickPlayer(connectionToClient);
-                
         }
 
         public void ToggleJoinButton(bool enabled)
@@ -253,9 +261,13 @@ namespace Prototype.NetworkLobby
         [Command]
         public void CmdColorChange()
         {
+#pragma warning disable RECS0091 // Use 'var' keyword when possible
             int idx = System.Array.IndexOf(Colors, playerColor);
+#pragma warning restore RECS0091 // Use 'var' keyword when possible
 
+#pragma warning disable RECS0091 // Use 'var' keyword when possible
             int inUseIdx = _colorInUse.IndexOf(idx);
+#pragma warning restore RECS0091 // Use 'var' keyword when possible
 
             if (idx < 0) idx = 0;
 
@@ -301,7 +313,9 @@ namespace Prototype.NetworkLobby
             LobbyPlayerList._instance.RemovePlayer(this);
             if (LobbyManager.s_Singleton != null) LobbyManager.s_Singleton.OnPlayersNumberModified(-1);
 
+#pragma warning disable RECS0091 // Use 'var' keyword when possible
             int idx = System.Array.IndexOf(Colors, playerColor);
+#pragma warning restore RECS0091 // Use 'var' keyword when possible
 
             if (idx < 0)
                 return;

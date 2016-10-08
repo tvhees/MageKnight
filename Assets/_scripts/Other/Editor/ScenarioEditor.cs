@@ -1,37 +1,26 @@
-﻿using UnityEngine;
+﻿using Other.Data;
 using UnityEditor;
-using System.Collections;
-using System.Collections.Generic;
-using Other.Data;
+using UnityEngine;
 
 [CustomEditor(typeof(Scenario))]
 [CanEditMultipleObjects]
 public class ScenarioEditor : Editor
 {
-    bool fold = true;
-    bool descriptionFold = true;
-    bool[] playerFolds = new bool[4] { true, true, true, true };
+    private bool fold = true;
+    private bool descriptionFold = true;
 
-    SerializedProperty description;
-    SerializedProperty minPlayers;
-    SerializedProperty maxPlayers;
-    SerializedProperty competitiveMode;
-    SerializedProperty days;
+    private SerializedProperty description;
 
-    void OnEnable()
+    private void OnEnable()
     {
         description = serializedObject.FindProperty("description");
-        minPlayers = serializedObject.FindProperty("minPlayers");
-        maxPlayers = serializedObject.FindProperty("maxPlayers");
-        competitiveMode = serializedObject.FindProperty("competitiveMode");
-        days = serializedObject.FindProperty("days");
     }
 
     public override void OnInspectorGUI()
     {
         foreach (var scenario in targets)
         {
-            Scenario sce = scenario as Scenario;
+            var sce = scenario as Scenario;
             fold = EditorGUILayout.InspectorTitlebar(fold, sce);
             if (fold)
             {
@@ -54,15 +43,15 @@ public class ScenarioEditor : Editor
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
             sce.competitiveMode = (CompetitiveMode)EditorGUILayout.EnumPopup(sce.competitiveMode);
-            sce.days = EditorGUILayout.IntPopup("Days/Nights", sce.days, new string[2] { "2", "3" }, new int[2] { 2, 3 });
+            sce.days = EditorGUILayout.IntPopup("Days/Nights", sce.days, new string[] { "2", "3" }, new int[] { 2, 3 });
             GUILayout.EndHorizontal();
         }
 
-        SerializedProperty playerCounts = serializedObject.FindProperty("playerCounts");
+        var playerCounts = serializedObject.FindProperty("playerCounts");
         while (true)
         {
-            Rect myRect = GUILayoutUtility.GetRect(0f, 16f);
-            bool showChildren = EditorGUI.PropertyField(myRect, playerCounts);
+            var myRect = GUILayoutUtility.GetRect(0f, 16f);
+            var showChildren = EditorGUI.PropertyField(myRect, playerCounts);
 
             if (!playerCounts.NextVisible(showChildren))
                 break;

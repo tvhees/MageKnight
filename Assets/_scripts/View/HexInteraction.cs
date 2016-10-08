@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
-using System.Collections;
-using System.Collections.Generic;
 
 public class HexInteraction : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
@@ -22,10 +20,9 @@ public class HexInteraction : MonoBehaviour, IPointerDownHandler, IPointerUpHand
         GameController.singleton.toolTip.Hide();
         if (holdTimer >= 0)
             Clicked();
-
     }
 
-    void Update()
+    private void Update()
     {
         if (pointerDown)
         {

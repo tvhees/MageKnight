@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Networking;
-using Other.Data;
 using View;
 
 namespace Other.Factory

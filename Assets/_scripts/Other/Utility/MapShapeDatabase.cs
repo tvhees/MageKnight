@@ -1,12 +1,11 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using Other.Data;
 using System.Collections.Generic;
-using Other.Data;
+using UnityEngine;
 
 namespace Other.Utility
 {
     public static class MapShapeDatabase
-	{
+    {
         public const string path = "MapShapes";
 
         private static Dictionary<string, MapShape> scriptableObjects;

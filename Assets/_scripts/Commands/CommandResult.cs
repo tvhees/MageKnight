@@ -1,8 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-
-namespace Commands
+﻿namespace Commands
 {
     public class CommandResult
     {

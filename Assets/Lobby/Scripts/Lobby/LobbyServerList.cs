@@ -1,9 +1,6 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.Networking;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Networking.Match;
-using System.Collections;
-using System.Collections.Generic;
 
 namespace Prototype.NetworkLobby
 {
@@ -18,10 +15,10 @@ namespace Prototype.NetworkLobby
         protected int currentPage = 0;
         protected int previousPage = 0;
 
-        static Color OddServerColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-        static Color EvenServerColor = new Color(.94f, .94f, .94f, 1.0f);
+        private static Color OddServerColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        private static Color EvenServerColor = new Color(.94f, .94f, .94f, 1.0f);
 
-        void OnEnable()
+        private void OnEnable()
         {
             currentPage = 0;
             previousPage = 0;
@@ -34,17 +31,17 @@ namespace Prototype.NetworkLobby
             RequestPage(0);
         }
 
-		public void OnGUIMatchList(bool success, string extendedInfo, List<MatchInfoSnapshot> matches)
-		{
-			if (matches.Count == 0)
-			{
+        public void OnGUIMatchList(bool success, string extendedInfo, List<MatchInfoSnapshot> matches)
+        {
+            if (matches.Count == 0)
+            {
                 if (currentPage == 0)
                 {
                     noServerFound.SetActive(true);
                 }
 
                 currentPage = previousPage;
-               
+
                 return;
             }
 
@@ -52,13 +49,13 @@ namespace Prototype.NetworkLobby
             foreach (Transform t in serverListRect)
                 Destroy(t.gameObject);
 
-			for (int i = 0; i < matches.Count; ++i)
-			{
+            for (int i = 0; i < matches.Count; ++i)
+            {
                 GameObject o = Instantiate(serverEntryPrefab) as GameObject;
 
-				o.GetComponent<LobbyServerEntry>().Populate(matches[i], lobbyManager, (i % 2 == 0) ? OddServerColor : EvenServerColor);
+                o.GetComponent<LobbyServerEntry>().Populate(matches[i], lobbyManager, (i % 2 == 0) ? OddServerColor : EvenServerColor);
 
-				o.transform.SetParent(serverListRect, false);
+                o.transform.SetParent(serverListRect, false);
             }
         }
 
@@ -77,7 +74,7 @@ namespace Prototype.NetworkLobby
         {
             previousPage = currentPage;
             currentPage = page;
-			lobbyManager.matchMaker.ListMatches(page, 6, "", true, 0, 0, OnGUIMatchList);
-		}
+            lobbyManager.matchMaker.ListMatches(page, 6, "", true, 0, 0, OnGUIMatchList);
+        }
     }
 }

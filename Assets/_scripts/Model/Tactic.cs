@@ -1,12 +1,10 @@
-﻿using UnityEngine;
-using UnityEngine.Networking;
-using System.Collections;
-using View;
-using Other.Data;
+﻿using Other.Data;
 using Other.Utility;
+using UnityEngine.Networking;
+using View;
 
-public class Tactic : NetworkBehaviour {
-
+public class Tactic : NetworkBehaviour
+{
     public bool active;
     public Card tactic;
     public CardId tacticId;
@@ -18,6 +16,4 @@ public class Tactic : NetworkBehaviour {
         tactic = CardDatabase.GetScriptableObject(tacticId.name);
         active = true;
     }
-
-    
 }

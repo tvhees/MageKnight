@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
-using System.Collections;
 
-public class StateController : NetworkBehaviour {
-
+public class StateController : NetworkBehaviour
+{
     public GameObject characterSelect;
     public GameObject boardSetup;
     public GameObject tacticSelect;
@@ -17,6 +16,7 @@ public class StateController : NetworkBehaviour {
 
     [SyncVar(hook = "OnStateIndexChanged")]
     public int stateIndex;
+
     public GameObject gameState;
     public GameObject lastState;
 
@@ -34,7 +34,7 @@ public class StateController : NetworkBehaviour {
         StateChange(newState);
     }
 
-    void StateChange(GameObject newState)
+    private void StateChange(GameObject newState)
     {
         if (gameState == newState)
             return;

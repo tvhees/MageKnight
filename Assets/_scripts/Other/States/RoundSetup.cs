@@ -1,13 +1,7 @@
-﻿using UnityEngine;
-using UnityEngine.Networking;
-using System.Collections;
-using System.Collections.Generic;
-using Other.Data;
-using Other.Factory;
-using Other.Utility;
+﻿using UnityEngine.Networking;
 
-public class RoundSetup : GameState {
-
+public class RoundSetup : GameState
+{
     [ServerCallback]
     protected override void OnEnable()
     {

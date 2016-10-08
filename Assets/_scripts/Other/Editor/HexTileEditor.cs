@@ -1,16 +1,13 @@
-﻿using UnityEngine;
+﻿using Other.Data;
 using UnityEditor;
-using System.Collections;
-using System.Collections.Generic;
-using Other.Data;
-
+using UnityEngine;
 
 [CustomEditor(typeof(HexTile))]
 [CanEditMultipleObjects]
 public class HexTileEditor : Editor
 {
-    bool fold = true;
-    bool hexFold = true;
+    private bool fold = true;
+    private bool hexFold = true;
 
     public override void OnInspectorGUI()
     {

@@ -1,8 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using Commands;
 using System.Collections.Generic;
-using Other.Data;
-using Commands;
+using UnityEngine;
 
 namespace Other.Utility
 {

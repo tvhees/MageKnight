@@ -1,9 +1,7 @@
-﻿using UnityEngine;
-using UnityEngine.Networking;
+﻿using UnityEngine.Networking;
 
-
-public class TurnSetup : GameState {
-
+public class TurnSetup : GameState
+{
     [ServerCallback]
     protected override void OnEnable()
     {

@@ -1,0 +1,50 @@
+﻿using System.Collections.Generic;
+using UnityEngine.Networking;
+using View;
+
+public class GameDice : NetworkBehaviour
+{
+    public List<ManaId> usedDice = new List<ManaId>();
+    private ManaPool mana;
+    private SharedView sharedView;
+
+    public void Enable(ManaPool mana, SharedView sharedView)
+    {
+        this.mana = mana;
+        this.sharedView = sharedView;
+        sharedView.RpcEnableDice(mana.DiceTotal);
+    }
+
+    [Server]
+    public void RollAll()
+    {
+        for (int i = 0; i < mana.DiceTotal; i++)
+        {
+            RollDie(i);
+        }
+
+        if (!mana.HasEnoughBasicMana())
+            RollAll();
+    }
+
+    [Server]
+    public void RollDie(int index)
+    {
+        var manaId = mana.RollDie(index);
+        mana.dice[manaId.index] = manaId;
+        sharedView.RpcRollDiceColour(manaId);
+    }
+
+    [Server]
+    public void SetDieValue(ManaId manaId)
+    {
+        mana.dice[manaId.index] = manaId;
+        sharedView.RpcSetDiceColour(manaId);
+    }
+
+    [Server]
+    public ManaId GetSelected(GameConstants.ManaType colour)
+    {
+        return mana.GetSelectedDie(colour);
+    }
+}

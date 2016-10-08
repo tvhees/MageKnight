@@ -1,8 +1,6 @@
-﻿using UnityEngine;
+﻿using Other.Utility;
 using UnityEditor;
-using System.Collections;
-using System.Collections.Generic;
-using Other.Utility;
+using UnityEngine;
 
 [CustomPropertyDrawer(typeof(HexVector))]
 public class HexVectorDrawer : PropertyDrawer

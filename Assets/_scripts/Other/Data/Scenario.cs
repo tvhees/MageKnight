@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
 namespace Other.Data
 {
@@ -11,21 +9,19 @@ namespace Other.Data
     public enum CompetitiveMode { Competitive, Cooperative }
 
     [CreateAssetMenu(menuName = "Scenario/Scenario", fileName = "Scenario", order = 1)]
-    public class Scenario : ScriptableObject 
-	{            
+    public class Scenario : ScriptableObject
+    {
         public string description;
         public CompetitiveMode competitiveMode;
         public int days;
         public int minPlayers;
         public int maxPlayers;
-        public DataForPlayerCount[] playerCounts = new DataForPlayerCount[0] { };
-	}
+        public DataForPlayerCount[] playerCounts = { };
+    }
 
     [System.Serializable]
     public class DataForPlayerCount
     {
-        public DataForPlayerCount() { }
-
         public Shape shape;
         public int numberOfCountrysideTiles;
         public int numberOfCoreCityTiles;

@@ -1,7 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using System;
 
 namespace Commands
 {
@@ -23,7 +20,6 @@ namespace Commands
 
         protected override void UndoThisCommand()
         {
-            
         }
     }
 }

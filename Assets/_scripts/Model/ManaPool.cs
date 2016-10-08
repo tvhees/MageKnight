@@ -1,17 +1,20 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class ManaPool {
-
+public class ManaPool
+{
     public ManaId[] dice;
 
     #region Properties
-    public int DiceTotal {
+
+    public int DiceTotal
+    {
         get { return dice.Length; }
     }
-    #endregion
+
+    #endregion Properties
 
     #region Constructor
+
     public ManaPool(GamePlayers players)
     {
         int numberOfDice = players.Total + 2;
@@ -21,7 +24,8 @@ public class ManaPool {
             dice[i] = new ManaId(i);
         }
     }
-    #endregion
+
+    #endregion Constructor
 
     public ManaId RollDie(int i)
     {
@@ -40,7 +44,7 @@ public class ManaPool {
                 basicMana++;
         }
 
-        return basicMana >= Mathf.CeilToInt(dice.Length/2f);
+        return basicMana >= Mathf.CeilToInt(dice.Length / 2f);
     }
 
     public ManaId GetSelectedDie(GameConstants.ManaType colour)
