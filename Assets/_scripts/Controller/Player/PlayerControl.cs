@@ -1,11 +1,6 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Networking;
-using UnityEngine.Events;
-using UnityEngine.Assertions;
 using System.Collections;
-using System.Collections.Generic;
-using Other.Factory;
 using View;
 using Other.Data;
 using Other.Utility;
@@ -13,7 +8,7 @@ using Commands;
 
 public class PlayerControl : NetworkBehaviour
 {
-    [SyncVar(hook = "OnPlayerIdChanged")]
+    [SyncVar]
     public int playerId;
     [SyncVar(hook = "OnPlayerNameChanged")]
     public string playerName;
@@ -52,7 +47,6 @@ public class PlayerControl : NetworkBehaviour
 
     void OnSceneLoaded()
     {
-        OnPlayerIdChanged(playerId);
         OnPlayerNameChanged(playerName);
         OnColourChanged(colour);
         OnHexChanged(currentHex);
@@ -217,12 +211,6 @@ public class PlayerControl : NetworkBehaviour
 
     #region Hook methods
     [Client]
-    void OnPlayerIdChanged(int newId)
-    {
-        playerId = newId;
-    }
-
-    [Client]
     void OnPlayerNameChanged(string newName)
     {
         playerName = newName;
@@ -319,14 +307,14 @@ public class PlayerControl : NetworkBehaviour
             view.RpcDrawCards(numberToDraw);
             return true;
         }
-        else
-            return false;
+
+        return false;
     }
 
     [Server]
     public void RefillHand()
     {
-        int numberToDraw = Mathf.Max(model.handSize - model.hand.Count);
+        var numberToDraw = Mathf.Max(model.handSize - model.hand.Count);
         DrawCards(numberToDraw);
     }
 
@@ -455,13 +443,4 @@ public class PlayerControl : NetworkBehaviour
         characterView.MoveToHex(newHex);
     }
     #endregion
-
-    void Update()
-    {
-        if (!isLocalPlayer)
-            return;
-
-        if (Input.GetKeyDown(KeyCode.U) || Input.GetKeyDown(KeyCode.Mouse1))
-            CmdUndo();
-    }
 }
