@@ -15,10 +15,14 @@ public abstract class GameState : NetworkBehaviour
 
     protected virtual void OnEnable()
     {
+        TriggerTactics();
+    }
+
+    void TriggerTactics()
+    {
         for (int i = 0; i < tacticsTriggered.Length; i++)
         {
-            GameController.singleton.players.current.TriggerTactic(tacticsTriggered[i]);
+            GameController.currentPlayer.TriggerTactic(tacticsTriggered[i]);
         }
-//        Debug.Log(gameObject.name);
     }
 }

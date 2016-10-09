@@ -17,9 +17,9 @@ namespace Commands
 
         protected override CommandResult ExecuteThisCommand()
         {
-            if (gameData.player.model.CanDrawCards)
+            if (gameData.player.CanDrawCards)
             {
-                gameData.player.DrawCards(valueSize);
+                gameData.player.ServerDrawCards(valueSize);
                 return CommandResult.success;
             }
 

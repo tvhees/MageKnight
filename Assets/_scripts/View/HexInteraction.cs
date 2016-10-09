@@ -37,6 +37,6 @@ public class HexInteraction : MonoBehaviour, IPointerDownHandler, IPointerUpHand
 
     public void Clicked()
     {
-        GameController.singleton.players.local.CmdMoveToHex(id);
+        GameController.players.local.CmdMoveToHex(id);
     }
 }

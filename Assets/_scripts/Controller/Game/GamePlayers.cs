@@ -135,7 +135,7 @@ public class GamePlayers : NetworkBehaviour
     [Server]
     public void EndTurn()
     {
-        current.RefillHand();
+        current.ServerRefillHand();
         current.model.EndTurn(current);
         MoveToNext();
     }

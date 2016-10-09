@@ -55,8 +55,8 @@ public class Cards
     {
         for (int i = 0; i < players.Total; i++)
         {
-            players.List[i].CreateModel(this);
-            players.List[i].RefillHand();
+            players.List[i].ServerCreateModel(this);
+            players.List[i].ServerRefillHand();
         }
     }
 

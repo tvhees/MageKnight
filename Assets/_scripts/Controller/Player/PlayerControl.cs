@@ -19,7 +19,7 @@ public class PlayerControl : NetworkBehaviour
     [SyncVar(hook = "OnHexChanged")]
     public HexId currentHex;
 
-    public bool isYourTurn { get { return GameController.singleton.players.current == this; } }
+    public bool isYourTurn { get { return GameController.currentPlayer == this; } }
 
     public Player model;
     public PlayerView view;
@@ -29,6 +29,8 @@ public class PlayerControl : NetworkBehaviour
     public TurnOrderDisplay turnOrderDisplay;
     public CharacterView characterView;
     public NetworkIdentity networkIdentity;
+
+    public bool CanDrawCards { get { return model.deck.Count > 0; } }
 
     #region Initialisation
     public override void OnStartClient()
@@ -72,7 +74,7 @@ public class PlayerControl : NetworkBehaviour
     [Client]
     void OnLocalSceneLoaded()
     {
-        GameController.singleton.players.SetLocal(this);
+        GameController.players.SetLocal(this);
         playerCamera.enabled = true;
         turnOrderDisplay.Select(true);
         CmdSetPlayerId(playerId);
@@ -94,7 +96,7 @@ public class PlayerControl : NetworkBehaviour
     [Command]
     void CmdAddToPlayerList()
     {
-        GameController.singleton.players.Add(this);
+        GameController.players.Add(this);
     }
 
     [Command]
@@ -154,7 +156,7 @@ public class PlayerControl : NetworkBehaviour
         if (becameYourTurn)
         {
             alpha = 1f;
-            GameController.singleton.players.SetCurrent(this);
+            GameController.players.SetCurrent(this);
         }
 
         characterView.SetMaterialAlpha(alpha);
@@ -288,34 +290,29 @@ public class PlayerControl : NetworkBehaviour
 
     #region Card Management
     [Server]
-    public void CreateModel(Cards cards)
+    public void ServerCreateModel(Cards cards)
     {
         model = new Player(character, cards);
         for (int i = 0; i < model.deck.Count; i++)
         {
-            CardId card = model.deck[i];
+            var card = model.deck[i];
             view.RpcAddCardToDeck(card);
         }
     }
 
     [Server]
-    public bool DrawCards(int numberToDraw)
+    public void ServerDrawCards(int numberToDraw)
     {
-        if (model.CanDrawCards)
-        {
-            model.DrawCards(numberToDraw);
-            view.RpcDrawCards(numberToDraw);
-            return true;
-        }
-
-        return false;
+        model.DrawCards(numberToDraw);
+        view.RpcDrawCards(numberToDraw);
     }
 
     [Server]
-    public void RefillHand()
+    public void ServerRefillHand()
     {
         var numberToDraw = Mathf.Max(model.handSize - model.hand.Count);
-        DrawCards(numberToDraw);
+        if(CanDrawCards)
+            ServerDrawCards(numberToDraw);
     }
 
     [Server]
@@ -377,7 +374,7 @@ public class PlayerControl : NetworkBehaviour
     [Server]
     public void AssignChosenTactic(Cards cards, Card tactic)
     {
-        CardId tacticId = cards.GetTacticId(tactic.number);
+        var tacticId = cards.GetTacticId(tactic.number);
         model.tacticId = tacticId;
         model.isTacticActive = true;
         view.RpcOnTacticChosen(tacticId);
@@ -392,7 +389,7 @@ public class PlayerControl : NetworkBehaviour
         if (model.tacticId.name == tactic.name)
         {
             var tacticCommand = tactic.GetAutomaticEffect();
-            tacticCommand.SetInformation(new GameData(player: this));
+            tacticCommand.SetInformation(new GameData(this));
             GameController.singleton.commandStack.RunCommand(tacticCommand);
             model.isTacticActive = tactic.isRepeatable;
         }
