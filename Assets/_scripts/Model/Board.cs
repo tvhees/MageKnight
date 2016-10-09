@@ -16,7 +16,7 @@ public class Board
     public Board(Scenario scenario, GamePlayers players, BoardView boardView)
     {
         this.boardView = boardView;
-        var scenarioData = scenario.playerCounts[players.Total - scenario.minPlayers];
+        var scenarioData = scenario.playerCounts[players.Connected - scenario.minPlayers];
         var tileData = LoadRandomisedTileData();
         AddTileIdsToStack(tileData, scenarioData);
         PlaceStartingTiles();
@@ -100,7 +100,7 @@ public class Board
 
     public void SetPlayerPositions(GamePlayers players)
     {
-        for (int i = 0; i < players.Total; i++)
+        for (int i = 0; i < players.Connected; i++)
         {
             players.List[i].OnHexChanged(portalHex);
         }

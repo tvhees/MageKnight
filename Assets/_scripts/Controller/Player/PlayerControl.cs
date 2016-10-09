@@ -9,6 +9,7 @@ using Commands;
 public class PlayerControl : NetworkBehaviour
 {
     public static PlayerControl current;
+    public static PlayerControl local;
 
     [SyncVar]
     public int playerId;
@@ -76,7 +77,7 @@ public class PlayerControl : NetworkBehaviour
     [Client]
     void OnLocalSceneLoaded()
     {
-        GameController.players.SetLocal(this);
+        local = this;
         playerCamera.enabled = true;
         turnOrderDisplay.Select(true);
         CmdSetPlayerId(playerId);
@@ -98,7 +99,7 @@ public class PlayerControl : NetworkBehaviour
     [Command]
     void CmdAddToPlayerList()
     {
-        GameController.players.Add(this);
+        GameController.players.ServerAdd(this);
     }
 
     [Command]

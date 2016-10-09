@@ -13,6 +13,6 @@ public class SelectionPhase : GameState {
     protected override void OnEnable()
     {
         base.OnEnable();
-        GameController.players.ClearNextOrder();
+        GameController.players.ServerClearNextOrder();
     }
 }

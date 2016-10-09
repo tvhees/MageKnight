@@ -10,6 +10,5 @@ C:\Users\Torbjorn\Documents\MageKnight\Temp\UnityVS_bin\Debug\UnityEngine.xml
 C:\Users\Torbjorn\Documents\MageKnight\Temp\UnityVS_bin\Debug\UnityEngine.UI.xml
 C:\Users\Torbjorn\Documents\MageKnight\Temp\UnityVS_bin\Debug\UnityEngine.Networking.xml
 C:\Users\Torbjorn\Documents\MageKnight\Temp\UnityVS_bin\Debug\UnityEditor.xml
-C:\Users\Torbjorn\Documents\MageKnight\Temp\UnityVS_obj\Debug\MageKnight.CSharp.csprojResolveAssemblyReference.cache
 C:\Users\Torbjorn\Documents\MageKnight\Temp\UnityVS_obj\Debug\Assembly-CSharp.dll
 C:\Users\Torbjorn\Documents\MageKnight\Temp\UnityVS_obj\Debug\Assembly-CSharp.pdb

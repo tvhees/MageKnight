@@ -53,7 +53,7 @@ public class Cards
 
     void CreatePlayerDecks(GamePlayers players)
     {
-        for (int i = 0; i < players.Total; i++)
+        for (int i = 0; i < players.Connected; i++)
         {
             players.List[i].ServerCreateModel(this);
             players.List[i].ServerRefillHand();

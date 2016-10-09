@@ -1,47 +1,58 @@
-﻿using UnityEngine;
-using UnityEngine.Networking;
-using System.Collections;
-using System.Collections.Generic;
+﻿using Other.Data;
 using Prototype.NetworkLobby;
-using View;
-using Other.Data;
+using System.Collections.Generic;
+using UnityEngine.Networking;
 
-public class GamePlayers : NetworkBehaviour
+public class GamePlayers
 {
     int nextIndex;
     int expected;
 
-    public PlayerControl local { get; private set; }
-    List<PlayerControl> list = new List<PlayerControl>();
+    List<PlayerControl> currentOrder = new List<PlayerControl>();
     PlayerControl[] nextOrder;
-    
 
     #region properties
-    public List<PlayerControl> List { get { return list; } }
 
-    public int Expected {
-        get {
-            if (expected <= 0)
-                expected = CalculateExpectedPlayers();
-            return expected; }
+    public List<PlayerControl> List
+    {
+        get { return currentOrder; }
     }
 
-    public int Total {
-        get { return list.Count; }
+    public bool OnLastForRound
+    {
+        get { return nextIndex >= Connected; }
     }
 
-    public bool AllConnected {
-        get { return Total >= Expected; }
+    public int Connected
+    {
+        get { return currentOrder.Count; }
     }
 
-    public bool OnLastForRound {
-        get { return nextIndex >= Total; }
+    public bool AllConnected
+    {
+        get { return Connected >= Expected; }
     }
-    #endregion
+
+    int Expected
+    {
+        get
+        {
+            if (expected <= 0) expected = ServerCalculateExpectedPlayers();
+            return expected;
+        }
+    }
+    #endregion properties
 
     #region Connection management
+
     [Server]
-    int CalculateExpectedPlayers()
+    public void ServerAdd(PlayerControl player)
+    {
+        currentOrder.Add(player);
+    }
+
+    [Server]
+    int ServerCalculateExpectedPlayers()
     {
         int i = 0;
         foreach (NetworkLobbyPlayer player in LobbyManager.s_Singleton.lobbySlots)
@@ -51,63 +62,36 @@ public class GamePlayers : NetworkBehaviour
         }
         return i;
     }
-
-    [Server]
-    public void Add(PlayerControl player)
-    {
-        list.Add(player);
-    }
-
-    [Client]
-    public void SetLocal(PlayerControl player)
-    {
-        local = player;
-    }
-    #endregion
+    #endregion Connection management
 
     #region Turn Order
-    public void ClearNextOrder()
-    {
-        nextOrder = new PlayerControl[6];
-    }
-
-    public void AddCurrentToNextOrder(int index)
-    {
-        nextOrder[index] = PlayerControl.current;
-
-        if (OnLastForRound)
-            SetNewOrder();
-            
-        MoveToNext();
-    }
-
     [Server]
-    public void RandomiseOrder()
+    public void ServerRandomiseOrder()
     {
-        nextOrder = list.ToArray();
+        nextOrder = currentOrder.ToArray();
         nextOrder.Shuffle();
-        SetNewOrder();
-        MoveToNext();
+        ServerSetNewOrder();
+        ServerMoveToNext();
     }
-    
+
     [Server]
-    public void SetNewOrder()
+    void ServerSetNewOrder()
     {
-        list.Clear();
+        currentOrder.Clear();
         for (int i = 0; i < nextOrder.Length; i++)
         {
             if (nextOrder[i] == null)
                 continue;
 
-            nextOrder[i].RpcMoveToIndexInTurnOrder(list.Count);
-            list.Add(nextOrder[i]);
+            nextOrder[i].RpcMoveToIndexInTurnOrder(currentOrder.Count);
+            currentOrder.Add(nextOrder[i]);
         }
 
         nextIndex = 0;
     }
 
     [Server]
-    public void MoveToNext()
+    void ServerMoveToNext()
     {
         if (PlayerControl.current != null)
         {
@@ -116,9 +100,9 @@ public class GamePlayers : NetworkBehaviour
         }
 
         // Wrap index to 0 because Mathf.Repeat doesn't take integers
-        if (nextIndex >= list.Count)
+        if (nextIndex >= currentOrder.Count)
             nextIndex = 0;
-        PlayerControl.current = list[nextIndex];
+        PlayerControl.current = currentOrder[nextIndex];
         PlayerControl.current.RpcYourTurn(true);
         PlayerControl.current.view.RpcEnableEndTurn(true);
 
@@ -126,27 +110,46 @@ public class GamePlayers : NetworkBehaviour
     }
 
     [Server]
-    public void EndTurn()
+    public void ServerEndTurn()
     {
         PlayerControl.current.ServerRefillHand();
         PlayerControl.current.model.EndTurn(PlayerControl.current);
-        MoveToNext();
+        ServerMoveToNext();
     }
-    #endregion
+
+    [Server]
+    public void ServerClearNextOrder()
+    {
+        nextOrder = new PlayerControl[6];
+    }
+    #endregion Turn Order
 
     #region Characters and Tactics
+
     [Server]
-    public void AssignCharacter()
+    public void ServerAssignCharacter()
     {
         // The first tactic selection proceeds in reverse order of character selection
-        AddCurrentToNextOrder(list.Count - nextIndex);
+        ServerAddCurrentToNextOrder(currentOrder.Count - nextIndex);
     }
 
     [Server]
-    public void AssignTactic(Cards cards, Card tactic)
+    public void ServerAssignTactic(Cards cards, Card tactic)
     {
         PlayerControl.current.AssignChosenTactic(cards, tactic);
-        AddCurrentToNextOrder(tactic.number);
+        ServerAddCurrentToNextOrder(tactic.number);
     }
-    #endregion
+
+    [Server]
+    void ServerAddCurrentToNextOrder(int index)
+    {
+        nextOrder[index] = PlayerControl.current;
+
+        if (OnLastForRound)
+            ServerSetNewOrder();
+
+        ServerMoveToNext();
+    }
+
+    #endregion Characters and Tactics
 }

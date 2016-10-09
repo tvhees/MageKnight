@@ -37,7 +37,7 @@ public class GameController : NetworkBehaviour
     public int randomSeed;
     public Scenario scenario {
         get {
-            if (players.Total <= 1)
+            if (players.Connected <= 1)
                 return ScenarioDatabase.GetScriptableObject("Solo Conquest");
             else
                 return ScenarioDatabase.GetScriptableObject("Full Conquest"); }
@@ -52,7 +52,7 @@ public class GameController : NetworkBehaviour
     void Awake()
     {
         singleton = this;
-        players = GetComponent<GamePlayers>();
+        players = new GamePlayers();
         dice = GetComponent<GameDice>();
         AddEventListeners();
     }
@@ -93,7 +93,7 @@ public class GameController : NetworkBehaviour
     [Server]
     public void StartGame()
     {
-        players.RandomiseOrder();
+        players.ServerRandomiseOrder();
         stateController.ChangeToState(GameConstants.GameState.CharacterSelect);
     }
     #endregion
@@ -116,9 +116,9 @@ public class GameController : NetworkBehaviour
     #endregion
 
     #region SelectionPhases
-    void UiSelectCharacter(string name)
+    void UiSelectCharacter(string characterName)
     {
-        players.local.CmdSetCharacter(name);
+        PlayerControl.local.CmdSetCharacter(characterName);
     }
 
     [Server]
@@ -127,15 +127,15 @@ public class GameController : NetworkBehaviour
         var endRound = players.OnLastForRound;
 
         sharedView.RpcDisableButton(name);
-        players.AssignCharacter();
+        players.ServerAssignCharacter();
         
         if(endRound)
             stateController.ChangeToState(GameConstants.GameState.BoardSetup);
     }
 
-    void UiSelectTactic(string name)
+    void UiSelectTactic(string tacticName)
     {
-        players.local.CmdSetTactic(name);
+        PlayerControl.local.CmdSetTactic(tacticName);
     }
 
     [Server]
@@ -147,7 +147,7 @@ public class GameController : NetworkBehaviour
 
         sharedView.RpcDisableButton(name);
         var tactic = CardDatabase.GetScriptableObject(name);
-        players.AssignTactic(cards, tactic);
+        players.ServerAssignTactic(cards, tactic);
 
         if (endRound)
             stateController.ChangeToState(GameConstants.GameState.TurnSetup);
@@ -158,7 +158,7 @@ public class GameController : NetworkBehaviour
     [Client]
     public void UiDieToggled(ManaId manaId)
     {
-        players.local.CmdDieToggled(manaId);
+        PlayerControl.local.CmdDieToggled(manaId);
     }
 
     [Server]
@@ -198,7 +198,7 @@ public class GameController : NetworkBehaviour
     public void EndTurn()
     {
         stateController.ChangeToState(stateController.endOfTurn);
-        players.EndTurn();
+        players.ServerEndTurn();
         ReturnAllDice();
         stateController.ChangeToState(stateController.turnSetup);
     }
@@ -212,7 +212,7 @@ public class GameController : NetworkBehaviour
 
     public void UiPlayEffect(CardId cardId)
     {
-        players.local.CmdPlayCard(cardId);
+        PlayerControl.local.CmdPlayCard(cardId);
     }
     #endregion
 }
