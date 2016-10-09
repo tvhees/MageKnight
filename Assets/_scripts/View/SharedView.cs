@@ -120,7 +120,7 @@ namespace View
             var die = manaDice[manaId.index];
             die.Enable(false);
 
-            die.MoveToNewParent(GameController.currentPlayer.view.play.transform);
+            die.MoveToNewParent(PlayerControl.current.view.play.transform);
         }
 
         [ClientRpc]

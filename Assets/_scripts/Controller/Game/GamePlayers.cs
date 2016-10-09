@@ -8,13 +8,12 @@ using Other.Data;
 
 public class GamePlayers : NetworkBehaviour
 {
-    private int nextIndex;
-    private int expected;
+    int nextIndex;
+    int expected;
 
     public PlayerControl local { get; private set; }
-    public PlayerControl current { get; private set; }
-    private List<PlayerControl> list = new List<PlayerControl>();
-    private PlayerControl[] nextOrder;
+    List<PlayerControl> list = new List<PlayerControl>();
+    PlayerControl[] nextOrder;
     
 
     #region properties
@@ -74,7 +73,7 @@ public class GamePlayers : NetworkBehaviour
 
     public void AddCurrentToNextOrder(int index)
     {
-        nextOrder[index] = current;
+        nextOrder[index] = PlayerControl.current;
 
         if (OnLastForRound)
             SetNewOrder();
@@ -110,33 +109,27 @@ public class GamePlayers : NetworkBehaviour
     [Server]
     public void MoveToNext()
     {
-        if (current != null)
+        if (PlayerControl.current != null)
         {
-            current.RpcYourTurn(false);
-            current.view.RpcEnableEndTurn(false);
+            PlayerControl.current.RpcYourTurn(false);
+            PlayerControl.current.view.RpcEnableEndTurn(false);
         }
 
         // Wrap index to 0 because Mathf.Repeat doesn't take integers
         if (nextIndex >= list.Count)
             nextIndex = 0;
-        current = list[nextIndex];
-        current.RpcYourTurn(true);
-        current.view.RpcEnableEndTurn(true);
+        PlayerControl.current = list[nextIndex];
+        PlayerControl.current.RpcYourTurn(true);
+        PlayerControl.current.view.RpcEnableEndTurn(true);
 
         nextIndex++;
-    }
-
-    [Client]
-    public void SetCurrent(PlayerControl player)
-    {
-        current = player;
     }
 
     [Server]
     public void EndTurn()
     {
-        current.ServerRefillHand();
-        current.model.EndTurn(current);
+        PlayerControl.current.ServerRefillHand();
+        PlayerControl.current.model.EndTurn(PlayerControl.current);
         MoveToNext();
     }
     #endregion
@@ -152,7 +145,7 @@ public class GamePlayers : NetworkBehaviour
     [Server]
     public void AssignTactic(Cards cards, Card tactic)
     {
-        current.AssignChosenTactic(cards, tactic);
+        PlayerControl.current.AssignChosenTactic(cards, tactic);
         AddCurrentToNextOrder(tactic.number);
     }
     #endregion

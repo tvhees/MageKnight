@@ -14,8 +14,6 @@ public class GameController : NetworkBehaviour
 {
     public static GameController singleton;
 
-    public static PlayerControl currentPlayer { get { return players.current; } }
-
     #region Controller
     public static GamePlayers players { get; private set; }
     public GameDice dice { get; private set; }
@@ -209,7 +207,7 @@ public class GameController : NetworkBehaviour
     [Server]
     public void EnableUndo(bool enable)
     {
-        players.current.view.RpcEnableUndo(enable);
+        PlayerControl.current.view.RpcEnableUndo(enable);
     }
 
     public void UiPlayEffect(CardId cardId)

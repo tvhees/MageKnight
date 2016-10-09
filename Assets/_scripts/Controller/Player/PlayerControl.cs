@@ -8,6 +8,8 @@ using Commands;
 
 public class PlayerControl : NetworkBehaviour
 {
+    public static PlayerControl current;
+
     [SyncVar]
     public int playerId;
     [SyncVar(hook = "OnPlayerNameChanged")]
@@ -19,7 +21,7 @@ public class PlayerControl : NetworkBehaviour
     [SyncVar(hook = "OnHexChanged")]
     public HexId currentHex;
 
-    public bool isYourTurn { get { return GameController.currentPlayer == this; } }
+    public bool isYourTurn { get { return current == this; } }
 
     public Player model;
     public PlayerView view;
@@ -156,7 +158,7 @@ public class PlayerControl : NetworkBehaviour
         if (becameYourTurn)
         {
             alpha = 1f;
-            GameController.players.SetCurrent(this);
+            current = this;
         }
 
         characterView.SetMaterialAlpha(alpha);

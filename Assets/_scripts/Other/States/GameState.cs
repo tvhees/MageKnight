@@ -22,7 +22,7 @@ public abstract class GameState : NetworkBehaviour
     {
         for (int i = 0; i < tacticsTriggered.Length; i++)
         {
-            GameController.currentPlayer.TriggerTactic(tacticsTriggered[i]);
+            PlayerControl.current.TriggerTactic(tacticsTriggered[i]);
         }
     }
 }
