@@ -19,12 +19,15 @@ namespace Commands
         protected List<Command> instantiatedOptionals = new List<Command>();
         protected List<Command> completedOptionals = new List<Command>();
 
-        public Command alternate = null;
-        private Command instantiatedAlternate = null;
+        public Command alternate ;
+        Command instantiatedAlternate;
 
         protected abstract CommandResult ExecuteThisCommand();
 
-        protected abstract void UndoThisCommand();
+        protected virtual void UndoThisCommand()
+        {
+
+        }
 
         public virtual void SetInformation(GameData input)
         {
@@ -32,14 +35,14 @@ namespace Commands
 
             for (int i = 0; i < requirements.Count; i++)
             {
-                Command command = Instantiate(requirements[i]);
+                var command = Instantiate(requirements[i]);
                 command.SetInformation(input);
                 instantiatedRequirements.Add(command);
             }
 
             for (int i = 0; i < optionals.Count; i++)
             {
-                Command command = Instantiate(optionals[i]);
+                var command = Instantiate(optionals[i]);
                 command.SetInformation(input);
                 instantiatedOptionals.Add(command);
             }
@@ -53,7 +56,7 @@ namespace Commands
 
         public CommandResult Execute()
         {
-            CommandResult result = ExecuteRequiredCommands();
+            var result = ExecuteRequiredCommands();
 
             if (result.succeeded)
             {
@@ -74,7 +77,7 @@ namespace Commands
 
         protected CommandResult ExecuteRequiredCommands()
         {
-            CommandResult result = CommandResult.success;
+            var result = CommandResult.success;
             for (int i = 0; i < instantiatedRequirements.Count; i++)
             {
                 result = ExecuteSubCommand(instantiatedRequirements[i], completedRequirements);
@@ -97,7 +100,7 @@ namespace Commands
 
         protected CommandResult ExecuteSubCommand(Command subCommand, List<Command> completedSubCommandList)
         {
-            CommandResult result = subCommand.Execute();
+            var result = subCommand.Execute();
             if (result.succeeded)
                 completedSubCommandList.Add(subCommand);
             return result;
@@ -114,7 +117,7 @@ namespace Commands
         {
             for (int i = completedOptionals.Count; i > 0; i--)
             {
-                completedOptionals.GetLast(remove: true).Undo();
+                completedOptionals.GetLast(true).Undo();
             }
         }
 
@@ -122,7 +125,7 @@ namespace Commands
         {
             for (int i = completedRequirements.Count; i > 0; i--)
             {
-                completedRequirements.GetLast(remove: true).Undo();
+                completedRequirements.GetLast(true).Undo();
             }
         }
     }

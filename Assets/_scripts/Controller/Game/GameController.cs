@@ -15,7 +15,7 @@ public class GameController : NetworkBehaviour
     public static GameController singleton;
 
     #region Controller
-    public GamePlayers players { get; private set; }
+    public static GamePlayers players { get; private set; }
     public GameDice dice { get; private set; }
     #endregion
 
@@ -37,7 +37,7 @@ public class GameController : NetworkBehaviour
     public int randomSeed;
     public Scenario scenario {
         get {
-            if (players.Total <= 1)
+            if (players.Connected <= 1)
                 return ScenarioDatabase.GetScriptableObject("Solo Conquest");
             else
                 return ScenarioDatabase.GetScriptableObject("Full Conquest"); }
@@ -52,7 +52,7 @@ public class GameController : NetworkBehaviour
     void Awake()
     {
         singleton = this;
-        players = GetComponent<GamePlayers>();
+        players = new GamePlayers();
         dice = GetComponent<GameDice>();
         AddEventListeners();
     }
@@ -93,7 +93,7 @@ public class GameController : NetworkBehaviour
     [Server]
     public void StartGame()
     {
-        players.RandomiseOrder();
+        players.ServerRandomiseOrder();
         stateController.ChangeToState(GameConstants.GameState.CharacterSelect);
     }
     #endregion
@@ -108,7 +108,7 @@ public class GameController : NetworkBehaviour
         Random.InitState(randomSeed);
 
         board = new Board(scenario, players, boardView);
-        cards = new Cards(scenario, players);
+        cards = new Cards(players);
         var mana = new ManaPool(players);
 
         dice.Enable(mana, sharedView);
@@ -116,40 +116,36 @@ public class GameController : NetworkBehaviour
     #endregion
 
     #region SelectionPhases
-    void UiSelectCharacter(string name)
+    void UiSelectCharacter(string characterName)
     {
-        players.local.CmdSetCharacter(name);
+        if(PlayerControl.local.IsCurrentPlayer) PlayerControl.local.CmdSetCharacter(characterName);
     }
 
     [Server]
     public void OnCharacterSelected(string name)
     {
-        var endRound = false;
-        if (players.OnLastForRound)
-            endRound = true;
+        var endRound = players.OnLastForRound;
 
         sharedView.RpcDisableButton(name);
-        players.AssignCharacter();
+        players.ServerAssignCharacter();
         
         if(endRound)
             stateController.ChangeToState(GameConstants.GameState.BoardSetup);
     }
 
-    void UiSelectTactic(string name)
+    void UiSelectTactic(string tacticName)
     {
-        players.local.CmdSetTactic(name);
+        if(PlayerControl.local.IsCurrentPlayer) PlayerControl.local.CmdSetTactic(tacticName);
     }
 
     [Server]
     public void OnTacticSelected(string name)
     {
-        var endRound = false;
-        if (players.OnLastForRound)
-            endRound = true;
+        var endRound = players.OnLastForRound;
 
         sharedView.RpcDisableButton(name);
         var tactic = CardDatabase.GetScriptableObject(name);
-        players.AssignTactic(cards, tactic);
+        players.ServerAssignTactic(cards, tactic);
 
         if (endRound)
             stateController.ChangeToState(GameConstants.GameState.TurnSetup);
@@ -160,7 +156,7 @@ public class GameController : NetworkBehaviour
     [Client]
     public void UiDieToggled(ManaId manaId)
     {
-        players.local.CmdDieToggled(manaId);
+        PlayerControl.local.CmdDieToggled(manaId);
     }
 
     [Server]
@@ -200,7 +196,7 @@ public class GameController : NetworkBehaviour
     public void EndTurn()
     {
         stateController.ChangeToState(stateController.endOfTurn);
-        players.EndTurn();
+        players.ServerEndTurn();
         ReturnAllDice();
         stateController.ChangeToState(stateController.turnSetup);
     }
@@ -209,12 +205,12 @@ public class GameController : NetworkBehaviour
     [Server]
     public void EnableUndo(bool enable)
     {
-        players.current.view.RpcEnableUndo(enable);
+        PlayerControl.current.view.RpcEnableUndo(enable);
     }
 
     public void UiPlayEffect(CardId cardId)
     {
-        players.local.CmdPlayCard(cardId);
+        PlayerControl.local.CmdPlayCard(cardId);
     }
     #endregion
 }

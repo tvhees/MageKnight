@@ -2,12 +2,21 @@
 using System;
 using System.Collections.Generic;
 
-public class GameConstants
+public static class GameConstants
 {
     #region Numbers
     public const int hexesPerTile = 7;
     public const float sqrTileDistance = 4f;
-    public static List<int> cardNumbers;
+    static List<int> cardNumbers;
+
+    public static List<int> CardNumbers
+    {
+        get
+        {
+            if (cardNumbers == null) GenerateCardNumbers();
+            return cardNumbers;
+        }
+    }
 
     public static void GenerateCardNumbers()
     {

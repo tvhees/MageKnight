@@ -14,7 +14,7 @@ public class ManaPool {
     #region Constructor
     public ManaPool(GamePlayers players)
     {
-        int numberOfDice = players.Total + 2;
+        int numberOfDice = players.Connected + 2;
         dice = new ManaId[numberOfDice];
         for (int i = 0; i < numberOfDice; i++)
         {

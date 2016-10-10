@@ -1,11 +1,7 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.Networking;
-using UnityEngine.Events;
 using UnityEngine.Assertions;
+using UnityEngine.Networking;
 using System.Collections;
-using System.Collections.Generic;
-using Other.Factory;
 using View;
 using Other.Data;
 using Other.Utility;
@@ -13,7 +9,12 @@ using Commands;
 
 public class PlayerControl : NetworkBehaviour
 {
-    [SyncVar(hook = "OnPlayerIdChanged")]
+    #region Attributes
+
+    public static PlayerControl current;
+    public static PlayerControl local;
+
+    [SyncVar]
     public int playerId;
     [SyncVar(hook = "OnPlayerNameChanged")]
     public string playerName;
@@ -22,18 +23,44 @@ public class PlayerControl : NetworkBehaviour
     [SyncVar(hook = "OnColourChanged")]
     public Color colour;
     [SyncVar(hook = "OnHexChanged")]
-    public HexId currentHex;
+    HexId currentHex;
 
-    public bool isYourTurn { get { return GameController.singleton.players.current == this; } }
+    #endregion Attributes
+
+    #region References
 
     public Player model;
     public PlayerView view;
-    public Character character;
+    Character character;
 
-    public Camera playerCamera;
-    public TurnOrderDisplay turnOrderDisplay;
-    public CharacterView characterView;
-    public NetworkIdentity networkIdentity;
+    [SerializeField] Camera playerCamera;
+    [SerializeField] TurnOrderDisplay turnOrderDisplay;
+    [SerializeField] CharacterView characterView;
+
+    #endregion References
+
+    #region Properties
+
+    public bool IsCurrentPlayer { get { return current == this; } }
+    bool HasTurnOrderDisplay
+    {
+        get
+        {
+            // On initial load the GameController object won't be active in a build when this is called
+            if (GameController.singleton == null) return false;
+            if (turnOrderDisplay == null)
+            {
+                turnOrderDisplay = GameController.singleton.sharedView.GetTurnOrderDisplay(playerId);
+                turnOrderDisplay.AssignToPlayer(this);
+            }
+            Assert.IsNotNull(turnOrderDisplay);
+            return true;
+        }
+    }
+    public bool CanDrawCards { get { return model.deck.Count > 0; } }
+    public HexId CurrentHex { get { return currentHex; } }
+
+    #endregion Properties
 
     #region Initialisation
     public override void OnStartClient()
@@ -47,25 +74,25 @@ public class PlayerControl : NetworkBehaviour
         while (GameController.singleton == null)
             yield return null;
 
-        OnSceneLoaded();
+        OnClientSceneLoaded();
     }
 
-    void OnSceneLoaded()
+    // Ensures this player's variables are correctly set on subsequently connected clients
+    void OnClientSceneLoaded()
     {
-        OnPlayerIdChanged(playerId);
         OnPlayerNameChanged(playerName);
         OnColourChanged(colour);
         OnHexChanged(currentHex);
     }
 
-    // This fires BEFORE other NetworkIdentity objects are activated in the scene, but only in standalone builds
-    // We use a coroutine to wait until scene objects are loaded, otherwise standalone builds are not initialised properly.
+    // Fires BEFORE other NetworkIdentity objects are activated in the scene, but only in standalone builds
     public override void OnStartLocalPlayer()
     {
         base.OnStartLocalPlayer();
         StartCoroutine(WaitForLocalSceneLoad());
     }
 
+    // Coroutine waits until scene objects are loaded, otherwise standalone builds are not initialised properly.
     [Client]
     IEnumerator WaitForLocalSceneLoad()
     {
@@ -78,57 +105,66 @@ public class PlayerControl : NetworkBehaviour
     [Client]
     void OnLocalSceneLoaded()
     {
-        GameController.singleton.players.SetLocal(this);
+        local = this;
         playerCamera.enabled = true;
         turnOrderDisplay.Select(true);
-        CmdSetPlayerId(playerId);
         CmdAddToPlayerList();
-    }
-    #endregion
-
-    #region Server methods
-
-    #endregion
-
-    #region Commands to server
-    [Command]
-    void CmdSetPlayerId(int newId)
-    {
-        playerId = newId;
     }
 
     [Command]
     void CmdAddToPlayerList()
     {
-        GameController.singleton.players.Add(this);
+        GameController.players.ServerAdd(this);
     }
+    #endregion
+
+    #region Hook methods
+    [Client]
+    void OnPlayerNameChanged(string newName)
+    {
+        playerName = newName;
+        gameObject.name = playerName;
+
+        if (HasTurnOrderDisplay)
+            turnOrderDisplay.SetPlayerName(playerName);
+    }
+
+    [Client]
+    void OnCharacterNameChanged(string newName)
+    {
+        character = CharacterDatabase.GetScriptableObject(newName);
+
+        if (HasTurnOrderDisplay)
+            turnOrderDisplay.SetCharacterName(newName);
+    }
+
+    [Client]
+    void OnColourChanged(Color newColour)
+    {
+        colour = newColour;
+
+        characterView.SetMaterialColour(newColour);
+
+        if (HasTurnOrderDisplay)
+            turnOrderDisplay.SetPlayerColour(colour);
+    }
+    #endregion
+
+    #region UI responses
 
     [Command]
     public void CmdSetCharacter(string name)
     {
-        if (isYourTurn)
-        {
-            characterName = name;
-            colour = character.colour;
+        characterName = name;
+        colour = character.colour;
 
-            GameController.singleton.OnCharacterSelected(name);
-        }
+        GameController.singleton.OnCharacterSelected(name);
     }
 
     [Command]
     public void CmdSetTactic(string name)
     {
-        if (isYourTurn)
-        {
-            GameController.singleton.OnTacticSelected(name);
-        }
-    }
-
-    [Command]
-    public void CmdUndo()
-    {
-        if (isYourTurn)
-            GameController.singleton.commandStack.UndoLastCommand();
+        GameController.singleton.OnTacticSelected(name);
     }
 
     [Command]
@@ -144,47 +180,16 @@ public class PlayerControl : NetworkBehaviour
     }
 
     [Command]
-    public void CmdMoveToHex(HexId newHex)
+    public void CmdUndo()
     {
-        var moveToHex = Instantiate(CommandDatabase.GetScriptableObject("MoveToHex"));
-        moveToHex.SetInformation(new GameData(player: this, hexId: newHex));
-        GameController.singleton.commandStack.RunCommand(moveToHex);
-    }
-    #endregion
-
-    #region Turn order and UI view
-    [ClientRpc]
-    public void RpcYourTurn(bool becameYourTurn)
-    {
-        float alpha = 2 / 6f;
-        if (becameYourTurn)
-        {
-            alpha = 1f;
-            GameController.singleton.players.SetCurrent(this);
-        }
-
-        characterView.SetMaterialAlpha(alpha);
-
-        if (GameController.singleton.sharedView != null)
-        {
-            GameController.singleton.sharedView.HighlightPlayer(playerId, becameYourTurn);
-        }
+        if (IsCurrentPlayer)
+            GameController.singleton.commandStack.UndoLastCommand();
     }
 
-    [Client]
-    bool HasTurnOrderDisplay()
+    [Command]
+    public void CmdEndTurn()
     {
-        // On initial load the GameController object won't be active in a build when this hook is called
-        if (GameController.singleton == null)
-            return false;
-
-        if (turnOrderDisplay == null)
-        {
-            turnOrderDisplay = GameController.singleton.sharedView.GetTurnOrderDisplay(playerId);
-            turnOrderDisplay.AssignToPlayer(this);
-        }
-
-        return true;
+        GameController.singleton.EndTurn();
     }
 
     [Client]
@@ -200,59 +205,28 @@ public class PlayerControl : NetworkBehaviour
         playerCamera.enabled = false;
         view.Hide();
     }
+    #endregion UI responses
 
+    #region Turn order and UI view
+    [ClientRpc]
+    public void RpcNewTurn(bool thisPlayerTurn)
+    {
+        if (thisPlayerTurn)
+            current = this;
+
+        var alpha = thisPlayerTurn ? 2 / 6f : 1f;
+
+        characterView.SetMaterialAlpha(alpha);
+
+        if (GameController.singleton.sharedView != null)
+            GameController.singleton.sharedView.TogglePlayerHighlight(playerId, thisPlayerTurn);
+    }
     [ClientRpc]
     public void RpcMoveToIndexInTurnOrder(int index)
     {
         turnOrderDisplay.transform.SetSiblingIndex(index);
     }
-
-    [Command]
-    public void CmdEndTurn()
-    {
-        
-        GameController.singleton.EndTurn();
-    }
     #endregion
-
-    #region Hook methods
-    [Client]
-    void OnPlayerIdChanged(int newId)
-    {
-        playerId = newId;
-    }
-
-    [Client]
-    void OnPlayerNameChanged(string newName)
-    {
-        playerName = newName;
-        gameObject.name = playerName;
-
-        if (HasTurnOrderDisplay())
-            turnOrderDisplay.SetPlayerName(playerName);
-    }
-
-    [Client]
-    void OnCharacterNameChanged(string newName)
-    {
-        character = CharacterDatabase.GetScriptableObject(newName);
-
-        if (HasTurnOrderDisplay())
-            turnOrderDisplay.SetCharacterName(newName);
-    }
-
-    [Client]
-    void OnColourChanged(Color newColour)
-    {
-        colour = newColour;
-
-        characterView.SetMaterialColour(newColour);
-
-        if (HasTurnOrderDisplay())
-            turnOrderDisplay.SetPlayerColour(colour);
-    }
-    #endregion
-
     #region Mana
     [Command]
     public void CmdDieToggled(ManaId manaId)
@@ -300,34 +274,29 @@ public class PlayerControl : NetworkBehaviour
 
     #region Card Management
     [Server]
-    public void CreateModel(Cards cards)
+    public void ServerCreateModel(Cards cards)
     {
         model = new Player(character, cards);
         for (int i = 0; i < model.deck.Count; i++)
         {
-            CardId card = model.deck[i];
+            var card = model.deck[i];
             view.RpcAddCardToDeck(card);
         }
     }
 
     [Server]
-    public bool DrawCards(int numberToDraw)
+    public void ServerDrawCards(int numberToDraw)
     {
-        if (model.CanDrawCards)
-        {
-            model.DrawCards(numberToDraw);
-            view.RpcDrawCards(numberToDraw);
-            return true;
-        }
-        else
-            return false;
+        model.DrawCards(numberToDraw);
+        view.RpcDrawCards(numberToDraw);
     }
 
     [Server]
-    public void RefillHand()
+    public void ServerRefillHand()
     {
-        int numberToDraw = Mathf.Max(model.handSize - model.hand.Count);
-        DrawCards(numberToDraw);
+        var numberToDraw = Mathf.Max(model.handSize - model.hand.Count);
+        if(CanDrawCards)
+            ServerDrawCards(numberToDraw);
     }
 
     [Server]
@@ -385,11 +354,10 @@ public class PlayerControl : NetworkBehaviour
         model.MoveCardToUnits(card);
         view.RpcMoveCardToUnits(card);
     }
-
     [Server]
     public void AssignChosenTactic(Cards cards, Card tactic)
     {
-        CardId tacticId = cards.GetTacticId(tactic.number);
+        var tacticId = cards.GetTacticId(tactic.number);
         model.tacticId = tacticId;
         model.isTacticActive = true;
         view.RpcOnTacticChosen(tacticId);
@@ -404,7 +372,7 @@ public class PlayerControl : NetworkBehaviour
         if (model.tacticId.name == tactic.name)
         {
             var tacticCommand = tactic.GetAutomaticEffect();
-            tacticCommand.SetInformation(new GameData(player: this));
+            tacticCommand.SetInformation(new GameData(this));
             GameController.singleton.commandStack.RunCommand(tacticCommand);
             model.isTacticActive = tactic.isRepeatable;
         }
@@ -449,19 +417,18 @@ public class PlayerControl : NetworkBehaviour
         return true;
     }
 
+    [Command]
+    public void CmdMoveToHex(HexId newHex)
+    {
+        var moveToHex = Instantiate(CommandDatabase.GetScriptableObject("MoveToHex"));
+        moveToHex.SetInformation(new GameData(player: this, hexId: newHex));
+        GameController.singleton.commandStack.RunCommand(moveToHex);
+    }
+
     public void OnHexChanged(HexId newHex)
     {
         currentHex = newHex;
         characterView.MoveToHex(newHex);
     }
     #endregion
-
-    void Update()
-    {
-        if (!isLocalPlayer)
-            return;
-
-        if (Input.GetKeyDown(KeyCode.U) || Input.GetKeyDown(KeyCode.Mouse1))
-            CmdUndo();
-    }
 }

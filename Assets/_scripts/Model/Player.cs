@@ -29,8 +29,6 @@ public class Player
 
     public bool CanUseDice { get { return diceAllowed > 0; } }
 
-    public bool CanDrawCards { get { return deck.Count > 0; } }
-
     public Player(Character character, Cards cards, int handSize = 5)
     {
         deck = cards.CreateDeck(character.deck);
@@ -43,7 +41,7 @@ public class Player
 
     public void ResetMana()
     {
-        mana = new int[6] { 0, 0, 0, 0, 0, 0 };
+        mana = new int[] { 0, 0, 0, 0, 0, 0 };
         diceAllowed = 1;
     }
 

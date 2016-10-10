@@ -75,7 +75,7 @@ namespace View
             }
         }
 
-        public void HighlightPlayer(int playerId, bool on)
+        public void TogglePlayerHighlight(int playerId, bool on)
         {
             var display = GetTurnOrderDisplay(playerId);
             if(on)
@@ -120,7 +120,7 @@ namespace View
             var die = manaDice[manaId.index];
             die.Enable(false);
 
-            die.MoveToNewParent(GameController.singleton.players.current.view.play.transform);
+            die.MoveToNewParent(PlayerControl.current.view.play.transform);
         }
 
         [ClientRpc]

@@ -17,13 +17,13 @@ namespace Commands
 
         protected override CommandResult ExecuteThisCommand()
         {
-            bool succeeded = gameData.player.DrawCards(valueSize);
-            return new CommandResult(succeeded, allowUndo: false);
-        }
+            if (gameData.player.CanDrawCards)
+            {
+                gameData.player.ServerDrawCards(valueSize);
+                return CommandResult.success;
+            }
 
-        protected override void UndoThisCommand()
-        {
-            
+            return CommandResult.failure;
         }
     }
 }
