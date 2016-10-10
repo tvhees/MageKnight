@@ -108,7 +108,7 @@ public class GameController : NetworkBehaviour
         Random.InitState(randomSeed);
 
         board = new Board(scenario, players, boardView);
-        cards = new Cards(scenario, players);
+        cards = new Cards(players);
         var mana = new ManaPool(players);
 
         dice.Enable(mana, sharedView);
@@ -118,7 +118,7 @@ public class GameController : NetworkBehaviour
     #region SelectionPhases
     void UiSelectCharacter(string characterName)
     {
-        PlayerControl.local.CmdSetCharacter(characterName);
+        if(PlayerControl.local.IsCurrentPlayer) PlayerControl.local.CmdSetCharacter(characterName);
     }
 
     [Server]
@@ -135,15 +135,13 @@ public class GameController : NetworkBehaviour
 
     void UiSelectTactic(string tacticName)
     {
-        PlayerControl.local.CmdSetTactic(tacticName);
+        if(PlayerControl.local.IsCurrentPlayer) PlayerControl.local.CmdSetTactic(tacticName);
     }
 
     [Server]
     public void OnTacticSelected(string name)
     {
-        var endRound = false;
-        if (players.OnLastForRound)
-            endRound = true;
+        var endRound = players.OnLastForRound;
 
         sharedView.RpcDisableButton(name);
         var tactic = CardDatabase.GetScriptableObject(name);

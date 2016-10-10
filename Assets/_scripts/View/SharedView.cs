@@ -75,7 +75,7 @@ namespace View
             }
         }
 
-        public void HighlightPlayer(int playerId, bool on)
+        public void TogglePlayerHighlight(int playerId, bool on)
         {
             var display = GetTurnOrderDisplay(playerId);
             if(on)

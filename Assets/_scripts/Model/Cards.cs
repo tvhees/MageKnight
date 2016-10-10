@@ -15,14 +15,13 @@ public class Cards
     public List<CardId> dayTactics;
     public List<CardId> nightTactics;
 
-    public Cards(Scenario scenario, GamePlayers players)
+    public Cards(GamePlayers players)
     {
-        GameConstants.GenerateCardNumbers();
-        CreateCommonDecks(scenario);
+        CreateCommonDecks();
         CreatePlayerDecks(players);
     }
 
-    void CreateCommonDecks(Scenario scenario)
+    void CreateCommonDecks()
     {
         actions = CreateDeck(DeckDatabase.GetScriptableObject("AdvancedActions"));
         spells = CreateDeck(DeckDatabase.GetScriptableObject("Spells"));
@@ -42,7 +41,7 @@ public class Cards
         {
             for (int j = 0; j <= deckData.extraCopies[i]; j++)
             {
-                deck.Add(new CardId(deckData.cards[i].name, GameConstants.cardNumbers.GetLast(remove: true)));
+                deck.Add(new CardId(deckData.cards[i].name, GameConstants.CardNumbers.GetLast(remove: true)));
             }
         }
 

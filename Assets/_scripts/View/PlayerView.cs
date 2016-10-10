@@ -163,12 +163,12 @@ namespace View
 
         public void UiUndo()
         {
-            owner.CmdUndo();
+            if (owner.isLocalPlayer) owner.CmdUndo();
         }
 
         public void UiEndTurn()
         {
-            owner.CmdEndTurn();
+            if(owner.isLocalPlayer) owner.CmdEndTurn();
         }
         #endregion
     }

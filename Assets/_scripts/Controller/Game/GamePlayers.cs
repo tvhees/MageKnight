@@ -95,7 +95,7 @@ public class GamePlayers
     {
         if (PlayerControl.current != null)
         {
-            PlayerControl.current.RpcYourTurn(false);
+            PlayerControl.current.RpcNewTurn(false);
             PlayerControl.current.view.RpcEnableEndTurn(false);
         }
 
@@ -103,7 +103,7 @@ public class GamePlayers
         if (nextIndex >= currentOrder.Count)
             nextIndex = 0;
         PlayerControl.current = currentOrder[nextIndex];
-        PlayerControl.current.RpcYourTurn(true);
+        PlayerControl.current.RpcNewTurn(true);
         PlayerControl.current.view.RpcEnableEndTurn(true);
 
         nextIndex++;

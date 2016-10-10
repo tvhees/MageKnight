@@ -21,7 +21,7 @@ namespace Commands
             PlayerControl player = gameData.player;
             if (player.CanMoveToHex(gameData.hexId))
             {
-                originalHex = player.currentHex;
+                originalHex = player.CurrentHex;
                 player.OnHexChanged(gameData.hexId);
                 player.ServerAddMovement(-gameData.hexId.movementCost);
 
