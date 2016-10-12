@@ -176,7 +176,7 @@ public class GameController : NetworkBehaviour
     }
 
     [Server]
-    public void ReturnAllDice()
+    public void ServerReturnPlayedDiceToPool()
     {
         for (int i = 0; i < dice.usedDice.Count; i++)
         {
@@ -187,13 +187,20 @@ public class GameController : NetworkBehaviour
 
         dice.usedDice.Clear();
     }
+
+    [Server]
+    public void ServerDeselectAllDice()
+    {
+        dice.DeselectAll();
+    }
     #endregion
 
     public void EndTurn()
     {
         stateController.ChangeToState(stateController.endOfTurn);
         players.ServerEndTurn();
-        ReturnAllDice();
+        ServerReturnPlayedDiceToPool();
+        ServerDeselectAllDice();
         stateController.ChangeToState(stateController.turnSetup);
     }
 }

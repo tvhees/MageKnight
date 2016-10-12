@@ -1,5 +1,3 @@
 Mage Knight bugs:
 
-Selected but not used dice do not become unselected at end of turn
-Mana dice can be interacted with when not your turn
-Cards can be played from discard
+Dice and Cards can be played during selection phases

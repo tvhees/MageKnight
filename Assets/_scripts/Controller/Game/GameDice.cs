@@ -7,8 +7,8 @@ using System.Collections.Generic;
 public class GameDice : NetworkBehaviour
 {
     public List<ManaId> usedDice = new List<ManaId>();
-    private ManaPool mana;
-    private SharedView sharedView;
+    ManaPool mana;
+    SharedView sharedView;
 
     public void Enable(ManaPool mana, SharedView sharedView)
     {
@@ -27,6 +27,15 @@ public class GameDice : NetworkBehaviour
 
         if (!mana.HasEnoughBasicMana())
             RollAll();
+    }
+
+    [Server]
+    public void DeselectAll()
+    {
+        for (int i = 0; i < mana.DiceTotal; i++)
+            mana.dice[i].selected = false;
+
+        sharedView.RpcDeselectAllDice();
     }
 
     [Server]

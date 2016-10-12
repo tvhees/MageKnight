@@ -133,5 +133,12 @@ namespace View
             die.MoveToNewParent(manaPanel.transform);
             die.transform.SetSiblingIndex(manaId.index);
         }
+
+        [ClientRpc]
+        public void RpcDeselectAllDice()
+        {
+            for (int i = 0; i < manaDice.Length; i++)
+                manaDice[i].ToggleSelection(false);
+        }
     }
 }

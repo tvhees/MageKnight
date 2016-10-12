@@ -38,7 +38,6 @@ namespace View
         public void Show()
         {
             canvas.enabled = true;
-            Debug.Log(owner.isLocalPlayer);
             if (owner.isLocalPlayer) SetButtonsActive();
         }
 
@@ -64,7 +63,7 @@ namespace View
                 if (deck.transform.childCount <= 0)
                     break;
 
-                deck.transform.GetChild(0).GetComponent<CardView>().MoveToNewParent(hand.transform, showFront: owner.isLocalPlayer);
+                deck.transform.GetChild(0).GetComponent<CardView>().MoveToNewParent(hand.transform, owner.isLocalPlayer, owner.isLocalPlayer);
             }
         }
 
@@ -89,34 +88,31 @@ namespace View
         [ClientRpc]
         public void RpcMoveCardToHand(CardId card)
         {
-            if(owner.isLocalPlayer)
-                GetCardFromCollections(card).MoveToNewParent(hand.transform, showFront: true);
-            else
-                GetCardFromCollections(card).MoveToNewParent(hand.transform, showFront: false);
+            GetCardFromCollections(card).MoveToNewParent(hand.transform, owner.isLocalPlayer, owner.isLocalPlayer);
         }
 
         [ClientRpc]
         public void RpcMoveCardToPlay(CardId card)
         {
-            GetCardFromCollections(card).MoveToNewParent(play.transform, showFront: true);
+            GetCardFromCollections(card).MoveToNewParent(play.transform, true);
         }
 
         [ClientRpc]
         public void RpcMoveCardToDiscard(CardId card)
         {
-            GetCardFromCollections(card).MoveToNewParent(discard.transform, showFront: true);
+            GetCardFromCollections(card).MoveToNewParent(discard.transform, true);
         }
 
         [ClientRpc]
         public void RpcMoveCardToDeck(CardId card)
         {
-            GetCardFromCollections(card).MoveToNewParent(deck.transform, showFront: false);
+            GetCardFromCollections(card).MoveToNewParent(deck.transform, false);
         }
 
         [ClientRpc]
         public void RpcMoveCardToUnits(CardId card)
         {
-            GetCardFromCollections(card).MoveToNewParent(units.transform, showFront: true);
+            GetCardFromCollections(card).MoveToNewParent(units.transform, true, true);
         }
 
         [ClientRpc]

@@ -19,3 +19,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: a16ade9e27dd61a41bd8506fa08780ef, type: 2}
   - {fileID: 11400000, guid: c77925e9003f8eb4cbb527b817561413, type: 2}
   extraCopies: 000000000000000000000000000000000000000000000000
+  cardBackName: tacticsnightback

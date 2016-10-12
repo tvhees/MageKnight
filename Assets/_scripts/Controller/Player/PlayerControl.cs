@@ -222,7 +222,7 @@ public class PlayerControl : NetworkBehaviour
         if (thisPlayerTurn)
             current = this;
 
-        var alpha = thisPlayerTurn ? 2 / 6f : 1f;
+        var alpha = thisPlayerTurn ? 1f : 2 / 5f;
 
         characterView.SetMaterialAlpha(alpha);
 

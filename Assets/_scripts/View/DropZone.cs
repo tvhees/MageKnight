@@ -21,7 +21,7 @@ public class DropZone : MonoBehaviour, IDropHandler
 
     public Image dropZone;
 
-    private bool allowDrop;
+    bool allowDrop;
 
     void Awake()
     {
@@ -48,40 +48,22 @@ public class DropZone : MonoBehaviour, IDropHandler
 
         var droppedObject = eventData.pointerDrag.GetComponent<Moveable>();
 
-        if (droppedObject == null)
+        if (droppedObject == null || !droppedObject.startParent.draggable)
             return;
 
-        Command cost = null;
-        Command acquireCommand = null;
         switch (target)
         {
             case Target.Play:
                 PlayerControl.local.CmdPlayCard(droppedObject.startParent.cardId);
                 break;
             case Target.Deck:
-                //acquireCommand = new AcquireCardToDeck(acquirable, cost);
                 break;
             case Target.Discard:
-                //acquireCommand = new AcquireCardToDiscard(acquirable, cost);
                 break;
             case Target.Hand:
-                //acquireCommand = new AcquireCardToHand(acquirable, cost);
                 break;
             case Target.Units:
-                //acquireCommand = new AcquireUnit(acquirable, cost);
                 break;
         }
-
-        //GameController.singleton.commandStack.RunCommand(acquireCommand);
-    }
-
-    public void PlayEffect()
-    {
-
-    }
-
-    public void AcquireObject()
-    {
-
     }
 }
