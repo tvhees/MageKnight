@@ -7,53 +7,46 @@ namespace View
 {
     public class PlayerView : NetworkBehaviour
 	{
-        public NetworkInstanceId ownerId;
-        public PlayerControl owner;
-        public Canvas canvas;
+        #region References
 
-        public Button undoButton;
-        public Button endTurnButton;
+        [SerializeField] PlayerControl owner;
+        [SerializeField] Canvas canvas;
+
+        [SerializeField] Button undoButton;
+        [SerializeField] Button endTurnButton;
 
         public GameObject deck;
-        public GameObject hand;
         public GameObject discard;
+        public GameObject hand;
         public GameObject units;
         public GameObject tactic;
         public GameObject play;
 
-        public Tactic tacticModel;
+        [SerializeField] Tactic tacticModel;
 
-        public StatusDisplay level;
-        public StatusDisplay handSize;
-        public StatusDisplay armour;
-        public StatusDisplay movement;
-        public StatusDisplay influence;
+        [SerializeField] StatusDisplay level;
+        [SerializeField] StatusDisplay handSize;
+        [SerializeField] StatusDisplay armour;
+        [SerializeField] StatusDisplay movement;
+        [SerializeField] StatusDisplay influence;
 
         public GameObject[] collections;
 
-        #region General display toggles
+        #endregion References
+
+        #region Display toggles
         public void Show()
         {
             canvas.enabled = true;
+            Debug.Log(owner.isLocalPlayer);
+            if (owner.isLocalPlayer) SetButtonsActive();
         }
 
         public void Hide()
         {
             canvas.enabled = false;
         }
-
-        [ClientRpc]
-        public void RpcShow()
-        {
-            Show();
-        }
-
-        [ClientRpc]
-        public void RpcHide()
-        {
-            Hide();
-        }
-        #endregion
+        #endregion Display toggles
 
         #region Card management
         [ClientRpc]
@@ -75,7 +68,7 @@ namespace View
             }
         }
 
-        public CardView GetCardFromCollections(CardId card)
+        CardView GetCardFromCollections(CardId card)
         {
             CardView[] list;
             for (int i = 0; i < collections.Length; i++)
@@ -161,11 +154,19 @@ namespace View
             endTurnButton.interactable = enable;
         }
 
+        void SetButtonsActive()
+        {
+            endTurnButton.gameObject.SetActive(true);
+            undoButton.gameObject.SetActive(true);
+        }
+
+        // Assigned to button.onClick in inspector
         public void UiUndo()
         {
             if (owner.isLocalPlayer) owner.CmdUndo();
         }
 
+        //Assigned to button.onClick in inspector
         public void UiEndTurn()
         {
             if(owner.isLocalPlayer) owner.CmdEndTurn();

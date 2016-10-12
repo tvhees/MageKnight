@@ -7,7 +7,7 @@ public class DieView : MonoBehaviour {
     public Image face;
     public Image selectionRing;
     public Button button;
-    public Color[] manaColours = new Color[] { Color.red, Color.blue, Color.white, Color.green, Color.yellow, Color.black };
+    public Color[] manaColours = { Color.red, Color.blue, Color.white, Color.green, Color.yellow, Color.black };
     public GameConstants.ManaType manaType;
     public bool selected;
     public float rollTimer;
@@ -49,9 +49,17 @@ public class DieView : MonoBehaviour {
 
     void UiButtonPressed()
     {
-        selected = !selected;
+        if (!PlayerControl.current.isLocalPlayer)
+            return;
+
+        ToggleSelection(!selected);
+        PlayerControl.local.CmdDieToggled(new ManaId(transform.GetSiblingIndex(), manaType, selected));
+    }
+
+    public void ToggleSelection(bool selected)
+    {
+        this.selected = selected;
         selectionRing.enabled = selected;
-        GameController.singleton.UiDieToggled(new ManaId(transform.GetSiblingIndex(), manaType, selected));
     }
 
     public void Enable(bool enable)

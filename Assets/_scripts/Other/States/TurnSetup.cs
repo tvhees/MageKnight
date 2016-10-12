@@ -8,7 +8,6 @@ public class TurnSetup : GameState {
     protected override void OnEnable()
     {
         base.OnEnable();
-        PlayerControl.current.model.ResetMana();
         stateController.ChangeToState(stateController.startOfTurn);
     }
 }

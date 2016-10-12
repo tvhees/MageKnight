@@ -20,7 +20,7 @@ namespace Commands
             if (gameData.player.CanDrawCards)
             {
                 gameData.player.ServerDrawCards(valueSize);
-                return CommandResult.success;
+                return new CommandResult(true, false);
             }
 
             return CommandResult.failure;

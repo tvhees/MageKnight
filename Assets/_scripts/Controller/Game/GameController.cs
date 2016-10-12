@@ -153,12 +153,6 @@ public class GameController : NetworkBehaviour
     #endregion
 
     #region Mana
-    [Client]
-    public void UiDieToggled(ManaId manaId)
-    {
-        PlayerControl.local.CmdDieToggled(manaId);
-    }
-
     [Server]
     public ManaId PlayManaSource(GameConstants.ManaType colour)
     {
@@ -169,6 +163,7 @@ public class GameController : NetworkBehaviour
             Debug.Log("No selected die of colour " + colour.ToString());
             return source;
         }
+        source.selected = false;
         dice.usedDice.Add(source);
         sharedView.RpcMoveDieToPlay(source);
         return source;
@@ -185,8 +180,9 @@ public class GameController : NetworkBehaviour
     {
         for (int i = 0; i < dice.usedDice.Count; i++)
         {
-            ReturnManaSource(dice.usedDice[i]);
-            dice.RollDie(dice.usedDice[i].index);
+            var die = dice.usedDice[i];
+            dice.RollDie(die.index);
+            sharedView.RpcMoveDieToPool(die);
         }
 
         dice.usedDice.Clear();
@@ -200,17 +196,4 @@ public class GameController : NetworkBehaviour
         ReturnAllDice();
         stateController.ChangeToState(stateController.turnSetup);
     }
-
-    #region Command and effect management
-    [Server]
-    public void EnableUndo(bool enable)
-    {
-        PlayerControl.current.view.RpcEnableUndo(enable);
-    }
-
-    public void UiPlayEffect(CardId cardId)
-    {
-        PlayerControl.local.CmdPlayCard(cardId);
-    }
-    #endregion
 }

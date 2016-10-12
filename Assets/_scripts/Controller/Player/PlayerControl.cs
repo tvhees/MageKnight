@@ -208,6 +208,14 @@ public class PlayerControl : NetworkBehaviour
     #endregion UI responses
 
     #region Turn order and UI view
+    [Server]
+    public void ServerEndTurn()
+    {
+        model.ServerEndTurn(this);
+        view.RpcUpdateInfluence(model.influence);
+        view.RpcUpdateMovement(model.movement);
+    }
+
     [ClientRpc]
     public void RpcNewTurn(bool thisPlayerTurn)
     {
@@ -219,7 +227,10 @@ public class PlayerControl : NetworkBehaviour
         characterView.SetMaterialAlpha(alpha);
 
         if (GameController.singleton.sharedView != null)
+        {
             GameController.singleton.sharedView.TogglePlayerHighlight(playerId, thisPlayerTurn);
+            GameController.singleton.sharedView.ToggleDice(thisPlayerTurn);
+        }
     }
     [ClientRpc]
     public void RpcMoveToIndexInTurnOrder(int index)

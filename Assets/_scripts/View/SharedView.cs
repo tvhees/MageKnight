@@ -102,7 +102,8 @@ namespace View
         [ClientRpc]
         public void RpcRollDiceColour(ManaId id)
         {
-            manaDice[id.index].SetColour(id.colour, animate: true);
+            var die = manaDice[id.index];
+            die.SetColour(id.colour, true);
         }
 
         public void ToggleDice(bool interactible)
@@ -119,7 +120,7 @@ namespace View
         {
             var die = manaDice[manaId.index];
             die.Enable(false);
-
+            die.ToggleSelection(manaId.selected);
             die.MoveToNewParent(PlayerControl.current.view.play.transform);
         }
 
@@ -128,6 +129,7 @@ namespace View
         {
             var die = manaDice[manaId.index];
             die.Enable(true);
+            die.ToggleSelection(manaId.selected);
             die.MoveToNewParent(manaPanel.transform);
             die.transform.SetSiblingIndex(manaId.index);
         }

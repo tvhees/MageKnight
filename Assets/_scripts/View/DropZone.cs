@@ -56,7 +56,7 @@ public class DropZone : MonoBehaviour, IDropHandler
         switch (target)
         {
             case Target.Play:
-                GameController.singleton.UiPlayEffect(droppedObject.startParent.cardId);
+                PlayerControl.local.CmdPlayCard(droppedObject.startParent.cardId);
                 break;
             case Target.Deck:
                 //acquireCommand = new AcquireCardToDeck(acquirable, cost);

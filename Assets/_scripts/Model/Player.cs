@@ -6,6 +6,9 @@ using Commands;
 
 public class Player
 {
+
+    #region Card variables
+
     public List<CardId> hand;
     public List<CardId> deck;
     public List<CardId> discard;
@@ -18,16 +21,26 @@ public class Player
     public int movement;
     public int influence;
 
-    #region Mana
+    #endregion Card variables
+
+    #region Mana variables
+
     public int diceAllowed;
     public int[] mana;
     public int[] crystals;
 
     public bool HasGold { get { return mana[4] > 0; } }
     public bool HasBlack { get { return mana[5] > 0; } }
-    #endregion
+
+    #endregion Mana variables
+
+    #region Properties
 
     public bool CanUseDice { get { return diceAllowed > 0; } }
+
+    #endregion Properties
+
+    #region Constructor
 
     public Player(Character character, Cards cards, int handSize = 5)
     {
@@ -37,13 +50,13 @@ public class Player
         units = new List<CardId>();
         play = new List<CardId>();
         this.handSize = handSize;
+        ResetMana();
+        ResetVariables();
     }
 
-    public void ResetMana()
-    {
-        mana = new int[] { 0, 0, 0, 0, 0, 0 };
-        diceAllowed = 1;
-    }
+    #endregion
+
+    #region Mana management
 
     public bool HasMana(GameConstants.ManaType colour)
     {
@@ -71,6 +84,10 @@ public class Player
         else
             mana[(int)colour]++;
     }
+
+    #endregion Mana management
+
+    #region Card management
 
     public void DrawCards(int numberToDraw)
     {
@@ -148,7 +165,18 @@ public class Player
         units.Add(card);
     }
 
-    public void EndTurn(PlayerControl player)
+    #endregion Card management
+
+    #region Reset methods
+
+    public void ServerEndTurn(PlayerControl player)
+    {
+        DiscardPlayedCards(player);
+        ResetMana();
+        ResetVariables();
+    }
+
+    void DiscardPlayedCards(PlayerControl player)
     {
         var cardsInPlay = play.Count;
         for (int i = 0; i < cardsInPlay; i++)
@@ -156,4 +184,18 @@ public class Player
             player.ServerMoveCard(play[0], GameConstants.Collection.Discard);
         }
     }
+
+    public void ResetMana()
+    {
+        mana = new int[] { 0, 0, 0, 0, 0, 0 };
+        diceAllowed = 1;
+    }
+
+    void ResetVariables()
+    {
+        movement = 0;
+        influence = 0;
+    }
+
+#endregion Reset methods
 }
