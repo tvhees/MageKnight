@@ -17,3 +17,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 26707db115a0c7a4d9dd30815859d8fd, type: 2}
   - {fileID: 11400000, guid: 80233da229f9a4543809edbdb9ecfa9f, type: 2}
   extraCopies: 01000000010000000100000001000000
+  cardBackName: eliteback

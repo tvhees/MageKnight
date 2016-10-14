@@ -190,11 +190,9 @@ MonoBehaviour:
   characterName: 
   colour: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   view: {fileID: 114000010035809366}
-  character: {fileID: 0}
   playerCamera: {fileID: 2062830}
   turnOrderDisplay: {fileID: 0}
   characterView: {fileID: 11435248}
-  networkIdentity: {fileID: 11477058}
 --- !u!114 &11435248
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -478,7 +476,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1000011806285820
 GameObject:
   m_ObjectHideFlags: 1
@@ -549,7 +547,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1000012130244670
 GameObject:
   m_ObjectHideFlags: 1
@@ -898,8 +896,8 @@ MonoBehaviour:
   undoButton: {fileID: 114000012289751730}
   endTurnButton: {fileID: 114000013389796792}
   deck: {fileID: 1000011421297040}
-  hand: {fileID: 1000010582396370}
   discard: {fileID: 1000011645764662}
+  hand: {fileID: 1000010582396370}
   units: {fileID: 1000012461257682}
   tactic: {fileID: 1000014072763806}
   play: {fileID: 1000012449375962}

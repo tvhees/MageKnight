@@ -45,13 +45,11 @@ public class GamePlayers
 
     #region Connection management
 
-    [Server]
     public void ServerAdd(PlayerControl player)
     {
         currentOrder.Add(player);
     }
 
-    [Server]
     int ServerCalculateExpectedPlayers()
     {
         int i = 0;
@@ -65,7 +63,6 @@ public class GamePlayers
     #endregion Connection management
 
     #region Turn Order
-    [Server]
     public void ServerRandomiseOrder()
     {
         nextOrder = currentOrder.ToArray();
@@ -74,7 +71,6 @@ public class GamePlayers
         ServerMoveToNext();
     }
 
-    [Server]
     void ServerSetNewOrder()
     {
         currentOrder.Clear();
@@ -90,13 +86,13 @@ public class GamePlayers
         nextIndex = 0;
     }
 
-    [Server]
     void ServerMoveToNext()
     {
         if (PlayerControl.current != null)
         {
             PlayerControl.current.RpcNewTurn(false);
             PlayerControl.current.view.RpcEnableEndTurn(false);
+            PlayerControl.current.view.RpcEnableUndo(false);
         }
 
         // Wrap index to 0 because Mathf.Repeat doesn't take integers
@@ -109,15 +105,13 @@ public class GamePlayers
         nextIndex++;
     }
 
-    [Server]
     public void ServerEndTurn()
     {
         PlayerControl.current.ServerRefillHand();
-        PlayerControl.current.model.EndTurn(PlayerControl.current);
+        PlayerControl.current.ServerEndTurn();
         ServerMoveToNext();
     }
 
-    [Server]
     public void ServerClearNextOrder()
     {
         nextOrder = new PlayerControl[6];
@@ -126,21 +120,18 @@ public class GamePlayers
 
     #region Characters and Tactics
 
-    [Server]
     public void ServerAssignCharacter()
     {
         // The first tactic selection proceeds in reverse order of character selection
         ServerAddCurrentToNextOrder(currentOrder.Count - nextIndex);
     }
 
-    [Server]
     public void ServerAssignTactic(Cards cards, Card tactic)
     {
         PlayerControl.current.AssignChosenTactic(cards, tactic);
         ServerAddCurrentToNextOrder(tactic.number);
     }
 
-    [Server]
     void ServerAddCurrentToNextOrder(int index)
     {
         nextOrder[index] = PlayerControl.current;

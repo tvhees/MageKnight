@@ -7,53 +7,45 @@ namespace View
 {
     public class PlayerView : NetworkBehaviour
 	{
-        public NetworkInstanceId ownerId;
-        public PlayerControl owner;
-        public Canvas canvas;
+        #region References
 
-        public Button undoButton;
-        public Button endTurnButton;
+        [SerializeField] PlayerControl owner;
+        [SerializeField] Canvas canvas;
+
+        [SerializeField] Button undoButton;
+        [SerializeField] Button endTurnButton;
 
         public GameObject deck;
-        public GameObject hand;
         public GameObject discard;
+        public GameObject hand;
         public GameObject units;
         public GameObject tactic;
         public GameObject play;
 
-        public Tactic tacticModel;
+        [SerializeField] Tactic tacticModel;
 
-        public StatusDisplay level;
-        public StatusDisplay handSize;
-        public StatusDisplay armour;
-        public StatusDisplay movement;
-        public StatusDisplay influence;
+        [SerializeField] StatusDisplay level;
+        [SerializeField] StatusDisplay handSize;
+        [SerializeField] StatusDisplay armour;
+        [SerializeField] StatusDisplay movement;
+        [SerializeField] StatusDisplay influence;
 
         public GameObject[] collections;
 
-        #region General display toggles
+        #endregion References
+
+        #region Display toggles
         public void Show()
         {
             canvas.enabled = true;
+            if (owner.isLocalPlayer) SetButtonsActive();
         }
 
         public void Hide()
         {
             canvas.enabled = false;
         }
-
-        [ClientRpc]
-        public void RpcShow()
-        {
-            Show();
-        }
-
-        [ClientRpc]
-        public void RpcHide()
-        {
-            Hide();
-        }
-        #endregion
+        #endregion Display toggles
 
         #region Card management
         [ClientRpc]
@@ -71,11 +63,11 @@ namespace View
                 if (deck.transform.childCount <= 0)
                     break;
 
-                deck.transform.GetChild(0).GetComponent<CardView>().MoveToNewParent(hand.transform, showFront: owner.isLocalPlayer);
+                deck.transform.GetChild(0).GetComponent<CardView>().MoveToNewParent(hand.transform, owner.isLocalPlayer, owner.isLocalPlayer);
             }
         }
 
-        public CardView GetCardFromCollections(CardId card)
+        CardView GetCardFromCollections(CardId card)
         {
             CardView[] list;
             for (int i = 0; i < collections.Length; i++)
@@ -96,34 +88,31 @@ namespace View
         [ClientRpc]
         public void RpcMoveCardToHand(CardId card)
         {
-            if(owner.isLocalPlayer)
-                GetCardFromCollections(card).MoveToNewParent(hand.transform, showFront: true);
-            else
-                GetCardFromCollections(card).MoveToNewParent(hand.transform, showFront: false);
+            GetCardFromCollections(card).MoveToNewParent(hand.transform, owner.isLocalPlayer, owner.isLocalPlayer);
         }
 
         [ClientRpc]
         public void RpcMoveCardToPlay(CardId card)
         {
-            GetCardFromCollections(card).MoveToNewParent(play.transform, showFront: true);
+            GetCardFromCollections(card).MoveToNewParent(play.transform, true);
         }
 
         [ClientRpc]
         public void RpcMoveCardToDiscard(CardId card)
         {
-            GetCardFromCollections(card).MoveToNewParent(discard.transform, showFront: true);
+            GetCardFromCollections(card).MoveToNewParent(discard.transform, true);
         }
 
         [ClientRpc]
         public void RpcMoveCardToDeck(CardId card)
         {
-            GetCardFromCollections(card).MoveToNewParent(deck.transform, showFront: false);
+            GetCardFromCollections(card).MoveToNewParent(deck.transform, false);
         }
 
         [ClientRpc]
         public void RpcMoveCardToUnits(CardId card)
         {
-            GetCardFromCollections(card).MoveToNewParent(units.transform, showFront: true);
+            GetCardFromCollections(card).MoveToNewParent(units.transform, true, true);
         }
 
         [ClientRpc]
@@ -161,11 +150,19 @@ namespace View
             endTurnButton.interactable = enable;
         }
 
+        void SetButtonsActive()
+        {
+            endTurnButton.gameObject.SetActive(true);
+            undoButton.gameObject.SetActive(true);
+        }
+
+        // Assigned to button.onClick in inspector
         public void UiUndo()
         {
             if (owner.isLocalPlayer) owner.CmdUndo();
         }
 
+        //Assigned to button.onClick in inspector
         public void UiEndTurn()
         {
             if(owner.isLocalPlayer) owner.CmdEndTurn();

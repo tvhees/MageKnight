@@ -21,3 +21,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d2c4d064bea9b5349b01e215d57310c6, type: 2}
   - {fileID: 11400000, guid: 04ff2bb1e9e1ee74587d785f0c5055fe, type: 2}
   extraCopies: 0000000000000000000000000000000000000000000000000000000000000000
+  cardBackName: cardback

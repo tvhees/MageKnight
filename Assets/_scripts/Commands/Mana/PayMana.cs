@@ -24,13 +24,14 @@ namespace Commands
             else
                 return CommandResult.failure;
             
-            playerModel.AddMana(paidColour, subtract: true);
+            playerModel.AddMana(paidColour, true);
             paidId = GameController.singleton.PlayManaSource(paidColour);
             return CommandResult.success;
         }
 
         protected override void UndoThisCommand()
         {
+            paidId.selected = true;
             GameController.singleton.ReturnManaSource(paidId);
             playerModel.AddMana(paidColour);
         }

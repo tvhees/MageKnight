@@ -15,7 +15,7 @@ namespace Commands
             if (result.succeeded && result.allowUndo)
             {
                 oldCommands.Add(command);
-                GameController.singleton.EnableUndo(true);
+                PlayerControl.current.view.RpcEnableUndo(true);
             }
             else if (result.alternate != null)
                 result = RunCommand(result.alternate);
@@ -35,14 +35,14 @@ namespace Commands
                 Debug.Log("No commands to Undo");
 
             if (oldCommands.Count <= 0)
-                GameController.singleton.EnableUndo(false);
+                PlayerControl.current.view.RpcEnableUndo(false);
         }
 
         public void ClearCommandList()
         {
             Debug.Log("Hidden information revealed - Clearing command list");
             oldCommands.Clear();
-            GameController.singleton.EnableUndo(false);
+            PlayerControl.current.view.RpcEnableUndo(false);
         }
     }
 }

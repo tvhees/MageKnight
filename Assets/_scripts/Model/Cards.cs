@@ -29,21 +29,17 @@ public class Cards
         wounds = CreateDeck(DeckDatabase.GetScriptableObject("Wounds"));
         commonUnits = CreateDeck(DeckDatabase.GetScriptableObject("CommonUnits"));
         eliteUnits = CreateDeck(DeckDatabase.GetScriptableObject("EliteUnits"));
-        dayTactics = CreateDeck(DeckDatabase.GetScriptableObject("DayTactics"), shuffle: false);
-        nightTactics = CreateDeck(DeckDatabase.GetScriptableObject("NightTactics"), shuffle: false);
+        dayTactics = CreateDeck(DeckDatabase.GetScriptableObject("DayTactics"), false);
+        nightTactics = CreateDeck(DeckDatabase.GetScriptableObject("NightTactics"), false);
     }
 
     public List<CardId> CreateDeck(Deck deckData, bool shuffle = true)
     {
-        List<CardId> deck = new List<CardId>();
+        var deck = new List<CardId>();
 
         for (int i = 0; i < deckData.cards.Length; i++)
-        {
             for (int j = 0; j <= deckData.extraCopies[i]; j++)
-            {
-                deck.Add(new CardId(deckData.cards[i].name, GameConstants.CardNumbers.GetLast(remove: true)));
-            }
-        }
+                deck.Add(new CardId(deckData.cards[i].name, GameConstants.CardNumbers.GetLast(true), deckData.cardBackName));
 
         if(shuffle)
             deck.Shuffle();

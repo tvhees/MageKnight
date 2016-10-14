@@ -10,5 +10,6 @@ namespace Other.Data
 	{
         public Card[] cards;
         public int[] extraCopies;
+        public string cardBackName;
 	}
 }

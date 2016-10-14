@@ -12,26 +12,12 @@ namespace Other.Factory
 
         public GameObject CreateCard(CardId cardId)
         {
-            GameObject card = Instantiate(cardPrefab);
+            var card = Instantiate(cardPrefab);
             var cardView = card.GetComponent<CardView>();
             cardView.cardId = cardId;
             cardView.SetCardImages();
-            cardView.Show();
 
             return card;
-        }
-
-        private Sprite GetCardFront(string name)
-        {
-            name = name.Replace(" ", "");
-            name = name.ToLower();
-
-            Sprite cardFront = Resources.Load<Sprite>("CardImages/" + name);
-
-            if (cardFront == null)
-                Debug.Log(name);
-
-            return cardFront;
         }
     }
 }

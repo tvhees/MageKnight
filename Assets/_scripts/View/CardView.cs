@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using UnityEngine.Events;
@@ -9,12 +10,22 @@ namespace View
 {
     public class CardView : NetworkBehaviour
 	{
-        public CardId cardId;
+        #region Variables
 
+        public CardId cardId;
         public Sprite cardFront;
         public Sprite cardBack;
+        public bool draggable;
 
-        private Image cardImage;
+        #endregion New Region
+
+        #region References
+
+        Image cardImage;
+
+        #endregion References
+
+        #region Creation
 
         void Awake()
         {
@@ -24,62 +35,55 @@ namespace View
         public void SetCardImages()
         {
             gameObject.name = cardId.name;
-            cardFront = GetCardImage(cardId.name);
-            cardBack = GetCardImage("cardback");
+            cardFront = LoadCardImage(cardId.name);
+            cardBack = LoadCardImage(cardId.cardBackName);
+            Show();
         }
 
-        Sprite GetCardImage(string name)
+        Sprite LoadCardImage(string imageName)
         {
-            name = name.ToLower().Replace(" ", "");
-            Sprite cardFront = Resources.Load<Sprite>("CardImages/" + name);
+            imageName = imageName.ToLower().Replace(" ", "");
+            var img = Resources.Load<Sprite>("CardImages/" + imageName);
 
-            if (cardFront == null)
-                Debug.Log(name);
+            Assert.IsNotNull(img, imageName);
 
-            return cardFront;
+            return img;
         }
 
-        public void MoveToNewParent(Transform parent, bool showFront = true)
+        #endregion Creation
+
+        #region Display methods
+
+        public void MoveToNewParent(Transform parent, bool showFront = true, bool draggable = false)
         {
             transform.SetParent(parent);
             (transform as RectTransform).Reset();
-
+            this.draggable = draggable;
             if (showFront)
                 Show();
             else
                 Hide();
         }
 
-        public void Show()
+        void Show()
         {
             cardImage.sprite = cardFront;
             AllowZooming(true);
         }
 
-        public void Hide()
+        void Hide()
         {
             cardImage.sprite = cardBack;
             AllowZooming(false);
         }
 
-        public void OnDrag()
-        {
-
-        }
-
-        public void EndDrag()
-        {
-
-        }
-
-
-        #region Private methods
         void AllowZooming(bool allow)
         {
             Moveable zoomScript = GetComponentInChildren<Moveable>();
             if (zoomScript != null)
                 zoomScript.enabled = allow;
         }
-        #endregion
+
+        #endregion Display methods
     }
 }
