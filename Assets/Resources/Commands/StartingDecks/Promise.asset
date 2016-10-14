@@ -13,8 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   requirements:
   - {fileID: 11400000, guid: 3d2edd4cfac0b964b8eff172dd930a65, type: 2}
-  optionals:
-  - {fileID: 11400000, guid: eecbe70f832fd87419fc9b199ad022f0, type: 2}
+  optionals: []
   alternate: {fileID: 11400000, guid: 3606a2b7cfa2d22429b84358d1355d9a, type: 2}
   valueType: 1
   valueSize: 4

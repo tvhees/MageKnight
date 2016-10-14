@@ -24,6 +24,10 @@ public class PlayerControl : NetworkBehaviour
     public Color colour;
     [SyncVar(hook = "OnHexChanged")]
     HexId currentHex;
+    [SyncVar]
+    public bool commandSuccess;
+    [SyncVar]
+    public bool commandRunning;
 
     #endregion Attributes
 
@@ -170,13 +174,16 @@ public class PlayerControl : NetworkBehaviour
     [Command]
     public void CmdPlayCard(CardId cardId)
     {
+        commandRunning = true;
+        commandSuccess = false;
         Card card = CardDatabase.GetScriptableObject(cardId.name);
         Command effect = card.GetAutomaticEffect();
         if (effect == null)
             return;
 
-        effect.SetInformation(new GameData(player: this, cardId: cardId));
-        GameController.singleton.commandStack.RunCommand(effect);
+        effect.SetInformation(new GameData(this, cardId));
+        commandSuccess = GameController.singleton.commandStack.RunCommand(effect).succeeded;
+        commandRunning = false;
     }
 
     [Command]

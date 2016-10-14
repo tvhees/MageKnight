@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Name: Movement2
   m_EditorClassIdentifier: 
   requirements: []
-  optionals:
-  - {fileID: 11400000, guid: eecbe70f832fd87419fc9b199ad022f0, type: 2}
+  optionals: []
   alternate: {fileID: 0}
   valueType: 0
   valueSize: 2
