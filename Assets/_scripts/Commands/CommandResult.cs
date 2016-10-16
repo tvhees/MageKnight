@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Commands
 {
-    public class CommandResult
+    public struct CommandResult
     {
         public static CommandResult success = new CommandResult(true);
         public static CommandResult failure = new CommandResult(false);
@@ -12,13 +12,11 @@ namespace Commands
 
         public bool succeeded;
         public bool allowUndo;
-        public Command alternate;
 
         public CommandResult(bool succeeded, bool allowUndo = true)
         {
             this.succeeded = succeeded;
             this.allowUndo = allowUndo;
-            alternate = null;
         }
     }
 }

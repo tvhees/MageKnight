@@ -135,6 +135,11 @@ public class Player
             return;
     }
 
+    public void MoveCardToLimbo(CardId card)
+    {
+        RemoveCardFromLists(card);
+    }
+
     public void MoveCardToHand(CardId card)
     {
         RemoveCardFromLists(card);
@@ -181,7 +186,7 @@ public class Player
         var cardsInPlay = play.Count;
         for (int i = 0; i < cardsInPlay; i++)
         {
-            player.ServerMoveCard(play[0], GameConstants.Collection.Discard);
+            player.ServerMoveCard(play[0], GameConstants.Location.Discard);
         }
     }
 

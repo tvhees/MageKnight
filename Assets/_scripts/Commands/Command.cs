@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using Commands;
 
 
 namespace Commands
@@ -9,7 +9,6 @@ namespace Commands
     public abstract class Command : ScriptableObject
     {
         protected GameData gameData;
-
 
         public List<Command> requirements;
         protected List<Command> instantiatedRequirements = new List<Command>();
@@ -19,14 +18,16 @@ namespace Commands
         protected List<Command> instantiatedOptionals = new List<Command>();
         protected List<Command> completedOptionals = new List<Command>();
 
-        public Command alternate ;
-        Command instantiatedAlternate;
+        public virtual IEnumerator Routine(Action<GameConstants.Location> resolve, Action<Exception> reject)
+        {
+            yield return null;
 
-        protected abstract CommandResult ExecuteThisCommand();
+            reject(new ApplicationException("Command Not Implemented"));
+        }
 
         protected virtual void UndoThisCommand()
         {
-
+            Debug.LogFormat("The {0} command has no undo function", name);
         }
 
         public virtual void SetInformation(GameData input)
@@ -46,64 +47,6 @@ namespace Commands
                 command.SetInformation(input);
                 instantiatedOptionals.Add(command);
             }
-
-            if (alternate != null)
-            {
-                instantiatedAlternate = Instantiate(alternate);
-                instantiatedAlternate.SetInformation(input);
-            }
-        }
-
-        public CommandResult Execute()
-        {
-            var result = ExecuteRequiredCommands();
-
-            if (result.succeeded)
-            {
-                result = ExecuteThisCommand();
-                if (result.succeeded)
-                    ExecuteOptionalCommands();
-            }
-
-            if (!result.succeeded)
-            {
-                UndoCompletedRequirements();
-                result = CommandResult.failure;
-                result.alternate = instantiatedAlternate;
-            }
-
-            return result;
-        }
-
-        protected CommandResult ExecuteRequiredCommands()
-        {
-            var result = CommandResult.success;
-            for (int i = 0; i < instantiatedRequirements.Count; i++)
-            {
-                result = ExecuteSubCommand(instantiatedRequirements[i], completedRequirements);
-                if (!result.succeeded)
-                {
-                    UndoCompletedRequirements();
-                    break;
-                }
-            }
-            return result;
-        }
-
-        protected void ExecuteOptionalCommands()
-        {
-            for (int i = 0; i < instantiatedOptionals.Count; i++)
-            {
-                ExecuteSubCommand(instantiatedOptionals[i], completedOptionals);
-            }
-        }
-
-        protected CommandResult ExecuteSubCommand(Command subCommand, List<Command> completedSubCommandList)
-        {
-            var result = subCommand.Execute();
-            if (result.succeeded)
-                completedSubCommandList.Add(subCommand);
-            return result;
         }
 
         public void Undo()

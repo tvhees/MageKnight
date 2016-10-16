@@ -189,6 +189,7 @@ MonoBehaviour:
   playerName: 
   characterName: 
   colour: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  commandRunning: 0
   view: {fileID: 114000010035809366}
   playerCamera: {fileID: 2062830}
   turnOrderDisplay: {fileID: 0}
@@ -612,7 +613,7 @@ GameObject:
   - 222: {fileID: 222000011092137556}
   - 114: {fileID: 114000012178649534}
   m_Layer: 10
-  m_Name: Play
+  m_Name: Limbo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -683,6 +684,23 @@ GameObject:
   - 114: {fileID: 114000013540714978}
   m_Layer: 10
   m_Name: Stats
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1000013137707540
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 224000010753650920}
+  - 222: {fileID: 222000013768461120}
+  - 114: {fileID: 114000010097922112}
+  m_Layer: 10
+  m_Name: Play
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -900,7 +918,8 @@ MonoBehaviour:
   hand: {fileID: 1000010582396370}
   units: {fileID: 1000012461257682}
   tactic: {fileID: 1000014072763806}
-  play: {fileID: 1000012449375962}
+  play: {fileID: 1000013137707540}
+  limbo: {fileID: 1000012449375962}
   tacticModel: {fileID: 114000011777804418}
   level: {fileID: 114000011371325156}
   handSize: {fileID: 114000013356249262}
@@ -913,7 +932,31 @@ MonoBehaviour:
   - {fileID: 1000011645764662}
   - {fileID: 1000012461257682}
   - {fileID: 1000014072763806}
+  - {fileID: 1000013137707540}
   - {fileID: 1000012449375962}
+--- !u!114 &114000010097922112
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013137707540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -2095666955, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 5
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 120, y: 120}
+  m_Spacing: {x: 0, y: 0}
+  m_Constraint: 1
+  m_ConstraintCount: 1
 --- !u!114 &114000010170164004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1371,10 +1414,10 @@ MonoBehaviour:
     m_Right: 0
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 5
+  m_ChildAlignment: 4
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 120, y: 120}
+  m_CellSize: {x: 360, y: 360}
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 1
   m_ConstraintCount: 1
@@ -2166,6 +2209,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010499440186}
+--- !u!222 &222000013768461120
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013137707540}
 --- !u!222 &222000013839749190
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -2273,6 +2322,7 @@ RectTransform:
   - {fileID: 224000011426675924}
   - {fileID: 224000010518151994}
   - {fileID: 224000012444809712}
+  - {fileID: 224000010753650920}
   - {fileID: 224000011987958456}
   - {fileID: 224000011686112012}
   - {fileID: 224000012780075274}
@@ -2358,6 +2408,24 @@ RectTransform:
   m_AnchoredPosition: {x: 0.00007247925, y: 0.000015258789}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!224 &224000010753650920
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000013137707540}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 224000010395247750}
+  m_RootOrder: 5
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0.8}
+  m_AnchoredPosition: {x: -0.000022888184, y: 0.0000038146973}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224000010755872330
 RectTransform:
   m_ObjectHideFlags: 1
@@ -2389,7 +2457,7 @@ RectTransform:
   m_Children:
   - {fileID: 224000012739297424}
   m_Father: {fileID: 224000010395247750}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0.00006866455, y: -300}
@@ -2483,7 +2551,7 @@ RectTransform:
   - {fileID: 224000014278658074}
   - {fileID: 224000010268319014}
   m_Father: {fileID: 224000010395247750}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -100}
@@ -2555,10 +2623,10 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 224000010395247750}
-  m_RootOrder: 5
-  m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 0.8}
-  m_AnchoredPosition: {x: -0.000022888184, y: 0.0000038146973}
+  m_RootOrder: 6
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0.00006866455, y: 0.00006866455}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224000012186515958
@@ -2648,7 +2716,7 @@ RectTransform:
   m_Children:
   - {fileID: 224000012186515958}
   m_Father: {fileID: 224000010395247750}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: -200}

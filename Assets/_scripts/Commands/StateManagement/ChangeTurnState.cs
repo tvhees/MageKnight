@@ -22,10 +22,12 @@ namespace Commands
             oldState = stateController.lastState;
         }
 
-        protected override CommandResult ExecuteThisCommand()
+        public override IEnumerator Routine(Action<GameConstants.Location> resolve, Action<Exception> reject)
         {
+            yield return null;
+
             stateController.ChangeToState(newState);
-            return CommandResult.success;
+            resolve(GameConstants.Location.Play);
         }
 
         protected override void UndoThisCommand()

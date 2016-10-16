@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 using System;
 
 namespace Commands
@@ -15,15 +14,17 @@ namespace Commands
             base.SetInformation(input);
         }
 
-        protected override CommandResult ExecuteThisCommand()
+        public override IEnumerator Routine(Action<GameConstants.Location> resolve, Action<Exception> reject)
         {
+            yield return null;
+
             if (gameData.player.CanDrawCards)
             {
                 gameData.player.ServerDrawCards(valueSize);
-                return new CommandResult(true, false);
+                resolve(GameConstants.Location.Play);
             }
-
-            return CommandResult.failure;
+            else
+                reject(null);
         }
     }
 }

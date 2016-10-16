@@ -2,19 +2,21 @@
 using System;
 using System.Collections;
 using RSG;
+using Commands;
 
 public class GamePromises : Singleton<GamePromises>
 {
-    public static IPromise<bool> PlayCard(CardId card)
+    // We use a promise on the client side so that we can delay moving cards to the appropriate area until after
+    // the effect has completed resolution on the server side.
+    public static IPromise<CommandResult> PlayCard(CardId card)
     {
-        Debug.Log("Returning PlayCard coroutine...");
-        return new Promise<bool>((resolve, reject) => Instance.StartCoroutine(CardResult(card, resolve, reject)));
+        return new Promise<CommandResult>((resolve, reject) => Instance.StartCoroutine(CardResult(card, resolve, reject)));
     }
 
-    static IEnumerator CardResult(CardId card, Action<bool> resolve, Action<Exception> reject)
+    static IEnumerator CardResult(CardId card, Action<CommandResult> resolve, Action<Exception> reject)
     {
         var player = PlayerControl.local;
-        Debug.Log("Starting command...");
+        Debug.Log("Starting command... " + card.name);
         player.CmdPlayCard(card);
 
         while(player.commandRunning)
@@ -25,12 +27,10 @@ public class GamePromises : Singleton<GamePromises>
         var someErrorOccurred = false;
         if (someErrorOccurred)
         {
-            // An error occurred, reject the promise.
             reject(new ApplicationException("My error"));
         }
         else
         {
-            // Completed successfully, resolve the promise.
             resolve(player.commandSuccess);
         }
     }

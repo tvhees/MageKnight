@@ -3,6 +3,7 @@ using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using RSG;
 
 namespace Commands
 {
@@ -34,11 +35,13 @@ namespace Commands
             }
         }
 
-        protected override CommandResult ExecuteThisCommand()
+        public override IEnumerator Routine(Action<GameConstants.Location> resolve, Action<Exception> reject)
         {
             serverMethod(valueSize);
 
-            return CommandResult.success;
+            yield return null;
+
+            resolve(GameConstants.Location.Play);
         }
 
         protected override void UndoThisCommand()

@@ -21,6 +21,7 @@ namespace View
         public GameObject units;
         public GameObject tactic;
         public GameObject play;
+        public GameObject limbo;
 
         [SerializeField] Tactic tacticModel;
 
@@ -83,6 +84,12 @@ namespace View
             }
 
             return null;
+        }
+
+        [ClientRpc]
+        public void RpcMoveCardToLimbo(CardId card)
+        {
+            GetCardFromCollections(card).MoveToNewParent(limbo.transform, true, false);
         }
 
         [ClientRpc]

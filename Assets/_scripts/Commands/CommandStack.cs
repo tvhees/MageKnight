@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using RSG;
 
 namespace Commands
 {
@@ -8,19 +9,9 @@ namespace Commands
     {
         public List<Command> oldCommands = new List<Command>();
 
-        public CommandResult RunCommand(Command command)
+        public IPromise<GameConstants.Location> Execute(Command command)
         {
-            CommandResult result = command.Execute();
-
-            if (result.succeeded && result.allowUndo)
-            {
-                oldCommands.Add(command);
-                PlayerControl.current.view.RpcEnableUndo(true);
-            }
-            else if (result.alternate != null)
-                result = RunCommand(result.alternate);
-
-            return result;
+            return new Promise<GameConstants.Location>((resolve, reject) => StartCoroutine(command.Routine(resolve, reject)));
         }
 
         public void UndoLastCommand()

@@ -6,6 +6,8 @@ using View;
 using Other.Data;
 using Other.Utility;
 using Commands;
+using RSG;
+using System;
 
 public class PlayerControl : NetworkBehaviour
 {
@@ -25,7 +27,7 @@ public class PlayerControl : NetworkBehaviour
     [SyncVar(hook = "OnHexChanged")]
     HexId currentHex;
     [SyncVar]
-    public bool commandSuccess;
+    public CommandResult commandSuccess;
     [SyncVar]
     public bool commandRunning;
 
@@ -155,7 +157,6 @@ public class PlayerControl : NetworkBehaviour
     #endregion
 
     #region UI responses
-
     [Command]
     public void CmdSetCharacter(string name)
     {
@@ -170,22 +171,6 @@ public class PlayerControl : NetworkBehaviour
     {
         GameController.singleton.OnTacticSelected(name);
     }
-
-    [Command]
-    public void CmdPlayCard(CardId cardId)
-    {
-        commandRunning = true;
-        commandSuccess = false;
-        Card card = CardDatabase.GetScriptableObject(cardId.name);
-        Command effect = card.GetAutomaticEffect();
-        if (effect == null)
-            return;
-
-        effect.SetInformation(new GameData(this, cardId));
-        commandSuccess = GameController.singleton.commandStack.RunCommand(effect).succeeded;
-        commandRunning = false;
-    }
-
     [Command]
     public void CmdUndo()
     {
@@ -318,24 +303,34 @@ public class PlayerControl : NetworkBehaviour
     }
 
     [Server]
-    public void ServerMoveCard(CardId card, GameConstants.Collection to)
+    public void ServerMoveCard(CardId card, GameConstants.Location to)
     {
         switch (to)
         {
-            case GameConstants.Collection.Hand:
+            case GameConstants.Location.Hand:
                 ServerMoveCardToHand(card);
                 break;
-            case GameConstants.Collection.Deck:
+            case GameConstants.Location.Deck:
                 break;
-            case GameConstants.Collection.Discard:
+            case GameConstants.Location.Discard:
                 ServerMoveCardToDiscard(card);
                 break;
-            case GameConstants.Collection.Units:
+            case GameConstants.Location.Units:
                 break;
-            case GameConstants.Collection.Play:
+            case GameConstants.Location.Play:
                 ServerMoveCardToPlay(card);
                 break;
+            case GameConstants.Location.Limbo:
+                ServerMoveCardToLimbo(card);
+                break;
         }
+    }
+
+    [Server]
+    public void ServerMoveCardToLimbo(CardId card)
+    {
+        model.MoveCardToLimbo(card);
+        view.RpcMoveCardToLimbo(card);
     }
 
     [Server]
@@ -372,6 +367,7 @@ public class PlayerControl : NetworkBehaviour
         model.MoveCardToUnits(card);
         view.RpcMoveCardToUnits(card);
     }
+
     [Server]
     public void AssignChosenTactic(Cards cards, Card tactic)
     {
@@ -391,9 +387,23 @@ public class PlayerControl : NetworkBehaviour
         {
             var tacticCommand = tactic.GetAutomaticEffect();
             tacticCommand.SetInformation(new GameData(this));
-            GameController.singleton.commandStack.RunCommand(tacticCommand);
+            GameController.singleton.commandStack.Execute(tacticCommand);
             model.isTacticActive = tactic.isRepeatable;
         }
+    }
+
+    [Command]
+    public void CmdPlayCard(CardId cardId)
+    {
+        ServerMoveCard(cardId, GameConstants.Location.Limbo);
+        var card = CardDatabase.GetScriptableObject(cardId.name);
+        var effect = card.GetAutomaticEffect();
+        if (effect == null)
+            return;
+
+        effect.SetInformation(new GameData(this, cardId));
+        GameController.singleton.commandStack.Execute(effect)
+            .Then(value => ServerMoveCard(cardId, value));
     }
     #endregion
 
@@ -440,7 +450,7 @@ public class PlayerControl : NetworkBehaviour
     {
         var moveToHex = Instantiate(CommandDatabase.GetScriptableObject("MoveToHex"));
         moveToHex.SetInformation(new GameData(player: this, hexId: newHex));
-        GameController.singleton.commandStack.RunCommand(moveToHex);
+        GameController.singleton.commandStack.Execute(moveToHex);
     }
 
     public void OnHexChanged(HexId newHex)

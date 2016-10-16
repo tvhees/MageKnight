@@ -9,24 +9,31 @@ namespace Commands
     public class PayMana : Command
     {
         public GameConstants.ManaType colour;
-        private GameConstants.ManaType paidColour;
-        private ManaId paidId;
-        private Player playerModel;
+        GameConstants.ManaType paidColour;
+        ManaId paidId;
+        Player playerModel;
 
-        protected override CommandResult ExecuteThisCommand()
+        public override IEnumerator Routine(Action<GameConstants.Location> resolve, Action<Exception> reject)
         {
+            yield return null;
             playerModel = gameData.player.model;
-            // We can use gold mana instead of non-black but need to record this.
+            var success = true;
+            // We can use gold mana instead of non-black but need to store this.
             if (playerModel.HasMana(colour))
                 paidColour = colour;
             else if (playerModel.HasGold && colour != GameConstants.ManaType.Black)
                 paidColour = GameConstants.ManaType.Gold;
             else
-                return CommandResult.failure;
-            
-            playerModel.AddMana(paidColour, true);
-            paidId = GameController.singleton.PlayManaSource(paidColour);
-            return CommandResult.success;
+                success = false;
+
+            if (success)
+            {
+                playerModel.AddMana(paidColour, true);
+                paidId = GameController.singleton.PlayManaSource(paidColour);
+                resolve(GameConstants.Location.Play);
+            }
+            else
+                reject(null);
         }
 
         protected override void UndoThisCommand()

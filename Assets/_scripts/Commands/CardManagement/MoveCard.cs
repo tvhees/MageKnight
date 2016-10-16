@@ -8,8 +8,8 @@ namespace Commands
     [CreateAssetMenu(menuName = "Command/Move Card")]
     public class MoveCard : Command
     {
-        public GameConstants.Collection fromCollection;
-        public GameConstants.Collection toCollection;
+        public GameConstants.Location fromLocation;
+        public GameConstants.Location toLocation;
         private CardId card;
 
         public override void SetInformation(GameData input)
@@ -18,15 +18,15 @@ namespace Commands
             card = input.cardId;
         }
 
-        protected override CommandResult ExecuteThisCommand()
+        public override IEnumerator Routine(Action<GameConstants.Location> resolve, Action<Exception> reject)
         {
-            gameData.player.ServerMoveCard(card, toCollection);
-            return CommandResult.success;
+            yield return null;
+            resolve(toLocation);
         }
 
         protected override void UndoThisCommand()
         {
-            gameData.player.ServerMoveCard(card, fromCollection);
+            gameData.player.ServerMoveCard(card, fromLocation);
         }
     }
 }

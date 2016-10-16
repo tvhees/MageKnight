@@ -16,8 +16,10 @@ namespace Commands
             StateController stateController = GameController.singleton.stateController;
         }
 
-        protected override CommandResult ExecuteThisCommand()
+        public override IEnumerator Routine(Action<GameConstants.Location> resolve, Action<Exception> reject)
         {
+            yield return null;
+
             PlayerControl player = gameData.player;
             if (player.CanMoveToHex(gameData.hexId))
             {
@@ -25,10 +27,10 @@ namespace Commands
                 player.OnHexChanged(gameData.hexId);
                 player.ServerAddMovement(-gameData.hexId.movementCost);
 
-                return CommandResult.success;
+                resolve(GameConstants.Location.Play);
             }
             else
-                return CommandResult.failure;
+                reject(null);
         }
 
         protected override void UndoThisCommand()

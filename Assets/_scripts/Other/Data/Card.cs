@@ -40,7 +40,7 @@ namespace Other.Data
                 case Type.Tactic:
                     return Instantiate(strongEffect);
                 case Type.Artifact:
-                    return Instantiate(strongEffect.alternate);
+                    return Instantiate(strongEffect);
             }
             return null;
         }

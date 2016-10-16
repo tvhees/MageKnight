@@ -53,8 +53,7 @@ public class DropZone : MonoBehaviour, IDropHandler
         switch (target)
         {
             case Target.Play:
-                GamePromises.PlayCard(cardId);
-                //PlayerControl.local.CmdPlayCard(droppedObject.startParent.cardId);
+                PlayerControl.local.CmdPlayCard(cardId);
                 break;
             case Target.Deck:
                 break;
