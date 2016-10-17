@@ -31,6 +31,22 @@ namespace Commands
             resolve();
         }
 
+        public override IEnumerator Routine(Action<CommandResult> resolve, Action<Exception> reject)
+        {
+            yield return null;
+
+            PlayerControl player = gameData.player;
+            if (player.CanMoveToHex(gameData.hexId))
+            {
+                originalHex = player.CurrentHex;
+                player.OnHexChanged(gameData.hexId);
+                player.ServerAddMovement(-gameData.hexId.movementCost);
+                resolve(CommandResult.success);
+            }
+            else
+                resolve(CommandResult.failure);
+        }
+
         protected override void UndoThisCommand()
         {
             gameData.player.OnHexChanged(originalHex);

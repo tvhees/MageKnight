@@ -25,5 +25,18 @@ namespace Commands
 
             resolve();
         }
+
+        public override IEnumerator Routine(Action<CommandResult> resolve, Action<Exception> reject)
+        {
+            yield return null;
+
+            if (gameData.player.CanDrawCards)
+            {
+                gameData.player.ServerDrawCards(valueSize);
+                resolve(CommandResult.permanent);
+            }
+            else
+                resolve(CommandResult.failure);
+        }
     }
 }

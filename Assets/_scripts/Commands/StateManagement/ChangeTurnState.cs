@@ -30,6 +30,14 @@ namespace Commands
             resolve();
         }
 
+        public override IEnumerator Routine(Action<CommandResult> resolve, Action<Exception> reject)
+        {
+            yield return null;
+
+            stateController.ChangeToState(newState);
+            resolve(CommandResult.success);
+        }
+
         protected override void UndoThisCommand()
         {
             stateController.ChangeToState(oldState);

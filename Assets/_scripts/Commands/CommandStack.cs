@@ -51,10 +51,13 @@ namespace Commands
 
         #region Running commands with CommandResult return
 
+        CommandResult sequenceResult;
+
         public void RunCommandWithResult(Command command)
         {
+            sequenceResult = CommandResult.success;
             var sequence = Promise.Sequence(GetSequenceOfPromisesWithResult(command));
-            sequence.Done();
+            sequence.Done(() => ProcessSequenceResult(command));
         }
 
         Func<IPromise>[] GetSequenceOfPromisesWithResult(Command command)
@@ -74,21 +77,38 @@ namespace Commands
         Func<IPromise> PrepPromiseWithResult(Command command)
         {
             return () => GetPromiseWithResultFromCommand(command)
-                .Then(cResult => LogResult(cResult));
+                .Then(commandResult => ProcessCommandResult(commandResult));
         }
 
+        // If a previous command has returned unsuccessful we skip the work in subsequent commands
         IPromise<CommandResult> GetPromiseWithResultFromCommand(Command command)
         {
-            return new Promise<CommandResult>((resolve, reject) => StartCoroutine(command.Routine(resolve, reject)));
+            return new Promise<CommandResult>((resolve, reject) => 
+            {
+                if (sequenceResult.succeeded)
+                    StartCoroutine(command.Routine(resolve, reject));
+                else
+                    resolve(sequenceResult);
+            });
         }
 
-        IPromise LogResult(CommandResult cResult)
+        // This promise saves the result of the command and returns a dummy, typeless promise that Promise.Sequence can use.
+        IPromise ProcessCommandResult(CommandResult commandResult)
         {
-            Debug.Log(cResult.succeeded);
+            sequenceResult = commandResult;
+            Debug.Log(commandResult.succeeded);
             return new Promise((resolve, reject) => resolve());
         }
 
-        #endregion Running commands with CommandResult return
+        void ProcessSequenceResult(Command command)
+        {
+            if (sequenceResult.CanSaveCommand)
+                AddCommand(command);
+            else
+                Debug.LogFormat("Can't save command - succeeded: {0}, undoable: {1}", sequenceResult.succeeded, sequenceResult.allowUndo);
+        }
+
+        #endregion Running commands with output
 
         #region Adding and removing commands
 

@@ -8,9 +8,12 @@ namespace Commands
     {
         public static CommandResult success = new CommandResult(true);
         public static CommandResult failure = new CommandResult(false);
+        public static CommandResult permanent = new CommandResult(true, false);
 
         public bool succeeded;
         public bool allowUndo;
+
+        public bool CanSaveCommand { get { return succeeded && allowUndo; } }
 
         public CommandResult(bool succeeded, bool allowUndo = true)
         {
