@@ -35,17 +35,27 @@ namespace Commands
             }
         }
 
-        public override IEnumerator Routine(Action<GameConstants.Location> resolve, Action<Exception> reject)
+        public override IEnumerator Routine(Action resolve, Action<Exception> reject)
         {
             serverMethod(valueSize);
 
             yield return null;
 
-            resolve(GameConstants.Location.Play);
+            resolve();
+        }
+
+        public override IEnumerator Routine(Action<CommandResult> resolve, Action<Exception> reject)
+        {
+            serverMethod(valueSize);
+
+            yield return null;
+
+            resolve(CommandResult.success);
         }
 
         protected override void UndoThisCommand()
         {
+            Debug.Log("Undoing");
             serverMethod(-valueSize);
         }
     }

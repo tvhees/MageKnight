@@ -103,7 +103,6 @@
     <Compile Include="Assets\_scripts\Common\GameConstants.cs" />
     <Compile Include="Assets\_scripts\Common\NetworkExtensionMethods.cs" />
     <Compile Include="Assets\_scripts\Common\NetworkHeirarchyTransform.cs" />
-    <Compile Include="Assets\_scripts\Common\GamePromises.cs" />
     <Compile Include="Assets\_scripts\Common\ObjectPool.cs" />
     <Compile Include="Assets\_scripts\Common\Singleton.cs" />
     <Compile Include="Assets\_scripts\Controller\Game\GameController.cs" />

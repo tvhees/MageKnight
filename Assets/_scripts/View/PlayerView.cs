@@ -101,6 +101,7 @@ namespace View
         [ClientRpc]
         public void RpcMoveCardToPlay(CardId card)
         {
+            Debug.Log("Moving card to play");
             GetCardFromCollections(card).MoveToNewParent(play.transform, true);
         }
 

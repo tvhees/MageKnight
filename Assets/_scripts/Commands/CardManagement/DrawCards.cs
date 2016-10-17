@@ -14,17 +14,16 @@ namespace Commands
             base.SetInformation(input);
         }
 
-        public override IEnumerator Routine(Action<GameConstants.Location> resolve, Action<Exception> reject)
+        public override IEnumerator Routine(Action resolve, Action<Exception> reject)
         {
             yield return null;
 
             if (gameData.player.CanDrawCards)
             {
                 gameData.player.ServerDrawCards(valueSize);
-                resolve(GameConstants.Location.Play);
             }
-            else
-                reject(null);
+
+            resolve();
         }
     }
 }

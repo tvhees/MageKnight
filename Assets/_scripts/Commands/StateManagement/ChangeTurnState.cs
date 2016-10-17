@@ -8,8 +8,8 @@ namespace Commands
     [CreateAssetMenu(menuName = "Command/Change Turn State")]
     public class ChangeTurnState : Command
     {
-        private StateController stateController;
-        private GameObject oldState;
+        StateController stateController;
+        GameObject oldState;
         public GameConstants.GameState newState;
 
         public override void SetInformation(GameData input)
@@ -22,12 +22,12 @@ namespace Commands
             oldState = stateController.lastState;
         }
 
-        public override IEnumerator Routine(Action<GameConstants.Location> resolve, Action<Exception> reject)
+        public override IEnumerator Routine(Action resolve, Action<Exception> reject)
         {
             yield return null;
 
             stateController.ChangeToState(newState);
-            resolve(GameConstants.Location.Play);
+            resolve();
         }
 
         protected override void UndoThisCommand()

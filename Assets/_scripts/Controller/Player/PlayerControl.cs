@@ -386,8 +386,10 @@ public class PlayerControl : NetworkBehaviour
         if (model.tacticId.name == tactic.name)
         {
             var tacticCommand = tactic.GetAutomaticEffect();
+
             tacticCommand.SetInformation(new GameData(this));
-            GameController.singleton.commandStack.Execute(tacticCommand);
+            GameController.singleton.commandStack.RunCommand(tacticCommand);
+
             model.isTacticActive = tactic.isRepeatable;
         }
     }
@@ -396,14 +398,13 @@ public class PlayerControl : NetworkBehaviour
     public void CmdPlayCard(CardId cardId)
     {
         ServerMoveCard(cardId, GameConstants.Location.Limbo);
+
         var card = CardDatabase.GetScriptableObject(cardId.name);
         var effect = card.GetAutomaticEffect();
-        if (effect == null)
-            return;
+        Assert.IsNotNull(effect);
 
         effect.SetInformation(new GameData(this, cardId));
-        GameController.singleton.commandStack.Execute(effect)
-            .Then(value => ServerMoveCard(cardId, value));
+        GameController.singleton.commandStack.RunCommand(effect);
     }
     #endregion
 
@@ -450,7 +451,7 @@ public class PlayerControl : NetworkBehaviour
     {
         var moveToHex = Instantiate(CommandDatabase.GetScriptableObject("MoveToHex"));
         moveToHex.SetInformation(new GameData(player: this, hexId: newHex));
-        GameController.singleton.commandStack.Execute(moveToHex);
+        GameController.singleton.commandStack.RunCommand(moveToHex);
     }
 
     public void OnHexChanged(HexId newHex)

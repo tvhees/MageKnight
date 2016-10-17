@@ -10,7 +10,7 @@ namespace Commands
     {
         public GameConstants.Location fromLocation;
         public GameConstants.Location toLocation;
-        private CardId card;
+        CardId card;
 
         public override void SetInformation(GameData input)
         {
@@ -18,10 +18,22 @@ namespace Commands
             card = input.cardId;
         }
 
-        public override IEnumerator Routine(Action<GameConstants.Location> resolve, Action<Exception> reject)
+        public override IEnumerator Routine(Action resolve, Action<Exception> reject)
         {
+            gameData.player.ServerMoveCard(card, toLocation);
+
             yield return null;
-            resolve(toLocation);
+
+            resolve();
+        }
+
+        public override IEnumerator Routine(Action<CommandResult> resolve, Action<Exception> reject)
+        {
+            gameData.player.ServerMoveCard(card, toLocation);
+
+            yield return null;
+
+            resolve(CommandResult.success);
         }
 
         protected override void UndoThisCommand()

@@ -2,7 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
+using RSG;
 
 namespace Commands
 {
@@ -10,19 +10,30 @@ namespace Commands
     {
         protected GameData gameData;
 
-        public List<Command> requirements;
-        protected List<Command> instantiatedRequirements = new List<Command>();
+        public Command[] requirements;
+        [HideInInspector]
+        public List<Command> instantiatedRequirements = new List<Command>();
         protected List<Command> completedRequirements = new List<Command>();
 
-        public List<Command> optionals;
-        protected List<Command> instantiatedOptionals = new List<Command>();
+        public Command[] optionals;
+        [HideInInspector]
+        public List<Command> instantiatedOptionals = new List<Command>();
         protected List<Command> completedOptionals = new List<Command>();
 
-        public virtual IEnumerator Routine(Action<GameConstants.Location> resolve, Action<Exception> reject)
+        public virtual IEnumerator Routine(Action resolve, Action<Exception> reject)
         {
             yield return null;
 
             reject(new ApplicationException("Command Not Implemented"));
+        }
+
+        public virtual IEnumerator Routine(Action<CommandResult> resolve, Action<Exception> reject)
+        {
+            yield return null;
+
+            var cResult = CommandResult.success;
+
+            resolve(cResult);
         }
 
         protected virtual void UndoThisCommand()
@@ -34,14 +45,14 @@ namespace Commands
         {
             gameData = input;
 
-            for (int i = 0; i < requirements.Count; i++)
+            for (int i = 0; i < requirements.Length; i++)
             {
                 var command = Instantiate(requirements[i]);
                 command.SetInformation(input);
                 instantiatedRequirements.Add(command);
             }
 
-            for (int i = 0; i < optionals.Count; i++)
+            for (int i = 0; i < optionals.Length; i++)
             {
                 var command = Instantiate(optionals[i]);
                 command.SetInformation(input);

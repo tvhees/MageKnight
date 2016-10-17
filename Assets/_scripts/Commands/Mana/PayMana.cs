@@ -13,7 +13,7 @@ namespace Commands
         ManaId paidId;
         Player playerModel;
 
-        public override IEnumerator Routine(Action<GameConstants.Location> resolve, Action<Exception> reject)
+        public override IEnumerator Routine(Action resolve, Action<Exception> reject)
         {
             yield return null;
             playerModel = gameData.player.model;
@@ -30,10 +30,31 @@ namespace Commands
             {
                 playerModel.AddMana(paidColour, true);
                 paidId = GameController.singleton.PlayManaSource(paidColour);
-                resolve(GameConstants.Location.Play);
             }
+
+            resolve();
+        }
+
+        public override IEnumerator Routine(Action<CommandResult> resolve, Action<Exception> reject)
+        {
+            yield return null;
+            playerModel = gameData.player.model;
+            var success = true;
+            // We can use gold mana instead of non-black but need to store this.
+            if (playerModel.HasMana(colour))
+                paidColour = colour;
+            else if (playerModel.HasGold && colour != GameConstants.ManaType.Black)
+                paidColour = GameConstants.ManaType.Gold;
             else
-                reject(null);
+                success = false;
+
+            if (success)
+            {
+                playerModel.AddMana(paidColour, true);
+                paidId = GameController.singleton.PlayManaSource(paidColour);
+            }
+
+            resolve(new CommandResult(success));
         }
 
         protected override void UndoThisCommand()

@@ -49,7 +49,6 @@ public class DropZone : MonoBehaviour, IDropHandler
             return;
 
         var cardId = droppedObject.startParent.cardId;
-
         switch (target)
         {
             case Target.Play:
