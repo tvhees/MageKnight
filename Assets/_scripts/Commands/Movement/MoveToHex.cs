@@ -47,7 +47,7 @@ namespace Commands
                 resolve(CommandResult.failure);
         }
 
-        protected override void UndoThisCommand()
+        public override void UndoThisCommand()
         {
             gameData.player.OnHexChanged(originalHex);
             gameData.player.ServerAddMovement(gameData.hexId.movementCost);

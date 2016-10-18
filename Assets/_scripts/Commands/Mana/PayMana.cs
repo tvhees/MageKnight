@@ -57,7 +57,7 @@ namespace Commands
             resolve(new CommandResult(success));
         }
 
-        protected override void UndoThisCommand()
+        public override void UndoThisCommand()
         {
             paidId.selected = true;
             GameController.singleton.ReturnManaSource(paidId);

@@ -13,12 +13,13 @@ namespace Commands
         public Command[] requirements;
         [HideInInspector]
         public List<Command> instantiatedRequirements = new List<Command>();
-        protected List<Command> completedRequirements = new List<Command>();
 
         public Command[] optionals;
         [HideInInspector]
         public List<Command> instantiatedOptionals = new List<Command>();
-        protected List<Command> completedOptionals = new List<Command>();
+
+        [HideInInspector]
+        public List<Command> completedCommands = new List<Command>();
 
         public virtual IEnumerator Routine(Action resolve, Action<Exception> reject)
         {
@@ -31,12 +32,10 @@ namespace Commands
         {
             yield return null;
 
-            var cResult = CommandResult.success;
-
-            resolve(cResult);
+            reject(new ApplicationException("Command Not Implemented"));
         }
 
-        protected virtual void UndoThisCommand()
+        public virtual void UndoThisCommand()
         {
             Debug.LogFormat("The {0} command has no undo function", name);
         }
@@ -62,25 +61,10 @@ namespace Commands
 
         public void Undo()
         {
-            UndoCompletedOptionals();
-            UndoThisCommand();
-            UndoCompletedRequirements();
-        }
+            for (int i = completedCommands.Count - 1; i >= 0; i--)
+                completedCommands[i].UndoThisCommand();
 
-        protected void UndoCompletedOptionals()
-        {
-            for (int i = completedOptionals.Count; i > 0; i--)
-            {
-                completedOptionals.GetLast(true).Undo();
-            }
-        }
-
-        protected void UndoCompletedRequirements()
-        {
-            for (int i = completedRequirements.Count; i > 0; i--)
-            {
-                completedRequirements.GetLast(true).Undo();
-            }
+            completedCommands.Clear();
         }
     }
 }

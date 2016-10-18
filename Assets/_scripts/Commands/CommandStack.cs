@@ -11,6 +11,8 @@ namespace Commands
     {
         public List<Command> oldCommands = new List<Command>();
 
+        CommandResult sequenceResult;
+
         #region Running commands
         public void RunCommand(Command command)
         {
@@ -50,62 +52,67 @@ namespace Commands
         #endregion Running commands
 
         #region Running commands with CommandResult return
-
-        CommandResult sequenceResult;
-
-        public void RunCommandWithResult(Command command)
+        public void RunCommandWithResult(Command mainCommand)
         {
             sequenceResult = CommandResult.success;
-            var sequence = Promise.Sequence(GetSequenceOfPromisesWithResult(command));
-            sequence.Done(() => ProcessSequenceResult(command));
+            var sequence = Promise.Sequence(GetSequenceOfPromisesWithResult(mainCommand));
+            sequence.Done(() => ProcessSequenceResult(mainCommand));
         }
 
-        Func<IPromise>[] GetSequenceOfPromisesWithResult(Command command)
+        Func<IPromise>[] GetSequenceOfPromisesWithResult(Command mainCommand)
         {
             var sequence = new List<Func<IPromise>>();
-            for (int i = 0; i < command.instantiatedRequirements.Count; i++)
-                sequence.Add(PrepPromiseWithResult(command.instantiatedRequirements[i]));
+            for (int i = 0; i < mainCommand.instantiatedRequirements.Count; i++)
+                sequence.Add(PrepPromiseWithResult(mainCommand, mainCommand.instantiatedRequirements[i]));
 
-            sequence.Add(PrepPromiseWithResult(command));
+            sequence.Add(PrepPromiseWithResult(mainCommand, mainCommand));
 
-            for (int i = 0; i < command.instantiatedOptionals.Count; i++)
-                sequence.Add(PrepPromiseWithResult(command.instantiatedOptionals[i]));
+            for (int i = 0; i < mainCommand.instantiatedOptionals.Count; i++)
+                sequence.Add(PrepPromiseWithResult(mainCommand, mainCommand.instantiatedOptionals[i]));
 
             return sequence.ToArray();
         }
 
-        Func<IPromise> PrepPromiseWithResult(Command command)
+        Func<IPromise> PrepPromiseWithResult(Command mainCommand, Command subCommand)
         {
-            return () => GetPromiseWithResultFromCommand(command)
-                .Then(commandResult => ProcessCommandResult(commandResult));
+            return () => GetPromiseWithResultFromCommand(subCommand)
+                .Then(commandResult => ProcessCommandResult(mainCommand, subCommand, commandResult));
         }
 
         // If a previous command has returned unsuccessful we skip the work in subsequent commands
-        IPromise<CommandResult> GetPromiseWithResultFromCommand(Command command)
+        IPromise<CommandResult> GetPromiseWithResultFromCommand(Command subCommand)
         {
             return new Promise<CommandResult>((resolve, reject) => 
             {
                 if (sequenceResult.succeeded)
-                    StartCoroutine(command.Routine(resolve, reject));
+                    StartCoroutine(subCommand.Routine(resolve, reject));
                 else
                     resolve(sequenceResult);
             });
         }
 
         // This promise saves the result of the command and returns a dummy, typeless promise that Promise.Sequence can use.
-        IPromise ProcessCommandResult(CommandResult commandResult)
+        IPromise ProcessCommandResult(Command mainCommand, Command subCommand, CommandResult commandResult)
         {
             sequenceResult = commandResult;
-            Debug.Log(commandResult.succeeded);
+            if (commandResult.succeeded)
+                mainCommand.completedCommands.Add(subCommand);
             return new Promise((resolve, reject) => resolve());
         }
 
-        void ProcessSequenceResult(Command command)
+        void ProcessSequenceResult(Command mainCommand)
         {
             if (sequenceResult.CanSaveCommand)
-                AddCommand(command);
+                AddCommand(mainCommand);
             else
+            {
                 Debug.LogFormat("Can't save command - succeeded: {0}, undoable: {1}", sequenceResult.succeeded, sequenceResult.allowUndo);
+                if (!sequenceResult.succeeded)
+                {
+                    Debug.Log("Undoing failed command: " + mainCommand.name);
+                    mainCommand.Undo();
+                }
+            }
         }
 
         #endregion Running commands with output

@@ -36,7 +36,7 @@ namespace Commands
             resolve(CommandResult.success);
         }
 
-        protected override void UndoThisCommand()
+        public override void UndoThisCommand()
         {
             gameData.player.ServerMoveCard(card, fromLocation);
         }
