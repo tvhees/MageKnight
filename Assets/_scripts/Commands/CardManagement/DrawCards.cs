@@ -14,18 +14,6 @@ namespace Commands
             base.SetInformation(input);
         }
 
-        public override IEnumerator Routine(Action resolve, Action<Exception> reject)
-        {
-            yield return null;
-
-            if (gameData.player.CanDrawCards)
-            {
-                gameData.player.ServerDrawCards(valueSize);
-            }
-
-            resolve();
-        }
-
         public override IEnumerator Routine(Action<CommandResult> resolve, Action<Exception> reject)
         {
             yield return null;

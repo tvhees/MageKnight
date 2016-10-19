@@ -21,13 +21,6 @@ namespace Commands
         [HideInInspector]
         public List<Command> completedCommands = new List<Command>();
 
-        public virtual IEnumerator Routine(Action resolve, Action<Exception> reject)
-        {
-            yield return null;
-
-            reject(new ApplicationException("Command Not Implemented"));
-        }
-
         public virtual IEnumerator Routine(Action<CommandResult> resolve, Action<Exception> reject)
         {
             yield return null;

@@ -16,21 +16,6 @@ namespace Commands
             StateController stateController = GameController.singleton.stateController;
         }
 
-        public override IEnumerator Routine(Action resolve, Action<Exception> reject)
-        {
-            yield return null;
-
-            PlayerControl player = gameData.player;
-            if (player.CanMoveToHex(gameData.hexId))
-            {
-                originalHex = player.CurrentHex;
-                player.OnHexChanged(gameData.hexId);
-                player.ServerAddMovement(-gameData.hexId.movementCost);
-            }
-
-            resolve();
-        }
-
         public override IEnumerator Routine(Action<CommandResult> resolve, Action<Exception> reject)
         {
             yield return null;

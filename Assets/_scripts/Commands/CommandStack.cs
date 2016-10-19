@@ -14,14 +14,25 @@ namespace Commands
         CommandResult sequenceResult;
 
         #region Running commands
-        public void RunCommand(Command mainCommand, Action returnCard = null)
+        public void RunCommand(Command mainCommand)
         {
-            sequenceResult = CommandResult.success;
-            var sequence = Promise.Sequence(GetSequenceOfPromises(mainCommand));
-            sequence.Done(() => ProcessSequenceResult(mainCommand, returnCard));
+            var sequence = GetNewSequence(mainCommand);
+            sequence.Done(() => ProcessSequenceResult(mainCommand));
         }
 
-        Func<IPromise>[] GetSequenceOfPromises(Command mainCommand)
+        public void RunCommand(Command mainCommand, Action onFailure)
+        {
+            var sequence = GetNewSequence(mainCommand);
+            sequence.Done(() => ProcessSequenceResult(mainCommand, onFailure));
+        }
+
+        IPromise GetNewSequence(Command mainCommand)
+        {
+            sequenceResult = CommandResult.success;
+            return Promise.Sequence(GetAnonymousFunctions(mainCommand));
+        }
+
+        Func<IPromise>[] GetAnonymousFunctions(Command mainCommand)
         {
             var sequence = new List<Func<IPromise>>();
             for (int i = 0; i < mainCommand.instantiatedRequirements.Count; i++)
@@ -62,21 +73,21 @@ namespace Commands
             return new Promise((resolve, reject) => resolve());
         }
 
-        void ProcessSequenceResult(Command mainCommand, Action returnCard)
+        void ProcessSequenceResult(Command mainCommand)
         {
             if (sequenceResult.CanSaveCommand)
                 AddCommand(mainCommand);
-            else
-            {
-                Debug.LogFormat("Can't save command - succeeded: {0}, undoable: {1}", sequenceResult.succeeded, sequenceResult.allowUndo);
-                if (!sequenceResult.succeeded)
-                {
-                    Debug.Log("Undoing failed command: " + mainCommand.name);
-                    mainCommand.Undo();
-                    if(returnCard != null)
-                        returnCard.Invoke();
-                }
-            }
+            else if(!sequenceResult.succeeded)
+                mainCommand.Undo();
+
+            // If command succeeded but can't be saved, do nothing here
+        }
+
+        void ProcessSequenceResult(Command mainCommand, Action onFailure)
+        {
+            ProcessSequenceResult(mainCommand);
+            if (!sequenceResult.succeeded)
+               onFailure.Invoke();
         }
 
         #endregion Running commands

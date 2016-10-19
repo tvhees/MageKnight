@@ -404,7 +404,12 @@ public class PlayerControl : NetworkBehaviour
         Assert.IsNotNull(effect);
         effect.SetInformation(new GameData(this, cardId));
         ServerMoveCard(cardId, GameConstants.Location.Limbo);
-        GameController.singleton.commandStack.RunCommand(effect, () => ServerMoveCard(cardId, startLocation));
+        GameController.singleton.commandStack.RunCommand(effect, ReturnFailedCard(cardId, startLocation));
+    }
+
+    Action ReturnFailedCard(CardId cardId, GameConstants.Location startLocation)
+    {
+        return () => ServerMoveCard(cardId, startLocation);
     }
     #endregion
 

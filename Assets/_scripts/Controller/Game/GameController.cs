@@ -156,22 +156,24 @@ public class GameController : NetworkBehaviour
     [Server]
     public ManaId PlayManaSource(GameConstants.ManaType colour)
     {
-        ManaId source;
-        source = dice.GetSelected(colour);
-        if (source.index < 0)
+        ManaId die;
+        die = dice.GetSelected(colour);
+        if (die.index < 0)
         {
             Debug.Log("No selected die of colour " + colour.ToString());
-            return source;
+            return die;
         }
-        source.selected = false;
-        dice.usedDice.Add(source);
-        sharedView.RpcMoveDieToPlay(source);
-        return source;
+        die.selected = false;
+        dice.usedDice.Add(die);
+        sharedView.RpcMoveDieToPlay(die);
+        return die;
     }
 
     [Server]
-    public void ReturnManaSource(ManaId source)
+    public void ServerReturnManaSource(ManaId source)
     {
+        dice.usedDice.Remove(source);
+        source.selected = true;
         sharedView.RpcMoveDieToPool(source);
     }
 

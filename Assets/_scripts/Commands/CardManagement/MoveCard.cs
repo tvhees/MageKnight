@@ -18,15 +18,6 @@ namespace Commands
             card = input.cardId;
         }
 
-        public override IEnumerator Routine(Action resolve, Action<Exception> reject)
-        {
-            gameData.player.ServerMoveCard(card, toLocation);
-
-            yield return null;
-
-            resolve();
-        }
-
         public override IEnumerator Routine(Action<CommandResult> resolve, Action<Exception> reject)
         {
             gameData.player.ServerMoveCard(card, toLocation);

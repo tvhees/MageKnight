@@ -35,15 +35,6 @@ namespace Commands
             }
         }
 
-        public override IEnumerator Routine(Action resolve, Action<Exception> reject)
-        {
-            serverMethod(valueSize);
-
-            yield return null;
-
-            resolve();
-        }
-
         public override IEnumerator Routine(Action<CommandResult> resolve, Action<Exception> reject)
         {
             serverMethod(valueSize);
@@ -55,7 +46,6 @@ namespace Commands
 
         public override void UndoThisCommand()
         {
-            Debug.Log("Undoing");
             serverMethod(-valueSize);
         }
     }

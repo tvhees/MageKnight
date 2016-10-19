@@ -22,14 +22,6 @@ namespace Commands
             oldState = stateController.lastState;
         }
 
-        public override IEnumerator Routine(Action resolve, Action<Exception> reject)
-        {
-            yield return null;
-
-            stateController.ChangeToState(newState);
-            resolve();
-        }
-
         public override IEnumerator Routine(Action<CommandResult> resolve, Action<Exception> reject)
         {
             yield return null;
