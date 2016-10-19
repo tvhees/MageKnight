@@ -50,22 +50,10 @@ namespace View
 
         #region Card management
         [ClientRpc]
-        public void RpcAddCardToDeck(CardId cardId)
+        public void RpcAddNewCardToDeck(CardId cardId)
         {
             var card = GameController.singleton.cardFactory.CreateCard(cardId);
             card.GetComponent<CardView>().MoveToNewParent(deck.transform, false);
-        }
-
-        [ClientRpc]
-        public void RpcDrawCards(int numberToDraw)
-        {
-            for (int i = 0; i < numberToDraw; i++)
-            {
-                if (deck.transform.childCount <= 0)
-                    break;
-
-                deck.transform.GetChild(0).GetComponent<CardView>().MoveToNewParent(hand.transform, owner.isLocalPlayer, owner.isLocalPlayer);
-            }
         }
 
         CardView GetCardFromCollections(CardId card)
@@ -82,7 +70,6 @@ namespace View
                     }
                 }
             }
-
             return null;
         }
 

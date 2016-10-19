@@ -16,12 +16,10 @@ public class Player
     public List<CardId> play;
     public int handSize;
     public CardId tacticId;
-    public bool isTacticActive;
+    public bool tacticIsActive;
 
     public int movement;
     public int influence;
-
-    private PlayerControl owner;
 
     #endregion Card variables
 
@@ -44,9 +42,8 @@ public class Player
 
     #region Constructor
 
-    public Player(PlayerControl owner, Character character, Cards cards, int handSize = 5)
+    public Player(Character character, Cards cards, int handSize = 5)
     {
-        this.owner = owner;
         deck = cards.CreateDeck(character.deck);
         hand = new List<CardId>();
         discard = new List<CardId>();
@@ -92,19 +89,7 @@ public class Player
 
     #region Card management
 
-    public void DrawCards(int numberToDraw)
-    {
-        for (int i = 0; i < numberToDraw; i++)
-        {
-            if (deck.Count <= 0)
-                break;
-
-            owner.ServerMoveCard(deck.GetFirst(), GameConstants.Location.Hand);
-            GameController.singleton.commandStack.ClearCommandList();
-        }
-    }
-
-    public bool ListContainsCard(CardId card, List<CardId> list, bool remove = false)
+    bool ListContainsCard(CardId card, List<CardId> list, bool remove = false)
     {
         for (int i = 0; i < list.Count; i++)
         {

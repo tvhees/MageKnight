@@ -280,26 +280,32 @@ public class PlayerControl : NetworkBehaviour
     [Server]
     public void ServerCreateModel(Cards cards)
     {
-        model = new Player(this, character, cards);
+        model = new Player(character, cards);
         for (int i = 0; i < model.deck.Count; i++)
         {
             var card = model.deck[i];
-            view.RpcAddCardToDeck(card);
+            view.RpcAddNewCardToDeck(card);
         }
     }
 
     [Server]
     public void ServerDrawCards(int numberToDraw)
     {
-        model.DrawCards(numberToDraw);
+        for (int i = 0; i < numberToDraw; i++)
+        {
+            if (!CanDrawCards)
+                break;
+
+            ServerMoveCard(model.deck.GetFirst(), GameConstants.Location.Hand);
+            GameController.singleton.commandStack.ClearCommandList();
+        }
     }
 
     [Server]
     public void ServerRefillHand()
     {
         var numberToDraw = Mathf.Max(model.handSize - model.hand.Count);
-        if(CanDrawCards)
-            ServerDrawCards(numberToDraw);
+        ServerDrawCards(numberToDraw);
     }
 
     [Server]
@@ -317,6 +323,7 @@ public class PlayerControl : NetworkBehaviour
                 ServerMoveCardToDiscard(card);
                 break;
             case GameConstants.Location.Units:
+                ServerMoveCardToUnits(card);
                 break;
             case GameConstants.Location.Play:
                 ServerMoveCardToPlay(card);
@@ -374,24 +381,24 @@ public class PlayerControl : NetworkBehaviour
     {
         var tacticId = cards.GetTacticId(tactic.number);
         model.tacticId = tacticId;
-        model.isTacticActive = true;
+        model.tacticIsActive = true;
         view.RpcOnTacticChosen(tacticId);
     }
 
     [Server]
     public void TriggerTactic(Card tactic)
     {
-        if (!model.isTacticActive)
+        if (!model.tacticIsActive)
             return;
 
         if (model.tacticId.name == tactic.name)
         {
-            var tacticCommand = tactic.GetAutomaticEffect();
+            var tacticCommand = tactic.GetEffect(tactic.AutomaticIndex);
 
             tacticCommand.SetInformation(new GameData(this));
             GameController.singleton.commandStack.RunCommand(tacticCommand);
 
-            model.isTacticActive = tactic.isRepeatable;
+            model.tacticIsActive = tactic.IsRepeatable;
         }
     }
 
@@ -400,16 +407,25 @@ public class PlayerControl : NetworkBehaviour
     {
         var startLocation = cardId.location;
         var card = CardDatabase.GetScriptableObject(cardId.name);
-        var effect = card.GetAutomaticEffect();
-        Assert.IsNotNull(effect);
-        effect.SetInformation(new GameData(this, cardId));
+        var gameData = new GameData(this, cardId);
         ServerMoveCard(cardId, GameConstants.Location.Limbo);
-        GameController.singleton.commandStack.RunCommand(effect, ReturnFailedCard(cardId, startLocation));
+
+        PlayCardEffect(card, card.AutomaticIndex, gameData);
     }
 
-    Action ReturnFailedCard(CardId cardId, GameConstants.Location startLocation)
+    // This recursively plays effects from the card's definition until either one succeeds or they all fail.
+    void PlayCardEffect(Card card, int index, GameData gameData)
     {
-        return () => ServerMoveCard(cardId, startLocation);
+        // If there's no more commands to use they've all failed and we want to return the card to where it came from
+        if (!card.HasEffect(index))
+        {
+            ServerMoveCard(gameData.cardId, gameData.cardId.location);
+            return;
+        }
+        var effect = card.GetEffect(index);
+        Assert.IsNotNull(effect);
+        effect.SetInformation(gameData);
+        GameController.singleton.commandStack.RunCommand(effect, () => PlayCardEffect(card, index + 1, gameData));
     }
     #endregion
 

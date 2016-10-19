@@ -14,4 +14,8 @@ MonoBehaviour:
   type: 0
   colour: 3
   number: 0
-  strongEffect: {fileID: 11400000, guid: 30be9d26b679a414696154104e210db8, type: 2}
+  effects:
+  - {fileID: 11400000, guid: 30be9d26b679a414696154104e210db8, type: 2}
+  - {fileID: 11400000, guid: 9c5b3670a5b9b4144bcdc0d105c66ffd, type: 2}
+  automaticIndex: 0
+  isRepeatable: 0
