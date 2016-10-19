@@ -230,6 +230,7 @@ public class PlayerControl : NetworkBehaviour
         turnOrderDisplay.transform.SetSiblingIndex(index);
     }
     #endregion
+
     #region Mana
     [Command]
     public void CmdDieToggled(ManaId manaId)
@@ -279,7 +280,7 @@ public class PlayerControl : NetworkBehaviour
     [Server]
     public void ServerCreateModel(Cards cards)
     {
-        model = new Player(character, cards);
+        model = new Player(this, character, cards);
         for (int i = 0; i < model.deck.Count; i++)
         {
             var card = model.deck[i];
@@ -291,7 +292,6 @@ public class PlayerControl : NetworkBehaviour
     public void ServerDrawCards(int numberToDraw)
     {
         model.DrawCards(numberToDraw);
-        view.RpcDrawCards(numberToDraw);
     }
 
     [Server]
@@ -303,14 +303,15 @@ public class PlayerControl : NetworkBehaviour
     }
 
     [Server]
-    public void ServerMoveCard(CardId card, GameConstants.Location to)
+    public void ServerMoveCard(CardId card, GameConstants.Location toLocation)
     {
-        switch (to)
+        switch (toLocation)
         {
             case GameConstants.Location.Hand:
                 ServerMoveCardToHand(card);
                 break;
             case GameConstants.Location.Deck:
+                ServerMoveCardToDeck(card);
                 break;
             case GameConstants.Location.Discard:
                 ServerMoveCardToDiscard(card);
@@ -397,14 +398,13 @@ public class PlayerControl : NetworkBehaviour
     [Command]
     public void CmdPlayCard(CardId cardId)
     {
-        ServerMoveCard(cardId, GameConstants.Location.Limbo);
-
+        var startLocation = cardId.location;
         var card = CardDatabase.GetScriptableObject(cardId.name);
         var effect = card.GetAutomaticEffect();
         Assert.IsNotNull(effect);
-
         effect.SetInformation(new GameData(this, cardId));
-        GameController.singleton.commandStack.RunCommand(effect);
+        ServerMoveCard(cardId, GameConstants.Location.Limbo);
+        GameController.singleton.commandStack.RunCommand(effect, () => ServerMoveCard(cardId, startLocation));
     }
     #endregion
 

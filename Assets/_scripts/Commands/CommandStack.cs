@@ -14,52 +14,14 @@ namespace Commands
         CommandResult sequenceResult;
 
         #region Running commands
-        public void RunCommand(Command command)
-        {
-            RunCommandWithResult(command);
-        }
-
-        public void RunCommandWithoutResult(Command command)
-        {
-            var sequence = Promise.Sequence(GetSequenceOfPromises(command));
-            sequence.Done(() => AddCommand(command));
-        }
-
-        Func<IPromise>[] GetSequenceOfPromises(Command command)
-        {
-            var sequence = new List<Func<IPromise>>();
-            for (int i = 0; i < command.instantiatedRequirements.Count; i++)
-                sequence.Add(PrepPromise(command.instantiatedRequirements[i]));
-
-            sequence.Add(PrepPromise(command));
-
-            for (int i = 0; i < command.instantiatedOptionals.Count; i++)
-                sequence.Add(PrepPromise(command.instantiatedOptionals[i]));
-
-            return sequence.ToArray();
-        }
-
-        Func<IPromise> PrepPromise(Command command)
-        {
-            return () => GetPromiseFromCommand(command);
-        }
-
-        IPromise GetPromiseFromCommand(Command command)
-        {
-            return new Promise((resolve, reject) => StartCoroutine(command.Routine(resolve, reject)));
-        }
-
-        #endregion Running commands
-
-        #region Running commands with CommandResult return
-        public void RunCommandWithResult(Command mainCommand)
+        public void RunCommand(Command mainCommand, Action returnCard = null)
         {
             sequenceResult = CommandResult.success;
-            var sequence = Promise.Sequence(GetSequenceOfPromisesWithResult(mainCommand));
-            sequence.Done(() => ProcessSequenceResult(mainCommand));
+            var sequence = Promise.Sequence(GetSequenceOfPromises(mainCommand));
+            sequence.Done(() => ProcessSequenceResult(mainCommand, returnCard));
         }
 
-        Func<IPromise>[] GetSequenceOfPromisesWithResult(Command mainCommand)
+        Func<IPromise>[] GetSequenceOfPromises(Command mainCommand)
         {
             var sequence = new List<Func<IPromise>>();
             for (int i = 0; i < mainCommand.instantiatedRequirements.Count; i++)
@@ -100,7 +62,7 @@ namespace Commands
             return new Promise((resolve, reject) => resolve());
         }
 
-        void ProcessSequenceResult(Command mainCommand)
+        void ProcessSequenceResult(Command mainCommand, Action returnCard)
         {
             if (sequenceResult.CanSaveCommand)
                 AddCommand(mainCommand);
@@ -111,11 +73,13 @@ namespace Commands
                 {
                     Debug.Log("Undoing failed command: " + mainCommand.name);
                     mainCommand.Undo();
+                    if(returnCard != null)
+                        returnCard.Invoke();
                 }
             }
         }
 
-        #endregion Running commands with output
+        #endregion Running commands
 
         #region Adding and removing commands
 

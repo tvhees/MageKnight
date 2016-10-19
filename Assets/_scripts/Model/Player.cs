@@ -21,6 +21,8 @@ public class Player
     public int movement;
     public int influence;
 
+    private PlayerControl owner;
+
     #endregion Card variables
 
     #region Mana variables
@@ -42,8 +44,9 @@ public class Player
 
     #region Constructor
 
-    public Player(Character character, Cards cards, int handSize = 5)
+    public Player(PlayerControl owner, Character character, Cards cards, int handSize = 5)
     {
+        this.owner = owner;
         deck = cards.CreateDeck(character.deck);
         hand = new List<CardId>();
         discard = new List<CardId>();
@@ -96,7 +99,7 @@ public class Player
             if (deck.Count <= 0)
                 break;
 
-            MoveCardToHand(deck.GetFirst());
+            owner.ServerMoveCard(deck.GetFirst(), GameConstants.Location.Hand);
             GameController.singleton.commandStack.ClearCommandList();
         }
     }

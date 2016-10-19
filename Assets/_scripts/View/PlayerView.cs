@@ -89,38 +89,49 @@ namespace View
         [ClientRpc]
         public void RpcMoveCardToLimbo(CardId card)
         {
-            GetCardFromCollections(card).MoveToNewParent(limbo.transform, true, false);
+            var cardView = GetCardFromCollections(card);
+            cardView.MoveToNewParent(limbo.transform, true, false);
         }
 
         [ClientRpc]
         public void RpcMoveCardToHand(CardId card)
         {
-            GetCardFromCollections(card).MoveToNewParent(hand.transform, owner.isLocalPlayer, owner.isLocalPlayer);
+            var cardView = GetCardFromCollections(card);
+            cardView.MoveToNewParent(hand.transform, owner.isLocalPlayer, owner.isLocalPlayer);
+            cardView.cardId.location = GameConstants.Location.Hand;
+            
         }
 
         [ClientRpc]
         public void RpcMoveCardToPlay(CardId card)
         {
-            Debug.Log("Moving card to play");
-            GetCardFromCollections(card).MoveToNewParent(play.transform, true);
+            var cardView = GetCardFromCollections(card);
+            cardView.MoveToNewParent(play.transform, true);
+            cardView.cardId.location = GameConstants.Location.Play;
         }
 
         [ClientRpc]
         public void RpcMoveCardToDiscard(CardId card)
         {
-            GetCardFromCollections(card).MoveToNewParent(discard.transform, true);
+            var cardView = GetCardFromCollections(card);
+            cardView.MoveToNewParent(discard.transform, true);
+            cardView.cardId.location = GameConstants.Location.Discard;
         }
 
         [ClientRpc]
         public void RpcMoveCardToDeck(CardId card)
         {
-            GetCardFromCollections(card).MoveToNewParent(deck.transform, false);
+            var cardView = GetCardFromCollections(card);
+            cardView.MoveToNewParent(deck.transform, false);
+            cardView.cardId.location = GameConstants.Location.Deck;
         }
 
         [ClientRpc]
         public void RpcMoveCardToUnits(CardId card)
         {
-            GetCardFromCollections(card).MoveToNewParent(units.transform, true, true);
+            var cardView = GetCardFromCollections(card);
+            cardView.MoveToNewParent(units.transform, true, true);
+            cardView.cardId.location = GameConstants.Location.Units;
         }
 
         [ClientRpc]
