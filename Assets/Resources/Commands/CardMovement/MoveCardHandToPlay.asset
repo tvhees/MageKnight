@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Name: MoveCardHandToPlay
   m_EditorClassIdentifier: 
   requirements: []
+  instantiatedRequirements: []
   optionals: []
-  alternate: {fileID: 0}
-  fromCollection: 0
-  toCollection: 4
+  instantiatedOptionals: []
+  fromLocation: 0
+  toLocation: 4

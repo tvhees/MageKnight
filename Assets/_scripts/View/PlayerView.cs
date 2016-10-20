@@ -21,6 +21,7 @@ namespace View
         public GameObject units;
         public GameObject tactic;
         public GameObject play;
+        public GameObject limbo;
 
         [SerializeField] Tactic tacticModel;
 
@@ -49,22 +50,10 @@ namespace View
 
         #region Card management
         [ClientRpc]
-        public void RpcAddCardToDeck(CardId cardId)
+        public void RpcAddNewCardToDeck(CardId cardId)
         {
             var card = GameController.singleton.cardFactory.CreateCard(cardId);
             card.GetComponent<CardView>().MoveToNewParent(deck.transform, false);
-        }
-
-        [ClientRpc]
-        public void RpcDrawCards(int numberToDraw)
-        {
-            for (int i = 0; i < numberToDraw; i++)
-            {
-                if (deck.transform.childCount <= 0)
-                    break;
-
-                deck.transform.GetChild(0).GetComponent<CardView>().MoveToNewParent(hand.transform, owner.isLocalPlayer, owner.isLocalPlayer);
-            }
         }
 
         CardView GetCardFromCollections(CardId card)
@@ -81,38 +70,55 @@ namespace View
                     }
                 }
             }
-
             return null;
+        }
+
+        [ClientRpc]
+        public void RpcMoveCardToLimbo(CardId card)
+        {
+            var cardView = GetCardFromCollections(card);
+            cardView.MoveToNewParent(limbo.transform, true, false);
         }
 
         [ClientRpc]
         public void RpcMoveCardToHand(CardId card)
         {
-            GetCardFromCollections(card).MoveToNewParent(hand.transform, owner.isLocalPlayer, owner.isLocalPlayer);
+            var cardView = GetCardFromCollections(card);
+            cardView.MoveToNewParent(hand.transform, owner.isLocalPlayer, owner.isLocalPlayer);
+            cardView.cardId.location = GameConstants.Location.Hand;
+            
         }
 
         [ClientRpc]
         public void RpcMoveCardToPlay(CardId card)
         {
-            GetCardFromCollections(card).MoveToNewParent(play.transform, true);
+            var cardView = GetCardFromCollections(card);
+            cardView.MoveToNewParent(play.transform, true);
+            cardView.cardId.location = GameConstants.Location.Play;
         }
 
         [ClientRpc]
         public void RpcMoveCardToDiscard(CardId card)
         {
-            GetCardFromCollections(card).MoveToNewParent(discard.transform, true);
+            var cardView = GetCardFromCollections(card);
+            cardView.MoveToNewParent(discard.transform, true);
+            cardView.cardId.location = GameConstants.Location.Discard;
         }
 
         [ClientRpc]
         public void RpcMoveCardToDeck(CardId card)
         {
-            GetCardFromCollections(card).MoveToNewParent(deck.transform, false);
+            var cardView = GetCardFromCollections(card);
+            cardView.MoveToNewParent(deck.transform, false);
+            cardView.cardId.location = GameConstants.Location.Deck;
         }
 
         [ClientRpc]
         public void RpcMoveCardToUnits(CardId card)
         {
-            GetCardFromCollections(card).MoveToNewParent(units.transform, true, true);
+            var cardView = GetCardFromCollections(card);
+            cardView.MoveToNewParent(units.transform, true, true);
+            cardView.cardId.location = GameConstants.Location.Units;
         }
 
         [ClientRpc]

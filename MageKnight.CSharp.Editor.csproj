@@ -103,6 +103,9 @@
     <Reference Include="NSubstitute">
       <HintPath>Assets\UnityTestTools\UnitTesting\Editor\NSubstitute\NSubstitute.dll</HintPath>
     </Reference>
+    <Reference Include="RSG.Promise">
+      <HintPath>Assets\packages\RSG.Promise.1.2.0.0\lib\net35\RSG.Promise.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="MageKnight.CSharp.csproj">

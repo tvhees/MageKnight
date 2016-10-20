@@ -22,27 +22,24 @@ namespace Other.Data
         }
 
         public Type type;
-
         public GameConstants.ManaType colour;
-
         public int number;
 
-        public bool isRepeatable;
+        [SerializeField] Command[] effects;
+        [SerializeField] int automaticIndex;
+        [SerializeField] bool isRepeatable;
 
-        public Command strongEffect;
+        public int AutomaticIndex { get { return automaticIndex; } }
+        public bool IsRepeatable { get { return isRepeatable; } }
 
-        public Command GetAutomaticEffect()
+        public bool HasEffect(int index)
         {
-            switch (type)
-            {
-                case Type.Action:
-                case Type.Spell:
-                case Type.Tactic:
-                    return Instantiate(strongEffect);
-                case Type.Artifact:
-                    return Instantiate(strongEffect.alternate);
-            }
-            return null;
+            return index < effects.Length;
         }
-	}
+
+        public Command GetEffect(int index)
+        {
+            return Instantiate(effects[index]);
+        }
+    }
 }

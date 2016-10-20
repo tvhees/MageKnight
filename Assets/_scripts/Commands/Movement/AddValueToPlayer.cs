@@ -3,6 +3,7 @@ using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using RSG;
 
 namespace Commands
 {
@@ -34,14 +35,16 @@ namespace Commands
             }
         }
 
-        protected override CommandResult ExecuteThisCommand()
+        public override IEnumerator Routine(Action<CommandResult> resolve, Action<Exception> reject)
         {
             serverMethod(valueSize);
 
-            return CommandResult.success;
+            yield return null;
+
+            resolve(CommandResult.success);
         }
 
-        protected override void UndoThisCommand()
+        public override void UndoThisCommand()
         {
             serverMethod(-valueSize);
         }

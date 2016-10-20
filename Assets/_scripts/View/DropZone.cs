@@ -1,10 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using System.Collections;
-using System.Collections.Generic;
-using System;
-using Commands;
+using RSG;
 
 public class DropZone : MonoBehaviour, IDropHandler
 {
@@ -51,10 +48,11 @@ public class DropZone : MonoBehaviour, IDropHandler
         if (droppedObject == null || !droppedObject.startParent.draggable)
             return;
 
+        var cardId = droppedObject.startParent.cardId;
         switch (target)
         {
             case Target.Play:
-                PlayerControl.local.CmdPlayCard(droppedObject.startParent.cardId);
+                PlayerControl.local.CmdPlayCard(cardId);
                 break;
             case Target.Deck:
                 break;

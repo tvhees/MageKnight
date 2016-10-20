@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Name: Influence2
   m_EditorClassIdentifier: 
   requirements: []
+  instantiatedRequirements: []
   optionals:
   - {fileID: 11400000, guid: eecbe70f832fd87419fc9b199ad022f0, type: 2}
-  alternate: {fileID: 0}
+  instantiatedOptionals: []
+  completedCommands: []
   valueType: 1
   valueSize: 2
   element: 0

@@ -8,7 +8,7 @@ namespace Commands
     [CreateAssetMenu(menuName = "Command/Move To Hex")]
     public class MoveToHex : Command
     {
-        private HexId originalHex;
+        HexId originalHex;
 
         public override void SetInformation(GameData input)
         {
@@ -16,22 +16,23 @@ namespace Commands
             StateController stateController = GameController.singleton.stateController;
         }
 
-        protected override CommandResult ExecuteThisCommand()
+        public override IEnumerator Routine(Action<CommandResult> resolve, Action<Exception> reject)
         {
+            yield return null;
+
             PlayerControl player = gameData.player;
             if (player.CanMoveToHex(gameData.hexId))
             {
                 originalHex = player.CurrentHex;
                 player.OnHexChanged(gameData.hexId);
                 player.ServerAddMovement(-gameData.hexId.movementCost);
-
-                return CommandResult.success;
+                resolve(CommandResult.success);
             }
             else
-                return CommandResult.failure;
+                resolve(CommandResult.failure);
         }
 
-        protected override void UndoThisCommand()
+        public override void UndoThisCommand()
         {
             gameData.player.OnHexChanged(originalHex);
             gameData.player.ServerAddMovement(gameData.hexId.movementCost);

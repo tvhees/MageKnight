@@ -16,7 +16,7 @@ public class Player
     public List<CardId> play;
     public int handSize;
     public CardId tacticId;
-    public bool isTacticActive;
+    public bool tacticIsActive;
 
     public int movement;
     public int influence;
@@ -89,19 +89,7 @@ public class Player
 
     #region Card management
 
-    public void DrawCards(int numberToDraw)
-    {
-        for (int i = 0; i < numberToDraw; i++)
-        {
-            if (deck.Count <= 0)
-                break;
-
-            MoveCardToHand(deck.GetFirst());
-            GameController.singleton.commandStack.ClearCommandList();
-        }
-    }
-
-    public bool ListContainsCard(CardId card, List<CardId> list, bool remove = false)
+    bool ListContainsCard(CardId card, List<CardId> list, bool remove = false)
     {
         for (int i = 0; i < list.Count; i++)
         {
@@ -133,6 +121,11 @@ public class Player
 
         if (ListContainsCard(card, units, remove: true))
             return;
+    }
+
+    public void MoveCardToLimbo(CardId card)
+    {
+        RemoveCardFromLists(card);
     }
 
     public void MoveCardToHand(CardId card)
@@ -181,7 +174,7 @@ public class Player
         var cardsInPlay = play.Count;
         for (int i = 0; i < cardsInPlay; i++)
         {
-            player.ServerMoveCard(play[0], GameConstants.Collection.Discard);
+            player.ServerMoveCard(play[0], GameConstants.Location.Discard);
         }
     }
 

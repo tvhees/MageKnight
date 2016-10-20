@@ -79,9 +79,11 @@ namespace View
 
         void AllowZooming(bool allow)
         {
-            Moveable zoomScript = GetComponentInChildren<Moveable>();
+            var zoomScript = GetComponentInChildren<Moveable>();
             if (zoomScript != null)
+            {
                 zoomScript.enabled = allow;
+            }
         }
 
         #endregion Display methods

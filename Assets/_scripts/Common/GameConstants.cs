@@ -34,8 +34,8 @@ public static class GameConstants
     public enum GameState
     { GameLoading, CharacterSelect, BoardSetup, RoundSetup, TacticSelect, TurnSetup, StartOfTurn, Movement }
 
-    public enum Collection
-    { Hand, Deck, Discard, Units, Play }
+    public enum Location
+    { Hand, Deck, Discard, Units, Play, Limbo }
 
     public enum CardType
     { Action, Spell, Artifact, Unit, Wound, Tactic }
