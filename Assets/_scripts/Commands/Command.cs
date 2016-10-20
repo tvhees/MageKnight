@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Assertions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,8 +19,12 @@ namespace Commands
         [HideInInspector]
         public List<Command> instantiatedOptionals = new List<Command>();
 
-        [HideInInspector]
         public List<Command> completedCommands = new List<Command>();
+
+        void OnEnable()
+        {
+            Assert.IsFalse(completedCommands.Count > 0);
+        }
 
         public virtual IEnumerator Routine(Action<CommandResult> resolve, Action<Exception> reject)
         {

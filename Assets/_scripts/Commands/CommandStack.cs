@@ -29,24 +29,24 @@ namespace Commands
         IPromise GetNewSequence(Command mainCommand)
         {
             sequenceResult = CommandResult.success;
-            return Promise.Sequence(GetAnonymousFunctions(mainCommand));
+            return Promise.Sequence(GetSubCommands(mainCommand));
         }
 
-        Func<IPromise>[] GetAnonymousFunctions(Command mainCommand)
+        Func<IPromise>[] GetSubCommands(Command mainCommand)
         {
             var sequence = new List<Func<IPromise>>();
             for (int i = 0; i < mainCommand.instantiatedRequirements.Count; i++)
-                sequence.Add(PrepPromiseWithResult(mainCommand, mainCommand.instantiatedRequirements[i]));
+                sequence.Add(PrepareCommandPromise(mainCommand, mainCommand.instantiatedRequirements[i]));
 
-            sequence.Add(PrepPromiseWithResult(mainCommand, mainCommand));
+            sequence.Add(PrepareCommandPromise(mainCommand, mainCommand));
 
             for (int i = 0; i < mainCommand.instantiatedOptionals.Count; i++)
-                sequence.Add(PrepPromiseWithResult(mainCommand, mainCommand.instantiatedOptionals[i]));
+                sequence.Add(PrepareCommandPromise(mainCommand, mainCommand.instantiatedOptionals[i]));
 
             return sequence.ToArray();
         }
 
-        Func<IPromise> PrepPromiseWithResult(Command mainCommand, Command subCommand)
+        Func<IPromise> PrepareCommandPromise(Command mainCommand, Command subCommand)
         {
             return () => GetPromiseWithResultFromCommand(subCommand)
                 .Then(commandResult => ProcessCommandResult(mainCommand, subCommand, commandResult));

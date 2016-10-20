@@ -16,8 +16,7 @@ MonoBehaviour:
   optionals:
   - {fileID: 11400000, guid: eecbe70f832fd87419fc9b199ad022f0, type: 2}
   instantiatedOptionals: []
-  completedCommands:
-  - {fileID: 11400000}
+  completedCommands: []
   valueType: 0
   valueSize: 2
   element: 0
