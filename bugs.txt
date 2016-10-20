@@ -1,3 +1,14 @@
 Mage Knight bugs:
 
 Dice and Cards can be played during selection phases
+
+Remaining systems:
+Fame
+Reputation
+Combat
+crystals
+tokens
+
+Level rewards
+Units
+Site purchasing

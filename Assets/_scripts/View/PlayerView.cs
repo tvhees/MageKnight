@@ -25,11 +25,13 @@ namespace View
 
         [SerializeField] Tactic tacticModel;
 
+        [SerializeField] StatusDisplay fame;
         [SerializeField] StatusDisplay level;
         [SerializeField] StatusDisplay handSize;
         [SerializeField] StatusDisplay armour;
         [SerializeField] StatusDisplay movement;
         [SerializeField] StatusDisplay influence;
+        [SerializeField] StatusDisplay reputation;
 
         public GameObject[] collections;
 
@@ -140,6 +142,26 @@ namespace View
         public void RpcUpdateInfluence(int newValue)
         {
             influence.SetNumber(newValue);
+        }
+
+        public void RpcUpdateReputation(int newValue)
+        {
+            reputation.SetNumber(newValue);
+        }
+
+        public void RpcUpdateFame(int newValue)
+        {
+            fame.SetNumber(newValue);
+        }
+
+        public void RpcUpdateLevel(int newValue)
+        {
+            level.SetNumber(newValue);
+        }
+
+        public void RpcUpdateArmour(int newValue)
+        {
+            armour.SetNumber(newValue);
         }
         #endregion
 
