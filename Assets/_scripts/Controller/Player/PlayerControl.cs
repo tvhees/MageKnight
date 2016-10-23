@@ -281,6 +281,8 @@ public class PlayerControl : NetworkBehaviour
     public void ServerCreateModel(Cards cards)
     {
         model = new Player(character, cards);
+        view.RpcUpdateReputation(model.reputation);
+        view.RpcUpdateFame(model.fame);
         for (int i = 0; i < model.deck.Count; i++)
         {
             var card = model.deck[i];

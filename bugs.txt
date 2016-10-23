@@ -12,3 +12,7 @@ tokens
 Level rewards
 Units
 Site purchasing
+
+
+Seeds:
+Threaten + red die: 614305312

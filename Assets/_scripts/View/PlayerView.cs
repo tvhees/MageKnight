@@ -147,11 +147,13 @@ namespace View
         public void RpcUpdateReputation(int newValue)
         {
             reputation.SetNumber(newValue);
+            GameController.singleton.sharedView.MoveReputationShield(owner.playerId, newValue);
         }
 
         public void RpcUpdateFame(int newValue)
         {
             fame.SetNumber(newValue);
+            GameController.singleton.sharedView.MoveFameShield(owner.playerId, newValue);
         }
 
         public void RpcUpdateLevel(int newValue)

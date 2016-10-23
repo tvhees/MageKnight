@@ -94,6 +94,24 @@
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>Library\UnityAssemblies\SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
+    <Reference Include="DOTween">
+      <HintPath>Assets\packages\Demigiant\DOTween\DOTween.dll</HintPath>
+    </Reference>
+    <Reference Include="DOTween43">
+      <HintPath>Assets\packages\Demigiant\DOTween\DOTween43.dll</HintPath>
+    </Reference>
+    <Reference Include="DOTween46">
+      <HintPath>Assets\packages\Demigiant\DOTween\DOTween46.dll</HintPath>
+    </Reference>
+    <Reference Include="DOTween50">
+      <HintPath>Assets\packages\Demigiant\DOTween\DOTween50.dll</HintPath>
+    </Reference>
+    <Reference Include="DOTweenEditor">
+      <HintPath>Assets\packages\Demigiant\DOTween\Editor\DOTweenEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="RSG.Promise">
+      <HintPath>Assets\packages\RSG.Promise.1.2.0.0\lib\net35\RSG.Promise.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.Cecil">
       <HintPath>Assets\UnityTestTools\IntegrationTestsFramework\Libs\Mono.Cecil.dll</HintPath>
     </Reference>
@@ -102,9 +120,6 @@
     </Reference>
     <Reference Include="NSubstitute">
       <HintPath>Assets\UnityTestTools\UnitTesting\Editor\NSubstitute\NSubstitute.dll</HintPath>
-    </Reference>
-    <Reference Include="RSG.Promise">
-      <HintPath>Assets\packages\RSG.Promise.1.2.0.0\lib\net35\RSG.Promise.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -117,6 +132,7 @@
     <Compile Include="Assets\_scripts\Other\Editor\HexTileEditor.cs" />
     <Compile Include="Assets\_scripts\Other\Editor\HexVectorDrawer.cs" />
     <Compile Include="Assets\_scripts\Other\Editor\ScenarioEditor.cs" />
+    <Compile Include="Assets\_scripts\Other\Editor\TweenPathEditor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Fonts\OpenSans\License!.txt" />
@@ -127,6 +143,12 @@
     <None Include="Assets\Resources\DataFiles\EnemyData.xml" />
     <None Include="Assets\Resources\DataFiles\HexTilesFullConquest.xml" />
     <None Include="Assets\Resources\MageKnightData.xml" />
+    <None Include="Assets\packages\Demigiant\DOTween\DOTween.XML" />
+    <None Include="Assets\packages\Demigiant\DOTween\DOTween43.xml" />
+    <None Include="Assets\packages\Demigiant\DOTween\DOTween46.xml" />
+    <None Include="Assets\packages\Demigiant\DOTween\DOTween50.xml" />
+    <None Include="Assets\packages\Demigiant\DOTween\Editor\DOTweenEditor.XML" />
+    <None Include="Assets\packages\Demigiant\DOTween\readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

@@ -4,11 +4,15 @@ using UnityEngine.EventSystems;
 using UnityEngine.Networking;
 using System.Collections;
 using Other.Data;
+using DG.Tweening;
 
 namespace View
 {
     public class SharedView : NetworkBehaviour
     {
+
+        #region References
+
         public TurnOrderDisplay[] turnOrderDisplays;
         public GameObject currentPlayerIndicator;
         public Text currentPhase;
@@ -16,6 +20,13 @@ namespace View
         public Color highlightColour;
         public GameObject manaPanel;
         public DieView[] manaDice;
+        public GameObject famePanel;
+        public GameObject[] fameShields;
+        public GameObject[] repShields;
+        public TweenPath famePath;
+        public TweenPath repPath;
+
+        #endregion References
 
         #region Initialise
         void Awake()
@@ -29,7 +40,7 @@ namespace View
         }
         #endregion
 
-        #region UiMethods
+        #region Button responses
         public void UiSelectCharacter()
         {
             string name = EventSystem.current.currentSelectedGameObject.name;
@@ -58,8 +69,15 @@ namespace View
         {
             EventManager.endTurn.Invoke();
         }
-        #endregion
 
+        public void UiShowFame(bool show)
+        {
+            famePanel.SetActive(show);
+        }
+
+        #endregion Button responses
+
+        #region Player turn management
         public TurnOrderDisplay GetTurnOrderDisplay(int playerId)
         {
             return turnOrderDisplays[playerId];
@@ -83,6 +101,10 @@ namespace View
             else
                 display.SetHighlights(Color.black);
         }
+
+        #endregion Player turn management
+
+        #region Dice
 
         [ClientRpc]
         public void RpcEnableDice(int numberOfDice)
@@ -140,5 +162,22 @@ namespace View
             for (int i = 0; i < manaDice.Length; i++)
                 manaDice[i].ToggleSelection(false);
         }
+
+        #endregion Dice
+
+        #region Reputation
+
+        public void MoveReputationShield(int playerId, int newReputation)
+        {
+            var repNode = newReputation + 7;
+            repShields[playerId].transform.DOLocalMove(repPath.nodes[repNode], 1f);
+        }
+
+        public void MoveFameShield(int playerId, int newFame)
+        {
+            fameShields[playerId].transform.DOLocalMove(famePath.nodes[newFame], 1f);
+        }
+
+        #endregion Reputation
     }
 }
