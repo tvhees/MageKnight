@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 
 public static class ExtensionMethods
 {
@@ -12,7 +13,7 @@ public static class ExtensionMethods
     {
         for (int i = 0; i < param.Length; i++)
         {
-            int j = Random.Range(i, param.Length);
+            var j = Random.Range(i, param.Length);
             var temp = param[i];
             param[i] = param[j];
             param[j] = temp;
@@ -27,7 +28,7 @@ public static class ExtensionMethods
     {
         for (int i = 0; i < param.Count; i++)
         {
-            int j = Random.Range(i, param.Count);
+            var j = Random.Range(i, param.Count);
             var temp = param[i];
             param[i] = param[j];
             param[j] = temp;
@@ -87,7 +88,7 @@ public static class ExtensionMethods
     /// </summary>
     public static GameObject InstantiateChild(this Transform parent, GameObject obj)
     {
-        GameObject instance = Object.Instantiate(obj, parent.transform.position, Quaternion.identity) as GameObject;
+        var instance = Object.Instantiate(obj, parent.transform.position, Quaternion.identity) as GameObject;
         instance.transform.SetParent(parent);
         return instance;
     }
@@ -97,7 +98,7 @@ public static class ExtensionMethods
     /// </summary>
     public static GameObject InstantiateChild(this Transform parent, GameObject obj, Vector3 localPosition, Quaternion localRotation = default(Quaternion))
     {
-        GameObject instance = Object.Instantiate(obj);
+        var instance = Object.Instantiate(obj);
         instance.transform.SetParent(parent);
         instance.transform.localPosition = localPosition;
         instance.transform.localRotation = localRotation;
@@ -124,7 +125,7 @@ public static class ExtensionMethods
     /// </summary>
     public static T GetOrAddComponent<T>(this Component child) where T : Component
     {
-        T result = child.GetComponent<T>();
+        var result = child.GetComponent<T>();
         if (result == null)
         {
             result = child.gameObject.AddComponent<T>();
@@ -162,5 +163,12 @@ public static class ExtensionMethods
         param.offsetMin = Vector2.zero;
         param.localPosition = Vector3.zero;
         param.localScale = Vector3.one;
+    }
+
+    public static void Reset(this RectTransform param, float tweenSpeed)
+    {
+        param.DOSizeDelta(Vector2.zero, tweenSpeed);
+        param.DOLocalMove(Vector3.zero, tweenSpeed);
+        param.DOScale(Vector3.one, tweenSpeed);
     }
 }

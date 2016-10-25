@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 
 namespace View
 {
@@ -22,7 +23,7 @@ namespace View
         public void MoveToHex(HexId targetHex)
         {
             Vector3 newPosition = targetHex.position;
-            gameObject.transform.position = newPosition;
+            gameObject.transform.DOMove(newPosition, GameConstants.characterMovementDuration);
         }
 	}
 }

@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using View;
+using DG.Tweening;
 
 public class Moveable : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
@@ -84,13 +85,13 @@ public class Moveable : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
     {
         zoomedIn = true;
         transform.SetParent(GameController.singleton.zoomDisplayPanel.transform);
-        rectTransform.anchoredPosition = Vector2.zero;
-        rectTransform.localScale = majorZoomLevel * Vector3.one;
+        rectTransform.DOAnchorPos(Vector2.zero, GameConstants.cardMovementDuration);
+        rectTransform.DOScale(majorZoomLevel * Vector3.one, GameConstants.cardMovementDuration);
     }
 
     Vector3 PositionAlongCentrelineOfCamera(Camera cam)
     {
-        Vector3 cameraCenter = cam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f));
+        var cameraCenter = cam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f));
         return new Vector3(cameraCenter.x, cameraCenter.y, transform.position.z);
     }
 
@@ -108,7 +109,6 @@ public class Moveable : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
     {
         transform.SetParent(startParent.transform);
         rectTransform.Reset();
-        transform.localPosition = Vector3.zero;
         zoomedIn = false;
     }
 

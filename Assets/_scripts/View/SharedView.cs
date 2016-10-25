@@ -182,7 +182,7 @@ namespace View
         {
             var shield = array[index];
             shield.SetActive(true);
-            shield.transform.DOLocalMove(path.nodes[value], 1f);
+            shield.transform.DOLocalMove(path.nodes[value], GameConstants.shieldMovementDuration);
         }
 
         #endregion Reputation and fame

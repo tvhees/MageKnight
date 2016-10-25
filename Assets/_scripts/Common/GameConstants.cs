@@ -7,6 +7,9 @@ public static class GameConstants
     #region Numbers
     public const int hexesPerTile = 7;
     public const float sqrTileDistance = 4f;
+    public const float shieldMovementDuration = 0.3f;
+    public const float cardMovementDuration = 0.05f;
+    public const float characterMovementDuration = 0.3f;
     static List<int> cardNumbers;
 
     public static List<int> CardNumbers

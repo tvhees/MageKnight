@@ -60,15 +60,15 @@ namespace View
 
         CardView GetCardFromCollections(CardId card)
         {
-            CardView[] list;
+            CardView[] cardArray;
             for (int i = 0; i < collections.Length; i++)
             {
-                list = collections[i].GetComponentsInChildren<CardView>();
-                for (int j = 0; j < list.Length; j++)
+                cardArray = collections[i].GetComponentsInChildren<CardView>();
+                for (int j = 0; j < cardArray.Length; j++)
                 {
-                    if (list[j].cardId.identifier == card.identifier)
+                    if (cardArray[j].cardId.identifier == card.identifier)
                     {
-                        return list[j];
+                        return cardArray[j];
                     }
                 }
             }

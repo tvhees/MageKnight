@@ -50,7 +50,7 @@ public class TweenPathEditor : Editor {
             return;
 
         //allow path adjustment undo:
-        Undo.RecordObject(pTarget, "Adjust iTween Path");
+        Undo.RecordObject(pTarget, "Adjust tween Path");
 
         if (Event.current.type == EventType.MouseUp)
         {
@@ -60,8 +60,8 @@ public class TweenPathEditor : Editor {
 
             if (e.button == 0)
             {
-                Ray ray = HandleUtility.GUIPointToWorldRay(e.mousePosition);
-                Vector3 pos = new Vector3(ray.origin.x, ray.origin.y, 0f);
+                var ray = HandleUtility.GUIPointToWorldRay(e.mousePosition);
+                var pos = new Vector3(ray.origin.x, ray.origin.y, 0f);
                 pTarget.nodes.Add(pos - pTarget.transform.position);
                 pTarget.nodeCount++;
             }

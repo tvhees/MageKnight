@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 
 namespace View
 {
@@ -22,6 +23,7 @@ namespace View
         #region References
 
         Image cardImage;
+        RectTransform rectTransform { get { return transform as RectTransform; } }
 
         #endregion References
 
@@ -56,9 +58,9 @@ namespace View
 
         public void MoveToNewParent(Transform parent, bool showFront = true, bool draggable = false)
         {
-            transform.SetParent(parent);
-            (transform as RectTransform).Reset();
             this.draggable = draggable;
+            transform.SetParent(parent);
+            rectTransform.Reset();
             if (showFront)
                 Show();
             else
