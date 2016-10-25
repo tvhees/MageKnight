@@ -1,6 +1,7 @@
 Mage Knight bugs:
 
 Dice and Cards can be played during selection phases
+Shields placed incorrectly in multiplayer
 
 Remaining systems:
 Fame

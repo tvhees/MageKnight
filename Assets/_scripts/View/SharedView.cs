@@ -165,19 +165,26 @@ namespace View
 
         #endregion Dice
 
-        #region Reputation
+        #region Reputation and fame
 
         public void MoveReputationShield(int playerId, int newReputation)
         {
             var repNode = newReputation + 7;
-            repShields[playerId].transform.DOLocalMove(repPath.nodes[repNode], 1f);
+            MoveShield(repShields, repPath, playerId, repNode);
         }
 
         public void MoveFameShield(int playerId, int newFame)
         {
-            fameShields[playerId].transform.DOLocalMove(famePath.nodes[newFame], 1f);
+            MoveShield(fameShields, famePath, playerId, newFame);
         }
 
-        #endregion Reputation
+        public void MoveShield(GameObject[] array, TweenPath path, int index, int value)
+        {
+            var shield = array[index];
+            shield.SetActive(true);
+            shield.transform.DOLocalMove(path.nodes[value], 1f);
+        }
+
+        #endregion Reputation and fame
     }
 }
