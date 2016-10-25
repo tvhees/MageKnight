@@ -32,6 +32,12 @@ namespace Commands
                     break;
                 case GameConstants.ValueType.Block:
                     break;
+                case GameConstants.ValueType.Fame:
+                    serverMethod = gameData.player.ServerAddFame;
+                    break;
+                case GameConstants.ValueType.Reputation:
+                    serverMethod = gameData.player.ServerAddReputation;
+                    break;
             }
         }
 

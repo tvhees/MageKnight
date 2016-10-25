@@ -21,12 +21,22 @@ public class Player
     public int movement;
     public int influence;
 
+    public int attack;
+    public int block;
+    public int armour;
+
+    public int fame;
+    public int reputation;
+    public int level;
+
+
     #endregion Card variables
 
     #region Mana variables
 
     public int diceAllowed;
     public int[] mana;
+    public int[] tokens;
     public int[] crystals;
 
     public bool HasGold { get { return mana[4] > 0; } }

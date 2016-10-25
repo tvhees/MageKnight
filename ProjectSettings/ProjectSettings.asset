@@ -532,7 +532,7 @@ PlayerSettings:
   XboxOne::VR::enabledDevices: []
   iOS::VR::enabledDevices: []
   tvOS::VR::enabledDevices: []
-  cloudProjectId: 6d3f8f7e-343b-4db7-9110-c188761a736c
-  projectName: Adventurer
+  cloudProjectId: 61d94ac1-3c28-4e97-869f-856d60839168
+  projectName: Adventurer (1)
   organizationId: higher-level-games
   cloudEnabled: 0

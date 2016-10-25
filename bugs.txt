@@ -1,3 +1,19 @@
 Mage Knight bugs:
 
 Dice and Cards can be played during selection phases
+Shields placed incorrectly in multiplayer
+
+Remaining systems:
+Fame
+Reputation
+Combat
+crystals
+tokens
+
+Level rewards
+Units
+Site purchasing
+
+
+Seeds:
+Threaten + red die: 614305312

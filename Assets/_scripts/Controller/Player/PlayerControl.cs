@@ -281,6 +281,8 @@ public class PlayerControl : NetworkBehaviour
     public void ServerCreateModel(Cards cards)
     {
         model = new Player(character, cards);
+        view.RpcUpdateReputation(model.reputation);
+        view.RpcUpdateFame(model.fame);
         for (int i = 0; i < model.deck.Count; i++)
         {
             var card = model.deck[i];
@@ -436,14 +438,6 @@ public class PlayerControl : NetworkBehaviour
         model.movement += value;
         view.RpcUpdateMovement(model.movement);
     }
-
-    [Server]
-    public void ServerAddInfluence(int value)
-    {
-        model.influence += value;
-        view.RpcUpdateInfluence(model.influence);
-    }
-
     public bool CanMoveToHex(HexId newHex)
     {
         if (Vector3.SqrMagnitude(currentHex.position - newHex.position) > GameConstants.sqrTileDistance)
@@ -480,5 +474,35 @@ public class PlayerControl : NetworkBehaviour
         currentHex = newHex;
         characterView.MoveToHex(newHex);
     }
+
     #endregion
+
+    #region Influence
+
+    [Server]
+    public void ServerAddInfluence(int value)
+    {
+        model.influence += value;
+        view.RpcUpdateInfluence(model.influence);
+    }
+
+    [Server]
+    public void ServerAddReputation(int value)
+    {
+        model.reputation += value;
+        view.RpcUpdateReputation(model.reputation);
+    }
+
+    #endregion Influence
+
+    #region Fame and levels
+
+    [Server]
+    public void ServerAddFame(int value)
+    {
+        model.fame += value;
+        view.RpcUpdateFame(model.fame);
+    }
+
+    #endregion Fame and levels
 }

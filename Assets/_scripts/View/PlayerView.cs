@@ -25,11 +25,13 @@ namespace View
 
         [SerializeField] Tactic tacticModel;
 
+        [SerializeField] StatusDisplay fame;
         [SerializeField] StatusDisplay level;
         [SerializeField] StatusDisplay handSize;
         [SerializeField] StatusDisplay armour;
         [SerializeField] StatusDisplay movement;
         [SerializeField] StatusDisplay influence;
+        [SerializeField] StatusDisplay reputation;
 
         public GameObject[] collections;
 
@@ -130,18 +132,47 @@ namespace View
         }
         #endregion
 
-        #region Status Bar Updates
+        #region Status bar updates
+
         [ClientRpc]
         public void RpcUpdateMovement(int newValue)
         {
             movement.SetNumber(newValue);
         }
 
+        [ClientRpc]
         public void RpcUpdateInfluence(int newValue)
         {
             influence.SetNumber(newValue);
         }
-        #endregion
+
+        [ClientRpc]
+        public void RpcUpdateReputation(int newValue)
+        {
+            reputation.SetNumber(newValue);
+            GameController.singleton.sharedView.MoveReputationShield(owner.playerId, newValue);
+        }
+
+        [ClientRpc]
+        public void RpcUpdateFame(int newValue)
+        {
+            fame.SetNumber(newValue);
+            GameController.singleton.sharedView.MoveFameShield(owner.playerId, newValue);
+        }
+
+        [ClientRpc]
+        public void RpcUpdateLevel(int newValue)
+        {
+            level.SetNumber(newValue);
+        }
+
+        [ClientRpc]
+        public void RpcUpdateArmour(int newValue)
+        {
+            armour.SetNumber(newValue);
+        }
+
+        #endregion Status bar updates
 
         #region Buttons and commands
         [ClientRpc]

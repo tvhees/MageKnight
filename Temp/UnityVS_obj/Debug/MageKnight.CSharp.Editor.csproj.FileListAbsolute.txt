@@ -1,5 +1,10 @@
 C:\Users\Torbjorn\Documents\MageKnight\Temp\UnityVS_bin\Debug\Assembly-CSharp-Editor.dll
 C:\Users\Torbjorn\Documents\MageKnight\Temp\UnityVS_bin\Debug\Assembly-CSharp-Editor.pdb
+C:\Users\Torbjorn\Documents\MageKnight\Temp\UnityVS_bin\Debug\DOTween.dll
+C:\Users\Torbjorn\Documents\MageKnight\Temp\UnityVS_bin\Debug\DOTween43.dll
+C:\Users\Torbjorn\Documents\MageKnight\Temp\UnityVS_bin\Debug\DOTween46.dll
+C:\Users\Torbjorn\Documents\MageKnight\Temp\UnityVS_bin\Debug\DOTween50.dll
+C:\Users\Torbjorn\Documents\MageKnight\Temp\UnityVS_bin\Debug\DOTweenEditor.dll
 C:\Users\Torbjorn\Documents\MageKnight\Temp\UnityVS_bin\Debug\Mono.Cecil.dll
 C:\Users\Torbjorn\Documents\MageKnight\Temp\UnityVS_bin\Debug\Mono.Cecil.Mdb.dll
 C:\Users\Torbjorn\Documents\MageKnight\Temp\UnityVS_bin\Debug\NSubstitute.dll
@@ -35,6 +40,11 @@ C:\Users\Torbjorn\Documents\MageKnight\Temp\UnityVS_bin\Debug\UnityEditor.Androi
 C:\Users\Torbjorn\Documents\MageKnight\Temp\UnityVS_bin\Debug\UnityEditor.WebGL.Extensions.xml
 C:\Users\Torbjorn\Documents\MageKnight\Temp\UnityVS_bin\Debug\UnityEditor.WindowsStandalone.Extensions.xml
 C:\Users\Torbjorn\Documents\MageKnight\Temp\UnityVS_bin\Debug\SyntaxTree.VisualStudio.Unity.Bridge.xml
+C:\Users\Torbjorn\Documents\MageKnight\Temp\UnityVS_bin\Debug\DOTween.xml
+C:\Users\Torbjorn\Documents\MageKnight\Temp\UnityVS_bin\Debug\DOTween43.xml
+C:\Users\Torbjorn\Documents\MageKnight\Temp\UnityVS_bin\Debug\DOTween46.xml
+C:\Users\Torbjorn\Documents\MageKnight\Temp\UnityVS_bin\Debug\DOTween50.xml
+C:\Users\Torbjorn\Documents\MageKnight\Temp\UnityVS_bin\Debug\DOTweenEditor.xml
 C:\Users\Torbjorn\Documents\MageKnight\Temp\UnityVS_obj\Debug\MageKnight.CSharp.Editor.csprojResolveAssemblyReference.cache
 C:\Users\Torbjorn\Documents\MageKnight\Temp\UnityVS_obj\Debug\Assembly-CSharp-Editor.dll
 C:\Users\Torbjorn\Documents\MageKnight\Temp\UnityVS_obj\Debug\Assembly-CSharp-Editor.pdb

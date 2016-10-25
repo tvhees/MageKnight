@@ -15,8 +15,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e0303c0da53d1a5419084073a59108c3, type: 2}
   instantiatedRequirements: []
   optionals:
+  - {fileID: 11400000, guid: b61404f6798210a488088574d24ddbdf, type: 2}
   - {fileID: 11400000, guid: eecbe70f832fd87419fc9b199ad022f0, type: 2}
   instantiatedOptionals: []
+  completedCommands: []
   valueType: 1
   valueSize: 5
   element: 0

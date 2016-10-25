@@ -41,7 +41,7 @@ public static class GameConstants
     { Action, Spell, Artifact, Unit, Wound, Tactic }
 
     public enum ValueType
-    { Movement, Influence, Healing, Attack, Block }
+    { Movement, Influence, Healing, Attack, Block, Fame, Reputation }
 
     public enum Element
     { Physical, Fire, Ice, ColdFire }

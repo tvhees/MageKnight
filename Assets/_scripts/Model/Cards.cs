@@ -18,7 +18,7 @@ public class Cards
     public Cards(GamePlayers players)
     {
         CreateCommonDecks();
-        CreatePlayerDecks(players);
+        ServerCreatePlayerModels(players);
     }
 
     void CreateCommonDecks()
@@ -46,7 +46,7 @@ public class Cards
         return deck;
     }
 
-    void CreatePlayerDecks(GamePlayers players)
+    void ServerCreatePlayerModels(GamePlayers players)
     {
         for (int i = 0; i < players.Connected; i++)
         {
