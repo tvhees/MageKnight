@@ -30,7 +30,9 @@ public class PlayerControl : NetworkBehaviour
     public CommandResult commandSuccess;
     [SyncVar]
     public bool commandRunning;
-
+    public string[] choiceNames = new string[0];
+    [SyncVar]
+    public int choiceIndex;
     #endregion Attributes
 
     #region References
@@ -431,6 +433,37 @@ public class PlayerControl : NetworkBehaviour
     }
     #endregion
 
+    #region Card effects
+
+    [ClientRpc]
+    public void RpcShowChoices(string[] choiceNames)
+    {
+        this.choiceNames = choiceNames;
+    }
+
+    void OnGUI()
+    {
+        GUILayout.BeginArea(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 300, 600, 600));
+        for (int i = 0; i < choiceNames.Length; i++)
+        {
+            if (GUILayout.Button(choiceNames[i]))
+            {
+                choiceNames = new string[0];
+                CmdSetChoiceIndex(i);
+                break;
+            }
+        }
+        GUILayout.EndArea();
+    }
+
+    [Command]
+    void CmdSetChoiceIndex(int i)
+    {
+        choiceIndex = i;
+    }
+
+    #endregion Card effects
+
     #region Movement
     [Server]
     public void ServerAddMovement(int value)
@@ -494,6 +527,35 @@ public class PlayerControl : NetworkBehaviour
     }
 
     #endregion Influence
+
+    #region Combat
+
+    [Server]
+    public void ServerAddAttack(int value)
+    {
+        model.attack += value;
+        view.RpcUpdateAttack(model.attack);
+    }
+
+    [Server]
+    public void ServerAddBlock(int value)
+    {
+        model.block += value;
+        view.RpcUpdateBlock(model.block);
+    }
+
+    #endregion Combat
+
+    #region Healing and wounds
+
+    [Server]
+    public void ServerAddHealing(int value)
+    {
+        model.healing += value;
+        view.RpcUpdateHealing(model.healing);
+    }
+
+    #endregion Healing and wounds
 
     #region Fame and levels
 

@@ -146,6 +146,21 @@ namespace View
             influence.SetNumber(newValue);
         }
 
+        public void RpcUpdateAttack(int newValue)
+        {
+            Debug.LogFormat("Total attack: {0}", newValue);
+        }
+
+        public void RpcUpdateBlock(int newValue)
+        {
+            Debug.LogFormat("Total block: {0}", newValue);
+        }
+
+        public void RpcUpdateHealing(int newValue)
+        {
+            Debug.LogFormat("Total healing: {0}", newValue);
+        }
+
         [ClientRpc]
         public void RpcUpdateReputation(int newValue)
         {

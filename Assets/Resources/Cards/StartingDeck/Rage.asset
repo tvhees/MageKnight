@@ -14,6 +14,8 @@ MonoBehaviour:
   type: 0
   colour: 0
   number: 0
-  commands:
-  - {fileID: 0}
-  - {fileID: 0}
+  effects:
+  - {fileID: 11400000, guid: 81b66e7657e16fa44948db3aa93ff602, type: 2}
+  - {fileID: 11400000, guid: 2a929de011e801744b7cfafd7f93f308, type: 2}
+  automaticIndex: 0
+  isRepeatable: 0

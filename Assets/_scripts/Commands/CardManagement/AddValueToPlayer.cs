@@ -27,10 +27,13 @@ namespace Commands
                     serverMethod = gameData.player.ServerAddInfluence;
                     break;
                 case GameConstants.ValueType.Healing:
+                    serverMethod = gameData.player.ServerAddHealing;
                     break;
                 case GameConstants.ValueType.Attack:
+                    serverMethod = gameData.player.ServerAddAttack;
                     break;
                 case GameConstants.ValueType.Block:
+                    serverMethod = gameData.player.ServerAddBlock;
                     break;
                 case GameConstants.ValueType.Fame:
                     serverMethod = gameData.player.ServerAddFame;

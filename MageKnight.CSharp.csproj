@@ -98,14 +98,15 @@
     <Compile Include="Assets\Lobby\Scripts\Lobby\LobbyTopPanel.cs" />
     <Compile Include="Assets\Lobby\Scripts\Lobby\PlayerNumberHook.cs" />
     <Compile Include="Assets\_scripts\Clickable.cs" />
+    <Compile Include="Assets\_scripts\Commands\CardManagement\AddValueToPlayer.cs" />
     <Compile Include="Assets\_scripts\Commands\CardManagement\DrawCards.cs" />
     <Compile Include="Assets\_scripts\Commands\CardManagement\MoveCard.cs" />
+    <Compile Include="Assets\_scripts\Commands\Choice.cs" />
     <Compile Include="Assets\_scripts\Commands\Command.cs" />
     <Compile Include="Assets\_scripts\Commands\CommandResult.cs" />
     <Compile Include="Assets\_scripts\Commands\CommandStack.cs" />
     <Compile Include="Assets\_scripts\Commands\GameData.cs" />
     <Compile Include="Assets\_scripts\Commands\Mana\PayMana.cs" />
-    <Compile Include="Assets\_scripts\Commands\Movement\AddValueToPlayer.cs" />
     <Compile Include="Assets\_scripts\Commands\Movement\MoveToHex.cs" />
     <Compile Include="Assets\_scripts\Commands\StateManagement\ChangeTurnState.cs" />
     <Compile Include="Assets\_scripts\Common\DisplayableFeature.cs" />

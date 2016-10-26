@@ -25,6 +25,8 @@ public class Player
     public int block;
     public int armour;
 
+    public int healing;
+
     public int fame;
     public int reputation;
     public int level;

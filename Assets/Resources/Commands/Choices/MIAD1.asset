@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92c785738060c8a4eadbc521e8af6343, type: 3}
+  m_Name: MIAD1
+  m_EditorClassIdentifier: 
+  requirements: []
+  instantiatedRequirements: []
+  optionals: []
+  instantiatedOptionals: []
+  completedCommands: []
+  choices:
+  - {fileID: 11400000, guid: 77cf4b9f4d4a5af4ea231b5d40d5d73a, type: 2}
+  - {fileID: 11400000, guid: 88562ca1d3a74414daa3e476ae752201, type: 2}
+  - {fileID: 11400000, guid: 3c091939782af634495f2808f92bd73f, type: 2}
+  - {fileID: 11400000, guid: 18c053b7ccdf7cd45b30a897ae688617, type: 2}
